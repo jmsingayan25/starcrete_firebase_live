@@ -130,7 +130,7 @@
 
     		commentSnapshot.forEach(function(commentChildSnapshot){
 
-    			optionTable += "<div class='col-md-12'><textarea name='comment' id='comment' class='form-control input_type' rows='5' style='text-transform: uppercase;'>" + commentChildSnapshot.val().comment_headoffice  + "</textarea></div>";
+    			optionTable += "<div class='col-md-12'><textarea name='comment' id='comment' class='form-control input_type' rows='5' style='text-transform: uppercase;'>" + commentChildSnapshot.val().comment_attendance_headoffice  + "</textarea></div>";
 
     		});
 
@@ -145,7 +145,7 @@
     	var input_note = document.getElementById('comment').value;
 
     	var commentData = {
-    		comment_headoffice: input_note.toUpperCase() || "N/A"
+    		comment_attendance_headoffice: input_note.toUpperCase() || "N/A"
     	}
 
     	firebase.database().ref('attendance/'+plant+'/'+currentDate+'/comment').once('value', function(commentSnapshot){

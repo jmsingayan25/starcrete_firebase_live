@@ -319,9 +319,11 @@
 @media print{
     table{
         font-size: 10px;
+        white-space: nowrap;
     }
     table td{
         word-wrap: break-word;
+
     }
     #printPageButton{
         display: none;
@@ -341,7 +343,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <section class="panel">
-                        <table class="table table-bordered table-stripped" cellpadding="0" cellspacing="0">
+                        <table class="table table-bordered table-stripped table-condensed" cellpadding="0" cellspacing="0">
                             <tbody>
                                 <tr id="id_date" class="header_line"></tr>
                                 <tr class="header_line">

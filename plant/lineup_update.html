@@ -311,7 +311,7 @@
 
                 optionSnapshot.forEach(function(optionChildSnapshot){
 
-                    optionTable += "<tr><td class='col-md-5'><input type='text' name='update_employee_name[]' style='text-transform: uppercase;' value='" + optionChildSnapshot.val().employee_name + "' class='form-control'></td> <td class='col-md-1'><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + new_option + "\",\"" + optionChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
+                    optionTable += "<tr><td class='col-md-5'><input type='text' name='update_employee_name[]' style='text-transform: uppercase;' value='" + optionChildSnapshot.val().employee_name + "' class='form-control'></td> <td class='col-md-1'><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + optionChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
                 });
 
                 document.getElementById('id_fields').innerHTML = optionTable;
@@ -331,7 +331,7 @@
 
                 optionSnapshot.forEach(function(optionChildSnapshot){
 
-                    optionTable += "<tr><td class='col-md-5'><input type='text' name='update_employee_name[]' style='text-transform: uppercase;' value='" + optionChildSnapshot.val().employee_name + "' class='form-control'></td><td class='col-md-4'><textarea name='update_employee_reason[]' style='text-transform: uppercase;' rows='3' class='form-control'>" + optionChildSnapshot.val().reason + "</textarea></td><td class='col-md-1'><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + new_option + "\",\"" + optionChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
+                    optionTable += "<tr><td class='col-md-5'><input type='text' name='update_employee_name[]' style='text-transform: uppercase;' value='" + optionChildSnapshot.val().employee_name + "' class='form-control'></td><td class='col-md-4'><textarea name='update_employee_reason[]' style='text-transform: uppercase;' rows='3' class='form-control'>" + optionChildSnapshot.val().reason + "</textarea></td><td class='col-md-1'><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + optionChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
                 });
 
                 document.getElementById('id_fields').innerHTML = optionTable;
@@ -366,7 +366,7 @@
 
                 optionSnapshot.forEach(function(optionChildSnapshot){
 
-                    optionTable += "<tr><td class='col-md-5'><input type='text' name='update_employee_name[]' style='text-transform: uppercase;' value='" + optionChildSnapshot.val().employee_name + "' class='form-control'></td><td class='col-md-5'><input type='text' name='update_employee_position[]' style='text-transform: uppercase;' value='" + optionChildSnapshot.val().employee_position + "' class='form-control'></td><td class='col-md-1'><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + new_option + "\",\"" + optionChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
+                    optionTable += "<tr><td class='col-md-5'><input type='text' name='update_employee_name[]' style='text-transform: uppercase;' value='" + optionChildSnapshot.val().employee_name + "' class='form-control'></td><td class='col-md-5'><input type='text' name='update_employee_position[]' style='text-transform: uppercase;' value='" + optionChildSnapshot.val().employee_position + "' class='form-control'></td><td class='col-md-1'><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + optionChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
                 });
 
                 document.getElementById('id_fields').innerHTML = optionTable;
@@ -414,24 +414,52 @@
 
         event.preventDefault();
 
-        if(firebase.database().ref('lineup/'+plant+'/'+currentDate+'/'+position+'/'+key).remove()){
+        var remove_new = position.substring(0, 3);
 
-            firebase.database().ref('lineup/'+plant+'/'+currentDate+'/'+position).once('value', function(snapshot){
-                if(snapshot.val() == null){
+        if(remove_new == "new"){
 
-                    var data = {
-                        employee_name: "N/A"
+            new_option = option.replace("new_","");
+            if(firebase.database().ref('lineup/'+plant+'/'+currentDate+'/new/'+new_option+'/'+key).remove()){
+
+                firebase.database().ref('lineup/'+plant+'/'+currentDate+'/new/'+new_option).once('value', function(snapshot){
+                    if(snapshot.val() == null){
+
+                        var data = {
+                            employee_name: "N/A"
+                        }
+
+                        firebase.database().ref('lineup/'+plant+'/'+currentDate+'/new/'+new_option).push(data);
+                        alert("Data has been removed");
+                        window.location.href='lineup.html';
+
+                    }else{
+                        alert("Data has been removed");
+                        location.reload();
                     }
+                });
+            } 
 
-                    firebase.database().ref('lineup/'+plant+'/'+currentDate+'/'+position).push(data);
-                    alert("Data has been removed");
-                    window.location.href='lineup.html?plant='+plant;
+        }else{
 
-                }else{
-                    alert("Data has been removed");
-                    location.reload();
-                }
-            });
+           if(firebase.database().ref('lineup/'+plant+'/'+currentDate+'/'+position+'/'+key).remove()){
+
+                firebase.database().ref('lineup/'+plant+'/'+currentDate+'/'+position).once('value', function(snapshot){
+                    if(snapshot.val() == null){
+
+                        var data = {
+                            employee_name: "N/A"
+                        }
+
+                        firebase.database().ref('lineup/'+plant+'/'+currentDate+'/'+position).push(data);
+                        alert("Data has been removed");
+                        window.location.href='lineup.html';
+
+                    }else{
+                        alert("Data has been removed");
+                        location.reload();
+                    }
+                });
+            } 
         }
     }
 
@@ -540,7 +568,7 @@
                 }
             }
 
-        }else if(option == "machine1" || option == "machine3" || option == "nonskid1" || option == "nonskid1" || option == "nonskid2" || option == "nonskid3" || option == "machine4" || option == "kamador" || option == "forklift_operator" || option == "mechanic"){
+        }else if(option == "machine1" || option == "machine3" || option == "nonskid1" || option == "nonskid2" || option == "nonskid3" || option == "nonskid4" || option == "kamador" || option == "forklift_operator" || option == "mechanic"){
 
             count = 0;
             var input_employee_name = $("input[name='update_employee_name[]']").map(function(){return $(this).val();}).get();
@@ -672,7 +700,7 @@
                 }
             }
 
-        }else if(option == "new_machine1" || option == "new_machine3" || option == "new_nonskid1" || option == "new_nonskid1" || option == "new_nonskid2" || option == "new_nonskid3" || option == "new_machine4" || option == "new_kamador" || option == "new_forklift_operator" || option == "new_mechanic"){
+        }else if(option == "new_machine1" || option == "new_machine3" || option == "new_nonskid1" || option == "new_nonskid2" || option == "new_nonskid3" || option == "new_nonskid4" || option == "new_kamador" || option == "new_forklift_operator" || option == "new_mechanic"){
 
             new_option = option.replace("new_","");
 

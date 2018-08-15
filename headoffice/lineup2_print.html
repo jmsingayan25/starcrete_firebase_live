@@ -135,7 +135,10 @@
 
                                     myTableRow1 += "</td><td>";
                                     forkliftSnapshot.forEach(function(forkliftChildSnapshot){
-                                        myTableRow1 += "<div class='row'><div class='col-md-12'>" + forkliftChildSnapshot.val().forklift_no + " - " + forkliftChildSnapshot.val().operator + "</div></div>";
+                                        
+                                        if(forkliftChildSnapshot.val().operator != "N/A"){
+                                            myTableRow1 += "<div class='row'><div class='col-md-12'>" + forkliftChildSnapshot.val().operator + "</div></div>";
+                                        }
                                     });
 
                                     myTableRow1 += "</td><td>";
