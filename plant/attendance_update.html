@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+    <link rel="shortcut icon" href="../img/favicon.png">
+
+    <title>Attendance Update</title>
+
+    <!-- Firebase App is always required and must be first -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/5.0.3/firebase-app.js"></script>
+
+    <!-- Add additional services you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>
+    <script src="../js_config/firebase_config.js"></script>
+
+    <!-- Bootstrap CSS -->    
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="../css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="../css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="../css/font-awesome.min.css" rel="stylesheet" />    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- owl carousel -->
+    <link rel="stylesheet" href="../css/owl.carousel.css" type="text/css">
+    <link href="../css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="../css/fullcalendar.css">
+    <link href="../css/widgets.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/style-responsive.css" rel="stylesheet" />
+    <link href="../css/xcharts.min.css" rel=" stylesheet">  
+    <link href="../css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+
+    <!-- javascripts -->
+    <script src="../js/jquery.js"></script>
+    <script src="../js/jquery-ui-1.10.4.min.js"></script>
+    <script src="../js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-ui-1.9.2.custom.min.js"></script>
+    <!-- bootstrap -->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- nice scroll -->
+    <script src="../js/jquery.scrollTo.min.js"></script>
+    <script src="../js/jquery.nicescroll.js" type="text/javascript"></script>
+    <!-- charts scripts -->
+    <script src="../assets/jquery-knob/js/jquery.knob.js"></script>
+    <script src="../js/jquery.sparkline.js" type="text/javascript"></script>
+    <script src="../assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
+    <script src="../js/owl.carousel.js" ></script>
+    <!-- jQuery full calendar -->
+    <script src="../js/fullcalendar.min.js"></script> <!-- Full Google Calendar - Calendar -->
+    <script src="../assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
+    <!--script for this page only-->
+    <script src="../js/calendar-custom.js"></script>
+    <script src="../js/jquery.rateit.min.js"></script>
+    <!-- custom select -->
+    <script src="../js/jquery.customSelect.min.js" ></script>
+    <script src="../assets/chart-master/Chart.js"></script>
+
+    <!--custome script for all page-->
+    <script src="../js/scripts.js"></script>
+    <!-- custom script for this page-->
+    <script src="../js/sparkline-chart.js"></script>
+    <script src="../js/easy-pie-chart.js"></script>
+    <script src="../js/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="../js/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="../js/xcharts.min.js"></script>
+    <script src="../js/jquery.autosize.min.js"></script>
+    <script src="../js/jquery.placeholder.min.js"></script>
+    <script src="../js/gdp-data.js"></script>  
+    <script src="../js/morris.min.js"></script>
+    <script src="../js/sparklines.js"></script>    
+    <script src="../js/charts.js"></script>
+    <script src="../js/jquery.slimscroll.min.js"></script>
+    <script src="../js_config/function.js"></script>
+
+<script>
+
+    var option = getUrlParameter('option');
+    var plant = "";
+    var getCurrentDate = getUrlParameter('date');
+
+    var date_option = {year: "numeric", month: "long", day: "numeric"}
+    var currentDate = new Date(getCurrentDate).toLocaleDateString('en', date_option);
+    var optionTable = "";
+
+    $(document).ready(function(){
+
+    	firebase.auth().onAuthStateChanged(function(user) {
+            if (user != null) {
+
+                var uid = user.uid;
+        
+                firebase.database().ref('users/'+uid).once('value').then(function(snapshot) {
+
+                    plant = snapshot.val().office;
+
+                    if(plant == 'Head Office'){
+                        window.location.href = '../headoffice/index.html';
+                    }
+
+                    tableData(plant);
+
+                    if(plant == 'Bravo'){
+                        plant_name = "<a href='index.html' class='logo'>Starcrete <span class='lite'>Manufacturing Corporation</span></a>";
+                    }else{
+                        plant_name = "<a href='index.html' class='logo'>Quality Star <span class='lite'>Concrete Products, Inc.</span></a>";
+                    }
+
+                    document.getElementById('id_plant_name').innerHTML = plant_name;
+                    document.getElementById('username').innerHTML = snapshot.val().firstname; 
+
+                },(error) => {
+                    console.log(error);
+                });
+            } else {
+                window.location.href = '../login.html';
+            }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
+    });
+
+    function tableData(plant){
+
+    	if(option == "office"){
+
+            $(".button_add").show();
+
+    		document.getElementById('id_option').innerHTML = "OFFICE";
+
+    		firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option).once('value', function(officeSnapshot){
+    			console.log(officeSnapshot.val());
+    			optionTable += "<thead><tr><th class='col-md-6 header_center'>Name</th><th class='col-md-1 header_center'>Time In</th><th class='col-md-1 header_center'>Time Out</th><th class='col-md-1'></th></tr></thead><tbody>";
+
+    			officeSnapshot.forEach(function(officeChildSnapshot){
+
+    				optionTable += "<tr><td><input type='text' name='update_employee_name[]' class='form-control input_type' value='" + officeChildSnapshot.val().employee_name + "'></td><td><input type='time' name='update_employee_timein[]' class='form-control input_type' value='" + officeChildSnapshot.val().employee_timein + "'></td><td><input type='time' name='update_employee_timeout[]' class='form-control input_type' value='" + officeChildSnapshot.val().employee_timeout + "'></td><td class='col-md-1'><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + officeChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
+    			});
+
+    			optionTable += "</tbody>";
+
+    			document.getElementById('id_table_view').innerHTML = optionTable;
+    		});
+    	}else if(option == "plant" || option == "motorpool" || option == "trucking"){
+
+            $(".button_add").show();
+
+            document.getElementById('id_option').innerHTML = "ABSENT FOR " + option.toUpperCase();
+
+            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/absent/'+option).once('value', function(absentSnapshot){
+
+                optionTable += "<thead><tr><th class='col-md-3 header_center'>Name</th><th class='col-md-6 header_center'>Reason</th><th class='col-md-1'></th></tr></thead><tbody>";
+
+                absentSnapshot.forEach(function(absentChildSnapshot){
+
+                    optionTable += "<tr><td><input type='text' name='update_employee_name[]' class='form-control input_type' value='" + absentChildSnapshot.val().employee_name + "'></td><td><textarea name='update_employee_reason[]' class='form-control input_type' rows='2'>" + absentChildSnapshot.val().employee_comment + "</textarea></td><td><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + absentChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
+                });
+
+                optionTable += "</tbody>";
+
+                document.getElementById('id_table_view').innerHTML = optionTable;
+            });
+
+        }else if(option == "nonskid1" || option == "nonskid2" || option == "nonskid3" || option == "nonskid4"){
+
+            $(".button_add").hide();
+
+            document.getElementById('id_option').innerHTML = option.toUpperCase();
+
+            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option+'/employee').once('value', function(employeeSnapshot){
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option+'/helper').once('value', function(helperSnapshot){
+
+                    optionTable += "<thead><tr><th class='col-md-3 header_center'>Name</th</thead><tbody>";
+
+                    employeeSnapshot.forEach(function(employeeChildSnapshot){
+
+                        optionTable += "<tr><td><input type='text' name='update_employee_name[]' class='form-control input_type' value='" + employeeChildSnapshot.val().employee_name + "'></td></tr>";
+
+                        if(employeeChildSnapshot.val().employee_name == "N/A"){
+
+                            optionTable += "<tr><td><input type='text' name='update_employee_name[]' class='form-control input_type' value='" + employeeChildSnapshot.val().employee_name + "'></td></tr>";
+                        }
+
+                    });
+
+                    optionTable += "</thead></tbody><br><br><thead><tr><th class='col-md-3 header_center'>Helper Name</th></thead><tbody>";
+
+                    helperSnapshot.forEach(function(helperChildSnapshot){
+
+                        optionTable += "<tr><td><input type='text' id='update_helper_name' class='form-control input_type' value='" + helperChildSnapshot.val().helper_name + "'></td></tr>";
+                    });
+
+                    optionTable += "</tbody>";
+
+                    document.getElementById('id_table_view').innerHTML = optionTable;
+                });
+            });
+
+        }else if(option == "truck"){
+
+            document.getElementById('id_option').innerHTML = "TRUCKING";
+
+            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/trucking').once('value', function(truckingSnapshot){
+
+                optionTable += "<tr><td><table class='table'><thead><tr class='header_line'><th class='col-md-2 header_center'>TRUCK NO.</th><th class='col-md-2 header_center'>DRIVER</th><th class='col-md-2 header_center'>PAHINANTE 1</th><th class='col-md-2 header_center'>PAHINANTE 2</th><th class='col-md-3 header_center'>COMMENT</th></tr></thead><tbody>";
+
+                truckingSnapshot.forEach(function(truckingChildSnapshot){
+                    optionTable += "<tr align='center'><input type='hidden' name='hidden_truck_no[]' value='" + truckingChildSnapshot.val().truck_no + "'><td>" + truckingChildSnapshot.val().truck_no + "</td><td><textarea name='update_driver[]' class='form-control input_type' rows='2'>" + truckingChildSnapshot.val().driver + "</textarea></td><td><textarea name='update_pahinante1[]' class='form-control input_type' rows='2'>" + truckingChildSnapshot.val().pahinante1 + "</textarea></td><td><textarea name='update_pahinante2[]' class='form-control input_type' rows='2'>" + truckingChildSnapshot.val().pahinante2 + "</textarea></td><td><textarea name='update_comment[]' class='form-control input_type' rows='2'>" +  truckingChildSnapshot.val().comment + "</textarea></td></tr>";
+                });
+
+                optionTable += "</tbody></table></td></tr>";
+
+                document.getElementById('id_table_view').innerHTML = optionTable;
+            });
+
+        }else if(option == "guard"){
+
+            document.getElementById('id_option').innerHTML = option.toUpperCase();
+
+            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option).once('value', function(guardSnapshot){
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option+'/dayshift').once('value', function(guardDaySnapshot){
+                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option+'/nightshift').once('value', function(guardNightSnapshot){
+                        console.log(guardSnapshot.val().agency_name);
+                    
+                        optionTable += "<tr><td><table class='table'><thead><tr><th colspan='3'>Guard: <input type='text' id='update_agency_name' class='form-control input_type' value='" + guardSnapshot.val().agency_name + "'></th></tr><tr><th colspan='2' class='header_center'>DAY SHIFT</th></tr><tr><th colspan='1' class='header_center'>Name</th><th colspan='1' class='header_center'>Position</th></tr></thead><tbody>";
+
+                        guardDaySnapshot.forEach(function(guardDayChildSnapshot){
+
+                            optionTable += "<tr><td><input type='text' name='update_dayshift_guard[]' class='form-control input_type' value='" + guardDayChildSnapshot.val().guard_name + "'></td><td><input type='text' name='update_dayshift_position[]' class='form-control input_type' value='" + guardDayChildSnapshot.val().guard_position + "'></td></tr>";
+                        });
+
+                        optionTable += "</tbody><thead><tr><th colspan='2' class='header_center'>NIGHT SHIFT</th></tr><tr><th colspan='1' class='header_center'>Name</th><th colspan='1' class='header_center'>Position</th></tr></thead><tbody>";
+
+                        guardNightSnapshot.forEach(function(guardNightChildSnapshot){
+
+                            optionTable += "<tr><td><input type='text' name='update_nightshift_guard[]' class='form-control input_type' value='" + guardNightChildSnapshot.val().guard_name + "'></td><td><input type='text' name='update_nightshift_position[]' class='form-control input_type' value='" + guardNightChildSnapshot.val().guard_position + "'></td></tr>";
+                        });
+
+                        optionTable += "</tbody></table></td></tr>";
+
+
+
+                        document.getElementById('id_table_view').innerHTML = optionTable;
+                    });
+                });
+            });
+
+        }else if(option == "new_employee"){
+
+            document.getElementById('id_option').innerHTML = "NEW EMPLOYEE";
+
+            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option).once('value', function(optionSnapshot){
+
+                $(".button_add").show();
+
+                optionTable += "<tr><td><table class='table'><thead><tr><th class='col-md-8 header_center'>Name</th><th class='col-md-1'></th></tr></thead><tbody>";
+
+                optionSnapshot.forEach(function(optionChildSnapshot){
+
+                    optionTable += "<tr align='center'><td><input type='text' name='update_employee_name[]' value='" + optionChildSnapshot.val().employee_name + "' class='form-control input_type'></td><td><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + optionChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
+                });
+
+                optionTable += "</tbody></table></td></tr>";
+
+
+                document.getElementById('id_table_view').innerHTML = optionTable;
+            });
+
+        }else if(option == "forklift"){
+
+            document.getElementById('id_option').innerHTML = option.toUpperCase();
+
+            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option).once('value', function(optionSnapshot){
+
+                optionTable += "<tr><td><table class='table'><thead><tr><th class='col-md-2 header_center'>Forklift No.</th><th class='col-md-8 header_center'>Operator / Comment</th></tr></thead><tbody>";
+
+                optionSnapshot.forEach(function(optionChildSnapshot){
+
+                    optionTable += "<tr align='center'><input type='hidden' name='hidden_forklift_no[]' value='" + optionChildSnapshot.val().forklift_no + "'><td><strong>" + optionChildSnapshot.val().forklift_no + "</strong></td><td><input type='text' name='update_operator[]' value='" + optionChildSnapshot.val().operator + "' class='form-control input_type'></td></tr>";
+
+                });
+
+                optionTable += "</tbody></table></td></tr>";
+
+                document.getElementById('id_table_view').innerHTML = optionTable;
+
+            });
+        
+        }else if(option == "note"){
+
+            document.getElementById('id_option').innerHTML = option.toUpperCase();
+
+            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/comment').once('value', function(commentSnapshot){
+
+                commentSnapshot.forEach(function(commentChildSnapshot){
+
+                    optionTable += "<div class='col-md-12'><textarea name='comment' id='comment' class='form-control input_type' rows='5' style='text-transform: uppercase;'>" + commentChildSnapshot.val().comment_plant  + "</textarea></div>";
+
+                });
+
+                document.getElementById('id_table_view').innerHTML = optionTable;
+            });
+        }
+    }
+
+    function add_new_employee(){
+
+    	event.preventDefault();
+
+        $rowno = $("#employee_table tr").length;
+        $rowno = $rowno + 1;
+
+    	if(option == "office"){
+
+    		$("#employee_table tr:last").before("<tr id='employee_row" + $rowno + "'><td class='col-md-6'><input type='text' name='update_employee_name[]' class='form-control input_type' required></td><td class='col-md-1'><input type='time' name='update_employee_timein[]' class='form-control input_type' required></td><td class='col-md-1'><input type='time' name='update_employee_timeout[]' class='form-control input_type' required></td><td class='col-md-1'><button type='button' class='btn btn-danger btn-md' onclick=remove_employee_row('employee_row" + $rowno + "')><strong>Remove</strong></button></td></tr>");
+
+    	}else if(option == "agency" || option == "plant" || option == "motorpool" || option == "trucking"){
+
+            $("#employee_table tr:last").before("<tr id='employee_row" + $rowno + "'><td class='col-md-3'><input type='text' name='update_employee_name[]' class='form-control input_type' required></td><td class='col-md-6'><textarea name='update_employee_reason[]' class='form-control input_type' rows='2' required></textarea></td><td class='col-md-1'><button type='button' class='btn btn-danger btn-md' onclick=remove_employee_row('employee_row" + $rowno + "')><strong>Remove</strong></button></td></tr>");
+
+        }else if(option == "new_employee"){
+
+            $("#employee_table tr:last").before("<tr id='employee_row" + $rowno + "'><td class='col-md-8'><input type='text' name='update_employee_name[]' class='form-control input_type' required></td><td class='col-md-1'><button type='button' class='btn btn-danger btn-md' onclick=remove_employee_row('employee_row" + $rowno + "')><strong>Remove</strong></button></td></tr>");
+        }
+    }
+
+    function remove_employee_row(rowno){
+        $('#'+rowno).remove();
+    }
+
+    function removeEmployee(option, key){
+
+    	if(option == "office"){
+
+    		if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option+'/'+key).remove()){
+
+	            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option).once('value', function(snapshot){
+	                if(snapshot.val() == null){
+
+	                    var data = {
+	                        employee_name: "N/A",
+	                        employee_timein: "N/A",
+	                        employee_timeout: "N/A"
+	                    }
+
+	                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option).push(data);
+	                    alert("Data has been removed");
+	                    window.location.href='attendance.html?plant='+plant;
+
+	                }else{
+	                    alert("Data has been removed");
+	                    location.reload();
+	                }
+	            });
+	        }
+
+    	}else if(option == "agency" || option == "plant" || option == "motorpool" || option == "trucking"){
+
+            if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/absent/'+option+'/'+key).remove()){
+
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/absent/'+option).once('value', function(snapshot){
+                    if(snapshot.val() == null){
+
+                        var data = {
+                            employee_name: "N/A",
+                            employee_comment: "N/A"
+                        }
+
+                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/absent/'+option).push(data);
+                        alert("Data has been removed");
+                        window.location.href='attendance.html?plant='+plant;
+
+                    }else{
+                        alert("Data has been removed");
+                        location.reload();
+                    }
+                });
+            }
+
+        }else if(option == "new_employee"){
+
+            if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option+'/'+key).remove()){
+
+                 firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option).once('value', function(snapshot){
+                    if(snapshot.val() == null){
+
+                        var data = {
+                            employee_name: "N/A"
+                        }
+
+                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option).push(data);
+                            alert("Data has been removed");
+                            window.location.href='attendance.html?plant='+plant;
+
+                    }else{
+                        alert("Data has been removed");
+                        location.reload();
+                    }
+                });
+            }
+        }
+    }
+
+    function submitForm(){
+
+    	event.preventDefault();
+
+    	count = 0;
+    	if(option == "office"){
+
+    		var input_employee_name = $("input[name='update_employee_name[]']").map(function(){return $(this).val();}).get();
+    		var input_employee_timein = $("input[name='update_employee_timein[]']").map(function(){return $(this).val();}).get();
+    		var input_employee_timeout = $("input[name='update_employee_timeout[]']").map(function(){return $(this).val();}).get();
+
+    		if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option).remove()){
+
+    			for(var a = 0; a < input_employee_name.length; a++){
+
+	    			var employeeData = {
+	    				employee_name: input_employee_name[a].toUpperCase(),
+	    				employee_timein: input_employee_timein[a],
+	    				employee_timeout: input_employee_timeout[a]
+	    			}
+
+	    			firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option).push(employeeData);
+	    			count++;
+	    		}
+
+	    		if(count == input_employee_name.length){
+	    			alert("Data updated successfully");
+                    window.location.href='attendance.html';
+	    		}
+    		}
+
+    	}else if(option == "agency" || option == "plant" || option == "motorpool" || option == "trucking"){
+
+            var input_employee_name = $("input[name='update_employee_name[]']").map(function(){return $(this).val();}).get();
+            var input_employee_reason = $("textarea[name='update_employee_reason[]']").map(function(){return $(this).val();}).get();
+
+            if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/absent/'+option).remove()){
+
+                for(var a = 0; a < input_employee_name.length; a++){
+
+                    var employeeData = {
+                        employee_name: input_employee_name[a].toUpperCase(),
+                        employee_comment: input_employee_reason[a].toUpperCase() || "N/A"
+                    }
+
+                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/absent/'+option).push(employeeData);
+                    count++;
+                }
+
+                if(count == input_employee_name.length){
+                    alert("Data updated successfully");
+                    window.location.href='attendance.html';
+                }
+            }
+
+        }else if(option == "nonskid1" || option == "nonskid2" || option == "nonskid3" || option == "nonskid4"){
+
+            var input_employee_name = $("input[name='update_employee_name[]']").map(function(){return $(this).val();}).get();
+            var input_helper_name = document.getElementById("update_helper_name").value;
+
+            if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option).remove()){
+
+                var helperData = {
+                    helper_name: input_helper_name.toUpperCase() || "N/A"
+                }
+
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option+'/helper').push(helperData)
+
+                for(var a = 0; a < input_employee_name.length; a++){
+
+                    var employeeData = {
+                        employee_name: input_employee_name[a].toUpperCase() || "N/A"
+                    }
+
+                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option+'/employee').push(employeeData);
+                    count++;
+                }
+
+                if(count == input_employee_name.length){
+                    alert("Data updated successfully");
+                    window.location.href='attendance.html';
+                }
+            }
+
+        }else if(option == "truck"){
+
+            var input_truck_no = $("input[type=hidden][name='hidden_truck_no[]']").map(function(){return $(this).val();}).get();
+            var input_driver = $("textarea[name='update_driver[]']").map(function(){return $(this).val();}).get();
+            var input_pahinante1 = $("textarea[name='update_pahinante1[]']").map(function(){return $(this).val();}).get();
+            var input_pahinante2 = $("textarea[name='update_pahinante2[]']").map(function(){return $(this).val();}).get();
+            var input_comment = $("textarea[name='update_comment[]']").map(function(){return $(this).val();}).get();
+
+            if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/trucking').remove()){
+
+                for(var a = 0; a < input_truck_no.length; a++){
+
+                    var truckingData = {
+                        comment: input_comment[a].toUpperCase() || "N/A",
+                        driver: input_driver[a].toUpperCase() || "N/A",
+                        pahinante1: input_pahinante1[a].toUpperCase() || "N/A",
+                        pahinante2: input_pahinante2[a].toUpperCase() || "N/A",
+                        truck_no: input_truck_no[a].toUpperCase()
+                    }
+
+                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/trucking').push(truckingData);
+                    count++;
+                }
+
+                if(count == input_truck_no.length){
+                    alert("Data updated successfully");
+                    window.location.href='attendance.html';
+                }
+            }
+
+        }else if(option == "guard"){
+
+            var input_agency_name = document.getElementById('update_agency_name').value;
+            var input_dayshift_guard = $("input[name='update_dayshift_guard[]']").map(function(){return $(this).val();}).get();
+            var input_dayshift_position = $("input[name='update_dayshift_position[]']").map(function(){return $(this).val();}).get();
+            var input_nightshift_guard = $("input[name='update_nightshift_guard[]']").map(function(){return $(this).val();}).get();
+            var input_nightshift_position = $("input[name='update_nightshift_position[]']").map(function(){return $(this).val();}).get();
+
+            if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/guard').remove()){
+
+                var agencyData = {
+                    agency_name: input_agency_name.toUpperCase() || "N/A"
+                }
+
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/guard').set(agencyData);
+
+                for(var a = 0; a < input_dayshift_guard.length; a++){
+
+                    var dayshiftData = {
+                        guard_name: input_dayshift_guard[a].toUpperCase() || "N/A",
+                        guard_position: input_dayshift_position[a].toUpperCase() || "N/A"
+                    }
+
+                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/guard/dayshift').push(dayshiftData);
+                }
+
+                for(var a = 0; a < input_nightshift_guard.length; a++){
+
+                    var nightshiftData = {
+                        guard_name: input_nightshift_guard[a].toUpperCase() || "N/A",
+                        guard_position: input_nightshift_position[a].toUpperCase() || "N/A"
+                    }
+
+                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/guard/nightshift').push(nightshiftData);
+                    count++;
+                }
+
+                if(count == input_nightshift_guard.length){
+                    alert("Data updated successfully");
+                    window.location.href='attendance.html';
+                }
+            }
+
+        }else if(option == "new_employee"){
+
+            var input_employee_name = $("input[name='update_employee_name[]']").map(function(){return $(this).val();}).get();
+
+            if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new_employee').remove()){
+
+                for(var a = 0; a < input_employee_name.length; a++){
+
+                    var newData = {
+                        employee_name: input_employee_name[a].toUpperCase() || "N/A"
+                    }
+
+                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new_employee').push(newData);
+                    count++;
+                }
+
+                if(count == input_employee_name.length){
+                    alert("Data updated successfully");
+                    window.location.href='attendance.html';
+                }
+            }
+
+        }else if(option == "forklift"){
+
+            var input_forklift_no = $("input[type=hidden][name='hidden_forklift_no[]']").map(function(){return $(this).val();}).get();
+            var input_operator = $("input[name='update_operator[]']").map(function(){return $(this).val();}).get();
+
+            if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/forklift').remove()){
+
+                for(var a = 0; a < input_forklift_no.length; a++){
+
+                    var forkliftData = {
+                        forklift_no: input_forklift_no[a].toUpperCase(),
+                        operator: input_operator[a].toUpperCase() || "N/A"
+                    }
+
+                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/forklift').push(forkliftData);
+                    count++;
+                }
+
+                if(count == input_forklift_no.length){
+                    alert("Data updated successfully");
+                    window.location.href='attendance.html';
+                }
+            }
+        }else if(option == "note"){
+
+            var input_note = document.getElementById('comment').value;
+
+            var commentData = {
+                comment_plant: input_note.toUpperCase() || "N/A"
+            }
+
+            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/comment').once('value', function(commentSnapshot){
+                commentSnapshot.forEach(function(commentChildSnapshot){
+                    if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/comment/'+commentChildSnapshot.key).update(commentData)){
+                        alert("Update succesfully");
+                        window.location.href='attendance.html?plant='+plant;
+                    }
+                });
+            });
+        }
+    }
+
+</script>
+<style>
+.input_type{
+    text-transform: uppercase;
+}
+.button_add{
+    display: none;
+}
+.header_center{
+    text-align: center;
+}
+</style>
+</head>
+<body>
+	<!-- <div class="se-pre-con"></div> -->
+    <section id="container" class="">
+        <header class="header dark-bg">
+            <div class="toggle-nav">
+            <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="icon_menu"></i></div>
+            </div>
+
+            <!--logo start-->
+
+            <!--logo end-->
+            <span id="id_plant_name"></span>
+            <div class="top-nav notification-row">                
+                <!-- notificatoin dropdown start-->
+                <ul class="nav pull-right top-menu">
+                    <!-- user login dropdown start-->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <!--  <span class="profile-ava">
+                        <img alt="" src="img/avatar1_small.jpg">
+                        </span> -->
+                            <span class="username" id="username"></span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu extended logout">
+                            <div class="log-arrow-up"></div>
+                            <li>
+                                <a href="" id="logoutBtn"><i class="icon_key_alt"></i> Log Out</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- user login dropdown end -->
+                </ul>
+                <!-- notificatoin dropdown end-->
+            </div>
+        </header>  
+        <!--sidebar start-->
+        <aside>
+            <div id="sidebar"  class="nav-collapse ">
+                <!-- sidebar menu start-->
+                <ul class="sidebar-menu">                
+                    <li class="">
+                        <a class="" href="index.html">
+                            <i class="icon_house"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="" href="transaction_log.html">
+                            <i class="fa fa-list"></i>
+                            <span>Transaction Log</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a class="" href="attendance.html">
+                            <i class="fa fa-list"></i>
+                            <span>Attendance</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="" href="lineup.html">
+                            <i class="fa fa-list"></i>
+                            <span>Line Up</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="" href="diesel.html">
+                            <i class="fa fa-building"></i>
+                            <span>Diesel</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="" href="diesel_category.html">
+                            <i class="fa fa-building"></i>
+                            <span>Oil</span>
+                        </a>
+                    </li>
+                    <li class="sub-menu">
+                        <a href="javascript:;" class="">
+                            <i class="fa fa-building"></i>
+                            <span>Purchase Order</span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
+                        </a>
+                        <ul class="sub">
+                            <li><a class="" href="purchase_order.html">Pending P.O.</a></li>
+                            <li><a class="" href="purchase_order_closed.html">Closed P.O.</a></li>
+                        </ul>
+                    </li>  
+                    <li class="sub-menu">
+                        <a href="javascript:;" class="">
+                            <i class="fa fa-building"></i>
+                            <span>Delivery Order</span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
+                        </a>
+                        <ul class="sub">
+                            <li><a class="" href="delivery_pending_order.html">Existing P.O. <span id="id_count_existing_po"></span></a></li>    
+                            <li><a class="" href="delivery_ongoing_order.html">Ongoing Delivery <span id="id_count_ongoing_order"></span></a></li>                          
+                            <li><a class="" href="delivery_delivered_order.html">Delivered Order</a></li>
+                            <li><a class="" href="delivery_backloaded_order.html">Backloaded Order</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu">
+                        <a href="javascript:;" class="">
+                            <i class="fa fa-building"></i>
+                            <span>Summary Report</span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
+                        </a>
+                        <ul class="sub">
+                            <li><a class="" href="summaryreport_deliveredorder.html">Delivered Order</a></li>
+                        </ul>
+                    </li>  
+                </ul>
+                <!-- sidebar menu end-->
+            </div>
+        </aside>
+        <!--sidebar end-->
+
+        <!--main content start-->
+        <section id="main-content">
+            <section class="wrapper">
+                 <!--overview start-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- <h3 class="page-header"><i class="fa fa-home"></i> History</h3> -->
+                        <ol class="breadcrumb">
+                            <li><i class="fa fa-home"></i><a href="attendance.html">Attendance</a></li>                          
+                            <li><i class="icon_document"></i>Attendance Update</li>                          
+                        </ol>
+                    </div>
+                </div>
+                <div class="row">
+                	<div class="col-md-offset-2 col-md-8">
+                        <section class="panel">
+                            <header class="panel-heading">
+                            	Update Form
+                            </header>
+                            <header class="panel-heading" id="id_option" style="text-align: center; font-weight: bold;"></header>
+                            <div class="panel-body">
+                                <div class="row">  
+                                    <div class="col-md-12">                                        
+                                        <form class="form-horizontal" role="form" id="form" onsubmit='if(confirm("Proceed?")){submitForm();}else{ event.preventDefault();}'>
+                                            <table class="table" id="id_table_view"></table>
+                                            <table class="table" id="employee_table">
+                                                <tr id="employee_row1"></tr>
+                                            </table>
+                                            <div class="row button_add">
+                                                <!-- <hr> -->
+                                                <div class="col-md-offset-3 col-md-6">
+                                                    <button type="button" onclick="add_new_employee();" class="btn btn-primary btn-block"><strong>Add</strong></button>                                                        
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <!-- <div class="form-group"> -->
+                                                        <div class="col-md-offset-7 col-md-5">
+                                                            <input type="submit" name="submit" id="submit" value="Update" class="btn btn-primary" style="font-weight: bold;">
+                                                            <button type="button" class="btn btn-default" onclick="window.location.href='attendance.html';"><strong>Cancel</strong></button>
+                                                        <!-- </div> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <footer class="panel-footer">
+                                <p class="help-block">Note: Leave blank if <strong>N/A</strong>.</p>
+                            </footer>
+                        </section>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </section>
+</body>
+</html>
