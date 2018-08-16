@@ -342,15 +342,30 @@
 
                                 myTableRow5 += "</td><td colspan='2'>";
                                 absentMotorpoolSnapshot.forEach(function(absentMotorpoolChildSnapshot){
-                                    myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentMotorpoolChildSnapshot.val().employee_name + " - " + absentMotorpoolChildSnapshot.val().employee_comment + "</div></div>";
+
+                                    if(absentMotorpoolChildSnapshot.val().employee_name != "N/A"){
+
+                                        myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentMotorpoolChildSnapshot.val().employee_name + " - " + absentMotorpoolChildSnapshot.val().employee_comment + "</div></div>";
+
+                                    }
                                 });
 
                                 absentPlantSnapshot.forEach(function(absentPlantChildSnapshot){
-                                    myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentPlantChildSnapshot.val().employee_name + " - " + absentPlantChildSnapshot.val().employee_comment + "</div></div>";
+
+                                    if(absentPlantChildSnapshot.val().employee_name != "N/A"){
+
+                                        myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentPlantChildSnapshot.val().employee_name + " - " + absentPlantChildSnapshot.val().employee_comment + "</div></div>";
+
+                                    }
                                 });
 
                                 absentTruckingSnapshot.forEach(function(absentTruckingChildSnapshot){
-                                    myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentTruckingChildSnapshot.val().employee_name + " - " + absentTruckingChildSnapshot.val().employee_comment + "</div></div>";
+
+                                    if(absentTruckingChildSnapshot.val().employee_name != "N/A"){
+
+                                        myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentTruckingChildSnapshot.val().employee_name + " - " + absentTruckingChildSnapshot.val().employee_comment + "</div></div>";
+
+                                    }
                                 });
 
                                 myTableRow5 += "</td></tr>";
@@ -557,15 +572,26 @@
 
                                         myTableRow12 += "</td><td colspan='2'>";
                                         absentMotorpoolSnapshot.forEach(function(absentMotorpoolChildSnapshot){
-                                            myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentMotorpoolChildSnapshot.val().employee_name + " - " + absentMotorpoolChildSnapshot.val().employee_comment + "</div></div>";
+
+                                            if(absentMotorpoolChildSnapshot.val().employee_name != "N/A"){
+                                                myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentMotorpoolChildSnapshot.val().employee_name + " - " + absentMotorpoolChildSnapshot.val().employee_comment + "</div></div>";
+
+                                            }
                                         });
 
                                         absentPlantSnapshot.forEach(function(absentPlantChildSnapshot){
-                                            myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentPlantChildSnapshot.val().employee_name + " - " + absentPlantChildSnapshot.val().employee_comment + "</div></div>";
+
+                                            if(absentPlantChildSnapshot.val().employee_name != "N/A"){
+                                                myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentPlantChildSnapshot.val().employee_name + " - " + absentPlantChildSnapshot.val().employee_comment + "</div></div>";
+                                            }
                                         });
 
                                         absentTruckingSnapshot.forEach(function(absentTruckingChildSnapshot){
-                                            myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentTruckingChildSnapshot.val().employee_name + " - " + absentTruckingChildSnapshot.val().employee_comment + "</div></div>";
+
+                                            if(absentTruckingChildSnapshot.val().employee_name != "N/A"){
+                                                myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentTruckingChildSnapshot.val().employee_name + " - " + absentTruckingChildSnapshot.val().employee_comment + "</div></div>";
+
+                                            }
                                         });
 
                                         myTableRow12 += "</td></tr>";
@@ -854,15 +880,30 @@
 
                                 myTableRow5 += "</td><td colspan='2'>";
                                 absentMotorpoolSnapshot.forEach(function(absentMotorpoolChildSnapshot){
-                                    myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentMotorpoolChildSnapshot.val().employee_name + " - " + absentMotorpoolChildSnapshot.val().employee_comment + "</div></div>";
+
+                                    if(absentMotorpoolChildSnapshot.val().employee_name != "N/A"){
+
+                                        myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentMotorpoolChildSnapshot.val().employee_name + " - " + absentMotorpoolChildSnapshot.val().employee_comment + "</div></div>";
+
+                                    }
                                 });
 
                                 absentPlantSnapshot.forEach(function(absentPlantChildSnapshot){
-                                    myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentPlantChildSnapshot.val().employee_name + " - " + absentPlantChildSnapshot.val().employee_comment + "</div></div>";
+
+                                    if(absentPlantChildSnapshot.val().employee_name != "N/A"){
+
+                                        myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentPlantChildSnapshot.val().employee_name + " - " + absentPlantChildSnapshot.val().employee_comment + "</div></div>";
+
+                                    }
                                 });
 
                                 absentTruckingSnapshot.forEach(function(absentTruckingChildSnapshot){
-                                    myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentTruckingChildSnapshot.val().employee_name + " - " + absentTruckingChildSnapshot.val().employee_comment + "</div></div>";
+
+                                    if(absentTruckingChildSnapshot.val().employee_name != "N/A"){
+
+                                        myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentTruckingChildSnapshot.val().employee_name + " - " + absentTruckingChildSnapshot.val().employee_comment + "</div></div>";
+
+                                    }
                                 });
 
                                 myTableRow5 += "</td></tr>";
@@ -1069,15 +1110,26 @@
 
                                         myTableRow12 += "</td><td colspan='2'>";
                                         absentMotorpoolSnapshot.forEach(function(absentMotorpoolChildSnapshot){
-                                            myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentMotorpoolChildSnapshot.val().employee_name + " - " + absentMotorpoolChildSnapshot.val().employee_comment + "</div></div>";
+
+                                            if(absentMotorpoolChildSnapshot.val().employee_name != "N/A"){
+                                                myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentMotorpoolChildSnapshot.val().employee_name + " - " + absentMotorpoolChildSnapshot.val().employee_comment + "</div></div>";
+
+                                            }
                                         });
 
                                         absentPlantSnapshot.forEach(function(absentPlantChildSnapshot){
-                                            myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentPlantChildSnapshot.val().employee_name + " - " + absentPlantChildSnapshot.val().employee_comment + "</div></div>";
+
+                                            if(absentPlantChildSnapshot.val().employee_name != "N/A"){
+                                                myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentPlantChildSnapshot.val().employee_name + " - " + absentPlantChildSnapshot.val().employee_comment + "</div></div>";
+                                            }
                                         });
 
                                         absentTruckingSnapshot.forEach(function(absentTruckingChildSnapshot){
-                                            myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentTruckingChildSnapshot.val().employee_name + " - " + absentTruckingChildSnapshot.val().employee_comment + "</div></div>";
+
+                                            if(absentTruckingChildSnapshot.val().employee_name != "N/A"){
+                                                myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentTruckingChildSnapshot.val().employee_name + " - " + absentTruckingChildSnapshot.val().employee_comment + "</div></div>";
+
+                                            }
                                         });
 
                                         myTableRow12 += "</td></tr>";

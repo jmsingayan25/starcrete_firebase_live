@@ -161,22 +161,22 @@
 
         document.getElementById('id_date_new_set').innerHTML = "<th colspan='4'>Result: NEW SET OF LINE UP</th>";
 
-        document.getElementById('link_machine1_update').innerHTML = "<a href='lineup_update.html?option=machine1&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_machine3_update').innerHTML = "<a href='lineup_update.html?option=machine3&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_forklift_update').innerHTML = "<a href='lineup_update.html?option=forklift_operator&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_mechanic_update').innerHTML = "<a href='lineup_update.html?option=mechanic&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_nonskid1_update').innerHTML = "<a href='lineup_update.html?option=nonskid1&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_nonskid2_update').innerHTML = "<a href='lineup_update.html?option=nonskid2&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_nonskid3_update').innerHTML = "<a href='lineup_update.html?option=nonskid3&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_nonskid4_update').innerHTML = "<a href='lineup_update.html?option=nonskid4&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_tagapukpok_update').innerHTML = "<a href='lineup_update.html?option=tagapukpok&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_checker_update').innerHTML = "<a href='lineup_update.html?option=checker&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_kamador_update').innerHTML = "<a href='lineup_update.html?option=kamador&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_loader_update').innerHTML = "<a href='lineup_update.html?option=loader&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_others_update').innerHTML = "<a href='lineup_update.html?option=others&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_absent_update').innerHTML = "<a href='lineup_update.html?option=absent&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_comment_update').innerHTML = "<a href='lineup_update.html?option=comment&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_trucking_update').innerHTML = "<a href='lineup_update.html?option=trucking&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_machine1_update').innerHTML = "<a href='lineup_update2.html?option=machine1&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_machine3_update').innerHTML = "<a href='lineup_update2.html?option=machine3&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_forklift_update').innerHTML = "<a href='lineup_update2.html?option=forklift_operator&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_mechanic_update').innerHTML = "<a href='lineup_update2.html?option=mechanic&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_nonskid1_update').innerHTML = "<a href='lineup_update2.html?option=nonskid1&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_nonskid2_update').innerHTML = "<a href='lineup_update2.html?option=nonskid2&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_nonskid3_update').innerHTML = "<a href='lineup_update2.html?option=nonskid3&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_nonskid4_update').innerHTML = "<a href='lineup_update2.html?option=nonskid4&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_tagapukpok_update').innerHTML = "<a href='lineup_update2.html?option=tagapukpok&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_checker_update').innerHTML = "<a href='lineup_update2.html?option=checker&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_kamador_update').innerHTML = "<a href='lineup_update2.html?option=kamador&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_loader_update').innerHTML = "<a href='lineup_update2.html?option=loader&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_others_update').innerHTML = "<a href='lineup_update2.html?option=others&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_absent_update').innerHTML = "<a href='lineup_update2.html?option=absent&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_comment_update').innerHTML = "<a href='lineup_update2.html?option=comment&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_trucking_update').innerHTML = "<a href='lineup_update2.html?option=trucking&date=" + passcurrentDate + "'>Update</a>";
 
         firebase.database().ref('attendance/'+plant+'/'+currentDate).once('value', function(tableContentSnapshot){
 
@@ -349,15 +349,27 @@
 
                                 myTableRow5 += "</td><td colspan='2'>";
                                 absentMotorpoolSnapshot.forEach(function(absentMotorpoolChildSnapshot){
-                                    myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentMotorpoolChildSnapshot.val().employee_name + " - " + absentMotorpoolChildSnapshot.val().employee_comment + "</div></div>";
+
+                                    if(absentMotorpoolChildSnapshot.val().employee_name != "N/A"){
+                                        myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentMotorpoolChildSnapshot.val().employee_name + " - " + absentMotorpoolChildSnapshot.val().employee_comment + "</div></div>";
+                                    }
+                                    
                                 });
 
                                 absentPlantSnapshot.forEach(function(absentPlantChildSnapshot){
-                                    myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentPlantChildSnapshot.val().employee_name + " - " + absentPlantChildSnapshot.val().employee_comment + "</div></div>";
+
+                                    if(absentPlantChildSnapshot.val().employee_name != "N/A"){
+                                        myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentPlantChildSnapshot.val().employee_name + " - " + absentPlantChildSnapshot.val().employee_comment + "</div></div>";
+                                    }
+                                    
                                 });
 
                                 absentTruckingSnapshot.forEach(function(absentTruckingChildSnapshot){
-                                    myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentTruckingChildSnapshot.val().employee_name + " - " + absentTruckingChildSnapshot.val().employee_comment + "</div></div>";
+
+                                    if(absentTruckingChildSnapshot.val().employee_name != "N/A"){
+                                        myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentTruckingChildSnapshot.val().employee_name + " - " + absentTruckingChildSnapshot.val().employee_comment + "</div></div>";
+                                    }
+                                    
                                 });
 
                                 myTableRow5 += "</td></tr>";
@@ -398,22 +410,22 @@
                         $(".new_set_table").show();
                         $(".new_set_class").hide();
 
-                        document.getElementById('link_machine1_new_update').innerHTML = "<a href='lineup_update.html?option=new_machine1&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_machine3_new_update').innerHTML = "<a href='lineup_update.html?option=new_machine3&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_forklift_new_update').innerHTML = "<a href='lineup_update.html?option=new_forklift_operator&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_mechanic_new_update').innerHTML = "<a href='lineup_update.html?option=new_mechanic&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_nonskid1_new_update').innerHTML = "<a href='lineup_update.html?option=new_nonskid1&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_nonskid2_new_update').innerHTML = "<a href='lineup_update.html?option=new_nonskid2&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_nonskid3_new_update').innerHTML = "<a href='lineup_update.html?option=new_nonskid3&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_nonskid4_new_update').innerHTML = "<a href='lineup_update.html?option=new_nonskid4&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_tagapukpok_new_update').innerHTML = "<a href='lineup_update.html?option=new_tagapukpok&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_checker_new_update').innerHTML = "<a href='lineup_update.html?option=new_checker&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_kamador_new_update').innerHTML = "<a href='lineup_update.html?option=new_kamador&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_loader_new_update').innerHTML = "<a href='lineup_update.html?option=new_loader&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_others_new_update').innerHTML = "<a href='lineup_update.html?option=new_others&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_absent_new_update').innerHTML = "<a href='lineup_update.html?option=new_absent&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_comment_new_update').innerHTML = "<a href='lineup_update.html?option=new_comment&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_trucking_new_update').innerHTML = "<a href='lineup_update.html?option=new_trucking&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_machine1_new_update').innerHTML = "<a href='lineup_update2.html?option=new_machine1&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_machine3_new_update').innerHTML = "<a href='lineup_update2.html?option=new_machine3&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_forklift_new_update').innerHTML = "<a href='lineup_update2.html?option=new_forklift_operator&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_mechanic_new_update').innerHTML = "<a href='lineup_update2.html?option=new_mechanic&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_nonskid1_new_update').innerHTML = "<a href='lineup_update2.html?option=new_nonskid1&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_nonskid2_new_update').innerHTML = "<a href='lineup_update2.html?option=new_nonskid2&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_nonskid3_new_update').innerHTML = "<a href='lineup_update2.html?option=new_nonskid3&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_nonskid4_new_update').innerHTML = "<a href='lineup_update2.html?option=new_nonskid4&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_tagapukpok_new_update').innerHTML = "<a href='lineup_update2.html?option=new_tagapukpok&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_checker_new_update').innerHTML = "<a href='lineup_update2.html?option=new_checker&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_kamador_new_update').innerHTML = "<a href='lineup_update2.html?option=new_kamador&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_loader_new_update').innerHTML = "<a href='lineup_update2.html?option=new_loader&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_others_new_update').innerHTML = "<a href='lineup_update2.html?option=new_others&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_absent_new_update').innerHTML = "<a href='lineup_update2.html?option=new_absent&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_comment_new_update').innerHTML = "<a href='lineup_update2.html?option=new_comment&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_trucking_new_update').innerHTML = "<a href='lineup_update2.html?option=new_trucking&date=" + passcurrentDate + "'>Update</a>";
 
                         firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/machine1').once('value', function(machine1Snapshot){
                             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/machine3').once('value', function(machine3Snapshot){
@@ -575,15 +587,24 @@
 
                                         myTableRow12 += "</td><td colspan='2'>";
                                         absentMotorpoolSnapshot.forEach(function(absentMotorpoolChildSnapshot){
-                                            myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentMotorpoolChildSnapshot.val().employee_name + " - " + absentMotorpoolChildSnapshot.val().employee_comment + "</div></div>";
+
+                                            if(absentMotorpoolChildSnapshot.val().employee_name != "N/A"){
+                                                myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentMotorpoolChildSnapshot.val().employee_name + " - " + absentMotorpoolChildSnapshot.val().employee_comment + "</div></div>";
+                                            }
                                         });
 
                                         absentPlantSnapshot.forEach(function(absentPlantChildSnapshot){
-                                            myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentPlantChildSnapshot.val().employee_name + " - " + absentPlantChildSnapshot.val().employee_comment + "</div></div>";
+
+                                            if(absentPlantChildSnapshot.val().employee_name != "N/A"){
+                                                myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentPlantChildSnapshot.val().employee_name + " - " + absentPlantChildSnapshot.val().employee_comment + "</div></div>";
+                                            }
                                         });
 
                                         absentTruckingSnapshot.forEach(function(absentTruckingChildSnapshot){
-                                            myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentTruckingChildSnapshot.val().employee_name + " - " + absentTruckingChildSnapshot.val().employee_comment + "</div></div>";
+
+                                            if(absentTruckingChildSnapshot.val().employee_name != "N/A"){
+                                                myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentTruckingChildSnapshot.val().employee_name + " - " + absentTruckingChildSnapshot.val().employee_comment + "</div></div>";
+                                            }
                                         });
 
                                         myTableRow12 += "</td></tr>";
@@ -684,22 +705,22 @@
 
         document.getElementById('id_date_new_set').innerHTML = "<th colspan='4'>Result: NEW SET OF LINE UP</th>";
 
-        document.getElementById('link_machine1_update').innerHTML = "<a href='lineup_update.html?option=machine1&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_machine3_update').innerHTML = "<a href='lineup_update.html?option=machine3&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_forklift_update').innerHTML = "<a href='lineup_update.html?option=forklift_operator&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_mechanic_update').innerHTML = "<a href='lineup_update.html?option=mechanic&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_nonskid1_update').innerHTML = "<a href='lineup_update.html?option=nonskid1&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_nonskid2_update').innerHTML = "<a href='lineup_update.html?option=nonskid2&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_nonskid3_update').innerHTML = "<a href='lineup_update.html?option=nonskid3&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_nonskid4_update').innerHTML = "<a href='lineup_update.html?option=nonskid4&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_tagapukpok_update').innerHTML = "<a href='lineup_update.html?option=tagapukpok&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_checker_update').innerHTML = "<a href='lineup_update.html?option=checker&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_kamador_update').innerHTML = "<a href='lineup_update.html?option=kamador&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_loader_update').innerHTML = "<a href='lineup_update.html?option=loader&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_others_update').innerHTML = "<a href='lineup_update.html?option=others&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_absent_update').innerHTML = "<a href='lineup_update.html?option=absent&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_comment_update').innerHTML = "<a href='lineup_update.html?option=comment&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_trucking_update').innerHTML = "<a href='lineup_update.html?option=trucking&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_machine1_update').innerHTML = "<a href='lineup_update2.html?option=machine1&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_machine3_update').innerHTML = "<a href='lineup_update2.html?option=machine3&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_forklift_update').innerHTML = "<a href='lineup_update2.html?option=forklift_operator&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_mechanic_update').innerHTML = "<a href='lineup_update2.html?option=mechanic&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_nonskid1_update').innerHTML = "<a href='lineup_update2.html?option=nonskid1&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_nonskid2_update').innerHTML = "<a href='lineup_update2.html?option=nonskid2&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_nonskid3_update').innerHTML = "<a href='lineup_update2.html?option=nonskid3&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_nonskid4_update').innerHTML = "<a href='lineup_update2.html?option=nonskid4&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_tagapukpok_update').innerHTML = "<a href='lineup_update2.html?option=tagapukpok&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_checker_update').innerHTML = "<a href='lineup_update2.html?option=checker&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_kamador_update').innerHTML = "<a href='lineup_update2.html?option=kamador&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_loader_update').innerHTML = "<a href='lineup_update2.html?option=loader&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_others_update').innerHTML = "<a href='lineup_update2.html?option=others&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_absent_update').innerHTML = "<a href='lineup_update2.html?option=absent&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_comment_update').innerHTML = "<a href='lineup_update2.html?option=comment&date=" + passcurrentDate + "'>Update</a>";
+        document.getElementById('link_trucking_update').innerHTML = "<a href='lineup_update2.html?option=trucking&date=" + passcurrentDate + "'>Update</a>";
 
         firebase.database().ref('attendance/'+plant+'/'+currentDate).once('value', function(tableContentSnapshot){
 
@@ -872,15 +893,27 @@
 
                                 myTableRow5 += "</td><td colspan='2'>";
                                 absentMotorpoolSnapshot.forEach(function(absentMotorpoolChildSnapshot){
-                                    myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentMotorpoolChildSnapshot.val().employee_name + " - " + absentMotorpoolChildSnapshot.val().employee_comment + "</div></div>";
+
+                                    if(absentMotorpoolChildSnapshot.val().employee_name != "N/A"){
+                                        myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentMotorpoolChildSnapshot.val().employee_name + " - " + absentMotorpoolChildSnapshot.val().employee_comment + "</div></div>";
+                                    }
+                                    
                                 });
 
                                 absentPlantSnapshot.forEach(function(absentPlantChildSnapshot){
-                                    myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentPlantChildSnapshot.val().employee_name + " - " + absentPlantChildSnapshot.val().employee_comment + "</div></div>";
+
+                                    if(absentPlantChildSnapshot.val().employee_name != "N/A"){
+                                        myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentPlantChildSnapshot.val().employee_name + " - " + absentPlantChildSnapshot.val().employee_comment + "</div></div>";
+                                    }
+                                    
                                 });
 
                                 absentTruckingSnapshot.forEach(function(absentTruckingChildSnapshot){
-                                    myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentTruckingChildSnapshot.val().employee_name + " - " + absentTruckingChildSnapshot.val().employee_comment + "</div></div>";
+
+                                    if(absentTruckingChildSnapshot.val().employee_name != "N/A"){
+                                        myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentTruckingChildSnapshot.val().employee_name + " - " + absentTruckingChildSnapshot.val().employee_comment + "</div></div>";
+                                    }
+                                    
                                 });
 
                                 myTableRow5 += "</td></tr>";
@@ -921,22 +954,22 @@
                         $(".new_set_table").show();
                         $(".new_set_class").hide();
 
-                        document.getElementById('link_machine1_new_update').innerHTML = "<a href='lineup_update.html?option=new_machine1&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_machine3_new_update').innerHTML = "<a href='lineup_update.html?option=new_machine3&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_forklift_new_update').innerHTML = "<a href='lineup_update.html?option=new_forklift_operator&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_mechanic_new_update').innerHTML = "<a href='lineup_update.html?option=new_mechanic&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_nonskid1_new_update').innerHTML = "<a href='lineup_update.html?option=new_nonskid1&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_nonskid2_new_update').innerHTML = "<a href='lineup_update.html?option=new_nonskid2&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_nonskid3_new_update').innerHTML = "<a href='lineup_update.html?option=new_nonskid3&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_nonskid4_new_update').innerHTML = "<a href='lineup_update.html?option=new_nonskid4&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_tagapukpok_new_update').innerHTML = "<a href='lineup_update.html?option=new_tagapukpok&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_checker_new_update').innerHTML = "<a href='lineup_update.html?option=new_checker&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_kamador_new_update').innerHTML = "<a href='lineup_update.html?option=new_kamador&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_loader_new_update').innerHTML = "<a href='lineup_update.html?option=new_loader&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_others_new_update').innerHTML = "<a href='lineup_update.html?option=new_others&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_absent_new_update').innerHTML = "<a href='lineup_update.html?option=new_absent&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_comment_new_update').innerHTML = "<a href='lineup_update.html?option=new_comment&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_trucking_new_update').innerHTML = "<a href='lineup_update.html?option=new_trucking&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_machine1_new_update').innerHTML = "<a href='lineup_update2.html?option=new_machine1&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_machine3_new_update').innerHTML = "<a href='lineup_update2.html?option=new_machine3&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_forklift_new_update').innerHTML = "<a href='lineup_update2.html?option=new_forklift_operator&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_mechanic_new_update').innerHTML = "<a href='lineup_update2.html?option=new_mechanic&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_nonskid1_new_update').innerHTML = "<a href='lineup_update2.html?option=new_nonskid1&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_nonskid2_new_update').innerHTML = "<a href='lineup_update2.html?option=new_nonskid2&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_nonskid3_new_update').innerHTML = "<a href='lineup_update2.html?option=new_nonskid3&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_nonskid4_new_update').innerHTML = "<a href='lineup_update2.html?option=new_nonskid4&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_tagapukpok_new_update').innerHTML = "<a href='lineup_update2.html?option=new_tagapukpok&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_checker_new_update').innerHTML = "<a href='lineup_update2.html?option=new_checker&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_kamador_new_update').innerHTML = "<a href='lineup_update2.html?option=new_kamador&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_loader_new_update').innerHTML = "<a href='lineup_update2.html?option=new_loader&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_others_new_update').innerHTML = "<a href='lineup_update2.html?option=new_others&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_absent_new_update').innerHTML = "<a href='lineup_update2.html?option=new_absent&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_comment_new_update').innerHTML = "<a href='lineup_update2.html?option=new_comment&date=" + passcurrentDate + "'>Update</a>";
+                        document.getElementById('link_trucking_new_update').innerHTML = "<a href='lineup_update2.html?option=new_trucking&date=" + passcurrentDate + "'>Update</a>";
 
                         firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/machine1').once('value', function(machine1Snapshot){
                             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/machine3').once('value', function(machine3Snapshot){
@@ -1100,15 +1133,24 @@
 
                                         myTableRow12 += "</td><td colspan='2'>";
                                         absentMotorpoolSnapshot.forEach(function(absentMotorpoolChildSnapshot){
-                                            myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentMotorpoolChildSnapshot.val().employee_name + " - " + absentMotorpoolChildSnapshot.val().employee_comment + "</div></div>";
+
+                                            if(absentMotorpoolChildSnapshot.val().employee_name != "N/A"){
+                                                myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentMotorpoolChildSnapshot.val().employee_name + " - " + absentMotorpoolChildSnapshot.val().employee_comment + "</div></div>";
+                                            }
                                         });
 
                                         absentPlantSnapshot.forEach(function(absentPlantChildSnapshot){
-                                            myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentPlantChildSnapshot.val().employee_name + " - " + absentPlantChildSnapshot.val().employee_comment + "</div></div>";
+
+                                            if(absentPlantChildSnapshot.val().employee_name != "N/A"){
+                                                myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentPlantChildSnapshot.val().employee_name + " - " + absentPlantChildSnapshot.val().employee_comment + "</div></div>";
+                                            }
                                         });
 
                                         absentTruckingSnapshot.forEach(function(absentTruckingChildSnapshot){
-                                            myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentTruckingChildSnapshot.val().employee_name + " - " + absentTruckingChildSnapshot.val().employee_comment + "</div></div>";
+
+                                            if(absentTruckingChildSnapshot.val().employee_name != "N/A"){
+                                                myTableRow12 += "<div class='row'><div class='col-md-12'>" + absentTruckingChildSnapshot.val().employee_name + " - " + absentTruckingChildSnapshot.val().employee_comment + "</div></div>";
+                                            }
                                         });
 
                                         myTableRow12 += "</td></tr>";
