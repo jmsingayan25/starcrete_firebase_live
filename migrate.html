@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title>Clients</title>
+
+    <!-- Firebase App is always required and must be first -->
+	<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script>
+
+	<!-- Add additional services you want to use -->
+	<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>
+	<script src="js_config/firebase_config.js"></script>
+
+	<!-- Bootstrap CSS -->    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- owl carousel -->
+    <link rel="stylesheet" href="css/owl.carousel.css" type="text/css">
+    <link href="css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="css/fullcalendar.css">
+    <link href="css/widgets.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet" />
+    <link href="css/xcharts.min.css" rel=" stylesheet">	
+    <link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+
+    <!-- javascripts -->
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery-ui-1.10.4.min.js"></script>
+    <script src="js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.9.2.custom.min.js"></script>
+    <!-- bootstrap -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- nice scroll -->
+    <script src="js/jquery.scrollTo.min.js"></script>
+    <script src="js/jquery.nicescroll.js" type="text/javascript"></script>
+    <!-- charts scripts -->
+    <script src="assets/jquery-knob/js/jquery.knob.js"></script>
+    <script src="js/jquery.sparkline.js" type="text/javascript"></script>
+    <script src="assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
+    <script src="js/owl.carousel.js" ></script>
+    <!-- jQuery full calendar -->
+    <script src="js/fullcalendar.min.js"></script> <!-- Full Google Calendar - Calendar -->
+    <script src="assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
+    <!--script for this page only-->
+    <script src="js/calendar-custom.js"></script>
+    <script src="js/jquery.rateit.min.js"></script>
+    <!-- custom select -->
+    <script src="js/jquery.customSelect.min.js" ></script>
+    <script src="assets/chart-master/Chart.js"></script>
+
+    <!--custome script for all page-->
+    <script src="js/scripts.js"></script>
+    <!-- custom script for this page-->
+    <script src="js/sparkline-chart.js"></script>
+    <script src="js/easy-pie-chart.js"></script>
+    <script src="js/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="js/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="js/xcharts.min.js"></script>
+    <script src="js/jquery.autosize.min.js"></script>
+    <script src="js/jquery.placeholder.min.js"></script>
+    <script src="js/gdp-data.js"></script>  
+    <script src="js/morris.min.js"></script>
+    <script src="js/sparklines.js"></script>    
+    <script src="js/charts.js"></script>
+    <script src="js/jquery.slimscroll.min.js"></script>
+    <script src="js_config/function.js"></script>
+
+<script>
+	
+	plant = "Bravo";
+
+	$(document).ready(function(){
+
+		firebase.database().ref('lineup/'+plant).once('value', function(lineupSnapshot){
+			lineupSnapshot.forEach(function(lineupChildSnapshot){
+				if(lineupChildSnapshot.key == "August 6, 2018"){
+
+					var scheduleData = {
+						schedule: "N/A"
+					}
+
+					firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key).set(scheduleData);
+
+					var guardData = {
+						agency_name: "N/A"
+					}
+
+					firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/guard').set(guardData);
+
+					var guardDayData = {
+						guard_name: "N/A",
+						guard_position: "N/A"
+					}
+
+					firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/guard/dayshift').push(guardDayData);
+
+					var guardNightData = {
+						guard_name: "N/A",
+						guard_position: "N/A"
+					}
+
+					firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/guard/nightshift').push(guardNightData);
+
+					var newEmployeeData = {
+						employee_name: "N/A"
+					}
+
+					firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/new_employee').push(newEmployeeData);
+
+					var officeData = {
+						employee_name: "N/A",
+						employee_timein: "N/A",
+						employee_timeout: "N/A"
+					}
+
+					firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/office').push(officeData);
+
+
+
+					lineupChildSnapshot.forEach(function(lineupChildChildSnapshot){
+
+						if(lineupChildChildSnapshot.key == "absent"){
+
+							var noData = {
+								employee_comment: "N/A", 
+								employee_name: "N/A"
+							}
+
+							firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key+'/plant').push(noData);
+
+							firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key+'/trucking').push(noData);	
+
+							lineupChildChildSnapshot.forEach(function(absentSnapshot){
+								console.log(absentSnapshot.key, absentSnapshot.val());
+
+								var absentData = {
+									employee_comment: absentSnapshot.val().reason.toUpperCase(),
+									employee_name: absentSnapshot.val().employee_name.toUpperCase()
+
+								}
+
+								firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key+'/motorpool').push(absentData);				
+							});
+						}
+
+						if(lineupChildChildSnapshot.key == "checker"){
+
+							lineupChildChildSnapshot.forEach(function(checkerSnapshot){
+
+								var checkerData = {
+									employee_name: checkerSnapshot.val().employee_name.toUpperCase(),
+									employee_position: checkerSnapshot.val().employee_position.toUpperCase()
+								}
+
+								firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key).push(checkerData);
+							});
+						}
+
+						if(lineupChildChildSnapshot.key == "comment_headoffice"){
+
+								var commentData = {
+									comment_attendance_headoffice: "N/A",
+									comment_attendance_plant: "N/A",
+									comment_lineup_headoffice: lineupChildChildSnapshot.val().comment.toUpperCase(),
+									comment_lineup_plant: lineupChildSnapshot.val().comment.toUpperCase()
+								}
+
+								firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/comment').push(commentData);
+						}
+
+						if(lineupChildChildSnapshot.key == "forklift_operator"){
+
+							firebase.database().ref('forklift_list/'+plant).once('value', function(forkliftSnapshot){
+								forkliftSnapshot.forEach(function(forkliftChildSnapshot){
+
+									var forkliftData = {
+										comment: "N/A",
+										forklift_no: forkliftChildSnapshot.val().item,
+										operator: "N/A"
+									}
+
+									firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key).push(forkliftData);
+								});
+							});
+						}
+
+						if(lineupChildChildSnapshot.key == "kamador"){
+
+							lineupChildChildSnapshot.forEach(function(kamadorSnapshot){
+
+								var kamadorData = {
+									employee_name: kamadorSnapshot.val().employee_name.toUpperCase()
+								}
+
+								firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key).push(kamadorData);
+							});
+						}
+
+						if(lineupChildChildSnapshot.key == "loader"){
+
+							lineupChildChildSnapshot.forEach(function(loaderSnapshot){
+
+								var loaderData = {
+									employee_name: loaderSnapshot.val().employee_name.toUpperCase()
+								}
+
+								firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key).push(loaderData);
+							});
+						}
+
+						if(lineupChildChildSnapshot.key == "machine1"){
+
+							lineupChildChildSnapshot.forEach(function(machine1Snapshot){
+
+								var machine1Data = {
+									employee_name: machine1Snapshot.val().employee_name.toUpperCase(),
+									employee_position: "N/A"
+								}
+
+								firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key).push(machine1Data);
+
+							});
+						}
+
+						if(lineupChildChildSnapshot.key == "machine3"){
+
+							lineupChildChildSnapshot.forEach(function(machine3Snapshot){
+
+								var machine3Data = {
+									employee_name: machine3Snapshot.val().employee_name.toUpperCase(),
+									employee_position: "N/A"
+								}
+
+								firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key).push(machine3Data);
+
+							});
+						}
+
+						if(lineupChildChildSnapshot.key == "mechanic"){
+
+							lineupChildChildSnapshot.forEach(function(mechanicSnapshot){
+
+								var mechanicData = {
+									employee_name: mechanicSnapshot.val().employee_name.toUpperCase()
+								}
+
+								firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key).push(mechanicData);
+							});
+						}
+
+						if(lineupChildChildSnapshot.key == "nonskid1"){
+
+							lineupChildChildSnapshot.forEach(function(nonskid1Snapshot){
+
+								var nonskid1Data = {
+									employee_name: nonskid1Snapshot.val().employee_name
+								}
+
+								firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key+'/employee').push(nonskid1Data);
+							});
+
+							var helperData = {
+								helper_name: "N/A"
+							}
+
+							firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key+'/helper').push(helperData);
+						}
+
+						if(lineupChildChildSnapshot.key == "nonskid2"){
+
+							lineupChildChildSnapshot.forEach(function(nonskid2Snapshot){
+
+								var nonskid2Data = {
+									employee_name: nonskid2Snapshot.val().employee_name
+								}
+
+								firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key+'/employee').push(nonskid2Data);
+							});
+
+							var helperData = {
+								helper_name: "N/A"
+							}
+
+							firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key+'/helper').push(helperData);
+						}
+
+						if(lineupChildChildSnapshot.key == "nonskid3"){
+
+							lineupChildChildSnapshot.forEach(function(nonskid3Snapshot){
+
+								var nonskid3Data = {
+									employee_name: nonskid3Snapshot.val().employee_name
+								}
+
+								firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key+'/employee').push(nonskid3Data);
+							});
+
+							var helperData = {
+								helper_name: "N/A"
+							}
+
+							firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key+'/helper').push(helperData);
+						}
+
+						if(lineupChildChildSnapshot.key == "nonskid4"){
+
+							lineupChildChildSnapshot.forEach(function(nonskid4Snapshot){
+
+								var nonskid4Data = {
+									employee_name: nonskid4Snapshot.val().employee_name
+								}
+
+								firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key+'/employee').push(nonskid4Data);
+							});
+
+							var helperData = {
+								helper_name: "N/A"
+							}
+
+							firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key+'/helper').push(helperData);
+						}
+
+						if(lineupChildChildSnapshot.key == "others"){
+
+							lineupChildChildSnapshot.forEach(function(othersSnapshot){
+
+								var othersData = {
+									employee_name: othersSnapshot.val().employee_name.toUpperCase(),
+									employee_position: othersSnapshot.val().employee_position || "N/A"
+								}
+
+								firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key).push(othersData);
+
+							});
+						}
+
+						if(lineupChildChildSnapshot.key == "tagapukpok"){
+
+							lineupChildChildSnapshot.forEach(function(tagapukpokSnapshot){
+
+								var tagapukpokData = {
+									employee_name: tagapukpokSnapshot.val().employee_name,
+									employee_position: tagapukpokSnapshot.val().employee_position
+								}
+
+								firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key).push(tagapukpokData);
+
+							});
+						}
+
+						if(lineupChildChildSnapshot.key == "trucking"){
+
+							lineupChildChildSnapshot.forEach(function(truckingSnapshot){
+
+								var truckingData = {
+									comment: truckingSnapshot.val().comment,
+									driver: truckingSnapshot.val().driver,
+									pahinante1: truckingSnapshot.val().pahinante1,
+									pahinante2: truckingSnapshot.val().pahinante2,
+									truck_no: truckingSnapshot.val().truck_no
+								}
+
+								firebase.database().ref('attendance/'+plant+'/'+lineupChildSnapshot.key+'/'+lineupChildChildSnapshot.key).push(truckingData);
+							});
+						}
+
+					});
+				}
+			});
+		});
+	});
+
+</script>
+</head>
+<body>
+
+</body>
+</html>
