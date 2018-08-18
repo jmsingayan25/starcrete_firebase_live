@@ -121,7 +121,7 @@
 
     	if(option == "comment_headoffice"){
 
-    		firebase.database().ref('lineup/'+plant+'/'+currentDate+'/comment_headoffice').once('value', function(commentSnapshot){
+    		firebase.database().ref('attendance/'+plant+'/'+currentDate+'/comment_headoffice').once('value', function(commentSnapshot){
 
 	    		if(commentSnapshot.val() != null){
 
@@ -139,7 +139,7 @@
 
     	}else if(option == "new_comment_headoffice"){
 
-    		firebase.database().ref('lineup/'+plant+'/'+currentDate+'/new/comment_headoffice').once('value', function(commentSnapshot){
+    		firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/comment_headoffice').once('value', function(commentSnapshot){
 
     			if(commentSnapshot.val() != null){
 
@@ -168,14 +168,14 @@
 
     	if(option == "comment_headoffice"){
 
-    		if(firebase.database().ref('lineup/'+plant+'/'+currentDate+'/comment_headoffice').set(commentData)){
+    		if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/comment_headoffice').set(commentData)){
     			alert("Date update successfully");
     			window.location.href = "lineup.html?plant="+plant;
     		}
 
     	}else if(option == "new_comment_headoffice"){
 
-    		if(firebase.database().ref('lineup/'+plant+'/'+currentDate+'/new/comment_headoffice').set(commentData)){
+    		if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/comment_headoffice').set(commentData)){
     			alert("Date update successfully");
     			window.location.href = "lineup.html?plant="+plant;
     		}

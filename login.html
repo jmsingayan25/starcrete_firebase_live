@@ -47,82 +47,10 @@
 
 <script>
 
-	// $(document).ready(function(){
+	$(document).ready(function(){
 
-	// 	var remember = $.cookie('remember');
- //        if (remember == 'true') 
- //        {
- //            var email = $.cookie('loginEmail');
- //            var password = $.cookie('loginPassword');
- //            // autofill the fields
- //            $('#loginEmail').val(email);
- //            $('#loginPassword').val(password);
-
- //        }
-	// });
-	
-	function createUser(){
-
-		if(firebase.auth().currentUser){
-
-			firebase.auth().signOut();
-
-		}else{
-
-			var email = document.getElementById('signupEmail').value;
-			var password = document.getElementById('signupPassword').value;
-			var firstname = document.getElementById('signupFirstName').value;
-			var lastname = document.getElementById('signupLastName').value;
-			var office = document.querySelector('input[name="optradio"]:checked').value;
-			var $this = $('#signup-submit');
-			$this.button('loading');
-
-			// console.log(email, password, firstname, lastname, office);
-			// alert(email+" "+password);
-			firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
-
-				firebase.auth().onAuthStateChanged(function(user){
-
-					var uid = user.uid;
-					var uemail = user.email;
-
-					var userInfo = {
-						firstname: firstname,
-						lastname: lastname,
-						email: uemail,
-						position: " ",
-						office: office
-					}
-
-					// console.log(uid, userInfo, "users/"+uid);
-					// firebase.database().ref("users/"+uid).set(userInfo);
-					if(firebase.database().ref("users/"+uid).set(userInfo)){
-						alert("User successfully added..");
-						window.location.href = 'login.html';
-					}
-
-					// firebase.auth().signOut().then(function() {
-			  //           window.location.href = 'login.html';
-			  //       });
-				});
-			}).catch(function(error) {
-				// Handle Errors here.
-				var errorCode = error.code;
-				var errorMessage = error.message;
-				// [START_EXCLUDE]
-				if (errorCode === 'auth/wrong-password') {
-					alert('Wrong password.');
-				} else {
-					alert(errorMessage);
-				}
-				console.log(error);
-			});
-		}
-	}
-
-	function initState(){
-
-		firebase.auth().onAuthStateChanged(function(user) {
+		// firebase.auth().onAuthStateChanged(function(user) {
+			var user = firebase.auth().currentUser;
 			if (user != null) {
 
 				var uid = user.uid;
@@ -141,7 +69,83 @@
 				},(error) => {
 					console.log(error);
 				});
+			}else{
+
+				document.getElementById('login-submit').addEventListener('click', signIn, false);
+				document.getElementById('signup-submit').addEventListener('click', createUser, false);
+
+				var input_pass = document.getElementById('loginPassword');
+				var signup_pass = document.getElementById('signupPassword');
+
+				input_pass.addEventListener('keyup', function(event){
+					event.preventDefault();
+					if(event.keyCode === 13){
+						signIn();
+					}
+				});
+
+				signup_pass.addEventListener('keyup', function(event){
+					event.preventDefault();
+					if(event.keyCode === 13){
+						createUser();
+					}
+				});
 			}
+		// });
+	});
+
+	function createUser(){
+
+		event.preventDefault();
+
+		var email = document.getElementById('signupEmail').value;
+		var password = document.getElementById('signupPassword').value;
+		var firstname = document.getElementById('signupFirstName').value;
+		var lastname = document.getElementById('signupLastName').value;
+		var office = document.querySelector('input[name="optradio"]:checked').value;
+		var $this = $('#signup-submit');
+		$this.button('loading');
+
+		firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
+
+			// firebase.auth().onAuthStateChanged(function(user){
+
+			var user = firebase.auth().currentUser;
+			var userid = user.uid;
+			var uemail = user.email;
+
+			var userInfo = {
+				firstname: firstname,
+				lastname: lastname,
+				email: uemail,
+				position: " ",
+				office: office
+			}
+
+			// console.log(userInfo);
+
+			if(firebase.database().ref("users/"+userid).set(userInfo)){
+				alert("User successfully added..");
+				$this.button('reset');
+				$('#signupEmail, #signupPassword, #signupFirstName, #signupLastName').val('');
+				$('.optradio').attr('value','Head Office');
+			}
+			// location.reload();		
+
+				
+			// });
+		}).catch(function(error) {
+			// Handle Errors here.
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			// [START_EXCLUDE]
+			if (errorCode === 'auth/wrong-password') {
+				alert('Wrong password.');
+			} else {
+				alert(errorMessage);
+			}
+			console.log(error);
+			$this.button('reset');
 		});
 	}
 
@@ -157,41 +161,7 @@
 			firebase.auth().onAuthStateChanged(function(user) {
 				if (user != null) {
 
-					// if ($('#remember').is(':checked')) {
-			  //           var email_cookie = $('#loginEmail').val();
-			  //           var password_cookie = $('#loginPassword').val();
-
-			  //           // set cookies to expire in 14 days
-			  //           $.cookie('loginEmail', email_cookie, { expires: 14 });
-			  //           $.cookie('loginPassword', password_cookie, { expires: 14 });
-			  //           $.cookie('remember', true, { expires: 14 });                
-			  //       }
-			  //       else
-			  //       {
-			  //           // reset cookies
-			  //           $.cookie('loginEmail', null);
-			  //           $.cookie('loginPassword', null);
-			  //           $.cookie('remember', null);
-			  //       }
-					// User is signed in.
-					// user.providerData.forEach(function (profile) {
-					// 	console.log("Sign-in provider: " + profile.providerId);
-					// 	console.log("  Provider-specific UID: " + profile.uid);
-					// 	console.log("  Name: " + profile.displayName);
-					// 	console.log("  Email: " + profile.email);
-					// 	console.log("  Photo URL: " + profile.photoURL);
-					// });
-
-					// var displayName = user.displayName || "";
-					// var email = user.email;
-					// var emailVerified = user.emailVerified;
-					// var photoURL = user.photoURL;
-					// var isAnonymous = user.isAnonymous;
 					var uid = user.uid;
-					// var providerData = user.providerData;
-					
-					// document.getElementById('userInfo').innerHTML = JSON.stringify(user); 
-					// document.getElementById('userInfo').innerHTML = 'WELCOME ' + displayName + ' ' + email;
 
 					firebase.database().ref('users/'+uid).once('value').then(function(snapshot) {
 
@@ -206,11 +176,12 @@
 					},(error) => {
 						console.log(error);
 					});
-				// ...
+	
 				} else {
 					window.location.href = '../login.html';
 				}
 			});
+
 		}).catch(function(error) {
 			// Handle Errors here.
 			$this.button('reset');
@@ -223,33 +194,90 @@
 				alert(errorMessage);
 			}
 			console.log(error);
+			$this.button('reset');
 		});
 	}
 
-	window.onload = function() {
+	// function signIn(){
+
+	// 	var email = document.getElementById('loginEmail').value;
+	// 	var password = document.getElementById('loginPassword').value;
+	// 	var $this = $('#login-submit');
+	// 	$this.button('loading');
+
+	// 	firebase.auth().signInWithEmailAndPassword(email, password).then(function(){
 		
-    	document.getElementById('login-submit').addEventListener('click', signIn, false);
-    	document.getElementById('signup-submit').addEventListener('click', createUser, false);
+	// 		firebase.auth().onAuthStateChanged(function(user) {
+	// 			if (user != null) {
 
-    	var input_pass = document.getElementById('loginPassword');
-    	var signup_pass = document.getElementById('signupPassword');
-    	input_pass.addEventListener('keyup', function(event){
-    		event.preventDefault();
-    		if(event.keyCode === 13){
-    			signIn();
-    		}
-    	});
+	// 				// if ($('#remember').is(':checked')) {
+	// 		  //           var email_cookie = $('#loginEmail').val();
+	// 		  //           var password_cookie = $('#loginPassword').val();
 
-    	signup_pass.addEventListener('keyup', function(event){
-    		event.preventDefault();
-    		if(event.keyCode === 13){
-    			createUser();
-    		}
-    	});
+	// 		  //           // set cookies to expire in 14 days
+	// 		  //           $.cookie('loginEmail', email_cookie, { expires: 14 });
+	// 		  //           $.cookie('loginPassword', password_cookie, { expires: 14 });
+	// 		  //           $.cookie('remember', true, { expires: 14 });                
+	// 		  //       }
+	// 		  //       else
+	// 		  //       {
+	// 		  //           // reset cookies
+	// 		  //           $.cookie('loginEmail', null);
+	// 		  //           $.cookie('loginPassword', null);
+	// 		  //           $.cookie('remember', null);
+	// 		  //       }
+	// 				// User is signed in.
+	// 				// user.providerData.forEach(function (profile) {
+	// 				// 	console.log("Sign-in provider: " + profile.providerId);
+	// 				// 	console.log("  Provider-specific UID: " + profile.uid);
+	// 				// 	console.log("  Name: " + profile.displayName);
+	// 				// 	console.log("  Email: " + profile.email);
+	// 				// 	console.log("  Photo URL: " + profile.photoURL);
+	// 				// });
 
-    	initState();
-    };
+	// 				// var displayName = user.displayName || "";
+	// 				// var email = user.email;
+	// 				// var emailVerified = user.emailVerified;
+	// 				// var photoURL = user.photoURL;
+	// 				// var isAnonymous = user.isAnonymous;
+	// 				var uid = user.uid;
+	// 				// var providerData = user.providerData;
+					
+	// 				// document.getElementById('userInfo').innerHTML = JSON.stringify(user); 
+	// 				// document.getElementById('userInfo').innerHTML = 'WELCOME ' + displayName + ' ' + email;
 
+	// 				firebase.database().ref('users/'+uid).once('value').then(function(snapshot) {
+
+	// 					if(snapshot.val().office == "Head Office"){
+
+	// 						window.location.href = "headoffice/index.html";
+	// 					}else{
+							
+	// 						window.location.href = "plant/index.html";
+	// 					}
+						
+	// 				},(error) => {
+	// 					console.log(error);
+	// 				});
+	// 			// ...
+	// 			} else {
+	// 				window.location.href = '../login.html';
+	// 			}
+	// 		});
+	// 	}).catch(function(error) {
+	// 		// Handle Errors here.
+	// 		$this.button('reset');
+	// 		var errorCode = error.code;
+	// 		var errorMessage = error.message;
+	// 		// [START_EXCLUDE]
+	// 		if (errorCode === 'auth/wrong-password' || errorCode === 'auth/user-not-found' ) {
+	// 			alert('Wrong Email or password');
+	// 		} else {
+	// 			alert(errorMessage);
+	// 		}
+	// 		console.log(error);
+	// 	});
+	// }
 
 </script>
 </head>
@@ -293,30 +321,30 @@
 	            		<p class="login-img"><i class="icon_document_alt"></i></p>
 		            	<div class="input-group">
 	                        <span class="input-group-addon"><i class="icon_profile"></i></span>
-	                        <input type="text" name="signupFirstName" id="signupFirstName" class="form-control" placeholder="First Name" required autofocus>
+	                        <input type="text" name="signupFirstName" id="signupFirstName" class="form-control" placeholder="First Name" autocomplete="off" required>
 	                    </div>
 	                    <div class="input-group">
 	                        <span class="input-group-addon"><i class="icon_profile"></i></span>
-	                        <input type="text" name="signupLastName" id="signupLastName" class="form-control" placeholder="Last Name" required>
+	                        <input type="text" name="signupLastName" id="signupLastName" class="form-control" placeholder="Last Name" autocomplete="off" required>
 	                    </div>
 	                    <div class="input-group">
 	                        <span class="input-group-addon"><i class="icon_profile"></i></span>
-	                        <input type="email" name="signupEmail" id="signupEmail" class="form-control" placeholder="Email" required>
+	                        <input type="email" name="signupEmail" id="signupEmail" class="form-control" placeholder="Email" autocomplete="off" required>
 	                    </div>
 	                    <div class="input-group">
 	                        <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-	                        <input type="password" name="signupPassword" id="signupPassword" class="form-control" placeholder="Password" required>
+	                        <input type="password" name="signupPassword" id="signupPassword" class="form-control" placeholder="Password" autocomplete="off" required>
 	                    </div>
 	                    <div class="input-group">
 	                    	Office: 
 	                        <label class="radio-inline">
-						      <input type="radio" name="optradio" value="Head Office" checked>Head Office
+						      <input type="radio" name="optradio" class="optradio" value="Head Office" checked>Head Office
 						    </label>
 						    <label class="radio-inline">
-						      <input type="radio" name="optradio" value="Bravo">Bravo
+						      <input type="radio" name="optradio" class="optradio" value="Bravo">Bravo
 						    </label>
 						    <label class="radio-inline">
-						      <input type="radio" name="optradio" value="Delta">Delta
+						      <input type="radio" name="optradio" class="optradio" value="Delta">Delta
 						    </label>
 	                    </div>
 	                    <button class="btn btn-primary btn-lg btn-block" name="signup-submit"  id="signup-submit" type="button"  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Signing Up">Sign Up</button>
