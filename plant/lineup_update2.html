@@ -214,7 +214,7 @@
                 document.getElementById('id_fields').innerHTML = optionTable;
             });
 
-        }else if(option == "absent"){
+        }else if(option == "absent" || option == "new_absent"){
 
             document.getElementById('table_header').innerHTML = "<tr><td class='col-md-1'><label for='update_employee_name'>Name</label></td><td class='col-md-1'><label for='update_employee_name'>Reason</label></td></tr>";
 
@@ -232,19 +232,37 @@
                 document.getElementById('id_fields').innerHTML = optionTable;
             });
 
-        }else if(option == "comment"){
+        }else if(option == "comment" || option == "new_comment"){
+
+            if(option == "comment"){
+                query_ext = option;
+            }else if(option == "new_comment"){
+                query_ext = "new/comment";
+            }
 
             document.getElementById('comment_section').style.display = "block";
 
             document.getElementById('id_option').innerHTML = "<strong>" + headline + "</strong>";
 
-            firebase.database().ref('attendance/'+plant+'/'+currentDate).once('value', function(optionSnapshot){
+            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(optionSnapshot){
 
-                optionTable += "<div class='col-md-12'><textarea name='comment' id='comment' class='form-control input_type' rows='5' style='text-transform: uppercase;'>" + optionSnapshot.val().comment  + "</textarea></div>";
+                optionSnapshot.forEach(function(optionChildSnapshot){
+
+                    optionTable += "<div class='col-md-12'><textarea name='comment' id='comment' class='form-control input_type' rows='5' style='text-transform: uppercase;'>" + optionChildSnapshot.val().comment_lineup_plant  + "</textarea></div>";
+                });
 
                 document.getElementById('id_comment_field').innerHTML = optionTable;
             });
-        }else if(option == "tagapukpok" || option == "checker" || option == "others"){
+        }else if(option == "tagapukpok" || option == "checker" || option == "others" || option == "new_tagapukpok" || option == "new_checker" || option == "new_others"){
+
+            new_option = option.replace("new_","");
+
+            if(option == "tagapukpok" || option == "checker" || option == "others"){
+                query_ext = option;
+            }else if(option == "new_tagapukpok" || option == "new_checker" || option == "new_others"){
+                query_ext = "new/"+new_option;
+            }
+
 
             document.getElementById('table_header').innerHTML = "<tr><td class='col-md-1'><label for='update_employee_name'>Name</label></td><td class='col-md-1'><label for='update_employee_name'>Position</label></td></tr>";
 
@@ -252,7 +270,7 @@
 
             document.getElementById('id_option').innerHTML = "<strong>" + headline + "</strong>";
 
-            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option).once('value', function(optionSnapshot){
+            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(optionSnapshot){
 
                 optionSnapshot.forEach(function(optionChildSnapshot){
 
@@ -261,7 +279,15 @@
 
                 document.getElementById('id_fields').innerHTML = optionTable;
             });
-        }else if(option == "trucking"){
+
+        }else if(option == "trucking" || option == "new_trucking"){
+
+            new_option = option.replace("new_","");
+            if(option == "trucking"){
+                query_ext = option;
+            }else if(option == "new_trucking"){
+                query_ext = "new/trucking";
+            }
 
             document.getElementById('table_header').innerHTML = "<tr align='center'><td class='col-md-1'><label for='update_employee_name'>Truck No.</label></td><td class='col-md-2'><label for='update_employee_name'>Driver</label></td><td class='col-md-2'><label for='update_employee_name'>Pahinante 1</label></td><td class='col-md-2'><label for='update_employee_name'>Pahinante 2</label></td><td class='col-md-2'><label for='update_employee_name'>Commment</label></td></tr>";
 
@@ -270,7 +296,7 @@
 
             document.getElementById('id_option').innerHTML = "<strong>" + headline + "</strong>";
 
-            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option).once('value', function(optionSnapshot){
+            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(optionSnapshot){
 
                 if(optionSnapshot.val() != null){
 
@@ -297,12 +323,18 @@
                 }
             });
 
-        }else if(option == "forklift_operator"){
+        }else if(option == "forklift_operator" || option == "new_forklift_operator"){
 
             document.getElementById('not_comment_section').style.display = "block";
-            document.getElementById('id_option').innerHTML = option.replace("_"," ").toUpperCase();
+            document.getElementById('id_option').innerHTML = "FORKLIFT OPERATOR";
 
-            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option).once('value', function(optionSnapshot){
+            if(option == "forklift_operator"){
+                query_ext = "forklift_operator";
+            }else if(option == "new_forklift_operator"){
+                query_ext = "new/forklift_operator";
+            }
+
+            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(optionSnapshot){
 
                 optionTable += "<tr><td><table class='table'><thead><tr><th class='col-md-2 header_center'>Forklift No.</th><th class='col-md-5 header_center'>Operator</th><th class='col-md-5 header_center'>Comment</th></tr></thead><tbody>";
 
@@ -356,21 +388,6 @@
                 });
 
                 document.getElementById('id_fields').innerHTML = optionTable;
-            });
-
-        }else if(option == "new_comment"){
-
-            new_option = option.replace("new_","");
-
-            document.getElementById('comment_section').style.display = "block";
-
-            document.getElementById('id_option').innerHTML = "<strong>" + headline + "</strong>";
-
-            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new').once('value', function(optionSnapshot){
-
-                optionTable += "<div class='col-md-12'><textarea name='comment' id='comment' class='form-control input_type' rows='5' style='text-transform: uppercase;'>" + optionSnapshot.val().comment  + "</textarea></div>";
-
-                document.getElementById('id_comment_field').innerHTML = optionTable;
             });
 
         }else if(option == "new_tagapukpok" || option == "new_checker" || option == "new_others"){
