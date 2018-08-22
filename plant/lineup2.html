@@ -174,7 +174,11 @@
         document.getElementById('link_kamador_update').innerHTML = "<a href='lineup_update2.html?option=kamador&date=" + passcurrentDate + "'>Update</a>";
         document.getElementById('link_loader_update').innerHTML = "<a href='lineup_update2.html?option=loader&date=" + passcurrentDate + "'>Update</a>";
         document.getElementById('link_others_update').innerHTML = "<a href='lineup_update2.html?option=others&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_absent_update').innerHTML = "<a href='lineup_update2.html?option=absent&date=" + passcurrentDate + "'>Update</a>";
+
+        document.getElementById('link_absent_plant_update').innerHTML = "<a href='lineup_update2.html?option=absent_plant&date=" + passcurrentDate + "'>Update Plant Employee</a>";
+        document.getElementById('link_absent_motorpool_update').innerHTML = "<a href='lineup_update2.html?option=absent_motorpool&date=" + passcurrentDate + "'>Update Motorpool Employee</a>";
+        document.getElementById('link_absent_trucking_update').innerHTML = "<a href='lineup_update2.html?option=absent_trucking&date=" + passcurrentDate + "'>Update Trucking Employee</a>";
+
         document.getElementById('link_comment_update').innerHTML = "<a href='lineup_update2.html?option=comment&date=" + passcurrentDate + "'>Update</a>";
         document.getElementById('link_trucking_update').innerHTML = "<a href='lineup_update2.html?option=trucking&date=" + passcurrentDate + "'>Update</a>";
 
@@ -447,7 +451,12 @@
                         document.getElementById('link_kamador_new_update').innerHTML = "<a href='lineup_update2.html?option=new_kamador&date=" + passcurrentDate + "'>Update</a>";
                         document.getElementById('link_loader_new_update').innerHTML = "<a href='lineup_update2.html?option=new_loader&date=" + passcurrentDate + "'>Update</a>";
                         document.getElementById('link_others_new_update').innerHTML = "<a href='lineup_update2.html?option=new_others&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_absent_new_update').innerHTML = "<a href='lineup_update2.html?option=new_absent&date=" + passcurrentDate + "'>Update</a>";
+
+                        document.getElementById('link_absent_plant_new_update').innerHTML = "<a href='lineup_update2.html?option=new_absent_plant&date=" + passcurrentDate + "'>Update Plant Employee</a>";
+                        document.getElementById('link_absent_motorpool_new_update').innerHTML = "<a href='lineup_update2.html?option=new_absent_motorpool&date=" + passcurrentDate + "'>Update Motorpool Employee</a>";
+                        document.getElementById('link_absent_trucking_new_update').innerHTML = "<a href='lineup_update2.html?option=new_absent_trucking&date=" + passcurrentDate + "'>Update Trucking Employee</a>";
+
+
                         document.getElementById('link_comment_new_update').innerHTML = "<a href='lineup_update2.html?option=new_comment&date=" + passcurrentDate + "'>Update</a>";
                         document.getElementById('link_trucking_new_update').innerHTML = "<a href='lineup_update2.html?option=new_trucking&date=" + passcurrentDate + "'>Update</a>";
 
@@ -761,7 +770,11 @@
         document.getElementById('link_kamador_update').innerHTML = "<a href='lineup_update2.html?option=kamador&date=" + passcurrentDate + "'>Update</a>";
         document.getElementById('link_loader_update').innerHTML = "<a href='lineup_update2.html?option=loader&date=" + passcurrentDate + "'>Update</a>";
         document.getElementById('link_others_update').innerHTML = "<a href='lineup_update2.html?option=others&date=" + passcurrentDate + "'>Update</a>";
-        document.getElementById('link_absent_update').innerHTML = "<a href='lineup_update2.html?option=absent&date=" + passcurrentDate + "'>Update</a>";
+
+        document.getElementById('link_absent_plant_update').innerHTML = "<a href='lineup_update2.html?option=absent_plant&date=" + passcurrentDate + "'>Update Plant Employee</a>";
+        document.getElementById('link_absent_motorpool_update').innerHTML = "<a href='lineup_update2.html?option=absent_motorpool&date=" + passcurrentDate + "'>Update Motorpool Employee</a>";
+        document.getElementById('link_absent_trucking_update').innerHTML = "<a href='lineup_update2.html?option=absent_trucking&date=" + passcurrentDate + "'>Update Trucking Employee</a>";
+
         document.getElementById('link_comment_update').innerHTML = "<a href='lineup_update2.html?option=comment&date=" + passcurrentDate + "'>Update</a>";
         document.getElementById('link_trucking_update').innerHTML = "<a href='lineup_update2.html?option=trucking&date=" + passcurrentDate + "'>Update</a>";
 
@@ -1027,7 +1040,11 @@
                         document.getElementById('link_kamador_new_update').innerHTML = "<a href='lineup_update2.html?option=new_kamador&date=" + passcurrentDate + "'>Update</a>";
                         document.getElementById('link_loader_new_update').innerHTML = "<a href='lineup_update2.html?option=new_loader&date=" + passcurrentDate + "'>Update</a>";
                         document.getElementById('link_others_new_update').innerHTML = "<a href='lineup_update2.html?option=new_others&date=" + passcurrentDate + "'>Update</a>";
-                        document.getElementById('link_absent_new_update').innerHTML = "<a href='lineup_update2.html?option=new_absent&date=" + passcurrentDate + "'>Update</a>";
+
+                        document.getElementById('link_absent_plant_new_update').innerHTML = "<a href='lineup_update2.html?option=new_absent_plant&date=" + passcurrentDate + "'>Update Plant Employee</a>";
+                        document.getElementById('link_absent_motorpool_new_update').innerHTML = "<a href='lineup_update2.html?option=new_absent_motorpool&date=" + passcurrentDate + "'>Update Motorpool Employee</a>";
+                        document.getElementById('link_absent_trucking_new_update').innerHTML = "<a href='lineup_update2.html?option=new_absent_trucking&date=" + passcurrentDate + "'>Update Trucking Employee</a>";
+
                         document.getElementById('link_comment_new_update').innerHTML = "<a href='lineup_update2.html?option=new_comment&date=" + passcurrentDate + "'>Update</a>";
                         document.getElementById('link_trucking_new_update').innerHTML = "<a href='lineup_update2.html?option=new_trucking&date=" + passcurrentDate + "'>Update</a>";
 
@@ -1633,8 +1650,13 @@
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
                                                         </a>
-                                                        <ul class="dropdown-menu">
+                                                        <!-- <ul class="dropdown-menu">
                                                             <li id="link_absent_update"></li>
+                                                        </ul> -->
+                                                        <ul class="dropdown-menu">
+                                                            <li id="link_absent_plant_update"></li>
+                                                            <li id="link_absent_motorpool_update"></li>
+                                                            <li id="link_absent_trucking_update"></li>
                                                         </ul>
                                                     </div>
                                                 </th>
@@ -1860,8 +1882,13 @@
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
                                                         </a>
-                                                        <ul class="dropdown-menu">
+                                                        <!-- <ul class="dropdown-menu">
                                                             <li id="link_absent_new_update"></li>
+                                                        </ul> -->
+                                                        <ul class="dropdown-menu">
+                                                            <li id="link_absent_plant_new_update"></li>
+                                                            <li id="link_absent_motorpool_new_update"></li>
+                                                            <li id="link_absent_trucking_new_update"></li>
                                                         </ul>
                                                     </div>
                                                 </th>
