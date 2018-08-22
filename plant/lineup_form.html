@@ -228,7 +228,6 @@
     	// console.log(input_trucking_no, input_trucking_driver, input_trucking_pahinante1, input_trucking_pahinante2, input_trucking_comment);
 
         if(date_newSet == ""){
-            console.log("ADD LINE UP");
 
             var commentData = {
                 comment: input_comment.toUpperCase()
@@ -458,7 +457,7 @@
                 }
             
                 firebase.database().ref('lineup/'+plant+'/'+input_date+'/absent').push(absentData);
-                count++;
+                
             }
 
             for(var a = 0; a < input_trucking_no.length; a++){
@@ -471,12 +470,11 @@
                     comment: input_trucking_comment[a].toUpperCase() || "N/A"
                 }
 
-                // console.log(truckingData);
-
                 firebase.database().ref('lineup/'+plant+'/'+input_date+'/trucking').push(truckingData);
+                count++;
             }
 
-            if(count == input_absent_name.length){
+            if(count == input_trucking_no.length){
                 alert("Line up recorded");
                 window.location='lineup.html';
             }
@@ -712,7 +710,7 @@
                 }
             
                 firebase.database().ref('lineup/'+plant+'/'+input_date+'/new/absent').push(absentData);
-                count++;
+                
             }
 
             for(var a = 0; a < input_trucking_no.length; a++){
@@ -728,9 +726,10 @@
                 // console.log(truckingData);
 
                 firebase.database().ref('lineup/'+plant+'/'+input_date+'/new/trucking').push(truckingData);
+                count++;
             }
 
-            if(count == input_absent_name.length){
+            if(count == input_trucking_no.length){
                 alert("New set of Line up recorded");
                 window.location='lineup.html';
 
