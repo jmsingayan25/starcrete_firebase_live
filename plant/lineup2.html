@@ -811,8 +811,14 @@
                                 forkliftSnapshot.forEach(function(forkliftChildSnapshot){
                                     if(forkliftChildSnapshot.val().operator != "N/A"){
                                         myTableRow1 += "<div class='row'><div class='col-md-12'>" + forkliftChildSnapshot.val().operator + "</div></div>";
+
+                                        forkliftCount++;
                                     }
                                 });
+
+                                if(forkliftCount == 0){
+                                    myTableRow1 += "<div class='row'><div class='col-md-12'>N/A</div></div>";
+                                }
 
                                 myTableRow1 += "</td><td>";
                                 mechanicSnapshot.forEach(function(mechanicChildSnapshot){
@@ -1053,6 +1059,7 @@
                                 firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/forklift_operator').once('value', function(forkliftSnapshot){
                                     firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/mechanic').once('value', function(mechanicSnapshot){
                                 
+                                        forkliftCount = 0;
                                         myTableRow8 += "<tr><td>";
 
                                         machine1Snapshot.forEach(function(machine1ChildSnapshot){
@@ -1068,8 +1075,14 @@
                                         forkliftSnapshot.forEach(function(forkliftChildSnapshot){
                                             if(forkliftChildSnapshot.val().operator != "N/A"){
                                                 myTableRow8 += "<div class='row'><div class='col-md-12'>" + forkliftChildSnapshot.val().operator + "</div></div>";
+                                                
+                                                forkliftCount++;
                                             }
                                         });
+
+                                        if(forkliftCount == 0){
+                                            myTableRow8 += "<div class='row'><div class='col-md-12'>N/A</div></div>";
+                                        }
 
                                         myTableRow8 += "</td><td>";
                                         mechanicSnapshot.forEach(function(mechanicChildSnapshot){
