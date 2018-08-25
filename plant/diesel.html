@@ -492,12 +492,27 @@ function DeleteRowData(key,plant)
                 var getAvailableStock = AvailableSnapshot.val().Liters;
            
                 if (getTransactionType == "Out"){
-                    var RollbackResult = Number(getQuantityOut) + Number(getAvailableStock);
-                    var stock_available  = {Liters: RollbackResult};
-                    firebase.database().ref().child("available_stock/" + plant).set(stock_available);
-                    firebase.database().ref().child("incoming_diesel/" + plant + "/" + key).remove();
-                    $(".se-pre-con").fadeOut("slow");
-                    window.location.reload();
+                     NoKeyIncomingSnapshot.forEach(function(foreachSnapshot){
+                        var geteachDate = foreachSnapshot.val().date;
+                        var geteachTime = foreachSnapshot.val().time;
+                        var eachTimeStamp = geteachDate + " " + geteachTime;
+                        var neweachTimeStamp = new Date(eachTimeStamp).getTime();
+
+                        if (neweachTimeStamp >= newTimestamp){
+
+                            var RollbackResult = Number(getQuantityOut) + Number(foreachSnapshot.val().currentstockCopy);
+                            var stock_available  = {currentstockCopy: RollbackResult};
+                            firebase.database().ref().child("incoming_diesel/" + plant + "/" + foreachSnapshot.key).update(stock_available);
+
+                            var RollbackResultLiters = Number(getQuantityOut) + Number(getAvailableStock);
+                            var stock_availableLiters  = {Liters: RollbackResultLiters};
+                            firebase.database().ref().child("available_stock/" + plant).set(stock_availableLiters);
+
+                          firebase.database().ref().child("incoming_diesel/" + plant + "/" + key).remove();
+                        }
+                     });
+                       $(".se-pre-con").fadeOut("slow");
+                            window.location.reload();
                 }else if(getTransactionType == "In"){
 
                     NoKeyIncomingSnapshot.forEach(function(foreachSnapshot){
