@@ -439,9 +439,9 @@ function datePrint(){
 function DeleteRowData(key,plant)
 {
     event.preventDefault();
-       firebase.database().ref().child("incoming_diesel/" + plant + "/" + key).remove();
-       $(".se-pre-con").fadeOut("slow");
-       window.location.reload();
+    firebase.database().ref().child("incoming_diesel/" + plant + "/" + key).remove();
+    $(".se-pre-con").fadeOut("slow");
+    window.location.reload();
 }
 
     function totalCountBadge(){
