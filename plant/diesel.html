@@ -199,6 +199,17 @@
         $(".se-pre-con").fadeIn("fast");
         event.preventDefault();
         var myTbody = "";
+
+        var newDateGetOne = new Date();
+        var minusone = 1;
+        var MinusOneDate = newDateGetOne.setDate(newDateGetOne.getDate() - minusone);
+        var SeperatecurrentdateOne = new Date(MinusOneDate).toLocaleDateString('en');
+
+        var newDateGetTwo = new Date();
+        var minustwo = 2;
+        var MinusTwoDate = newDateGetTwo.setDate(newDateGetTwo.getDate() - minustwo);
+        var SeperatecurrentdateTwo = new Date(MinusTwoDate).toLocaleDateString('en');
+
         if(fromDate == '' && endDate == ''){//startif
             firebase.database().ref('incoming_diesel/'+ plant).once('value').then(function(DieselSnapshotTransaction){
             DieselSnapshotTransaction.forEach(function(dieselChildSnapshot){//startloop
@@ -206,15 +217,6 @@
                 var Seperatedate = dieselChildSnapshot.val().date;
                 var Seperatecurrentdate = new Date().toLocaleDateString('en');
 
-                var newDateGetOne = new Date();
-                var minusone = 1;
-                var MinusOneDate = newDateGetOne.setDate(newDateGetOne.getDate() - minusone);
-                var SeperatecurrentdateOne = new Date(MinusOneDate).toLocaleDateString('en');
-
-                 var newDateGetTwo = new Date();
-                var minustwo = 2;
-                var MinusTwoDate = newDateGetTwo.setDate(newDateGetTwo.getDate() - minustwo);
-                var SeperatecurrentdateTwo = new Date(MinusTwoDate).toLocaleDateString('en');
                 var truckno = dieselChildSnapshot.val().truck_no;
                 var suppliername = dieselChildSnapshot.val().supplier || dieselChildSnapshot.val().operator;
                 var quantityin = Number(dieselChildSnapshot.val().quantity_in).toLocaleString("en");
@@ -360,21 +362,19 @@ function DisplayCurrentData(){
     var myTbody = "";
     //start
     count = 1;
+    var newDateGetOne = new Date();
+    var minusone = 1;
+    var MinusOneDate = newDateGetOne.setDate(newDateGetOne.getDate() - minusone);
+    var SeperatecurrentdateOne = new Date(MinusOneDate).toLocaleDateString('en');
+
+    var newDateGetTwo = new Date();
+    var minustwo = 2;
+    var MinusTwoDate = newDateGetTwo.setDate(newDateGetTwo.getDate() - minustwo);
+    var SeperatecurrentdateTwo = new Date(MinusTwoDate).toLocaleDateString('en');
     firebase.database().ref('incoming_diesel/'+ plant).orderByChild("reverseDate").once('value').then(function(DieselSnapshotTransaction){
         DieselSnapshotTransaction.forEach(function(dieselChildSnapshot){
             var Seperatedate = dieselChildSnapshot.val().date;
             var Seperatecurrentdate = new Date().toLocaleDateString('en');
-
-            var newDateGetOne = new Date();
-            var minusone = 1;
-            var MinusOneDate = newDateGetOne.setDate(newDateGetOne.getDate() - minusone);
-            var SeperatecurrentdateOne = new Date(MinusOneDate).toLocaleDateString('en');
-
-             var newDateGetTwo = new Date();
-            var minustwo = 2;
-            var MinusTwoDate = newDateGetTwo.setDate(newDateGetTwo.getDate() - minustwo);
-            var SeperatecurrentdateTwo = new Date(MinusTwoDate).toLocaleDateString('en');
-
 
             var date = dieselChildSnapshot.val().Date_Input;
             var CurrentDate = new Date();
