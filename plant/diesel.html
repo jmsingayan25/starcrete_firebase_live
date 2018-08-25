@@ -200,17 +200,17 @@
         event.preventDefault();
         var myTbody = "";
 
-        var newDateGetOne = new Date();
-        var minusone = 1;
-        var MinusOneDate = newDateGetOne.setDate(newDateGetOne.getDate() - minusone);
-        var SeperatecurrentdateOne = new Date(MinusOneDate).toLocaleDateString('en');
+          var newDateGetOne = new Date();
+            var minusone = 1;
+            var MinusOneDate = newDateGetOne.setDate(newDateGetOne.getDate() - minusone);
+                var SeperatecurrentdateOne = new Date(MinusOneDate).toLocaleDateString('en');
 
-        var newDateGetTwo = new Date();
-        var minustwo = 2;
-        var MinusTwoDate = newDateGetTwo.setDate(newDateGetTwo.getDate() - minustwo);
-        var SeperatecurrentdateTwo = new Date(MinusTwoDate).toLocaleDateString('en');
-
-        if(fromDate == '' && endDate == ''){//startif
+            var newDateGetTwo = new Date();
+            var minustwo = 2;
+            var MinusTwoDate = newDateGetTwo.setDate(newDateGetTwo.getDate() - minustwo);
+            var SeperatecurrentdateTwo = new Date(MinusTwoDate).toLocaleDateString('en');
+    
+        if(fromDate == '' && endDate == ''){//startif  
             firebase.database().ref('incoming_diesel/'+ plant).once('value').then(function(DieselSnapshotTransaction){
             DieselSnapshotTransaction.forEach(function(dieselChildSnapshot){//startloop
 
@@ -294,6 +294,9 @@
                         getDate = new Date(dieselChildSnapshot.val().Date_Input);
 
                         if (getDate.getTime() >= fromDate.getTime() && getDate.getTime() <= endDate.getTime()){//startdate
+
+                            var Seperatedate = dieselChildSnapshot.val().date;
+                            var Seperatecurrentdate = new Date().toLocaleDateString('en');
 
                             var truckno = dieselChildSnapshot.val().truck_no;
                             var suppliername = dieselChildSnapshot.val().supplier || dieselChildSnapshot.val().operator;
