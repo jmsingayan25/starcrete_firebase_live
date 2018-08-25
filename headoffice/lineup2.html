@@ -187,12 +187,12 @@
                                 myTableRow1 += "<tr><td>";
 
                                 machine1Snapshot.forEach(function(machine1ChildSnapshot){
-                                    myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine1ChildSnapshot.val().employee_name + "</div></div>";
+                                    myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine1ChildSnapshot.val().employee_name + " - " + machine1ChildSnapshot.val().employee_position + "</div></div>";
                                 });
 
                                 myTableRow1 += "</td><td>";
                                 machine3Snapshot.forEach(function(machine3ChildSnapshot){
-                                    myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine3ChildSnapshot.val().employee_name + "</div></div>";
+                                    myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine3ChildSnapshot.val().employee_name + " - " + machine3ChildSnapshot.val().employee_position + "</div></div>";
                                 });
 
                                 myTableRow1 += "</td><td>";
@@ -662,7 +662,6 @@
 
                         $(".new_set_table").hide();
                         $(".button-link").hide();
-                        $(".se-pre-con").fadeOut("slow");
                     }
                 });
 
@@ -854,6 +853,8 @@
                                                 myTableRow2 += "</td></tr>";
 
                                                 document.getElementById('row2_list').innerHTML = myTableRow2;
+
+                                                $(".se-pre-con").fadeOut("slow");
                                             });
                                         });
                                     });
@@ -1233,7 +1234,6 @@
 
                         $(".new_set_table").hide();
                         $(".button-link").hide();
-                        $(".se-pre-con").fadeOut("slow");
                     }
                 });
 
