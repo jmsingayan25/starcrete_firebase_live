@@ -202,6 +202,19 @@
         if(fromDate == '' && endDate == ''){//startif
             firebase.database().ref('incoming_diesel/'+ plant).once('value').then(function(DieselSnapshotTransaction){
             DieselSnapshotTransaction.forEach(function(dieselChildSnapshot){//startloop
+
+                var Seperatedate = dieselChildSnapshot.val().date;
+                var Seperatecurrentdate = new Date().toLocaleDateString('en');
+
+                var newDateGetOne = new Date();
+                var minusone = 1;
+                var MinusOneDate = newDateGetOne.setDate(newDateGetOne.getDate() - minusone);
+                var SeperatecurrentdateOne = new Date(MinusOneDate).toLocaleDateString('en');
+
+                 var newDateGetTwo = new Date();
+                var minustwo = 2;
+                var MinusTwoDate = newDateGetTwo.setDate(newDateGetTwo.getDate() - minustwo);
+                var SeperatecurrentdateTwo = new Date(MinusTwoDate).toLocaleDateString('en');
                 var truckno = dieselChildSnapshot.val().truck_no;
                 var suppliername = dieselChildSnapshot.val().supplier || dieselChildSnapshot.val().operator;
                 var quantityin = Number(dieselChildSnapshot.val().quantity_in).toLocaleString("en");
@@ -233,7 +246,8 @@
                     myTbody += "<td style ='color: white'><strong>" + time + "</strong></td>";
                     myTbody += "<td style ='color: white'><strong>" + drno + "</strong></td>";
                     myTbody += "<td style ='color: white'><strong>" + dates + "</strong></td>";
-                    myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
+                    myTbody +="<td></td></tr>";
+                    // myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
                     $(".se-pre-con").fadeOut("slow");
                 }else{
                     myTbody += "<tr>";
@@ -247,7 +261,9 @@
                     myTbody += "<td><strong>" + time + "</strong></td>";
                     myTbody += "<td><strong>" + drno + "</strong></td>";
                     myTbody += "<td><strong>" + dates + "</strong></td>";
-                    myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
+                    if (Seperatecurrentdate == Seperatedate || SeperatecurrentdateOne == Seperatedate || SeperatecurrentdateTwo == Seperatedate){
+                        myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
+                    }
                     $(".se-pre-con").fadeOut("slow");
                 }
                 $(".se-pre-con").fadeOut("slow");
@@ -307,7 +323,8 @@
                                 myTbody += "<td style ='color: white'><strong>" + time + "</strong></td>";
                                 myTbody += "<td style ='color: white'><strong>" + drno + "</strong></td>";
                                 myTbody += "<td style ='color: white'><strong>" + dates + "</strong></td>";
-                                myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
+                                myTbody +="<td></td></tr>";
+                                // myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
                                 $(".se-pre-con").fadeOut("slow");
                             }else{
                                 myTbody += "<tr>";
@@ -321,7 +338,9 @@
                                 myTbody += "<td><strong>" + time + "</strong></td>";
                                 myTbody += "<td><strong>" + drno + "</strong></td>";
                                 myTbody += "<td><strong>" + dates + "</strong></td>";
-                                myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
+                                if (Seperatecurrentdate == Seperatedate || SeperatecurrentdateOne == Seperatedate || SeperatecurrentdateTwo == Seperatedate){
+                                    myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
+                                }
                                 $(".se-pre-con").fadeOut("slow");
                             }
                             }//enddate
@@ -343,9 +362,22 @@ function DisplayCurrentData(){
     count = 1;
     firebase.database().ref('incoming_diesel/'+ plant).orderByChild("reverseDate").once('value').then(function(DieselSnapshotTransaction){
         DieselSnapshotTransaction.forEach(function(dieselChildSnapshot){
+            var Seperatedate = dieselChildSnapshot.val().date;
+            var Seperatecurrentdate = new Date().toLocaleDateString('en');
+
+            var newDateGetOne = new Date();
+            var minusone = 1;
+            var MinusOneDate = newDateGetOne.setDate(newDateGetOne.getDate() - minusone);
+            var SeperatecurrentdateOne = new Date(MinusOneDate).toLocaleDateString('en');
+
+             var newDateGetTwo = new Date();
+            var minustwo = 2;
+            var MinusTwoDate = newDateGetTwo.setDate(newDateGetTwo.getDate() - minustwo);
+            var SeperatecurrentdateTwo = new Date(MinusTwoDate).toLocaleDateString('en');
+
+
             var date = dieselChildSnapshot.val().Date_Input;
             var CurrentDate = new Date();
-
             var truckno = dieselChildSnapshot.val().truck_no;
             var suppliername = dieselChildSnapshot.val().supplier || dieselChildSnapshot.val().operator;
             var quantityin = Number(dieselChildSnapshot.val().quantity_in).toLocaleString("en");
@@ -377,7 +409,8 @@ function DisplayCurrentData(){
                 myTbody += "<td style ='color: white'><strong>" + time + "</strong></td>";
                 myTbody += "<td style ='color: white'><strong>" + drno + "</strong></td>";
                 myTbody += "<td style ='color: white'><strong>" + dates + "</strong></td>";
-                myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
+                myTbody +="<td></td></tr>";
+                // myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
                 $(".se-pre-con").fadeOut("slow");
             }else{
                 myTbody += "<tr>";
@@ -391,7 +424,9 @@ function DisplayCurrentData(){
                 myTbody += "<td><strong>" + time + "</strong></td>";
                 myTbody += "<td><strong>" + drno + "</strong></td>";
                 myTbody += "<td><strong>" + dates + "</strong></td>";
-                myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
+                if (Seperatecurrentdate == Seperatedate || SeperatecurrentdateOne == Seperatedate || SeperatecurrentdateTwo == Seperatedate){
+                    myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
+                }
                 $(".se-pre-con").fadeOut("slow");
             }
         });
@@ -439,9 +474,32 @@ function datePrint(){
 function DeleteRowData(key,plant)
 {
     event.preventDefault();
-    firebase.database().ref().child("incoming_diesel/" + plant + "/" + key).remove();
-    $(".se-pre-con").fadeOut("slow");
-    window.location.reload();
+
+    firebase.database().ref().child("available_stock/" + plant).once('value',function(AvailableSnapshot){
+        firebase.database().ref().child("incoming_diesel/" + plant + "/" + key).once('value',function(IncomingSnapshot){
+
+            var getTransactionType = IncomingSnapshot.val().TransactionType;
+            var getQuantityOut = IncomingSnapshot.val().quantity_out;
+            var getAvailableStock = AvailableSnapshot.val().Liters;
+
+           
+            if (getTransactionType == "Out"){
+
+                var RollbackResult = Number(getQuantityOut) + Number(getAvailableStock);
+         
+                var stock_available  = {Liters: RollbackResult};
+                firebase.database().ref().child("available_stock/" + plant).set(stock_available );
+                firebase.database().ref().child("incoming_diesel/" + plant + "/" + key).remove();
+                $(".se-pre-con").fadeOut("slow");
+                window.location.reload();
+            }
+
+        }); 
+    });
+
+ 
+    
+     
 }
 
     function totalCountBadge(){
