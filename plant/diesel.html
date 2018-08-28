@@ -250,6 +250,8 @@
                     myTbody += "<td style ='color: white'><strong>" + dates + "</strong></td>";
                     if (Seperatecurrentdate == Seperatedate || SeperatecurrentdateOne == Seperatedate || SeperatecurrentdateTwo == Seperatedate){
                         myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
+                    }else{
+                        myTbody += "<td></td></tr>";
                     }
                     $(".se-pre-con").fadeOut("slow");
                 }else{
@@ -266,6 +268,8 @@
                     myTbody += "<td><strong>" + dates + "</strong></td>";
                     if (Seperatecurrentdate == Seperatedate || SeperatecurrentdateOne == Seperatedate || SeperatecurrentdateTwo == Seperatedate){
                         myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
+                    }else{
+                        myTbody += "<td></td></tr>";
                     }
                     $(".se-pre-con").fadeOut("slow");
                 }
@@ -331,6 +335,8 @@
                                 myTbody += "<td style ='color: white'><strong>" + dates + "</strong></td>";
                                 if (Seperatecurrentdate == Seperatedate || SeperatecurrentdateOne == Seperatedate || SeperatecurrentdateTwo == Seperatedate){
                                     myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
+                                }else{
+                                    myTbody += "<td></td></tr>";
                                 }
                                 $(".se-pre-con").fadeOut("slow");
                             }else{
@@ -347,6 +353,8 @@
                                 myTbody += "<td><strong>" + dates + "</strong></td>";
                                 if (Seperatecurrentdate == Seperatedate || SeperatecurrentdateOne == Seperatedate || SeperatecurrentdateTwo == Seperatedate){
                                     myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
+                                }else{
+                                    myTbody += "<td></td></tr>";
                                 }
                                 $(".se-pre-con").fadeOut("slow");
                             }
@@ -416,6 +424,8 @@ function DisplayCurrentData(){
                 myTbody += "<td style ='color: white'><strong>" + dates + "</strong></td>";
                 if (Seperatecurrentdate == Seperatedate || SeperatecurrentdateOne == Seperatedate || SeperatecurrentdateTwo == Seperatedate){
                     myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
+                }else{
+                     myTbody += "<td></td></tr>";
                 }
                 $(".se-pre-con").fadeOut("slow");
             }else{
@@ -432,6 +442,8 @@ function DisplayCurrentData(){
                 myTbody += "<td><strong>" + dates + "</strong></td>";
                 if (Seperatecurrentdate == Seperatedate || SeperatecurrentdateOne == Seperatedate || SeperatecurrentdateTwo == Seperatedate){
                     myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
+                }else{
+                     myTbody += "<td></td></tr>";
                 }
                 $(".se-pre-con").fadeOut("slow");
             }
