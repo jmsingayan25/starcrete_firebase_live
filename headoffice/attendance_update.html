@@ -125,8 +125,14 @@
 
     function tableData(){
 
-    	firebase.database().ref('attendance/'+plant+'/'+currentDate+'/comment').once('value', function(commentSnapshot){
-    		console.log('attendance/'+plant+'/'+currentDate+'/comment', commentSnapshot.val());
+        if(option == "comment"){
+            var query_ext = option;
+        }else if(option == "new_comment"){
+            var query_ext = "new/comment";
+        }
+
+    	firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(commentSnapshot){
+    		// console.log('attendance/'+plant+'/'+currentDate+'/comment', commentSnapshot.val());
 
     		commentSnapshot.forEach(function(commentChildSnapshot){
 
@@ -148,9 +154,15 @@
     		comment_attendance_headoffice: input_note.toUpperCase() || "N/A"
     	}
 
-    	firebase.database().ref('attendance/'+plant+'/'+currentDate+'/comment').once('value', function(commentSnapshot){
+        if(option == "comment"){
+            query_ext = option;
+        }else if(option == "new_comment"){
+            query_ext = "new/comment";
+        }
+
+    	firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(commentSnapshot){
     		commentSnapshot.forEach(function(commentChildSnapshot){
-	    		if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/comment/'+commentChildSnapshot.key).update(commentData)){
+	    		if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/'+commentChildSnapshot.key).update(commentData)){
 					alert("Update succesfully");
 					window.location.href='attendance.html?plant='+plant;
 				}

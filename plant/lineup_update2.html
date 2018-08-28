@@ -130,7 +130,6 @@
         document.getElementById('li_attendance').innerHTML = "<i class='icon_document'></i><a href='lineup.html?date=" + getCurrentDate + "'>Line Up</a>";
         document.getElementById('li_attendance_update').innerHTML = "<i class='icon_document'></i>Line Up Form";
 
-
     });
 
     function add_new_employee(){
@@ -276,8 +275,6 @@
 
         }else if(option == "tagapukpok" || option == "checker" || option == "others" || option == "machine1" || option == "machine3" || option == "new_tagapukpok" || option == "new_checker" || option == "new_others" || option == "new_machine1" || option == "new_machine3"){
 
-            
-
             if(option == "tagapukpok" || option == "checker" || option == "others" || option == "machine1" || option == "machine3"){
                 query_ext = option;
             }else if(option == "new_tagapukpok" || option == "new_checker" || option == "new_others" || option == "new_machine1" || option == "new_machine3"){
@@ -346,10 +343,11 @@
         }else if(option == "forklift_operator" || option == "new_forklift_operator"){
 
             document.getElementById('not_comment_section').style.display = "block";
-            document.getElementById('id_option').innerHTML = "FORKLIFT OPERATOR";
+            
+            document.getElementById('id_option').innerHTML = "<strong>" + headline + "</strong>";
 
             if(option == "forklift_operator"){
-                query_ext = "forklift_operator";
+                query_ext = option;
             }else if(option == "new_forklift_operator"){
                 query_ext = "new/forklift_operator";
             }
@@ -433,13 +431,15 @@
                 query_ext = "new/absent/"+new_option;
             }
 
+            document.getElementById('id_option').innerHTML = "<strong>" + headline + "</strong>";
+
             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(absentSnapshot){
 
                 optionTable += "<thead><tr><th class='col-md-3 header_center'>Name</th><th class='col-md-6 header_center'>Reason</th><th class='col-md-1'></th></tr></thead><tbody>";
 
                 absentSnapshot.forEach(function(absentChildSnapshot){
 
-                    optionTable += "<tr><td><input type='text' name='update_employee_name[]' class='form-control input_type' value='" + absentChildSnapshot.val().employee_name + "'></td><td><textarea name='update_employee_reason[]' class='form-control input_type' rows='2'>" + absentChildSnapshot.val().employee_comment + "</textarea></td><td><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + new_option + "\",\"" + absentChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
+                    optionTable += "<tr><td><input type='text' name='update_employee_name[]' class='form-control input_type' value='" + absentChildSnapshot.val().employee_name + "'></td><td><textarea name='update_employee_reason[]' class='form-control input_type' rows='2'>" + absentChildSnapshot.val().employee_comment + "</textarea></td><td><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + absentChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
                 });
 
                 optionTable += "</tbody>";
@@ -451,56 +451,155 @@
         }
     }
 
+    // function removeEmployee(position, key){
+
+    //     event.preventDefault();
+
+    //     var remove_new = position.substring(0, 3);
+
+    //     if(remove_new == "new"){
+
+    //         new_option = option.replace("new_","");
+    //         if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/'+new_option+'/'+key).remove()){
+
+    //             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/'+new_option).once('value', function(snapshot){
+    //                 if(snapshot.val() == null){
+
+    //                     var data = {
+    //                         employee_name: "N/A"
+    //                     }
+
+    //                     firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/'+new_option).push(data);
+    //                     alert("Data has been removed");
+    //                     window.location.href='lineup2.html';
+
+    //                 }else{
+    //                     alert("Data has been removed");
+    //                     location.reload();
+    //                 }
+    //             });
+    //         } 
+
+    //     }else{
+
+    //        if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+position+'/'+key).remove()){
+
+    //             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+position).once('value', function(snapshot){
+    //                 if(snapshot.val() == null){
+
+    //                     var data = {
+    //                         employee_name: "N/A"
+    //                     }
+
+    //                     firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+position).push(data);
+    //                     alert("Data has been removed");
+    //                     window.location.href='lineup2.html';
+
+    //                 }else{
+    //                     alert("Data has been removed");
+    //                     location.reload();
+    //                 }
+    //             });
+    //         } 
+    //     }
+    // }
+
     function removeEmployee(position, key){
 
         event.preventDefault();
 
-        var remove_new = position.substring(0, 3);
+        if(position == "checker" || position == "machine1" || position == "machine3" || position == "others" || position == "tagapukpok" || position == "new_checker" || position == "new_machine1" || position == "new_machine3" || position == "new_others" || position == "new_tagapukpok"){
 
-        if(remove_new == "new"){
+            if(position == "checker" || position == "machine1" || position == "machine3" || position == "others" || position == "tagapukpok"){
+                query_ext = option;
+            }else if(position == "new_checker" || position == "new_machine1" || position == "new_machine3" || position == "new_others" || position == "new_tagapukpok"){
+                new_option = option.replace("new_","");
+                query_ext = "new/"+new_option;
+            }
+                // console.log('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/'+key);
+            if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/'+key).remove()){
 
-            new_option = option.replace("new_","");
-            if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/'+new_option+'/'+key).remove()){
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(snapshot){
 
-                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/'+new_option).once('value', function(snapshot){
                     if(snapshot.val() == null){
 
                         var data = {
-                            employee_name: "N/A"
+                            employee_name: "N/A",
+                            employee_position: "N/A"
                         }
 
-                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/'+new_option).push(data);
+                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).push(data);
                         alert("Data has been removed");
-                        window.location.href='lineup2.html';
-
+                        window.location.href='lineup2.html?date='+currentDate;
+                    
                     }else{
                         alert("Data has been removed");
                         location.reload();
                     }
                 });
-            } 
+            }
 
-        }else{
+        }else if(position == "kamador" || position == "loader" || position == "mechanic" || position == "new_kamador" || position == "new_loader" || position == "new_mechanic"){
 
-           if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+position+'/'+key).remove()){
+            if(position == "kamador" || position == "loader" || position == "mechanic"){
+                query_ext = position;
+            }else if(position == "new_kamador" || position == "new_loader" || position == "new_mechanic"){
+                new_option = position.replace("new_","");
+                query_ext = "new/"+new_option;
+            }
 
-                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+position).once('value', function(snapshot){
+            if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/'+key).remove()){
+
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(snapshot){
+
                     if(snapshot.val() == null){
 
                         var data = {
-                            employee_name: "N/A"
+                            employee_name: "N/A",
                         }
 
-                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+position).push(data);
+                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).push(data);
                         alert("Data has been removed");
-                        window.location.href='lineup2.html';
-
+                        window.location.href='lineup2.html?date='+currentDate;
+                    
                     }else{
                         alert("Data has been removed");
                         location.reload();
                     }
                 });
-            } 
+            }
+
+        }else if(position == "absent_plant" || position == "absent_motorpool" || position == "absent_trucking" || position == "new_absent_plant" || position == "new_absent_motorpool" || position == "new_absent_trucking"){
+
+            if(position == "absent_plant" || position == "absent_motorpool" || position == "absent_trucking"){
+                new_option = position.replace("absent_","");
+                query_ext = "absent/"+new_option;
+            }else if(position == "new_absent_plant" || position == "new_absent_motorpool" || position == "new_absent_trucking"){
+                new_option = position.replace("new_absent_");
+                query_ext = "new/absent/"+new_option;
+            }
+
+            if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/'+key).remove()){
+
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(snapshot){
+
+                    if(snapshot.val() == null){
+
+                        var data = {
+                            employee_name: "N/A",
+                            reason: "N/A"
+                        }
+
+                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).push(data);
+                        alert("Data has been removed");
+                        window.location.href='lineup2.html?date='+currentDate;
+                    
+                    }else{
+                        alert("Data has been removed");
+                        location.reload();
+                    }
+                });
+            }
         }
     }
 
@@ -508,17 +607,52 @@
 
         event.preventDefault();
 
-        if(option == "absent" || option == "new_absent"){
+        // if(option == "absent" || option == "new_absent"){
+
+        //     count = 0;
+        //     var input_employee_name = $("input[name='update_employee_name[]']").map(function(){return $(this).val();}).get();
+        //     var input_employee_reason = $("textarea[name='update_employee_reason[]']").map(function(){return $(this).val();}).get();
+
+        //     if(option == "absent"){
+        //         query_ext = option;
+        //     }else if(option == 'new_absent'){
+        //         query_ext = "new/absent";
+        //     }
+
+        //     if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).remove()){
+
+        //         for(a = 0; a < input_employee_name.length; a++){
+
+        //             var employeeData = {
+        //                 employee_name: input_employee_name[a].toUpperCase(),
+        //                 reason: input_employee_reason[a].toUpperCase()
+        //             }
+
+        //             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).push(employeeData);
+
+        //             count++;
+        //         }
+
+        //         if(count == input_employee_name.length){
+        //             alert("Data updated successfully");
+        //             window.location.href='lineup2.html?date='+currentDate;
+        //         }
+        //     }
+
+        // }
+        if(option == "absent_plant" || option == "absent_motorpool" || option == "absent_trucking" || option == "new_absent_plant" || option == "new_absent_motorpool" || option == "new_absent_trucking"){
+
+            if(option == "absent_plant" || option == "absent_motorpool" || option == "absent_trucking"){
+                new_option = option.replace("absent_");
+                query_ext = "absent/"+new_option;
+            }else if(option == "new_absent_plant" || option == "new_absent_motorpool" || option == "new_absent_trucking"){
+                new_option = option.replace("new_absent_","");
+                query_ext = "new/absent/"+new_option;
+            }
 
             count = 0;
             var input_employee_name = $("input[name='update_employee_name[]']").map(function(){return $(this).val();}).get();
             var input_employee_reason = $("textarea[name='update_employee_reason[]']").map(function(){return $(this).val();}).get();
-
-            if(option == "absent"){
-                query_ext = option;
-            }else if(option == 'new_absent'){
-                query_ext = "new/absent";
-            }
 
             if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).remove()){
 
@@ -526,7 +660,7 @@
 
                     var employeeData = {
                         employee_name: input_employee_name[a].toUpperCase(),
-                        reason: input_employee_reason[a].toUpperCase()
+                        employee_comment: input_employee_reason[a].toUpperCase() || "N/A"
                     }
 
                     firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).push(employeeData);
@@ -539,10 +673,9 @@
                     window.location.href='lineup2.html?date='+currentDate;
                 }
             }
+        }
+        else if(option == "comment" || option == "new_comment"){
 
-        }else if(option == "comment" || option == "new_comment"){
-
-            count = 0;
             var input_comment = document.getElementById('comment').value;
 
             if(option == "comment"){
@@ -922,7 +1055,7 @@
                                                             <!-- <div class="form-group"> -->
                                                             <div class="col-md-offset-7 col-md-5">
                                                                 <input type="submit" name="submit" id="submit" value="Update" class="btn btn-primary" style="font-weight: bold;">
-                                                                <button type="button" class="btn btn-default" onclick="window.location.href='lineup.html';"><strong>Cancel</strong></button>
+                                                                <button type="button" class="btn btn-default" onclick="window.location.href='lineup2.html';"><strong>Cancel</strong></button>
                                                             <!-- </div> -->
                                                             </div>
                                                         </div>

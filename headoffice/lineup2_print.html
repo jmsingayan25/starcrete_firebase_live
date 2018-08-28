@@ -107,7 +107,7 @@
 
 		document.getElementById('page_header').innerHTML = plant + " LINE UP";
 
-		document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-info btn-md' id='printPageButton' onclick='return window.print();' style='float: right;'><span class='fa fa-print'></span> <strong>Print</strong></button> <br> <span id='id_new_set'></span></th>";
+		document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-info btn-md' id='printPageButton' onclick='return window.print();' style='float: right;'><span class='fa fa-print'></span> <strong>Print</strong></button> <br> <span id='id_schedule'></span></th>";
 
         firebase.database().ref('attendance/'+plant+'/'+currentDate).once('value', function(tableContentData){
 
@@ -116,448 +116,250 @@
             if(tableContentData.val() != null){
 
                 if(option_table == "old"){
-
-                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/machine1').once('value', function(machine1Snapshot){
-                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/machine3').once('value', function(machine3Snapshot){
-                            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/forklift_operator').once('value', function(forkliftSnapshot){
-                                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/mechanic').once('value', function(mechanicSnapshot){
-                            
-                                    myTableRow1 += "<tr><td>";
-
-                                    machine1Snapshot.forEach(function(machine1ChildSnapshot){
-                                        myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine1ChildSnapshot.val().employee_name + "</div></div>";
-                                    });
-
-                                    myTableRow1 += "</td><td>";
-                                    machine3Snapshot.forEach(function(machine3ChildSnapshot){
-                                        myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine3ChildSnapshot.val().employee_name + "</div></div>";
-                                    });
-
-                                    myTableRow1 += "</td><td>";
-                                    forkliftSnapshot.forEach(function(forkliftChildSnapshot){
-                                        
-                                        if(forkliftChildSnapshot.val().operator != "N/A"){
-                                            myTableRow1 += "<div class='row'><div class='col-md-12'>" + forkliftChildSnapshot.val().operator + "</div></div>";
-                                        }
-                                    });
-
-                                    myTableRow1 += "</td><td>";
-                                    mechanicSnapshot.forEach(function(mechanicChildSnapshot){
-                                        myTableRow1 += "<div class='row'><div class='col-md-12'>" + mechanicChildSnapshot.val().employee_name + "</div></div>";
-                                    });
-
-                                    myTableRow1 += "</td></tr>";
-
-                                    document.getElementById('row1_list').innerHTML = myTableRow1;
-                                });
-                            });
-                        });
-                    });
-
-                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/nonskid1/employee').once('value', function(nonskid1Snapshot){
-                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/nonskid2/employee').once('value', function(nonskid2Snapshot){
-                            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/nonskid3/employee').once('value', function(nonskid3Snapshot){
-                                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/nonskid4/employee').once('value', function(nonskid4Snapshot){
-                                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/nonskid1/helper').once('value', function(nonskid1HelperSnapshot){
-                                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/nonskid2/helper').once('value', function(nonskid2HelperSnapshot){
-                                            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/nonskid3/helper').once('value', function(nonskid3HelperSnapshot){
-                                                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/nonskid4/helper').once('value', function(nonskid4HelperSnapshot){
-
-                                                    myTableRow2 += "<tr><td>";
-
-                                                    nonskid1Snapshot.forEach(function(nonskid1ChildSnapshot){
-                                                        myTableRow2 += "<div class='row'><div class='col-md-12'>" + nonskid1ChildSnapshot.val().employee_name + "</div></div>";
-                                                    });
-
-                                                    myTableRow2 += "</td><td>";
-                                                    nonskid2Snapshot.forEach(function(nonskid2ChildSnapshot){
-                                                        myTableRow2 += "<div class='row'><div class='col-md-12'>" + nonskid2ChildSnapshot.val().employee_name + "</div></div>";
-                                                    });
-
-                                                    myTableRow2 += "</td><td>";
-                                                    nonskid3Snapshot.forEach(function(nonskid3ChildSnapshot){
-                                                        myTableRow2 += "<div class='row'><div class='col-md-12'>" + nonskid3ChildSnapshot.val().employee_name + "</div></div>";
-                                                    });
-
-                                                    myTableRow2 += "</td><td>";
-                                                    nonskid4Snapshot.forEach(function(nonskid4ChildSnapshot){
-                                                        myTableRow2 += "<div class='row'><div class='col-md-12'>" + nonskid4ChildSnapshot.val().employee_name + "</div></div>";
-                                                    });
-
-                                                    myTableRow2 += "</td></tr><tr><td>";
-
-                                                    nonskid1HelperSnapshot.forEach(function(nonskid1HelperChildSnapshot){
-                                                        myTableRow2 += "Helper: " + nonskid1HelperChildSnapshot.val().helper_name;
-                                                    });
-
-                                                    myTableRow2 += "</td><td>";
-
-                                                    nonskid2HelperSnapshot.forEach(function(nonskid2HelperChildSnapshot){
-                                                        myTableRow2 += "Helper: " + nonskid2HelperChildSnapshot.val().helper_name;
-                                                    });
-
-                                                    myTableRow2 += "</td><td>";
-
-                                                    nonskid3HelperSnapshot.forEach(function(nonskid3HelperChildSnapshot){
-                                                        myTableRow2 += "Helper: " + nonskid3HelperChildSnapshot.val().helper_name;
-                                                    });
-
-                                                    myTableRow2 += "</td><td>";
-
-                                                    nonskid4HelperSnapshot.forEach(function(nonskid4HelperChildSnapshot){
-                                                        myTableRow2 += "Helper: " + nonskid4HelperChildSnapshot.val().helper_name;
-                                                    });
-                                                    
-                                                    myTableRow2 += "</td></tr>";
-
-                                                    document.getElementById('row2_list').innerHTML = myTableRow2;
-                                                });
-                                            });
-                                        });
-                                    });
-                                });
-                            });
-                        });
-                    });
-
-                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/tagapukpok').once('value', function(tagapukpokSnapshot){
-                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/checker').once('value', function(checkerSnapshot){
-
-                            myTableRow3 += "<tr><td colspan='2'>";
-
-                            tagapukpokSnapshot.forEach(function(tagapukpokChildSnapshot){
-                                myTableRow3 += "<div class='row'><div class='col-md-12'>" + tagapukpokChildSnapshot.val().employee_name + " - " + tagapukpokChildSnapshot.val().employee_position + "</div></div>";
-                            });
-
-                            myTableRow3 += "</td><td colspan='2'>";
-                            checkerSnapshot.forEach(function(checkerChildSnapshot){
-                                myTableRow3 += "<div class='row'><div class='col-md-12'>" + checkerChildSnapshot.val().employee_name + " - " + checkerChildSnapshot.val().employee_position + "</div></div>";
-                            });
-
-                            myTableRow3 += "</td></tr>";
-
-                            document.getElementById('row3_list').innerHTML = myTableRow3;
-
-                        });
-                    });
-
-                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/kamador').once('value', function(kamadorSnapshot){
-                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/loader').once('value', function(loaderSnapshot){
-                            
-
-                                myTableRow4 += "<tr><td colspan='2'>";
-
-                                kamadorSnapshot.forEach(function(kamadorChildSnapshot){
-                                    myTableRow4 += "<div class='row'><div class='col-md-12'>" + kamadorChildSnapshot.val().employee_name + "</div></div>";
-                                });
-
-                                myTableRow4 += "</td><td colspan='2'>";
-                                loaderSnapshot.forEach(function(loaderChildSnapshot){
-                                    myTableRow4 += "<div class='row'><div class='col-md-12'>" + loaderChildSnapshot.val().employee_name + "</div></div>";
-                                });
-
-
-
-                                myTableRow4 += "</td></tr>";
-
-                                document.getElementById('row4_list').innerHTML = myTableRow4;
-                                    
-                        });
-                    });
-
-                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/absent/motorpool').once('value', function(absentMotorpoolSnapshot){
-                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/absent/plant').once('value', function(absentPlantSnapshot){
-                            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/absent/trucking').once('value', function(absentTruckingSnapshot){
-                                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/others').once('value', function(othersSnapshot){
-
-                                    myTableRow5 += "<tr><td colspan='2'>";
-
-                                    othersSnapshot.forEach(function(othersChildSnapshot){
-                                        myTableRow5 += "<div class='row'><div class='col-md-12'>" + othersChildSnapshot.val().employee_name + "</div></div>";
-                                    });
-
-                                    myTableRow5 += "</td><td colspan='2'>";
-                                    absentMotorpoolSnapshot.forEach(function(absentMotorpoolChildSnapshot){
-
-                                        if(absentMotorpoolChildSnapshot.val().employee_name != "N/A"){
-
-                                            myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentMotorpoolChildSnapshot.val().employee_name + " - " + absentMotorpoolChildSnapshot.val().employee_comment + "</div></div>";
-
-                                        }
-                                    });
-
-                                    absentPlantSnapshot.forEach(function(absentPlantChildSnapshot){
-
-                                        if(absentPlantChildSnapshot.val().employee_name != "N/A"){
-
-                                            myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentPlantChildSnapshot.val().employee_name + " - " + absentPlantChildSnapshot.val().employee_comment + "</div></div>";
-
-                                        }
-                                    });
-
-                                    absentTruckingSnapshot.forEach(function(absentTruckingChildSnapshot){
-
-                                        if(absentTruckingChildSnapshot.val().employee_name != "N/A"){
-
-                                            myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentTruckingChildSnapshot.val().employee_name + " - " + absentTruckingChildSnapshot.val().employee_comment + "</div></div>";
-
-                                        }
-                                    });
-
-                                    myTableRow5 += "</td></tr>";
-
-                                    document.getElementById('row5_list').innerHTML = myTableRow5;
-
-                                });
-                            });
-                        });
-                    });
-
-                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/comment').once('value', function(commentSnapshot){
-                        commentSnapshot.forEach(function(commentChildSnapshot){
-
-                            myTableRow6 += "<tr><td colspan='2'>" + commentChildSnapshot.val().comment_lineup_plant + "</td><td colspan='2'>" + commentChildSnapshot.val().comment_lineup_headoffice + "</td></tr>";
-                        });
-
-                        document.getElementById('row6_list').innerHTML = myTableRow6;    
-                    });
-
-                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/trucking').once('value', function(truckingSnapshot){
-
-                        myTableRow7 += "<tr><td colspan='4'><table class='table'><tbody><tr><th class='col-md-2' style='text-align: center;'>TRUCK NO.</th><th class='col-md-2' style='text-align: center;'>DRIVER</th><th class='col-md-2' style='text-align: center;'>PAHINANTE 1</th><th class='col-md-2' style='text-align: center;'>PAHINANTE 2</th><th class='col-md-3' style='text-align: center;'>COMMENT</th></tr></tbody><tbody></td></tr>";
-
-                        truckingSnapshot.forEach(function(truckingChildSnapshot){
-                            myTableRow7 += "<tr align='center'><td>" + truckingChildSnapshot.val().truck_no + "</td><td>" + truckingChildSnapshot.val().driver + "</td><td>" + truckingChildSnapshot.val().pahinante1 + "</td><td>" + truckingChildSnapshot.val().pahinante2 + "</td><td>" +  truckingChildSnapshot.val().comment + "</td></tr>";
-                        });
-
-                        myTableRow7 += "</tbody></table>";
-
-                        document.getElementById('row7_list').innerHTML = myTableRow7;
-                    });
-
+                    query_ext = "";
                 }else if(option_table == "new"){
-
-                    document.getElementById('id_new_set').innerHTML = "Result: NEW SET OF LINE UP";
-
-                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/machine1').once('value', function(machine1Snapshot){
-                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/machine3').once('value', function(machine3Snapshot){
-                            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/forklift_operator').once('value', function(forkliftSnapshot){
-                                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/mechanic').once('value', function(mechanicSnapshot){
-                            
-                                    myTableRow1 += "<tr><td>";
-
-                                    machine1Snapshot.forEach(function(machine1ChildSnapshot){
-                                        myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine1ChildSnapshot.val().employee_name + "</div></div>";
-                                    });
-
-                                    myTableRow1 += "</td><td>";
-                                    machine3Snapshot.forEach(function(machine3ChildSnapshot){
-                                        myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine3ChildSnapshot.val().employee_name + "</div></div>";
-                                    });
-
-                                    myTableRow1 += "</td><td>";
-                                    forkliftSnapshot.forEach(function(forkliftChildSnapshot){
-                                        myTableRow1 += "<div class='row'><div class='col-md-12'>" + forkliftChildSnapshot.val().forklift_no + " - " + forkliftChildSnapshot.val().operator + "</div></div>";
-                                    });
-
-                                    myTableRow1 += "</td><td>";
-                                    mechanicSnapshot.forEach(function(mechanicChildSnapshot){
-                                        myTableRow1 += "<div class='row'><div class='col-md-12'>" + mechanicChildSnapshot.val().employee_name + "</div></div>";
-                                    });
-
-                                    myTableRow1 += "</td></tr>";
-
-                                    document.getElementById('row1_list').innerHTML = myTableRow1;
-                                });
-                            });
-                        });
-                    });
-
-                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/nonskid1/employee').once('value', function(nonskid1Snapshot){
-                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/nonskid2/employee').once('value', function(nonskid2Snapshot){
-                            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/nonskid3/employee').once('value', function(nonskid3Snapshot){
-                                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/nonskid4/employee').once('value', function(nonskid4Snapshot){
-                                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/nonskid1/helper').once('value', function(nonskid1HelperSnapshot){
-                                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/nonskid2/helper').once('value', function(nonskid2HelperSnapshot){
-                                            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/nonskid3/helper').once('value', function(nonskid3HelperSnapshot){
-                                                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/nonskid4/helper').once('value', function(nonskid4HelperSnapshot){
-
-                                                    myTableRow2 += "<tr><td>";
-
-                                                    nonskid1Snapshot.forEach(function(nonskid1ChildSnapshot){
-                                                        myTableRow2 += "<div class='row'><div class='col-md-12'>" + nonskid1ChildSnapshot.val().employee_name + "</div></div>";
-                                                    });
-
-                                                    myTableRow2 += "</td><td>";
-                                                    nonskid2Snapshot.forEach(function(nonskid2ChildSnapshot){
-                                                        myTableRow2 += "<div class='row'><div class='col-md-12'>" + nonskid2ChildSnapshot.val().employee_name + "</div></div>";
-                                                    });
-
-                                                    myTableRow2 += "</td><td>";
-                                                    nonskid3Snapshot.forEach(function(nonskid3ChildSnapshot){
-                                                        myTableRow2 += "<div class='row'><div class='col-md-12'>" + nonskid3ChildSnapshot.val().employee_name + "</div></div>";
-                                                    });
-
-                                                    myTableRow2 += "</td><td>";
-                                                    nonskid4Snapshot.forEach(function(nonskid4ChildSnapshot){
-                                                        myTableRow2 += "<div class='row'><div class='col-md-12'>" + nonskid4ChildSnapshot.val().employee_name + "</div></div>";
-                                                    });
-
-                                                    myTableRow2 += "</td></tr><tr><td>";
-
-                                                    nonskid1HelperSnapshot.forEach(function(nonskid1HelperChildSnapshot){
-                                                        myTableRow2 += "Helper: " + nonskid1HelperChildSnapshot.val().helper_name;
-                                                    });
-
-                                                    myTableRow2 += "</td><td>";
-
-                                                    nonskid2HelperSnapshot.forEach(function(nonskid2HelperChildSnapshot){
-                                                        myTableRow2 += "Helper: " + nonskid2HelperChildSnapshot.val().helper_name;
-                                                    });
-
-                                                    myTableRow2 += "</td><td>";
-
-                                                    nonskid3HelperSnapshot.forEach(function(nonskid3HelperChildSnapshot){
-                                                        myTableRow2 += "Helper: " + nonskid3HelperChildSnapshot.val().helper_name;
-                                                    });
-
-                                                    myTableRow2 += "</td><td>";
-
-                                                    nonskid4HelperSnapshot.forEach(function(nonskid4HelperChildSnapshot){
-                                                        myTableRow2 += "Helper: " + nonskid4HelperChildSnapshot.val().helper_name;
-                                                    });
-                                                    
-                                                    myTableRow2 += "</td></tr>";
-
-                                                    document.getElementById('row2_list').innerHTML = myTableRow2;
-                                                });
-                                            });
-                                        });
-                                    });
-                                });
-                            });
-                        });
-                    });
-
-                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/tagapukpok').once('value', function(tagapukpokSnapshot){
-                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/checker').once('value', function(checkerSnapshot){
-
-                            myTableRow3 += "<tr><td colspan='2'>";
-
-                            tagapukpokSnapshot.forEach(function(tagapukpokChildSnapshot){
-                                myTableRow3 += "<div class='row'><div class='col-md-12'>" + tagapukpokChildSnapshot.val().employee_name + " - " + tagapukpokChildSnapshot.val().employee_position + "</div></div>";
-                            });
-
-                            myTableRow3 += "</td><td colspan='2'>";
-                            checkerSnapshot.forEach(function(checkerChildSnapshot){
-                                myTableRow3 += "<div class='row'><div class='col-md-12'>" + checkerChildSnapshot.val().employee_name + " - " + checkerChildSnapshot.val().employee_position + "</div></div>";
-                            });
-
-                            myTableRow3 += "</td></tr>";
-
-                            document.getElementById('row3_list').innerHTML = myTableRow3;
-
-                        });
-                    });
-
-                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/kamador').once('value', function(kamadorSnapshot){
-                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/loader').once('value', function(loaderSnapshot){
-                            
-
-                                myTableRow4 += "<tr><td colspan='2'>";
-
-                                kamadorSnapshot.forEach(function(kamadorChildSnapshot){
-                                    myTableRow4 += "<div class='row'><div class='col-md-12'>" + kamadorChildSnapshot.val().employee_name + "</div></div>";
-                                });
-
-                                myTableRow4 += "</td><td colspan='2'>";
-                                loaderSnapshot.forEach(function(loaderChildSnapshot){
-                                    myTableRow4 += "<div class='row'><div class='col-md-12'>" + loaderChildSnapshot.val().employee_name + "</div></div>";
-                                });
-
-
-
-                                myTableRow4 += "</td></tr>";
-
-                                document.getElementById('row4_list').innerHTML = myTableRow4;
-                                    
-                        });
-                    });
-
-                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/absent/motorpool').once('value', function(absentMotorpoolSnapshot){
-                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/absent/plant').once('value', function(absentPlantSnapshot){
-                            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/absent/trucking').once('value', function(absentTruckingSnapshot){
-                                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/others').once('value', function(othersSnapshot){
-
-                                    myTableRow5 += "<tr><td colspan='2'>";
-
-                                    othersSnapshot.forEach(function(othersChildSnapshot){
-                                        myTableRow5 += "<div class='row'><div class='col-md-12'>" + othersChildSnapshot.val().employee_name + "</div></div>";
-                                    });
-
-                                    myTableRow5 += "</td><td colspan='2'>";
-                                    absentMotorpoolSnapshot.forEach(function(absentMotorpoolChildSnapshot){
-
-                                        if(absentMotorpoolChildSnapshot.val().employee_name != "N/A"){
-
-                                            myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentMotorpoolChildSnapshot.val().employee_name + " - " + absentMotorpoolChildSnapshot.val().employee_comment + "</div></div>";
-
-                                        }
-                                    });
-
-                                    absentPlantSnapshot.forEach(function(absentPlantChildSnapshot){
-
-                                        if(absentPlantChildSnapshot.val().employee_name != "N/A"){
-
-                                            myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentPlantChildSnapshot.val().employee_name + " - " + absentPlantChildSnapshot.val().employee_comment + "</div></div>";
-
-                                        }
-                                    });
-
-                                    absentTruckingSnapshot.forEach(function(absentTruckingChildSnapshot){
-
-                                        if(absentTruckingChildSnapshot.val().employee_name != "N/A"){
-
-                                            myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentTruckingChildSnapshot.val().employee_name + " - " + absentTruckingChildSnapshot.val().employee_comment + "</div></div>";
-
-                                        }
-                                    });
-
-                                    myTableRow5 += "</td></tr>";
-
-                                    document.getElementById('row5_list').innerHTML = myTableRow5;
-
-                                });
-                            });
-                        });
-                    });
-
-                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/comment').once('value', function(commentSnapshot){
-                        commentSnapshot.forEach(function(commentChildSnapshot){
-
-                            myTableRow6 += "<tr><td colspan='2'>" + commentChildSnapshot.val().comment_lineup_plant + "</td><td colspan='2'>" + commentChildSnapshot.val().comment_lineup_headoffice + "</td></tr>";
-                        });
-
-                        document.getElementById('row6_list').innerHTML = myTableRow6;    
-                    });
-
-                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/trucking').once('value', function(truckingSnapshot){
-
-                        myTableRow7 += "<tr><td colspan='4'><table class='table'><tbody><tr><th class='col-md-2' style='text-align: center;'>TRUCK NO.</th><th class='col-md-2' style='text-align: center;'>DRIVER</th><th class='col-md-2' style='text-align: center;'>PAHINANTE 1</th><th class='col-md-2' style='text-align: center;'>PAHINANTE 2</th><th class='col-md-3' style='text-align: center;'>COMMENT</th></tr></tbody><tbody></td></tr>";
-
-                        truckingSnapshot.forEach(function(truckingChildSnapshot){
-                            myTableRow7 += "<tr align='center'><td>" + truckingChildSnapshot.val().truck_no + "</td><td>" + truckingChildSnapshot.val().driver + "</td><td>" + truckingChildSnapshot.val().pahinante1 + "</td><td>" + truckingChildSnapshot.val().pahinante2 + "</td><td>" +  truckingChildSnapshot.val().comment + "</td></tr>";
-                        });
-
-                        myTableRow7 += "</tbody></table>";
-
-                        document.getElementById('row7_list').innerHTML = myTableRow7;
-                    });
+                    query_ext = "/new";
                 }
 
-                $(".se-pre-con").fadeOut("slow");
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext).once('value', function(schedSnapshot){
+
+                    document.getElementById('id_schedule').innerHTML = "Schedule: " + schedSnapshot.val().schedule;
+                });
+
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/machine1').once('value', function(machine1Snapshot){
+                    firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/machine3').once('value', function(machine3Snapshot){
+                        firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/forklift_operator').once('value', function(forkliftSnapshot){
+                            firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/mechanic').once('value', function(mechanicSnapshot){
+                        
+                                forkliftCount = 0;
+                                myTableRow1 += "<tr><td>";
+
+                                machine1Snapshot.forEach(function(machine1ChildSnapshot){
+                                    myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine1ChildSnapshot.val().employee_name + " - " + machine1ChildSnapshot.val().employee_position + "</div></div>";
+                                });
+
+                                myTableRow1 += "</td><td>";
+                                machine3Snapshot.forEach(function(machine3ChildSnapshot){
+                                    myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine3ChildSnapshot.val().employee_name + " - " + machine3ChildSnapshot.val().employee_position + "</div></div>";
+                                });
+
+                                myTableRow1 += "</td><td>";
+                                forkliftSnapshot.forEach(function(forkliftChildSnapshot){
+                                    
+                                    if(forkliftChildSnapshot.val().operator != "N/A"){
+                                        myTableRow1 += "<div class='row'><div class='col-md-12'>" + forkliftChildSnapshot.val().operator + "</div></div>";
+
+                                        forkliftCount++;
+                                    }
+                                });
+
+                                if(forkliftCount == 0){
+                                    myTableRow1 += "<div class='row'><div class='col-md-12'>N/A</div></div>";
+                                }
+
+                                myTableRow1 += "</td><td>";
+                                mechanicSnapshot.forEach(function(mechanicChildSnapshot){
+                                    myTableRow1 += "<div class='row'><div class='col-md-12'>" + mechanicChildSnapshot.val().employee_name + "</div></div>";
+                                });
+
+                                myTableRow1 += "</td></tr>";
+
+                                document.getElementById('row1_list').innerHTML = myTableRow1;
+                            });
+                        });
+                    });
+                });
+
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/nonskid1/employee').once('value', function(nonskid1Snapshot){
+                    firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/nonskid2/employee').once('value', function(nonskid2Snapshot){
+                        firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/nonskid3/employee').once('value', function(nonskid3Snapshot){
+                            firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/nonskid4/employee').once('value', function(nonskid4Snapshot){
+                                firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/nonskid1/helper').once('value', function(nonskid1HelperSnapshot){
+                                    firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/nonskid2/helper').once('value', function(nonskid2HelperSnapshot){
+                                        firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/nonskid3/helper').once('value', function(nonskid3HelperSnapshot){
+                                            firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/nonskid4/helper').once('value', function(nonskid4HelperSnapshot){
+
+                                                myTableRow2 += "<tr><td>";
+
+                                                nonskid1Snapshot.forEach(function(nonskid1ChildSnapshot){
+                                                    myTableRow2 += "<div class='row'><div class='col-md-12'>" + nonskid1ChildSnapshot.val().employee_name + "</div></div>";
+                                                });
+
+                                                myTableRow2 += "</td><td>";
+                                                nonskid2Snapshot.forEach(function(nonskid2ChildSnapshot){
+                                                    myTableRow2 += "<div class='row'><div class='col-md-12'>" + nonskid2ChildSnapshot.val().employee_name + "</div></div>";
+                                                });
+
+                                                myTableRow2 += "</td><td>";
+                                                nonskid3Snapshot.forEach(function(nonskid3ChildSnapshot){
+                                                    myTableRow2 += "<div class='row'><div class='col-md-12'>" + nonskid3ChildSnapshot.val().employee_name + "</div></div>";
+                                                });
+
+                                                myTableRow2 += "</td><td>";
+                                                nonskid4Snapshot.forEach(function(nonskid4ChildSnapshot){
+                                                    myTableRow2 += "<div class='row'><div class='col-md-12'>" + nonskid4ChildSnapshot.val().employee_name + "</div></div>";
+                                                });
+
+                                                myTableRow2 += "</td></tr><tr><td>";
+
+                                                nonskid1HelperSnapshot.forEach(function(nonskid1HelperChildSnapshot){
+                                                    myTableRow2 += "Helper: " + nonskid1HelperChildSnapshot.val().helper_name;
+                                                });
+
+                                                myTableRow2 += "</td><td>";
+
+                                                nonskid2HelperSnapshot.forEach(function(nonskid2HelperChildSnapshot){
+                                                    myTableRow2 += "Helper: " + nonskid2HelperChildSnapshot.val().helper_name;
+                                                });
+
+                                                myTableRow2 += "</td><td>";
+
+                                                nonskid3HelperSnapshot.forEach(function(nonskid3HelperChildSnapshot){
+                                                    myTableRow2 += "Helper: " + nonskid3HelperChildSnapshot.val().helper_name;
+                                                });
+
+                                                myTableRow2 += "</td><td>";
+
+                                                nonskid4HelperSnapshot.forEach(function(nonskid4HelperChildSnapshot){
+                                                    myTableRow2 += "Helper: " + nonskid4HelperChildSnapshot.val().helper_name;
+                                                });
+                                                
+                                                myTableRow2 += "</td></tr>";
+
+                                                document.getElementById('row2_list').innerHTML = myTableRow2;
+
+                                                $(".se-pre-con").fadeOut("slow");
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/tagapukpok').once('value', function(tagapukpokSnapshot){
+                    firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/checker').once('value', function(checkerSnapshot){
+
+                        myTableRow3 += "<tr><td colspan='2'>";
+
+                        tagapukpokSnapshot.forEach(function(tagapukpokChildSnapshot){
+                            myTableRow3 += "<div class='row'><div class='col-md-12'>" + tagapukpokChildSnapshot.val().employee_name + " - " + tagapukpokChildSnapshot.val().employee_position + "</div></div>";
+                        });
+
+                        myTableRow3 += "</td><td colspan='2'>";
+                        checkerSnapshot.forEach(function(checkerChildSnapshot){
+                            myTableRow3 += "<div class='row'><div class='col-md-12'>" + checkerChildSnapshot.val().employee_name + " - " + checkerChildSnapshot.val().employee_position + "</div></div>";
+                        });
+
+                        myTableRow3 += "</td></tr>";
+
+                        document.getElementById('row3_list').innerHTML = myTableRow3;
+
+                    });
+                });
+
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/kamador').once('value', function(kamadorSnapshot){
+                    firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/loader').once('value', function(loaderSnapshot){
+                        
+                        myTableRow4 += "<tr><td colspan='2'>";
+
+                        kamadorSnapshot.forEach(function(kamadorChildSnapshot){
+                            myTableRow4 += "<div class='row'><div class='col-md-12'>" + kamadorChildSnapshot.val().employee_name + "</div></div>";
+                        });
+
+                        myTableRow4 += "</td><td colspan='2'>";
+                        loaderSnapshot.forEach(function(loaderChildSnapshot){
+                            myTableRow4 += "<div class='row'><div class='col-md-12'>" + loaderChildSnapshot.val().employee_name + "</div></div>";
+                        });
+
+                        myTableRow4 += "</td></tr>";
+
+                        document.getElementById('row4_list').innerHTML = myTableRow4;
+                                
+                    });
+                });
+
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/absent/motorpool').once('value', function(absentMotorpoolSnapshot){
+                    firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/absent/plant').once('value', function(absentPlantSnapshot){
+                        firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/absent/trucking').once('value', function(absentTruckingSnapshot){
+                            firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/others').once('value', function(othersSnapshot){
+
+                                absentCount = 0;
+                                myTableRow5 += "<tr><td colspan='2'>";
+
+                                othersSnapshot.forEach(function(othersChildSnapshot){
+                                    myTableRow5 += "<div class='row'><div class='col-md-12'>" + othersChildSnapshot.val().employee_name + " - " + othersChildSnapshot.val().employee_position + "</div></div>";
+                                });
+
+                                myTableRow5 += "</td><td colspan='2'>";
+                                absentMotorpoolSnapshot.forEach(function(absentMotorpoolChildSnapshot){
+
+                                    if(absentMotorpoolChildSnapshot.val().employee_name != "N/A"){
+
+                                        myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentMotorpoolChildSnapshot.val().employee_name + " - " + absentMotorpoolChildSnapshot.val().employee_comment + "</div></div>";
+
+                                        absentCount++;
+                                    }
+                                });
+
+                                absentPlantSnapshot.forEach(function(absentPlantChildSnapshot){
+
+                                    if(absentPlantChildSnapshot.val().employee_name != "N/A"){
+
+                                        myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentPlantChildSnapshot.val().employee_name + " - " + absentPlantChildSnapshot.val().employee_comment + "</div></div>";
+
+                                        absentCount++;
+                                    }
+                                });
+
+                                absentTruckingSnapshot.forEach(function(absentTruckingChildSnapshot){
+
+                                    if(absentTruckingChildSnapshot.val().employee_name != "N/A"){
+
+                                        myTableRow5 += "<div class='row'><div class='col-md-12'>" + absentTruckingChildSnapshot.val().employee_name + " - " + absentTruckingChildSnapshot.val().employee_comment + "</div></div>";
+
+                                        absentCount++;
+                                    }
+                                });
+
+                                if(absentCount == 0){
+                                    myTableRow5 += "<div class='row'><div class='col-md-12'>N/A</div></div>";
+                                }
+
+                                myTableRow5 += "</td></tr>";
+
+                                document.getElementById('row5_list').innerHTML = myTableRow5;
+
+                            });
+                        });
+                    });
+                });
+
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/comment').once('value', function(commentSnapshot){
+                    commentSnapshot.forEach(function(commentChildSnapshot){
+
+                        myTableRow6 += "<tr><td colspan='2'>" + commentChildSnapshot.val().comment_lineup_plant + "</td><td colspan='2'>" + commentChildSnapshot.val().comment_lineup_headoffice + "</td></tr>";
+                    });
+
+                    document.getElementById('row6_list').innerHTML = myTableRow6;    
+                });
+
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/trucking').once('value', function(truckingSnapshot){
+
+                myTableRow7 += "<tr><td colspan='4'><table class='table'><tbody><tr><th class='col-md-2' style='text-align: center;'>TRUCK NO.</th><th class='col-md-2' style='text-align: center;'>DRIVER</th><th class='col-md-2' style='text-align: center;'>PAHINANTE 1</th><th class='col-md-2' style='text-align: center;'>PAHINANTE 2</th><th class='col-md-3' style='text-align: center;'>COMMENT</th></tr></tbody><tbody></td></tr>";
+
+                    truckingSnapshot.forEach(function(truckingChildSnapshot){
+                        myTableRow7 += "<tr align='center'><td>" + truckingChildSnapshot.val().truck_no + "</td><td>" + truckingChildSnapshot.val().driver + "</td><td>" + truckingChildSnapshot.val().pahinante1 + "</td><td>" + truckingChildSnapshot.val().pahinante2 + "</td><td>" +  truckingChildSnapshot.val().comment + "</td></tr>";
+                    });
+
+                    myTableRow7 += "</tbody></table>";
+
+                    document.getElementById('row7_list').innerHTML = myTableRow7;
+                });
 
             }else{
+
                 document.getElementById('row1_list').innerHTML = "";
                 document.getElementById('row2_list').innerHTML = "";
                 document.getElementById('row3_list').innerHTML = "";
@@ -573,13 +375,6 @@
 
 </script>
 <style>
-/*.header_line{
-    background-color: #00a3cc;
-}
-
-.table .header_line th{
-    color: white;
-}*/
 @media print{
 	table{
 	    font-size: 10px;
@@ -603,7 +398,7 @@
 				<div class="col-md-12">
 					<section class="panel">
 						<div>
-							<table class="table table-bordered table-stripped">
+							<table class="table table-bordered table-stripped table-condensed">
                                 <tbody>
                                     <tr id="id_date" class="header_line"></tr>
                                     <tr class="header_line">
