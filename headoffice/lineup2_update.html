@@ -119,46 +119,70 @@
 
     function tableData(){
 
-    	if(option == "comment"){
+        if(option == "comment"){
+            query_ext = option;
+        }else if(option == "new_comment"){
+            query_ext = "new/comment";
+        }
 
-    		firebase.database().ref('attendance/'+plant+'/'+currentDate+'/comment').once('value', function(commentSnapshot){
+        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(commentSnapshot){
 
-	    		if(commentSnapshot.val() != null){
+             if(commentSnapshot.val() != null){
 
                     commentSnapshot.forEach(function(commentChildSnapshot){
 
                         optionTable += "<div class='col-md-12'><textarea name='comment' id='comment' class='form-control input_type' rows='5' style='text-transform: uppercase;' required>" + commentChildSnapshot.val().comment_lineup_headoffice  + "</textarea></div>";
                     });
 
-	    		}else{
+             }else{
 
-	    			optionTable += "<div class='col-md-12'><textarea name='comment' id='comment' class='form-control input_type' rows='5' style='text-transform: uppercase;' required></textarea></div>";
+                 optionTable += "<div class='col-md-12'><textarea name='comment' id='comment' class='form-control input_type' rows='5' style='text-transform: uppercase;' required></textarea></div>";
 
-	    		}
+             }
+                
+             document.getElementById('id_comment_field').innerHTML = optionTable;
+         });
+
+    	// if(option == "comment"){
+
+    	// 	firebase.database().ref('attendance/'+plant+'/'+currentDate+'/comment').once('value', function(commentSnapshot){
+
+	    // 		if(commentSnapshot.val() != null){
+
+     //                commentSnapshot.forEach(function(commentChildSnapshot){
+
+     //                    optionTable += "<div class='col-md-12'><textarea name='comment' id='comment' class='form-control input_type' rows='5' style='text-transform: uppercase;' required>" + commentChildSnapshot.val().comment_lineup_headoffice  + "</textarea></div>";
+     //                });
+
+	    // 		}else{
+
+	    // 			optionTable += "<div class='col-md-12'><textarea name='comment' id='comment' class='form-control input_type' rows='5' style='text-transform: uppercase;' required></textarea></div>";
+
+	    // 		}
 	    		
-	    		document.getElementById('id_comment_field').innerHTML = optionTable;
-	    	});
+	    // 		document.getElementById('id_comment_field').innerHTML = optionTable;
+	    // 	});
 
-    	}else if(option == "new_comment"){
+    	// }else if(option == "new_comment"){
 
-    		firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/comment').once('value', function(commentSnapshot){
+    	// 	firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/comment').once('value', function(commentSnapshot){
 
-    			if(commentSnapshot.val() != null){
+    	// 		if(commentSnapshot.val() != null){
 
-	    			commentSnapshot.forEach(function(commentChildSnapshot){
+	    // 			commentSnapshot.forEach(function(commentChildSnapshot){
 
-                        optionTable += "<div class='col-md-12'><textarea name='comment' id='comment' class='form-control input_type' rows='5' style='text-transform: uppercase;' required>" + commentChildSnapshot.val().comment_lineup_headoffice  + "</textarea></div>";
-                    });
+     //                    optionTable += "<div class='col-md-12'><textarea name='comment' id='comment' class='form-control input_type' rows='5' style='text-transform: uppercase;' required>" + commentChildSnapshot.val().comment_lineup_headoffice  + "</textarea></div>";
+     //                });
 
-	    		}else{
+	    // 		}else{
 
-	    			optionTable += "<div class='col-md-12'><textarea name='comment' id='comment' class='form-control input_type' rows='5' style='text-transform: uppercase;'></textarea></div>";
+	    // 			optionTable += "<div class='col-md-12'><textarea name='comment' id='comment' class='form-control input_type' rows='5' style='text-transform: uppercase;'></textarea></div>";
 
-	    		}
+	    // 		}
 
-	    		document.getElementById('id_comment_field').innerHTML = optionTable;
-	    	});
-    	}
+	    // 		document.getElementById('id_comment_field').innerHTML = optionTable;
+	    // 	});
+    	// }
     }
 
     function submitForm(){
