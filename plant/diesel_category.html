@@ -183,160 +183,122 @@
         document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
     });
 
-function submitcategory()
-{
+function submitcategory(){
     event.preventDefault();
-    firebase.database().ref().child("diesel_category/" + plant).once('value',function(Snapshot)
-    {
-          var textcategory = document.getElementById('textcategory').value; 
+    firebase.database().ref().child("diesel_category/" + plant).once('value',function(Snapshot){
+        var textcategory = document.getElementById('textcategory').value; 
 
-          var text_category  = {CategoryName: textcategory.toUpperCase()};
+        var text_category  = {CategoryName: textcategory.toUpperCase()};
 
-          var postData = firebase.database().ref('diesel_category/' + plant);
-          var newPostRef = postData.push();
-              newPostRef.set(text_category);
-          var postId = newPostRef.key;
+        var postData = firebase.database().ref('diesel_category/' + plant);
+        var newPostRef = postData.push();
+        newPostRef.set(text_category);
+        var postId = newPostRef.key;
 
-          var clearText = document.getElementById("textcategory");
-          clearText.value = "";
-          window.location.reload();
+        var clearText = document.getElementById("textcategory");
+        clearText.value = "";
+        window.location.reload();
     });    
 }
- function clearclose()
- {
-     event.preventDefault();
-     var clearText = document.getElementById("textcategory");
-     clearText.value = "";
- }
-function DropdownCategory()
-{
+
+function clearclose(){
+
+    event.preventDefault();
+    var clearText = document.getElementById("textcategory");
+    clearText.value = "";
+}
+
+function DropdownCategory(){
+
     var dd_category = "<option value=''>Select</option>"
-    firebase.database().ref().child("diesel_category/" + plant).once('value',function(Snapshot)
-    {
-        Snapshot.forEach(function(ChildSnapshot)
-        {
+    firebase.database().ref().child("diesel_category/" + plant).once('value',function(Snapshot){
+        Snapshot.forEach(function(ChildSnapshot){
             dd_category += "<option value ='" + ChildSnapshot.val().CategoryName  + "'>" + ChildSnapshot.val().CategoryName +"</option>";
             document.getElementById("selectsys").innerHTML = dd_category;
         })
-        
     });
-
 }
 
-function categincomingbutton()
-{
-    event.preventDefault();
-    firebase.database().ref().child("diesel_current_category/" + plant).once('value',function(Snapshot)
-    {  
-             var get_category_id = document.getElementById('selectsys').value;
-             if (get_category_id == "") 
-             {
-                alert("Choose Category");
-             }else
-             {
-                var text_category  = {CurrentCategory:get_category_id};
-                firebase.database().ref().child("diesel_current_category/" + plant).set(text_category);
+function categincomingbutton(){
 
-                window.location.href ="diesel_category_incoming.html";
-             }   
+    event.preventDefault();
+    firebase.database().ref().child("diesel_current_category/" + plant).once('value',function(Snapshot){
+        var get_category_id = document.getElementById('selectsys').value;
+        if (get_category_id == ""){
+            alert("Choose Category");
+        }else{
+            var text_category  = {CurrentCategory:get_category_id};
+            firebase.database().ref().child("diesel_current_category/" + plant).set(text_category);
+            window.location.href ="diesel_category_incoming.html";
+        }   
     }); 
 }
 
-function categoutcomingbutton()
-{
+function categoutcomingbutton(){
     event.preventDefault();
-    firebase.database().ref().child("diesel_current_category/" + plant).once('value',function(Snapshot)
-    {  
-             var get_category_id = document.getElementById('selectsys').value;
-             if (get_category_id == "") 
-             {
-                alert("Choose Category");
-             }else
-             {
-                var text_category  = {CurrentCategory:get_category_id};
-                firebase.database().ref().child("diesel_current_category/" + plant).set(text_category);
+    firebase.database().ref().child("diesel_current_category/" + plant).once('value',function(Snapshot){  
+        var get_category_id = document.getElementById('selectsys').value;
+        if (get_category_id == ""){
+            alert("Choose Category");
+        }else{
+            var text_category  = {CurrentCategory:get_category_id};
+            firebase.database().ref().child("diesel_current_category/" + plant).set(text_category);
 
-                window.location.href ="diesel_category_outcoming.html";
-             }   
+            window.location.href ="diesel_category_outcoming.html";
+        }
     }); 
 }
 
-function displaycurrentCategory(getCurrentCategory)
-{
+function displaycurrentCategory(getCurrentCategory){
     $(".se-pre-con").fadeIn("fast");
     var myTbody = "";
-
-      firebase.database().ref('incoming_diesel_category/'+ plant).orderByChild("reverseDate").once('value').then(function(DieselSnapshotTransaction) {
+    firebase.database().ref('incoming_diesel_category/'+ plant).orderByChild("reverseDate").once('value').then(function(DieselSnapshotTransaction){
         DieselSnapshotTransaction.forEach(function(dieselChildSnapshot){
+            var getdataCurrentCategory = dieselChildSnapshot.val().PickCategoryName;
+            var date = dieselChildSnapshot.val().Date_Input;
+            var CurrentDate = new Date();
+            if (getCurrentCategory ==  getdataCurrentCategory){
+                document.getElementById("Search_day").innerHTML = "";
+                document.getElementById("category_current").innerHTML = getCurrentCategory;
+                var truckno = dieselChildSnapshot.val().truck_no;
+                var suppliername = dieselChildSnapshot.val().supplier || dieselChildSnapshot.val().operator;
+                var quantityin = Number(dieselChildSnapshot.val().quantity_in).toLocaleString("en");
+                var availablestock = Number(dieselChildSnapshot.val().seperateCurrentStock).toLocaleString("en");
+                var time = dieselChildSnapshot.val().time_input;
+                var drno = dieselChildSnapshot.val().dr_no || "";
+                var date= dieselChildSnapshot.val().Date_Input;
+                var key = dieselChildSnapshot.key;
 
-                var getdataCurrentCategory = dieselChildSnapshot.val().PickCategoryName;
-                var date = dieselChildSnapshot.val().Date_Input;
-                var CurrentDate = new Date();
-                if (getCurrentCategory ==  getdataCurrentCategory) 
-                {
-                    document.getElementById("Search_day").innerHTML = "";
-                    document.getElementById("category_current").innerHTML = getCurrentCategory;
-                    var truckno = dieselChildSnapshot.val().truck_no;
-                    var suppliername = dieselChildSnapshot.val().supplier || dieselChildSnapshot.val().operator;
-                    var quantityin = Number(dieselChildSnapshot.val().quantity_in).toLocaleString("en");
-                    var availablestock = Number(dieselChildSnapshot.val().seperateCurrentStock).toLocaleString("en");
-                    var time = dieselChildSnapshot.val().time_input;
-                    var drno = dieselChildSnapshot.val().dr_no || "";
-                    var date= dieselChildSnapshot.val().Date_Input;
-                    var key = dieselChildSnapshot.key;
+                var quantityout = Number(dieselChildSnapshot.val().quantity_out).toLocaleString("en");
+                if (quantityin == "NaN"){quantityholder = "";}
+                else{quantityholder = quantityin + " liter(s)" ;}
+                if (quantityout == "NaN"){quantityoutholder = "";}
+                else{quantityoutholder = quantityout + " liter(s)";}
 
-                    var quantityout = Number(dieselChildSnapshot.val().quantity_out).toLocaleString("en");
-                
-                    if (quantityin == "NaN"){quantityholder = "";}
-                    else{quantityholder = quantityin + " liter(s)" ;}
-                    if (quantityout == "NaN"){quantityoutholder = "";}
-                    else{quantityoutholder = quantityout + " liter(s)";}
-
-                 if (dieselChildSnapshot.val().TransactionType == "In")
-                    {
-                        myTbody += "<tr style ='background-color:#006080'>";
-                        myTbody += "<td style ='color: white'><strong>" + truckno + "</strong></td>";
-                        myTbody += "<td style ='color: white'><strong>" + suppliername + "</strong></td>";
-                        myTbody += "<td style ='color: white'><strong>" + quantityholder  + "</strong></td>";
-                        myTbody += "<td style ='color: white'><strong>" + quantityoutholder  + "</strong></td>";
-                        myTbody += "<td style ='color: white'><strong>" + availablestock + " liter(s)" + "</strong></td>";
+                if (dieselChildSnapshot.val().TransactionType == "In"){
+                    myTbody += "<tr style ='background-color:#006080'>";
+                    myTbody += "<td style ='color: white'><strong>" + truckno + "</strong></td>";
+                    myTbody += "<td style ='color: white'><strong>" + suppliername + "</strong></td>";
+                    myTbody += "<td style ='color: white'><strong>" + quantityholder  + "</strong></td>";
+                    myTbody += "<td style ='color: white'><strong>" + quantityoutholder  + "</strong></td>";
+                    myTbody += "<td style ='color: white'><strong>" + availablestock + " liter(s)" + "</strong></td>";
                     
-                        myTbody += "<td style ='color: white'><strong>" + time + "</strong></td>";
-                        myTbody += "<td style ='color: white'><strong>" + drno + "</strong></td>";
-                        myTbody += "<td style ='color: white'><strong>" + date + "</strong></td>";
-                        myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>"
-                    }else
-                    {
-                        myTbody += "<tr><td><strong>" + truckno + "</strong></td>";
-                        myTbody += "<td><strong>" + suppliername + "</strong></td>";
-                        myTbody += "<td><strong>" + quantityholder  + "</strong></td>";
-                        myTbody += "<td><strong>" + quantityoutholder  + "</strong></td>";
-                        myTbody += "<td><strong>" + availablestock + " liter(s)" + "</strong></td>";
+                    myTbody += "<td style ='color: white'><strong>" + time + "</strong></td>";
+                    myTbody += "<td style ='color: white'><strong>" + drno + "</strong></td>";
+                    myTbody += "<td style ='color: white'><strong>" + date + "</strong></td>";
+                    myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>"
+                }else{
+                    myTbody += "<tr><td><strong>" + truckno + "</strong></td>";
+                    myTbody += "<td><strong>" + suppliername + "</strong></td>";
+                    myTbody += "<td><strong>" + quantityholder  + "</strong></td>";
+                    myTbody += "<td><strong>" + quantityoutholder  + "</strong></td>";
+                    myTbody += "<td><strong>" + availablestock + " liter(s)" + "</strong></td>";
                     
-                        myTbody += "<td><strong>" + time + "</strong></td>";
-                        myTbody += "<td><strong>" + drno + "</strong></td>";
-                        myTbody += "<td><strong>" + date + "</strong></td>";
-                        myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>"
-                    }
-                
-            firebase.database().ref().child("available_seperate_category/" + plant).once('value',function(DisplayStockSnapshots){
-                DisplayStockSnapshots.forEach(function(SeperateChildSnapshot){
-                    if (dieselChildSnapshot.val().PickCategoryName == SeperateChildSnapshot.val().CategoryName) 
-                    {                   
-                        document.getElementById("id_Categorystock").innerHTML = Number(SeperateChildSnapshot.val().Liters).toLocaleString("en") + " Liter(s)";
-                    if (SeperateChildSnapshot.val().Liters <= 3500) 
-                        {
-                            document.getElementById("id_Categorystock").style.color = "red";
-                        }else
-                        {
-                            document.getElementById("id_Categorystock").style.color = "white";  
-                        }
-                    }
-                        });
-                    });
+                    myTbody += "<td><strong>" + time + "</strong></td>";
+                    myTbody += "<td><strong>" + drno + "</strong></td>";
+                    myTbody += "<td><strong>" + date + "</strong></td>";
+                    myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>"
                 }
-            else{
-              if (getCurrentCategory ==  getdataCurrentCategory){
                 firebase.database().ref().child("available_seperate_category/" + plant).once('value',function(DisplayStockSnapshots){
                     DisplayStockSnapshots.forEach(function(SeperateChildSnapshot){
                         if (dieselChildSnapshot.val().PickCategoryName == SeperateChildSnapshot.val().CategoryName){
@@ -344,38 +306,51 @@ function displaycurrentCategory(getCurrentCategory)
                             if (SeperateChildSnapshot.val().Liters <= 3500){
                                 document.getElementById("id_Categorystock").style.color = "red";
                             }else{
-                                document.getElementById("id_Categorystock").style.color = "white";  
+                                document.getElementById("id_Categorystock").style.color = "white";
+                            }
+                        }
+                    });
+                });
+            }else{
+                if (getCurrentCategory ==  getdataCurrentCategory){
+                    firebase.database().ref().child("available_seperate_category/" + plant).once('value',function(DisplayStockSnapshots){
+                        DisplayStockSnapshots.forEach(function(SeperateChildSnapshot){
+                            if (dieselChildSnapshot.val().PickCategoryName == SeperateChildSnapshot.val().CategoryName){
+                                document.getElementById("id_Categorystock").innerHTML = Number(SeperateChildSnapshot.val().Liters).toLocaleString("en") + " Liter(s)";
+                                if (SeperateChildSnapshot.val().Liters <= 3500){
+                                    document.getElementById("id_Categorystock").style.color = "red";
+                                }else{
+                                    document.getElementById("id_Categorystock").style.color = "white";
                                 }
                             }
                         });
                     });
                 }
             }
-            });
-            $(".se-pre-con").fadeOut("slow");
-            if (myTbody == ""){
-                document.getElementById("Search_day").innerHTML = "";
-                document.getElementById("id_Categorystock").innerHTML = "";
-                document.getElementById("category_current").innerHTML = getCurrentCategory;
-                myTbody ="<tr><td colspan='8' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
-                document.getElementById("DieselList").innerHTML = myTbody; 
-                $(".se-pre-con").fadeOut("slow"); 
-            }else{document.getElementById("DieselList").innerHTML = myTbody;}
-            if (document.getElementById("category_current").innerHTML == "undefined"){
-                document.getElementById("category_current").innerHTML = "Category"
-            }else if(document.getElementById("category_current").innerHTML == ""){
-                document.getElementById("category_current").innerHTML = "Category"}
-      });
+        });
+$(".se-pre-con").fadeOut("slow");
+if (myTbody == ""){
+    document.getElementById("Search_day").innerHTML = "";
+    document.getElementById("id_Categorystock").innerHTML = "";
+    document.getElementById("category_current").innerHTML = getCurrentCategory;
+    myTbody ="<tr><td colspan='8' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+    document.getElementById("DieselList").innerHTML = myTbody; 
+    $(".se-pre-con").fadeOut("slow"); 
+}else{document.getElementById("DieselList").innerHTML = myTbody;}
+if (document.getElementById("category_current").innerHTML == "undefined"){
+    document.getElementById("category_current").innerHTML = "Category"
+}else if(document.getElementById("category_current").innerHTML == ""){
+    document.getElementById("category_current").innerHTML = "Category"}
+});
 }
 
-function Go()
-{//startgo
+function Go(){//startgo
     $(".se-pre-con").fadeIn("slow");
     event.preventDefault();
 
     var myTbody = "";
     if (fromDate == '' && endDate == '' && document.getElementById('selectsys').value == ""){//false date false category
-        if (myTbody == "") {
+        if (myTbody == ""){
             myTbody ="<tr><td colspan='8' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
             document.getElementById("DieselList").innerHTML = myTbody;
             $(".se-pre-con").fadeOut("slow");
