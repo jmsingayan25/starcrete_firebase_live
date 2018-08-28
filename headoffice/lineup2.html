@@ -149,7 +149,7 @@
             var passcurrentDate = new Date().toLocaleDateString('en');
         }
 
-        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-success btn-md' onclick=\"tablePrint('old');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br> Plant: " + plant + " <br> <span id='id_time'></span> <br> Result: <span id='id_record'></span></th>";
+        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-success btn-md' onclick=\"tablePrint('old');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br> Plant: " + plant + "<br> Result: <span id='id_record'></span> <br> <span id='id_time'></span> </th>";
 
         document.getElementById('link_comment_update').innerHTML = "<a href='lineup2_update.html?plant=" + plant + "&option=comment&date=" + passcurrentDate + "'>Update</a>";
 
@@ -421,12 +421,12 @@
                                         myTableRow8 += "<tr><td>";
 
                                         machine1Snapshot.forEach(function(machine1ChildSnapshot){
-                                            myTableRow8 += "<div class='row'><div class='col-md-12'>" + machine1ChildSnapshot.val().employee_name + "</div></div>";
+                                            myTableRow8 += "<div class='row'><div class='col-md-12'>" + machine1ChildSnapshot.val().employee_name + " - " + machine1ChildSnapshot.val().employee_position + "</div></div>";
                                         });
 
                                         myTableRow8 += "</td><td>";
                                         machine3Snapshot.forEach(function(machine3ChildSnapshot){
-                                            myTableRow8 += "<div class='row'><div class='col-md-12'>" + machine3ChildSnapshot.val().employee_name + "</div></div>";
+                                            myTableRow8 += "<div class='row'><div class='col-md-12'>" + machine3ChildSnapshot.val().employee_name + " - " + machine3ChildSnapshot.val().employee_position + "</div></div>";
                                         });
 
                                         myTableRow8 += "</td><td>";
@@ -709,7 +709,7 @@
             var currentDate = new Date().toLocaleDateString('en', option);
         }
 
-        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-success btn-md' onclick=\"tablePrint('old');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br> Plant: " + plant + " <br> <span id='id_time'></span> <br> Result: <span id='id_record'></span></th>";
+        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-success btn-md' onclick=\"tablePrint('old');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br> Plant: " + plant + "<br> Result: <span id='id_record'></span> <br> <span id='id_time'></span> </th>";
 
         document.getElementById('link_comment_update').innerHTML = "<a href='lineup2_update.html?plant=" + plant + "&option=comment&date=" + passcurrentDate + "'>Update</a>";
 
@@ -731,12 +731,12 @@
                                 myTableRow1 += "<tr><td>";
 
                                 machine1Snapshot.forEach(function(machine1ChildSnapshot){
-                                    myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine1ChildSnapshot.val().employee_name + "</div></div>";
+                                    myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine1ChildSnapshot.val().employee_name + " - " + machine1ChildSnapshot.val().employee_position + "</div></div>";
                                 });
 
                                 myTableRow1 += "</td><td>";
                                 machine3Snapshot.forEach(function(machine3ChildSnapshot){
-                                    myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine3ChildSnapshot.val().employee_name + "</div></div>";
+                                    myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine3ChildSnapshot.val().employee_name + " - " + machine3ChildSnapshot.val().employee_position + "</div></div>";
                                 });
 
                                 myTableRow1 += "</td><td>";
@@ -980,12 +980,12 @@
                                         myTableRow8 += "<tr><td>";
 
                                         machine1Snapshot.forEach(function(machine1ChildSnapshot){
-                                            myTableRow8 += "<div class='row'><div class='col-md-12'>" + machine1ChildSnapshot.val().employee_name + "</div></div>";
+                                            myTableRow8 += "<div class='row'><div class='col-md-12'>" + machine1ChildSnapshot.val().employee_name + " - " + machine1ChildSnapshot.val().employee_position + "</div></div>";
                                         });
 
                                         myTableRow8 += "</td><td>";
                                         machine3Snapshot.forEach(function(machine3ChildSnapshot){
-                                            myTableRow8 += "<div class='row'><div class='col-md-12'>" + machine3ChildSnapshot.val().employee_name + "</div></div>";
+                                            myTableRow8 += "<div class='row'><div class='col-md-12'>" + machine3ChildSnapshot.val().employee_name + " - " + machine3ChildSnapshot.val().employee_position + "</div></div>";
                                         });
 
                                         myTableRow8 += "</td><td>";

@@ -161,7 +161,7 @@
             passcurrentDate = new Date().toLocaleDateString('en');
         }
 
-        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <br> Result: <span id='id_record'></span> <br> Schedule: <span id='id_schedule'></span></th>";
+        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <br> Result: <span id='id_record'></span> <br> <span id='id_schedule'></span></th>";
 
         document.getElementById('link_office_update').innerHTML = "<a href='attendance_update.html?option=office&date=" + passcurrentDate + "'>Update</a>";
         document.getElementById('link_new_employee_update').innerHTML = "<a href='attendance_update.html?option=new_employee&date=" + passcurrentDate + "'>Update</a>";
@@ -184,7 +184,7 @@
                 $('.button-link').show();
 
                 document.getElementById('id_record').innerHTML = "RECORD FOUND";
-                document.getElementById('id_schedule').innerHTML = attendanceSnapshot.val().schedule;
+                document.getElementById('id_schedule').innerHTML = "Schedule: " + attendanceSnapshot.val().schedule;
 
                 firebase.database().ref('attendance/'+plant+'/'+currentDate+'/office').once('value', function(officeSnapshot){
                     firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new_employee').once('value', function(newEmployeeSnapshot){
@@ -640,7 +640,7 @@
             var currentDate = new Date().toLocaleDateString('en', option);
         }
 
-        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <br> Result: <span id='id_record'></span> <br> Schedule: <span id='id_schedule'></span></th>";
+        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <br> Result: <span id='id_record'></span> <br> <span id='id_schedule'></span></th>";
 
         document.getElementById('link_office_update').innerHTML = "<a href='attendance_update.html?option=office&date=" + passcurrentDate + "'>Update</a>";
         document.getElementById('link_new_employee_update').innerHTML = "<a href='attendance_update.html?option=new_employee&date=" + passcurrentDate + "'>Update</a>";
@@ -663,7 +663,7 @@
                 $('.button-link').show();
 
                 document.getElementById('id_record').innerHTML = "RECORD FOUND";
-                document.getElementById('id_schedule').innerHTML = attendanceSnapshot.val().schedule;
+                document.getElementById('id_schedule').innerHTML = "Schedule: " + attendanceSnapshot.val().schedule;
 
                 firebase.database().ref('attendance/'+plant+'/'+currentDate+'/office').once('value', function(officeSnapshot){
                     firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new_employee').once('value', function(newEmployeeSnapshot){

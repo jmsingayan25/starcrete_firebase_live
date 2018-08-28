@@ -157,7 +157,7 @@
             var passcurrentDate = new Date().toLocaleDateString('en');
         }
 
-        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <div class='btn-group pull-right'><button class='btn btn-success btn_line_up_form' onclick='window.location.href=\"lineup_form2.html\";'><span class='fa fa-plus'></span> <strong>Line Up Form</strong></button><button class='btn btn-danger new_set_class' onclick=\"newSetLineUp('" + passcurrentDate + "');\"><span class='fa fa-plus'></span> <strong>Add New set of Line Up</strong></button></div><br> Result: <span id='id_record'></span> <br> Schedule: <span id='id_schedule'></span></th>";
+        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <div class='btn-group pull-right'><button class='btn btn-success btn_line_up_form' onclick='window.location.href=\"lineup_form2.html\";'><span class='fa fa-plus'></span> <strong>Line Up Form</strong></button><button class='btn btn-danger new_set_class' onclick=\"newSetLineUp('" + passcurrentDate + "');\"><span class='fa fa-plus'></span> <strong>Add New set of Line Up</strong></button></div><br> Result: <span id='id_record'></span> <br> <span id='id_schedule'></span></th>";
 
         document.getElementById('link_machine1_update').innerHTML = "<a href='lineup_update2.html?option=machine1&date=" + passcurrentDate + "'>Update</a>";
         document.getElementById('link_machine3_update').innerHTML = "<a href='lineup_update2.html?option=machine3&date=" + passcurrentDate + "'>Update</a>";
@@ -187,7 +187,7 @@
             if(tableContentSnapshot.val() != null){
 
                 $('.button-link').show();
-                document.getElementById('id_schedule').innerHTML = tableContentSnapshot.val().schedule;
+                document.getElementById('id_schedule').innerHTML = "Schedule: " + tableContentSnapshot.val().schedule;
 
                 document.getElementById('id_record').innerHTML = "RECORD FOUND";
 
@@ -436,9 +436,9 @@
                         $(".new_set_table").show();
                         $(".new_set_class").hide();
 
-                        document.getElementById('id_date_new_set').innerHTML = "<th colspan='4'>Result: NEW SET OF LINE UP <br> Schedule: <span id='id_new_schedule'></span></th>";
+                        document.getElementById('id_date_new_set').innerHTML = "<th colspan='4'>Result: NEW SET OF LINE UP <br> <span id='id_new_schedule'></span></th>";
 
-                        document.getElementById('id_new_schedule').innerHTML = newlineupSnapshot.val().schedule;
+                        document.getElementById('id_new_schedule').innerHTML = "Schedule: " + newlineupSnapshot.val().schedule;
 
                         document.getElementById('link_machine1_new_update').innerHTML = "<a href='lineup_update2.html?option=new_machine1&date=" + passcurrentDate + "'>Update</a>";
                         document.getElementById('link_machine3_new_update').innerHTML = "<a href='lineup_update2.html?option=new_machine3&date=" + passcurrentDate + "'>Update</a>";
@@ -754,9 +754,7 @@
             var currentDate = new Date().toLocaleDateString('en', option);
         }
 
-        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <div class='btn-group pull-right'><button class='btn btn-success btn_line_up_form' onclick='window.location.href=\"lineup_form2.html\";'><span class='fa fa-plus'></span> <strong>Line Up Form</strong></button><button class='btn btn-danger new_set_class' onclick=\"newSetLineUp('" + passcurrentDate + "');\"><span class='fa fa-plus'></span> <strong>Add New set of Line Up</strong></button></div><br> Result: <span id='id_record'></span> <br> Schedule: <span id='id_schedule'></span></th>";
-
-        document.getElementById('id_date_new_set').innerHTML = "<th colspan='4'>Result: NEW SET OF LINE UP <br> Schedule: <span id='id_new_schedule'></span></th>";
+        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <div class='btn-group pull-right'><button class='btn btn-success btn_line_up_form' onclick='window.location.href=\"lineup_form2.html\";'><span class='fa fa-plus'></span> <strong>Line Up Form</strong></button><button class='btn btn-danger new_set_class' onclick=\"newSetLineUp('" + passcurrentDate + "');\"><span class='fa fa-plus'></span> <strong>Add New set of Line Up</strong></button></div><br> Result: <span id='id_record'></span> <br> <span id='id_schedule'></span></th>";
 
         document.getElementById('link_machine1_update').innerHTML = "<a href='lineup_update2.html?option=machine1&date=" + passcurrentDate + "'>Update</a>";
         document.getElementById('link_machine3_update').innerHTML = "<a href='lineup_update2.html?option=machine3&date=" + passcurrentDate + "'>Update</a>";
@@ -786,7 +784,7 @@
             if(tableContentSnapshot.val() != null){
 
                 $('.button-link').show();
-                document.getElementById('id_schedule').innerHTML = tableContentSnapshot.val().schedule;
+                document.getElementById('id_schedule').innerHTML = "Schedule: " + tableContentSnapshot.val().schedule;
                 
 
                 document.getElementById('id_record').innerHTML = "RECORD FOUND";
@@ -1034,7 +1032,9 @@
                         $(".new_set_table").show();
                         $(".new_set_class").hide();
 
-                        document.getElementById('id_new_schedule').innerHTML = newlineupSnapshot.val().schedule;
+                        document.getElementById('id_date_new_set').innerHTML = "<th colspan='4'>Result: NEW SET OF LINE UP <br> <span id='id_new_schedule'></span></th>";
+
+                        document.getElementById('id_new_schedule').innerHTML = "Schedule: " + newlineupSnapshot.val().schedule;
 
                         document.getElementById('link_machine1_new_update').innerHTML = "<a href='lineup_update2.html?option=new_machine1&date=" + passcurrentDate + "'>Update</a>";
                         document.getElementById('link_machine3_new_update').innerHTML = "<a href='lineup_update2.html?option=new_machine3&date=" + passcurrentDate + "'>Update</a>";

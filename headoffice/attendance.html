@@ -139,7 +139,7 @@
         }
         // var currentDate = "August 9, 2018";
 
-        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-success' onclick=\"return tablePrint('old');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br> Plant: " + plant + " <br> <span id='id_time'></span> <br> Result: <span id='id_record'></span></th>";
+        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-success' onclick=\"return tablePrint('old');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br> Plant: " + plant + " <br> Result: <span id='id_record'></span><br> <span id='id_time'></span> </th>";
 
         document.getElementById('link_headoffice_update').innerHTML = "<a href='attendance_update.html?option=comment&date=" + passcurrentDate + "&plant=" + plant + "'>Update</a>";
 
@@ -150,7 +150,7 @@
                 $('.button-link').show();
 
                 document.getElementById('id_record').innerHTML = "RECORD FOUND";
-                document.getElementById('id_time').innerHTML = "Time: " + attendanceSnapshot.val().schedule;
+                document.getElementById('id_time').innerHTML = "Schedule: " + attendanceSnapshot.val().schedule;
 
                 firebase.database().ref('attendance/'+plant+'/'+currentDate+'/office').once('value', function(officeSnapshot){
                     firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new_employee').once('value', function(newEmployeeSnapshot){
@@ -350,7 +350,7 @@
 
                         $(".new_set_table").show();
 
-                        document.getElementById('new_id_date').innerHTML = "<th colspan='4'>NEW SET OF ATTENDANCE <button class='btn btn-success' onclick=\"return tablePrint('new');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br> <span>Time: " + newSnapshot.val().schedule + "</span></th>";
+                        document.getElementById('new_id_date').innerHTML = "<th colspan='4'>NEW SET OF ATTENDANCE <button class='btn btn-success' onclick=\"return tablePrint('new');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br> <span>Schedule: " + newSnapshot.val().schedule + "</span></th>";
 
                         document.getElementById('new_link_headoffice_update').innerHTML = "<a href='attendance_update.html?option=new_comment&date=" + passcurrentDate + "&plant=" + plant + "'>Update</a>";
 
@@ -597,7 +597,7 @@
             var currentDate = new Date().toLocaleDateString('en', option);
         }
 
-        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-success' onclick=\"return tablePrint('old');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br>  Plant: " + plant + " <br> <span id='id_time'></span> <br> Result: <span id='id_record'></span></th>";
+        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-success' onclick=\"return tablePrint('old');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br>  Plant: " + plant + " <br> Result: <span id='id_record'></span> <br> <span id='id_time'></span></th>";
 
         document.getElementById('link_headoffice_update').innerHTML = "<a href='attendance_update.html?option=comment&date=" + passcurrentDate + "&plant=" + plant + "'>Update</a>";
 
@@ -608,7 +608,7 @@
                 $('.button-link').show();
 
                 document.getElementById('id_record').innerHTML = "RECORD FOUND";
-                document.getElementById('id_time').innerHTML = "Time: " + attendanceSnapshot.val().schedule;
+                document.getElementById('id_time').innerHTML = "Schedule: " + attendanceSnapshot.val().schedule;
 
                 firebase.database().ref('attendance/'+plant+'/'+currentDate+'/office').once('value', function(officeSnapshot){
                     firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new_employee').once('value', function(newEmployeeSnapshot){
@@ -808,7 +808,7 @@
 
                         $('.new_set_table').show();
 
-                        document.getElementById('new_id_date').innerHTML = "<th colspan='4'>NEW SET OF ATTENDANCE <button class='btn btn-success' onclick=\"return tablePrint('new');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br> <span>Time: " + newSnapshot.val().schedule + "</span></th>";
+                        document.getElementById('new_id_date').innerHTML = "<th colspan='4'>NEW SET OF ATTENDANCE <button class='btn btn-success' onclick=\"return tablePrint('new');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br> <span>Schedule: " + newSnapshot.val().schedule + "</span></th>";
 
                         document.getElementById('new_link_headoffice_update').innerHTML = "<a href='attendance_update.html?option=new_comment&date=" + passcurrentDate + "&plant=" + plant + "'>Update</a>";
 

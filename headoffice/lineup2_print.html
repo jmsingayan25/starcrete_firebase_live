@@ -107,7 +107,7 @@
 
 		document.getElementById('page_header').innerHTML = plant + " LINE UP";
 
-		document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-info btn-md' id='printPageButton' onclick='return window.print();' style='float: right;'><span class='fa fa-print'></span> <strong>Print</strong></button> <br> <span id='id_new_set'></span></th>";
+		document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-info btn-md' id='printPageButton' onclick='return window.print();' style='float: right;'><span class='fa fa-print'></span> <strong>Print</strong></button> <br> <span id='id_schedule'></span></th>";
 
         firebase.database().ref('attendance/'+plant+'/'+currentDate).once('value', function(tableContentData){
 
@@ -121,6 +121,11 @@
                     query_ext = "/new";
                 }
 
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext).once('value', function(schedSnapshot){
+
+                    document.getElementById('id_schedule').innerHTML = "Schedule: " + schedSnapshot.val().schedule;
+                });
+
                 firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/machine1').once('value', function(machine1Snapshot){
                     firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/machine3').once('value', function(machine3Snapshot){
                         firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/forklift_operator').once('value', function(forkliftSnapshot){
@@ -130,12 +135,12 @@
                                 myTableRow1 += "<tr><td>";
 
                                 machine1Snapshot.forEach(function(machine1ChildSnapshot){
-                                    myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine1ChildSnapshot.val().employee_name + "</div></div>";
+                                    myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine1ChildSnapshot.val().employee_name + " - " + machine1ChildSnapshot.val().employee_position + "</div></div>";
                                 });
 
                                 myTableRow1 += "</td><td>";
                                 machine3Snapshot.forEach(function(machine3ChildSnapshot){
-                                    myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine3ChildSnapshot.val().employee_name + "</div></div>";
+                                    myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine3ChildSnapshot.val().employee_name + " - " + machine3ChildSnapshot.val().employee_position + "</div></div>";
                                 });
 
                                 myTableRow1 += "</td><td>";
@@ -393,7 +398,7 @@
 				<div class="col-md-12">
 					<section class="panel">
 						<div>
-							<table class="table table-bordered table-stripped">
+							<table class="table table-bordered table-stripped table-condensed">
                                 <tbody>
                                     <tr id="id_date" class="header_line"></tr>
                                     <tr class="header_line">
