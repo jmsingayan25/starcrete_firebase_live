@@ -204,7 +204,7 @@
 
         if(option == "mechanic" || option == "kamador" || option == "loader" || option == "new_mechanic" || option == "new_kamador" || option == "new_loader"){
 
-            document.getElementById('table_header').innerHTML = "<tr><td class='col-md-1'><label for='update_employee_name'>Name</label></td></tr>";
+            // document.getElementById('table_header').innerHTML = "<tr><td class='col-md-1'><label for='update_employee_name'>Name</label></td></tr>";
 
             document.getElementById('not_comment_section').style.display = "block";
     
@@ -219,17 +219,21 @@
 
             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(optionSnapshot){
 
+                optionTable += "<thead><tr><th class='col-md-5'><label for='update_employee_name'>Name</label></th><th class='col-md-1'></th></tr></thead><tbody>";
+
                 optionSnapshot.forEach(function(optionChildSnapshot){
 
-                    optionTable += "<tr><td class='col-md-5'><input type='text' name='update_employee_name[]' style='text-transform: uppercase;' value='" + optionChildSnapshot.val().employee_name + "' class='form-control'></td> <td class='col-md-1'><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + optionChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
+                    optionTable += "<tr><td><input type='text' name='update_employee_name[]' style='text-transform: uppercase;' value='" + optionChildSnapshot.val().employee_name + "' class='form-control'></td> <td><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + optionChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
                 });
+
+                optionTable += "</tbody>";
 
                 document.getElementById('id_fields').innerHTML = optionTable;
             });
 
         }else if(option == "absent" || option == "new_absent"){
 
-            document.getElementById('table_header').innerHTML = "<tr><td class='col-md-1'><label for='update_employee_name'>Name</label></td><td class='col-md-1'><label for='update_employee_name'>Reason</label></td></tr>";
+            // document.getElementById('table_header').innerHTML = "<tr><td class='col-md-1'><label for='update_employee_name'>Name</label></td><td class='col-md-1'><label for='update_employee_name'>Reason</label></td></tr>";
 
             if(option == "absent"){
                 query_ext = option;
@@ -282,7 +286,7 @@
                 query_ext = "new/"+new_option;
             }
 
-            document.getElementById('table_header').innerHTML = "<tr><td class='col-md-1'><label for='update_employee_name'>Name</label></td><td class='col-md-1'><label for='update_employee_name'>Position</label></td></tr>";
+            // document.getElementById('table_header').innerHTML = "<tr><td class='col-md-1'><label for='update_employee_name'>Name</label></td><td class='col-md-1'><label for='update_employee_name'>Position</label></td></tr>";
 
             document.getElementById('not_comment_section').style.display = "block";
 
@@ -306,7 +310,7 @@
                 query_ext = "new/trucking";
             }
 
-            document.getElementById('table_header').innerHTML = "<tr align='center'><td class='col-md-1'><label for='update_employee_name'>Truck No.</label></td><td class='col-md-2'><label for='update_employee_name'>Driver</label></td><td class='col-md-2'><label for='update_employee_name'>Pahinante 1</label></td><td class='col-md-2'><label for='update_employee_name'>Pahinante 2</label></td><td class='col-md-2'><label for='update_employee_name'>Commment</label></td></tr>";
+            // document.getElementById('table_header').innerHTML = "<tr align='center'><td class='col-md-1'><label for='update_employee_name'>Truck No.</label></td><td class='col-md-2'><label for='update_employee_name'>Driver</label></td><td class='col-md-2'><label for='update_employee_name'>Pahinante 1</label></td><td class='col-md-2'><label for='update_employee_name'>Pahinante 2</label></td><td class='col-md-2'><label for='update_employee_name'>Commment</label></td></tr>";
 
             document.getElementById('not_comment_section').style.display = "block";
             document.getElementById('button_add').style.display = "none";
@@ -372,7 +376,7 @@
 
             count = 0;
 
-            document.getElementById('table_header').innerHTML = "<tr><td class='col-md-1'><label for='update_employee_name'>Name</label></td></tr>";
+            // document.getElementById('table_header').innerHTML = "<tr><td class='col-md-1'><label for='update_employee_name'>Name</label></td></tr>";
 
             document.getElementById('not_comment_section').style.display = "block";
             document.getElementById('button_add').style.display = "none";
@@ -1020,16 +1024,10 @@
                                     </header>
                                     <header class="panel-heading" id="id_option" style="text-align: center;"></header>
                                     <div class="panel-body">
-                                        <!-- <div id="id_fields"></div>
-                                        <div class="row">
-                                            <div class="col-md-offset-8 col-md-1">
-                                                <button type="button" class="btn btn-primary" onclick="add_new_employee();"><strong>Add</strong></button>
-                                            </div>
-                                        </div> -->
                                         <div class="row">                                          
                                             <form class="form-horizontal" role="form" id="form" onsubmit='if(confirm("Proceed?")){submitForm();}else{ event.preventDefault();}'>
                                                 <div id="not_comment_section" style="display: none;">
-                                                    <table id="table_header"></table>
+                                                    <!-- <table id="table_header"></table> -->
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <table class="table" id="id_fields"></table>
@@ -1052,11 +1050,9 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <div class="row">
-                                                            <!-- <div class="form-group"> -->
                                                             <div class="col-md-offset-7 col-md-5">
                                                                 <input type="submit" name="submit" id="submit" value="Update" class="btn btn-primary" style="font-weight: bold;">
                                                                 <button type="button" class="btn btn-default" onclick="window.location.href='lineup2.html';"><strong>Cancel</strong></button>
-                                                            <!-- </div> -->
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1064,6 +1060,38 @@
                                             </form>
                                         </div>
                                     </div>
+
+                                    <!-- <div class="panel-body">
+                                        <div class="row">  
+                                            <div class="col-md-12">                                        
+                                                <form class="form-horizontal" role="form" id="form" onsubmit='if(confirm("Proceed?")){submitForm();}else{ event.preventDefault();}'>
+                                                    <div id="not_comment_section" style="display: none;">
+                                                        
+                                                    </div>
+                                                    <table class="table" id="id_table_view"></table>
+                                                    <table class="table" id="employee_table">
+                                                        <tr id="employee_row1"></tr>
+                                                    </table>
+                                                    <div class="row button_add">
+                                                        <div class="col-md-offset-3 col-md-6">
+                                                            <button type="button" onclick="add_new_employee();" class="btn btn-primary btn-block"><strong>Add</strong></button>                                                        
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                <div class="col-md-offset-7 col-md-5">
+                                                                    <input type="submit" name="submit" id="submit" value="Update" class="btn btn-primary" style="font-weight: bold;">
+                                                                    <button type="button" class="btn btn-default" onclick="window.location.href='attendance.html';"><strong>Cancel</strong></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div> -->
                                     <footer class="panel-footer">
                                         <p class="help-block">Note: Leave blank if <strong>N/A</strong>.</p>
                                     </footer>
