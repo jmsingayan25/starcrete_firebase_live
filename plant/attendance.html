@@ -371,7 +371,7 @@
                 firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new').once('value', function(newSnapshot){
                     if(newSnapshot.val() != null){
 
-                        $('.new_set_lineup').show();
+                        $('.new_set_table').show();
 
                         document.getElementById('id_new_date').innerHTML = "<th colspan='4'>Result: NEW SET OF LINE UP <br> Schedule: " + newSnapshot.val().schedule + "</th>";
 
@@ -572,7 +572,7 @@
                             $(".se-pre-con").fadeOut("slow");
                         });
                     }else{
-                        $('.new_set_lineup').hide();
+                        $('.new_set_table').hide();
                     }
                 });
             }else{
@@ -595,6 +595,8 @@
                 document.getElementById('new_row_trucking_list').innerHTML = "";
                 document.getElementById('new_row_forklift_list').innerHTML = "";
                 document.getElementById('new_row_comment').innerHTML = "";
+
+                $(".se-pre-con").fadeOut("slow");
             }
 
             
@@ -849,7 +851,7 @@
 
                     if(newSnapshot.val() != null){
 
-                        $('.new_set_lineup').show();
+                        $('.new_set_table').show();
 
                         document.getElementById('id_new_date').innerHTML = "<th colspan='4'>Result: NEW SET OF LINE UP <br> Schedule: " + newSnapshot.val().schedule + "</th>";
 
@@ -979,6 +981,8 @@
 
                                         nonskid4HelperSnapshot.forEach(function(nonskid4HelperChildSnapshot){
                                             myNewTableNonskid += "Helper: " + nonskid4HelperChildSnapshot.val().helper_name;
+
+                                            $(".se-pre-con").fadeOut("slow");
                                         });
 
                                         myNewTableNonskid += "</td></tr>";
@@ -1048,7 +1052,7 @@
                             document.getElementById('new_row_comment').innerHTML = myNewTableComment;
                         });
                     }else{
-                        $('.new_set_lineup').hide();
+                        $('.new_set_table').hide();
                     }
                 });
             }else{
@@ -1074,8 +1078,6 @@
 
                 $(".se-pre-con").fadeOut("slow");
             }
-
-            
         });
     }
 
@@ -1089,7 +1091,7 @@
     color: white;
 }
 
-.button-link, .new_set_lineup{
+.button-link, .new_set_table{
     display: none;
 }
 </style>
@@ -1439,7 +1441,7 @@
 	                    </section>
 	                </div>
 	            </div>
-                <div class="row new_set_lineup">
+                <div class="row new_set_table">
                     <div class="col-md-12">
                         <section class="panel">
                             <header class="panel-heading header_line">
