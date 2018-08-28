@@ -291,6 +291,9 @@
                 query_ext = "new/guard";
             }
 
+            day_count = 0;
+            night_count = 0;
+
             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(guardSnapshot){
                 firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/dayshift').once('value', function(guardDaySnapshot){
                     firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/nightshift').once('value', function(guardNightSnapshot){
@@ -300,14 +303,28 @@
                         guardDaySnapshot.forEach(function(guardDayChildSnapshot){
 
                             optionTable += "<tr><td><input type='text' name='update_dayshift_guard[]' class='form-control input_type' value='" + guardDayChildSnapshot.val().guard_name + "'></td><td><input type='text' name='update_dayshift_position[]' class='form-control input_type' value='" + guardDayChildSnapshot.val().guard_position + "'></td></tr>";
+
+                            day_count++;
                         });
+
+                        if(day_count != 2){
+
+                            optionTable += "<tr><td><input type='text' name='update_dayshift_guard[]' class='form-control input_type' value='N/A'></td><td><input type='text' name='update_dayshift_position[]' class='form-control input_type' value='N/A'></td></tr>";
+                        }
 
                         optionTable += "</tbody><thead><tr><th colspan='2' class='header_center'>NIGHT SHIFT</th></tr><tr><th colspan='1' class='header_center'>Name</th><th colspan='1' class='header_center'>Position</th></tr></thead><tbody>";
 
                         guardNightSnapshot.forEach(function(guardNightChildSnapshot){
 
                             optionTable += "<tr><td><input type='text' name='update_nightshift_guard[]' class='form-control input_type' value='" + guardNightChildSnapshot.val().guard_name + "'></td><td><input type='text' name='update_nightshift_position[]' class='form-control input_type' value='" + guardNightChildSnapshot.val().guard_position + "'></td></tr>";
+
+                            night_count++;
                         });
+
+                        if(night_count != 2){
+
+                            optionTable += "<tr><td><input type='text' name='update_nightshift_guard[]' class='form-control input_type' value='N/A'></td><td><input type='text' name='update_nightshift_position[]' class='form-control input_type' value='N/A'></td></tr>";
+                        }
 
                         optionTable += "</tbody></table></td></tr>";
 
