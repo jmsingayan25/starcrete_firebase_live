@@ -102,7 +102,6 @@
 
                     document.getElementById('username').innerHTML = snapshot.val().firstname; 
 
-                    $(".se-pre-con").fadeOut("slow");
                 },(error) => {
                     console.log(error);
                 });
@@ -150,33 +149,16 @@
             var passcurrentDate = new Date().toLocaleDateString('en');
         }
 
-        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-success btn-md' onclick=\"tablePrint('old');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br> Plant: " + plant + " <br> Result: <span id='id_record'></span></th>";
-
-        document.getElementById('id_date_new_set').innerHTML = "<th colspan='4'>Result: NEW SET OF LINE UP <button class='btn btn-success btn-md' onclick=\"tablePrint('new');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button></th>";
+        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-success btn-md' onclick=\"tablePrint('old');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br> Plant: " + plant + " <br> <span id='id_time'></span> <br> Result: <span id='id_record'></span></th>";
 
         document.getElementById('link_comment_update').innerHTML = "<a href='lineup2_update.html?plant=" + plant + "&option=comment&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_machine1_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=machine1&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_machine3_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=machine3&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_forklift_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=forklift_operator&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_mechanic_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=mechanic&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_nonskid1_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=nonskid1&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_nonskid2_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=nonskid2&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_nonskid3_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=nonskid3&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_nonskid4_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=nonskid4&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_tagapukpok_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=tagapukpok&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_checker_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=checker&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_kamador_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=kamador&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_loader_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=loader&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_others_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=others&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_absent_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=absent&date=" + passcurrentDate + "'>Update</a>";
 
         firebase.database().ref('attendance/'+plant+'/'+currentDate).once('value', function(tableContentSnapshot){
-
-            // console.log(tableContentSnapshot.val());
 
             if(tableContentSnapshot.val() != null){
 
                 document.getElementById('id_record').innerHTML = "RECORD FOUND";
+                document.getElementById('id_time').innerHTML = "Time: "+ tableContentSnapshot.val().schedule;
 
                 firebase.database().ref('attendance/'+plant+'/'+currentDate+'/machine1').once('value', function(machine1Snapshot){
                     firebase.database().ref('attendance/'+plant+'/'+currentDate+'/machine3').once('value', function(machine3Snapshot){
@@ -422,9 +404,13 @@
                     if(newlineupSnapshot.val() != null){
 
                         $(".new_set_table").show();
-                        $(".button-link").show();
+                        $(".new-button-link").show();
+
+                        document.getElementById('id_date_new_set').innerHTML = "<th colspan='4'>Result: NEW SET OF LINE UP <button class='btn btn-success btn-md' onclick=\"tablePrint('new');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br> <span id='id_new_time'></span></th>";
 
                         document.getElementById('link_new_comment_update').innerHTML = "<a href='lineup2_update.html?plant=" + plant + "&option=new_comment&date=" + passcurrentDate + "'>Update</a>";
+
+                        document.getElementById('id_new_time').innerHTML = "Time: "+ newlineupSnapshot.val().schedule;
 
                         firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/machine1').once('value', function(machine1Snapshot){
                             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/machine3').once('value', function(machine3Snapshot){
@@ -529,7 +515,6 @@
 
                                                         document.getElementById('row2_new_list').innerHTML = myTableRow9;
 
-                                                        $(".se-pre-con").fadeOut("slow");
                                                     });
                                                 });
                                             });
@@ -661,7 +646,7 @@
                     }else{
 
                         $(".new_set_table").hide();
-                        $(".button-link").hide();
+                        $(".new-button-link").hide();
                     }
                 });
 
@@ -678,6 +663,7 @@
                 document.getElementById('row5_list').innerHTML = "";
                 document.getElementById('row6_list').innerHTML = "";
                 document.getElementById('row7_list').innerHTML = "";
+
                 document.getElementById('row1_new_list').innerHTML = "";
                 document.getElementById('row2_new_list').innerHTML = "";
                 document.getElementById('row3_new_list').innerHTML = "";
@@ -723,26 +709,9 @@
             var currentDate = new Date().toLocaleDateString('en', option);
         }
 
-        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-success btn-md' onclick=\"tablePrint('old');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br> Plant: " + plant + " <br> Result: <span id='id_record'></span></th>";
-
-        document.getElementById('id_date_new_set').innerHTML = "<th colspan='4'>Result: NEW SET OF LINE UP <button class='btn btn-success btn-md' onclick=\"tablePrint('new');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button></th>";
+        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-success btn-md' onclick=\"tablePrint('old');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br> Plant: " + plant + " <br> <span id='id_time'></span> <br> Result: <span id='id_record'></span></th>";
 
         document.getElementById('link_comment_update').innerHTML = "<a href='lineup2_update.html?plant=" + plant + "&option=comment&date=" + passcurrentDate + "'>Update</a>";
-
-        // document.getElementById('link_machine1_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=machine1&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_machine3_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=machine3&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_forklift_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=forklift_operator&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_mechanic_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=mechanic&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_nonskid1_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=nonskid1&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_nonskid2_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=nonskid2&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_nonskid3_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=nonskid3&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_nonskid4_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=nonskid4&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_tagapukpok_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=tagapukpok&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_checker_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=checker&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_kamador_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=kamador&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_loader_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=loader&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_others_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=others&date=" + passcurrentDate + "'>Update</a>";
-        // document.getElementById('link_absent_update').innerHTML = "<a href='attendance_update.html?plant=" + plant + "&option=absent&date=" + passcurrentDate + "'>Update</a>";
 
         firebase.database().ref('attendance/'+plant+'/'+currentDate).once('value', function(tableContentSnapshot){
 
@@ -751,6 +720,7 @@
             if(tableContentSnapshot.val() != null){
 
                 document.getElementById('id_record').innerHTML = "RECORD FOUND";
+                document.getElementById('id_time').innerHTML = "Time: "+ tableContentSnapshot.val().schedule;
 
                 firebase.database().ref('attendance/'+plant+'/'+currentDate+'/machine1').once('value', function(machine1Snapshot){
                     firebase.database().ref('attendance/'+plant+'/'+currentDate+'/machine3').once('value', function(machine3Snapshot){
@@ -993,9 +963,13 @@
                     if(newlineupSnapshot.val() != null){
 
                         $(".new_set_table").show();
-                        $(".button-link").show();
+                        $(".new-button-link").show();
+
+                        document.getElementById('id_date_new_set').innerHTML = "<th colspan='4'>Result: NEW SET OF LINE UP <button class='btn btn-success btn-md' onclick=\"tablePrint('new');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br> <span id='id_new_time'></span></th>";
 
                         document.getElementById('link_new_comment_update').innerHTML = "<a href='lineup2_update.html?plant=" + plant + "&option=new_comment&date=" + passcurrentDate + "'>Update</a>";
+
+                        document.getElementById('id_new_time').innerHTML = "Time: "+ newlineupSnapshot.val().schedule;
 
                         firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/machine1').once('value', function(machine1Snapshot){
                             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/machine3').once('value', function(machine3Snapshot){
@@ -1100,7 +1074,6 @@
 
                                                         document.getElementById('row2_new_list').innerHTML = myTableRow9;
 
-                                                        $(".se-pre-con").fadeOut("slow");
                                                     });
                                                 });
                                             });
@@ -1233,7 +1206,7 @@
                     }else{
 
                         $(".new_set_table").hide();
-                        $(".button-link").hide();
+                        $(".new-button-link").hide();
                     }
                 });
 
@@ -1285,7 +1258,7 @@
     color: white;
 }
 
-.new_set_table, .button-link{
+.new_set_table, .button-link, .new-button-link{
     display: none;
 }
 </style>
@@ -1732,7 +1705,7 @@
                                                 </th>
                                                 <th colspan="2">
                                                     COMMENT FROM HEAD OFFICE
-                                                    <div class="btn-group pull-right button-link">
+                                                    <div class="btn-group pull-right new-button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
                                                         </a>
