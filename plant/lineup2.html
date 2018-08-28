@@ -159,8 +159,6 @@
 
         document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <div class='btn-group pull-right'><button class='btn btn-success btn_line_up_form' onclick='window.location.href=\"lineup_form2.html\";'><span class='fa fa-plus'></span> <strong>Line Up Form</strong></button><button class='btn btn-danger new_set_class' onclick=\"newSetLineUp('" + passcurrentDate + "');\"><span class='fa fa-plus'></span> <strong>Add New set of Line Up</strong></button></div><br> Result: <span id='id_record'></span> <br> Schedule: <span id='id_schedule'></span></th>";
 
-        document.getElementById('id_date_new_set').innerHTML = "<th colspan='4'>Result: NEW SET OF LINE UP <br> Schedule: <span id='id_new_schedule'></span></th>";
-
         document.getElementById('link_machine1_update').innerHTML = "<a href='lineup_update2.html?option=machine1&date=" + passcurrentDate + "'>Update</a>";
         document.getElementById('link_machine3_update').innerHTML = "<a href='lineup_update2.html?option=machine3&date=" + passcurrentDate + "'>Update</a>";
         document.getElementById('link_forklift_update').innerHTML = "<a href='lineup_update2.html?option=forklift_operator&date=" + passcurrentDate + "'>Update</a>";
@@ -295,6 +293,8 @@
                                                 myTableRow2 += "</td></tr>";
 
                                                 document.getElementById('row2_list').innerHTML = myTableRow2;
+
+                                                $(".se-pre-con").fadeOut("slow");
                                             });
                                         });
                                     });
@@ -435,6 +435,8 @@
 
                         $(".new_set_table").show();
                         $(".new_set_class").hide();
+
+                        document.getElementById('id_date_new_set').innerHTML = "<th colspan='4'>Result: NEW SET OF LINE UP <br> Schedule: <span id='id_new_schedule'></span></th>";
 
                         document.getElementById('id_new_schedule').innerHTML = newlineupSnapshot.val().schedule;
 
@@ -692,7 +694,6 @@
                     }else{
                         $(".new_set_class").show();
                         $(".new_set_table").hide();
-                        $(".se-pre-con").fadeOut("slow");
                     }
                 });
 
@@ -890,6 +891,8 @@
                                                 myTableRow2 += "</td></tr>";
 
                                                 document.getElementById('row2_list').innerHTML = myTableRow2;
+
+                                                $(".se-pre-con").fadeOut("slow");
                                             });
                                         });
                                     });
@@ -1288,7 +1291,6 @@
                     }else{
                         $(".new_set_class").show();
                         $(".new_set_table").hide();
-                        $(".se-pre-con").fadeOut("slow");
                     }
                 });
 
