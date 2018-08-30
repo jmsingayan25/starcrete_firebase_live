@@ -302,26 +302,48 @@
                     firebase.database().ref('attendance/'+plant+'/'+currentDate+'/absent/motorpool').once('value', function(motorpoolSnapshot){
                         firebase.database().ref('attendance/'+plant+'/'+currentDate+'/absent/trucking').once('value', function(truckingSnapshot){
 
+                            plantCount = 0;
+                            motorpoolCount = 0;
+                            truckingCount = 0;
+
                             myTableAbsent += "<tr><td>";
 
                             plantSnapshot.forEach(function(plantChildSnapshot){
 
                                 myTableAbsent += "<div class='row'><div class='col-md-12'>" + plantChildSnapshot.val().employee_name + " - " + plantChildSnapshot.val().employee_comment + "</div></div>";
+
+                                if(plantChildSnapshot.val().employee_name != "N/A"){
+                                    plantCount++;
+                                }
                             });
+
+                            document.getElementById('badge_plant').innerHTML = plantCount;
 
                              myTableAbsent += "</td><td>";
 
                             motorpoolSnapshot.forEach(function(motorpoolChildSnapshot){
 
                                 myTableAbsent += "<div class='row'><div class='col-md-12'>" + motorpoolChildSnapshot.val().employee_name + " - " + motorpoolChildSnapshot.val().employee_comment + "</div></div>";
+
+                                if(motorpoolChildSnapshot.val().employee_name != "N/A"){
+                                    motorpoolCount++;
+                                }
                             });
+
+                            document.getElementById('badge_motorpool').innerHTML = motorpoolCount;
 
                             myTableAbsent += "</td><td>";
 
                             truckingSnapshot.forEach(function(truckingChildSnapshot){
 
                                 myTableAbsent += "<div class='row'><div class='col-md-12'>" + truckingChildSnapshot.val().employee_name + " - " + truckingChildSnapshot.val().employee_comment + "</div></div>";
+
+                                if(truckingChildSnapshot.val().employee_name != "N/A"){
+                                    truckingCount++;
+                                }
                             });
+
+                            document.getElementById('badge_trucking').innerHTML = truckingCount;
 
                             myTableAbsent += "</td></tr>";
 
@@ -504,26 +526,48 @@
                             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/absent/motorpool').once('value', function(motorpoolSnapshot){
                                 firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/absent/trucking').once('value', function(truckingSnapshot){
 
+                                    plantCount = 0;
+                                    motorpoolCount = 0;
+                                    truckingCount = 0;
+
                                     myNewTableAbsent += "<tr><td>";
 
                                     plantSnapshot.forEach(function(plantChildSnapshot){
 
                                         myNewTableAbsent += "<div class='row'><div class='col-md-12'>" + plantChildSnapshot.val().employee_name + " - " + plantChildSnapshot.val().employee_comment + "</div></div>";
+
+                                        if(plantChildSnapshot.val().employee_name != "N/A"){
+                                            plantCount++;
+                                        }
                                     });
 
-                                     myNewTableAbsent += "</td><td>";
+                                    document.getElementById('badge_new_plant').innerHTML = plantCount;
+
+                                    myNewTableAbsent += "</td><td>";
 
                                     motorpoolSnapshot.forEach(function(motorpoolChildSnapshot){
 
                                         myNewTableAbsent += "<div class='row'><div class='col-md-12'>" + motorpoolChildSnapshot.val().employee_name + " - " + motorpoolChildSnapshot.val().employee_comment + "</div></div>";
+
+                                        if(motorpoolChildSnapshot.val().employee_name != "N/A"){
+                                            motorpoolCount++;
+                                        }
                                     });
+
+                                    document.getElementById('badge_new_motorpool').innerHTML = motorpoolCount;
 
                                     myNewTableAbsent += "</td><td>";
 
                                     truckingSnapshot.forEach(function(truckingChildSnapshot){
 
                                         myNewTableAbsent += "<div class='row'><div class='col-md-12'>" + truckingChildSnapshot.val().employee_name + " - " + truckingChildSnapshot.val().employee_comment + "</div></div>";
+
+                                        if(truckingChildSnapshot.val().employee_name != "N/A"){
+                                            truckingCount++;
+                                        }
                                     });
+
+                                    document.getElementById('badge_new_trucking').innerHTML = truckingCount;
 
                                     myNewTableAbsent += "</td></tr>";
 
@@ -586,6 +630,9 @@
 
 .button-link, .new_set_table{
     display: none;
+}
+.badge{
+    background-color: green;
 }
 </style>
 </head>
@@ -798,9 +845,9 @@
                                                     <table class="table table-bordered">
                                                         <thead class="header_line">
                                                             <tr>
-                                                                <th class="col-md-4" style="text-align: center;">PLANT</th>
-                                                                <th class="col-md-4" style="text-align: center;">MOTORPOOL</th>
-                                                                <th class="col-md-4" style="text-align: center;">TRUCKING</th>
+                                                                <th class="col-md-4" style="text-align: center;">PLANT <span class="badge pull-right" id="badge_plant"></span></th>
+                                                                <th class="col-md-4" style="text-align: center;">MOTORPOOL <span class="badge pull-right" id="badge_motorpool"></span></th>
+                                                                <th class="col-md-4" style="text-align: center;">TRUCKING <span class="badge pull-right" id="badge_trucking"></span></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody id="row_absent_list" class="row_list_class"></tbody>
@@ -900,9 +947,9 @@
                                                     <table class="table table-bordered">
                                                         <thead class="header_line">
                                                             <tr>
-                                                                <th class="col-md-4" style="text-align: center;">PLANT</th>
-                                                                <th class="col-md-4" style="text-align: center;">MOTORPOOL</th>
-                                                                <th class="col-md-4" style="text-align: center;">TRUCKING</th>
+                                                                <th class="col-md-4" style="text-align: center;">PLANT <span class="badge pull-right" id="badge_new_plant"></span></th>
+                                                                <th class="col-md-4" style="text-align: center;">MOTORPOOL <span class="badge pull-right" id="badge_new_motorpool"></span></th>
+                                                                <th class="col-md-4" style="text-align: center;">TRUCKING <span class="badge pull-right" id="badge_new_trucking"></span></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody id="new_row_absent_list" class="row_new_list_class"></tbody>
