@@ -186,16 +186,26 @@
 
         }else if(option == "nonskid1" || option == "nonskid2" || option == "nonskid3" || option == "nonskid4" || option == "new_nonskid1" || option == "new_nonskid2" || option == "new_nonskid3" || option == "new_nonskid4"){
 
-            var count = 0;
-
-            document.getElementById('id_option').innerHTML = option.replace("new_","").toUpperCase() + " DETAILS";
-
             if(option == "nonskid1" || option == "nonskid2" || option == "nonskid3" || option == "nonskid4"){
                 query_ext = option;
             }else if(option == "new_nonskid1" || option == "new_nonskid2" || option == "new_nonskid3" || option == "new_nonskid4"){
                 new_option = option.replace("new_","");
                 query_ext = "new/"+new_option;
             }
+
+            if(option == "nonskid1" || option == "new_nonskid1"){
+                header_name = "NON SKID 1";
+            }else if(option == "nonskid2" || option == "new_nonskid2"){
+                header_name = "NON SKID 2";
+            }else if(option == "nonskid3" || option == "new_nonskid3"){
+                header_name = "NON SKID 3";
+            }else if(option == "nonskid4" || option == "new_nonskid4"){
+                header_name = "NON SKID 4";
+            }
+
+            var count = 0;
+
+            document.getElementById('id_option').innerHTML = header_name + " DETAILS";
 
             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/employee').once('value', function(employeeSnapshot){
 
@@ -443,7 +453,7 @@
 
                         firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).push(data);
                         alert("Data has been removed");
-                        window.location.href='attendance.html?date='+currentDate;
+                        window.location.href='attendance.html';
 
                     }else{
                         alert("Data has been removed");
@@ -471,7 +481,7 @@
 
                         firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).push(data);
                         alert("Data has been removed");
-                        window.location.href='attendance.html?date='+currentDate;
+                        window.location.href='attendance.html';
 
                     }else{
                         alert("Data has been removed");
@@ -501,7 +511,7 @@
 
                         firebase.database().ref('attendance/'+plant+'/'+currentDate+'/absent/'+query_ext).push(data);
                         alert("Data has been removed");
-                        window.location.href='attendance.html?date='+currentDate;
+                        window.location.href='attendance.html';
 
                     }else{
                         alert("Data has been removed");
@@ -545,7 +555,7 @@
 
                 if(count == input_employee_name.length){
                     alert("Data updated successfully");
-                    window.location.href='attendance.html?date='+currentDate;
+                    window.location.href='attendance.html';
                 }
             }
 
@@ -573,7 +583,7 @@
 
                 if(count == input_employee_name.length){
                     alert("Data updated successfully");
-                    window.location.href='attendance.html?date='+currentDate;
+                    window.location.href='attendance.html';
                 }
             }
 
@@ -609,7 +619,7 @@
 
                 if(count == 2){
                     alert("Data updated successfully");
-                    window.location.href='attendance.html?date='+currentDate;
+                    window.location.href='attendance.html';
                 }
             }
 
@@ -645,7 +655,7 @@
 
                 if(count == input_truck_no.length){
                     alert("Data updated successfully");
-                    window.location.href='attendance.html?date='+currentDate;
+                    window.location.href='attendance.html';
                 }
             }
 
@@ -677,7 +687,7 @@
 
                 if(count == input_forklift_no.length){
                     alert("Data updated successfully");
-                    window.location.href='attendance.html?date='+currentDate;
+                    window.location.href='attendance.html';
                 }
             }
 
@@ -726,7 +736,7 @@
 
                 if(count == input_nightshift_guard.length){
                     alert("Data updated successfully");
-                    window.location.href='attendance.html?date='+currentDate;
+                    window.location.href='attendance.html';
                 }
             }
 
@@ -757,7 +767,7 @@
 
                 if(count == input_employee_name.length){
                     alert("Data updated successfully");
-                    window.location.href='attendance.html?date='+currentDate;
+                    window.location.href='attendance.html';
                 }
             }
 
@@ -778,7 +788,7 @@
                 commentSnapshot.forEach(function(commentChildSnapshot){
                     if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/'+commentChildSnapshot.key).update(commentData)){
                         alert("Update succesfully");
-                        window.location.href='attendance.html?date='+currentDate;
+                        window.location.href='attendance.html';
                     }
                 });
             });
