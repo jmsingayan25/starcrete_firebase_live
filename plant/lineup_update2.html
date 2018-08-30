@@ -204,12 +204,6 @@
 
         if(option == "mechanic" || option == "kamador" || option == "loader" || option == "new_mechanic" || option == "new_kamador" || option == "new_loader"){
 
-            // document.getElementById('table_header').innerHTML = "<tr><td class='col-md-1'><label for='update_employee_name'>Name</label></td></tr>";
-
-            document.getElementById('not_comment_section').style.display = "block";
-    
-            document.getElementById('id_option').innerHTML = "<strong>" + headline + "</strong>";
-
             if(option == "mechanic" || option == "kamador" || option == "loader"){
                 query_ext = option;
             }else if(option == "new_mechanic" || option == "new_kamador" || option == "new_loader"){
@@ -217,9 +211,14 @@
                 query_ext = "new/"+new_option;
             }
 
+            document.getElementById('not_comment_section').style.display = "block";
+            document.getElementById('id_option').innerHTML = "<strong>" + headline + "</strong>";
+
+            $('.button_add').show();
+
             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(optionSnapshot){
 
-                optionTable += "<thead><tr><th class='col-md-5'><label for='update_employee_name'>Name</label></th><th class='col-md-1'></th></tr></thead><tbody>";
+                optionTable += "<thead><tr><th class='col-md-5 header_center'>Name</th><th class='col-md-1'></th></tr></thead><tbody>";
 
                 optionSnapshot.forEach(function(optionChildSnapshot){
 
@@ -227,30 +226,6 @@
                 });
 
                 optionTable += "</tbody>";
-
-                document.getElementById('id_fields').innerHTML = optionTable;
-            });
-
-        }else if(option == "absent" || option == "new_absent"){
-
-            // document.getElementById('table_header').innerHTML = "<tr><td class='col-md-1'><label for='update_employee_name'>Name</label></td><td class='col-md-1'><label for='update_employee_name'>Reason</label></td></tr>";
-
-            if(option == "absent"){
-                query_ext = option;
-            }else if(option == "new_absent"){
-                query_ext = "new/absent";
-            }
-
-            document.getElementById('not_comment_section').style.display = "block";
-
-            document.getElementById('id_option').innerHTML = "<strong>" + headline + "</strong>";
-
-            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+option).once('value', function(optionSnapshot){
-
-                optionSnapshot.forEach(function(optionChildSnapshot){
-
-                    optionTable += "<tr><td class='col-md-5'><input type='text' name='update_employee_name[]' style='text-transform: uppercase;' value='" + optionChildSnapshot.val().employee_name + "' class='form-control'></td><td class='col-md-4'><textarea name='update_employee_reason[]' style='text-transform: uppercase;' rows='3' class='form-control'>" + optionChildSnapshot.val().reason + "</textarea></td><td class='col-md-1'><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + optionChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
-                });
 
                 document.getElementById('id_fields').innerHTML = optionTable;
             });
@@ -264,7 +239,6 @@
             }
 
             document.getElementById('comment_section').style.display = "block";
-
             document.getElementById('id_option').innerHTML = "<strong>" + headline + "</strong>";
 
             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(optionSnapshot){
@@ -286,18 +260,21 @@
                 query_ext = "new/"+new_option;
             }
 
-            // document.getElementById('table_header').innerHTML = "<tr><td class='col-md-1'><label for='update_employee_name'>Name</label></td><td class='col-md-1'><label for='update_employee_name'>Position</label></td></tr>";
-
             document.getElementById('not_comment_section').style.display = "block";
-
             document.getElementById('id_option').innerHTML = "<strong>" + headline + "</strong>";
 
+            $('.button_add').show();
+
             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(optionSnapshot){
+
+                optionTable += "<thead><tr><td class='col-md-1 header_center'>Name</td><td class='col-md-1 header_center'>Position</td></tr></thead><tbody>";
 
                 optionSnapshot.forEach(function(optionChildSnapshot){
 
                     optionTable += "<tr><td class='col-md-5'><input type='text' name='update_employee_name[]' style='text-transform: uppercase;' value='" + optionChildSnapshot.val().employee_name + "' class='form-control'></td><td class='col-md-5'><input type='text' name='update_employee_position[]' style='text-transform: uppercase;' value='" + optionChildSnapshot.val().employee_position + "' class='form-control'></td><td class='col-md-1'><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + optionChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
                 });
+
+                optionTable += "</tbody>";
 
                 document.getElementById('id_fields').innerHTML = optionTable;
             });
@@ -310,16 +287,14 @@
                 query_ext = "new/trucking";
             }
 
-            // document.getElementById('table_header').innerHTML = "<tr align='center'><td class='col-md-1'><label for='update_employee_name'>Truck No.</label></td><td class='col-md-2'><label for='update_employee_name'>Driver</label></td><td class='col-md-2'><label for='update_employee_name'>Pahinante 1</label></td><td class='col-md-2'><label for='update_employee_name'>Pahinante 2</label></td><td class='col-md-2'><label for='update_employee_name'>Commment</label></td></tr>";
-
             document.getElementById('not_comment_section').style.display = "block";
-            document.getElementById('button_add').style.display = "none";
-
             document.getElementById('id_option').innerHTML = "<strong>" + headline + "</strong>";
 
             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(optionSnapshot){
 
                 if(optionSnapshot.val() != null){
+
+                    optionTable += "<thead><tr align='center'><th class='col-md-1 header_center'>Truck No.</th><th class='col-md-2 header_center'>Driver</th><th class='col-md-2 header_center'>Pahinante 1</th><th class='col-md-2 header_center'>Pahinante 2</th><th class='col-md-2 header_center'>Commment</th></tr></thead><tbody>";
 
                     optionSnapshot.forEach(function(optionChildSnapshot){
 
@@ -328,6 +303,8 @@
                     });
 
                     optionTable += "<tr align='center'><td class='col-md-1'>HOWO</td><td class='col-md-2'><input type='hidden' name='hidden_trucking[]' value='HOWO'><textarea name='update_driver[]' style='text-transform: uppercase;' class='form-control'></textarea></td><td class='col-md-2'><textarea name='update_pahinante1[]' style='text-transform: uppercase;' class='form-control'></textarea></td><td class='col-md-2'><textarea name='update_pahinante2[]' style='text-transform: uppercase;' class='form-control'></textarea></td><td class='col-md-2'><textarea name='update_comment[]' style='text-transform: uppercase;' class='form-control'></textarea></td></tr>";
+
+                    optionTable += "</tbody>";
 
                     document.getElementById('id_fields').innerHTML = optionTable;
 
@@ -346,15 +323,14 @@
 
         }else if(option == "forklift_operator" || option == "new_forklift_operator"){
 
-            document.getElementById('not_comment_section').style.display = "block";
-            
-            document.getElementById('id_option').innerHTML = "<strong>" + headline + "</strong>";
-
             if(option == "forklift_operator"){
                 query_ext = option;
             }else if(option == "new_forklift_operator"){
                 query_ext = "new/forklift_operator";
             }
+
+            document.getElementById('not_comment_section').style.display = "block";
+            document.getElementById('id_option').innerHTML = "<strong>" + headline + "</strong>";
 
             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(optionSnapshot){
 
@@ -374,21 +350,17 @@
         
         }else if(option == "nonskid1" || option == "nonskid2" || option == "nonskid3" || option == "nonskid4" || option == "new_nonskid1" || option == "new_nonskid2" || option == "new_nonskid3" || option == "new_nonskid4"){
 
-            count = 0;
-
-            // document.getElementById('table_header').innerHTML = "<tr><td class='col-md-1'><label for='update_employee_name'>Name</label></td></tr>";
-
-            document.getElementById('not_comment_section').style.display = "block";
-            document.getElementById('button_add').style.display = "none";
-    
-            document.getElementById('id_option').innerHTML = "<strong>" + headline + "</strong>";
-
             if(option == "nonskid1" || option == "nonskid2" || option == "nonskid3" || option == "nonskid4"){
                 query_ext = option;
             }else if(option == "new_nonskid1" || option == "new_nonskid2" || option == "new_nonskid3" || option == "new_nonskid4"){
                 new_option = option.replace("new_","");
                 query_ext = "new/"+new_option;
             }
+
+            count = 0;
+
+            document.getElementById('not_comment_section').style.display = "block";
+            document.getElementById('id_option').innerHTML = "<strong>" + headline + "</strong>";
 
             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/employee').once('value', function(employeeSnapshot){
 
@@ -424,9 +396,6 @@
 
         }else if(option == "absent_plant" || option == "absent_motorpool" || option == "absent_trucking" || option == "new_absent_plant" || option == "new_absent_motorpool" || option == "new_absent_trucking"){
 
-            document.getElementById('not_comment_section').style.display = "block";
-            document.getElementById('button_add').style.display = "block";
-
             if(option == "absent_plant" || option == "absent_motorpool" || option == "absent_trucking"){
                 new_option = option.replace("absent_","");
                 query_ext = "absent/"+new_option;
@@ -435,7 +404,10 @@
                 query_ext = "new/absent/"+new_option;
             }
 
+            document.getElementById('not_comment_section').style.display = "block";
             document.getElementById('id_option').innerHTML = "<strong>" + headline + "</strong>";
+
+            $('.button_add').show();
 
             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(absentSnapshot){
 
@@ -454,59 +426,6 @@
 
         }
     }
-
-    // function removeEmployee(position, key){
-
-    //     event.preventDefault();
-
-    //     var remove_new = position.substring(0, 3);
-
-    //     if(remove_new == "new"){
-
-    //         new_option = option.replace("new_","");
-    //         if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/'+new_option+'/'+key).remove()){
-
-    //             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/'+new_option).once('value', function(snapshot){
-    //                 if(snapshot.val() == null){
-
-    //                     var data = {
-    //                         employee_name: "N/A"
-    //                     }
-
-    //                     firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/'+new_option).push(data);
-    //                     alert("Data has been removed");
-    //                     window.location.href='lineup2.html';
-
-    //                 }else{
-    //                     alert("Data has been removed");
-    //                     location.reload();
-    //                 }
-    //             });
-    //         } 
-
-    //     }else{
-
-    //        if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+position+'/'+key).remove()){
-
-    //             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+position).once('value', function(snapshot){
-    //                 if(snapshot.val() == null){
-
-    //                     var data = {
-    //                         employee_name: "N/A"
-    //                     }
-
-    //                     firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+position).push(data);
-    //                     alert("Data has been removed");
-    //                     window.location.href='lineup2.html';
-
-    //                 }else{
-    //                     alert("Data has been removed");
-    //                     location.reload();
-    //                 }
-    //             });
-    //         } 
-    //     }
-    // }
 
     function removeEmployee(position, key){
 
@@ -534,7 +453,7 @@
 
                         firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).push(data);
                         alert("Data has been removed");
-                        window.location.href='lineup2.html?date='+currentDate;
+                        window.location.href='lineup2.html';
                     
                     }else{
                         alert("Data has been removed");
@@ -564,7 +483,7 @@
 
                         firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).push(data);
                         alert("Data has been removed");
-                        window.location.href='lineup2.html?date='+currentDate;
+                        window.location.href='lineup2.html';
                     
                     }else{
                         alert("Data has been removed");
@@ -596,7 +515,7 @@
 
                         firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).push(data);
                         alert("Data has been removed");
-                        window.location.href='lineup2.html?date='+currentDate;
+                        window.location.href='lineup2.html';
                     
                     }else{
                         alert("Data has been removed");
@@ -611,43 +530,10 @@
 
         event.preventDefault();
 
-        // if(option == "absent" || option == "new_absent"){
-
-        //     count = 0;
-        //     var input_employee_name = $("input[name='update_employee_name[]']").map(function(){return $(this).val();}).get();
-        //     var input_employee_reason = $("textarea[name='update_employee_reason[]']").map(function(){return $(this).val();}).get();
-
-        //     if(option == "absent"){
-        //         query_ext = option;
-        //     }else if(option == 'new_absent'){
-        //         query_ext = "new/absent";
-        //     }
-
-        //     if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).remove()){
-
-        //         for(a = 0; a < input_employee_name.length; a++){
-
-        //             var employeeData = {
-        //                 employee_name: input_employee_name[a].toUpperCase(),
-        //                 reason: input_employee_reason[a].toUpperCase()
-        //             }
-
-        //             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).push(employeeData);
-
-        //             count++;
-        //         }
-
-        //         if(count == input_employee_name.length){
-        //             alert("Data updated successfully");
-        //             window.location.href='lineup2.html?date='+currentDate;
-        //         }
-        //     }
-
-        // }
         if(option == "absent_plant" || option == "absent_motorpool" || option == "absent_trucking" || option == "new_absent_plant" || option == "new_absent_motorpool" || option == "new_absent_trucking"){
 
             if(option == "absent_plant" || option == "absent_motorpool" || option == "absent_trucking"){
-                new_option = option.replace("absent_");
+                new_option = option.replace("absent_","");
                 query_ext = "absent/"+new_option;
             }else if(option == "new_absent_plant" || option == "new_absent_motorpool" || option == "new_absent_trucking"){
                 new_option = option.replace("new_absent_","");
@@ -674,7 +560,7 @@
 
                 if(count == input_employee_name.length){
                     alert("Data updated successfully");
-                    window.location.href='lineup2.html?date='+currentDate;
+                    window.location.href='lineup2.html';
                 }
             }
         }
@@ -697,7 +583,7 @@
                     if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/'+commentChildSnapshot.key).update(commentData)){
 
                         alert("Data updated successfully");
-                        window.location.href='lineup2.html?date='+currentDate;
+                        window.location.href='lineup2.html';
                     }
                 });
             });
@@ -732,7 +618,7 @@
 
                 if(count == input_employee_name.length){
                     alert("Data updated successfully");
-                    window.location.href='lineup2.html?date='+currentDate;
+                    window.location.href='lineup2.html';
                 }
             }
 
@@ -769,7 +655,7 @@
 
                 if(count == input_truck_no.length){
                     alert("Data updated successfully");
-                    window.location.href='lineup2.html?date='+currentDate;
+                    window.location.href='lineup2.html';
                 }
             }
 
@@ -803,7 +689,7 @@
 
                  if(count == input_forklift_no.length){
                     alert("Data updated successfully");
-                    window.location.href='lineup2.html?date='+currentDate;
+                    window.location.href='lineup2.html';
                 }
 
             }
@@ -842,7 +728,7 @@
 
                 if(count == 2){
                     alert("Data updated successfully");
-                    window.location.href='lineup2.html?date='+currentDate;
+                    window.location.href='lineup2.html';
                 }
             }
 
@@ -873,7 +759,7 @@
 
                  if(count == input_employee_name.length){
                     alert("Data updated successfully");
-                    window.location.href='lineup2.html?date='+currentDate;
+                    window.location.href='lineup2.html';
                 }
             }
         }
@@ -886,6 +772,9 @@
 }
 .header_center{
     text-align: center;
+}
+.button_add{
+    display: none;
 }
 </style>
 </head>
@@ -1011,7 +900,6 @@
             <section class="wrapper">  
                 <div class="row">
                     <div class="col-md-12">
-                        <!-- <h3 class="page-header"><i class="fa fa-building"></i> Purchase Order Update</h3> -->
                         <ol class="breadcrumb" id="id_breadcrumb">
                             <li id="li_attendance"></li>
                             <li id="li_attendance_update"></li>
@@ -1024,58 +912,23 @@
                                     </header>
                                     <header class="panel-heading" id="id_option" style="text-align: center;"></header>
                                     <div class="panel-body">
-                                        <div class="row">                                          
-                                            <form class="form-horizontal" role="form" id="form" onsubmit='if(confirm("Proceed?")){submitForm();}else{ event.preventDefault();}'>
-                                                <div id="not_comment_section" style="display: none;">
-                                                    <!-- <table id="table_header"></table> -->
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <table class="table" id="id_fields"></table>
-                                                            <table id="employee_table">
-                                                                <tr id="employee_row1"></tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row" id="button_add">
-                                                        <hr>
-                                                        <div class="col-md-offset-3 col-md-6">
-                                                            <button type="button" onclick="add_new_employee();" class="btn btn-primary btn-block"><strong>Add</strong></button>                                                        
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div id="comment_section" style="display: none;">
-                                                    <div id="id_comment_field"></div>
-                                                </div>
-                                                <hr>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <div class="row">
-                                                            <div class="col-md-offset-7 col-md-5">
-                                                                <input type="submit" name="submit" id="submit" value="Update" class="btn btn-primary" style="font-weight: bold;">
-                                                                <button type="button" class="btn btn-default" onclick="window.location.href='lineup2.html';"><strong>Cancel</strong></button>
+                                        <div class="row">    
+                                            <div class="col-md-12">                                      
+                                                <form class="form-horizontal" role="form" id="form" onsubmit='if(confirm("Proceed?")){submitForm();}else{ event.preventDefault();}'>
+                                                    <div id="not_comment_section" style="display: none;">
+                                                        <table class="table" id="id_fields"></table>
+                                                        <table class="table" id="employee_table">
+                                                            <tr id="employee_row1"></tr>
+                                                        </table>
+                                                        <div class="row" class="button_add">
+                                                            <hr>
+                                                            <div class="col-md-offset-3 col-md-6">
+                                                                <button type="button" onclick="add_new_employee();" class="btn btn-primary btn-block"><strong>Add</strong></button>                                                        
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                    <!-- <div class="panel-body">
-                                        <div class="row">  
-                                            <div class="col-md-12">                                        
-                                                <form class="form-horizontal" role="form" id="form" onsubmit='if(confirm("Proceed?")){submitForm();}else{ event.preventDefault();}'>
-                                                    <div id="not_comment_section" style="display: none;">
-                                                        
-                                                    </div>
-                                                    <table class="table" id="id_table_view"></table>
-                                                    <table class="table" id="employee_table">
-                                                        <tr id="employee_row1"></tr>
-                                                    </table>
-                                                    <div class="row button_add">
-                                                        <div class="col-md-offset-3 col-md-6">
-                                                            <button type="button" onclick="add_new_employee();" class="btn btn-primary btn-block"><strong>Add</strong></button>                                                        
-                                                        </div>
+                                                    <div id="comment_section" style="display: none;">
+                                                        <div id="id_comment_field"></div>
                                                     </div>
                                                     <hr>
                                                     <div class="col-md-12">
@@ -1083,7 +936,7 @@
                                                             <div class="row">
                                                                 <div class="col-md-offset-7 col-md-5">
                                                                     <input type="submit" name="submit" id="submit" value="Update" class="btn btn-primary" style="font-weight: bold;">
-                                                                    <button type="button" class="btn btn-default" onclick="window.location.href='attendance.html';"><strong>Cancel</strong></button>
+                                                                    <button type="button" class="btn btn-default" onclick="window.location.href='lineup2.html';"><strong>Cancel</strong></button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1091,7 +944,7 @@
                                                 </form>
                                             </div>
                                         </div>
-                                    </div> -->
+                                    </div>
                                     <footer class="panel-footer">
                                         <p class="help-block">Note: Leave blank if <strong>N/A</strong>.</p>
                                     </footer>
