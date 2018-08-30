@@ -187,17 +187,33 @@
                         firebase.database().ref('attendance/'+plant+'/'+currentDate+'/forklift_operator').once('value', function(forkliftSnapshot){
                             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/mechanic').once('value', function(mechanicSnapshot){
                         
+                                machine1Count = 0;
+                                machine3Count = 0;
                                 forkliftCount = 0;
+                                mechanicCount = 0;
+
                                 myTableRow1 += "<tr><td>";
 
                                 machine1Snapshot.forEach(function(machine1ChildSnapshot){
                                     myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine1ChildSnapshot.val().employee_name + " - " + machine1ChildSnapshot.val().employee_position + "</div></div>";
+
+                                    if(machine1ChildSnapshot.val().employee_name != "N/A"){
+                                        machine1Count++;
+                                    }
                                 });
+
+                                document.getElementById('badge_machine1').innerHTML = machine1Count;
 
                                 myTableRow1 += "</td><td>";
                                 machine3Snapshot.forEach(function(machine3ChildSnapshot){
                                     myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine3ChildSnapshot.val().employee_name + " - " + machine3ChildSnapshot.val().employee_position + "</div></div>";
+
+                                    if(machine3ChildSnapshot.val().employee_name != "N/A"){
+                                        machine3Count++;
+                                    }
                                 });
+
+                                document.getElementById('badge_machine3').innerHTML = machine3Count;
 
                                 myTableRow1 += "</td><td>";
                                 forkliftSnapshot.forEach(function(forkliftChildSnapshot){
@@ -212,10 +228,18 @@
                                     myTableRow1 += "<div class='row'><div class='col-md-12'>N/A</div></div>";
                                 }
 
+                                document.getElementById('badge_forklift').innerHTML = forkliftCount;
+
                                 myTableRow1 += "</td><td>";
                                 mechanicSnapshot.forEach(function(mechanicChildSnapshot){
                                     myTableRow1 += "<div class='row'><div class='col-md-12'>" + mechanicChildSnapshot.val().employee_name + "</div></div>";
+
+                                    if(mechanicChildSnapshot.val().employee_name != "N/A"){
+                                        mechanicCount++;
+                                    }
                                 });
+
+                                document.getElementById('badge_mechanic').innerHTML = mechanicCount;
 
                                 myTableRow1 += "</td></tr>";
 
@@ -296,16 +320,31 @@
                 firebase.database().ref('attendance/'+plant+'/'+currentDate+'/tagapukpok').once('value', function(tagapukpokSnapshot){
                     firebase.database().ref('attendance/'+plant+'/'+currentDate+'/checker').once('value', function(checkerSnapshot){
 
+                        tagapukpokCount = 0;
+                        checkerCount = 0;
+
                         myTableRow3 += "<tr><td colspan='2'>";
 
                         tagapukpokSnapshot.forEach(function(tagapukpokChildSnapshot){
                             myTableRow3 += "<div class='row'><div class='col-md-12'>" + tagapukpokChildSnapshot.val().employee_name + " - " + tagapukpokChildSnapshot.val().employee_position + "</div></div>";
+                        
+                            if(tagapukpokChildSnapshot.val().employee_name != "N/A"){
+                                tagapukpokCount++;
+                            }
                         });
+
+                        document.getElementById('badge_tagapukpok').innerHTML = tagapukpokCount;
 
                         myTableRow3 += "</td><td colspan='2'>";
                         checkerSnapshot.forEach(function(checkerChildSnapshot){
                             myTableRow3 += "<div class='row'><div class='col-md-12'>" + checkerChildSnapshot.val().employee_name + " - " + checkerChildSnapshot.val().employee_position + "</div></div>";
+
+                            if(checkerChildSnapshot.val().employee_name != "N/A"){
+                                checkerCount++;
+                            }
                         });
+
+                        document.getElementById('badge_checker').innerHTML = checkerCount;
 
                         myTableRow3 += "</td></tr>";
 
@@ -317,19 +356,31 @@
                 firebase.database().ref('attendance/'+plant+'/'+currentDate+'/kamador').once('value', function(kamadorSnapshot){
                     firebase.database().ref('attendance/'+plant+'/'+currentDate+'/loader').once('value', function(loaderSnapshot){
                         
+                        kamadorCount = 0;
+                        loaderCount = 0;
 
                         myTableRow4 += "<tr><td colspan='2'>";
 
                         kamadorSnapshot.forEach(function(kamadorChildSnapshot){
                             myTableRow4 += "<div class='row'><div class='col-md-12'>" + kamadorChildSnapshot.val().employee_name + "</div></div>";
+
+                            if(kamadorChildSnapshot.val().employee_name != "N/A"){
+                                kamadorCount++;
+                            }
                         });
+
+                        document.getElementById('badge_kamador').innerHTML = kamadorCount;
 
                         myTableRow4 += "</td><td colspan='2'>";
                         loaderSnapshot.forEach(function(loaderChildSnapshot){
                             myTableRow4 += "<div class='row'><div class='col-md-12'>" + loaderChildSnapshot.val().employee_name + "</div></div>";
+
+                            if(loaderChildSnapshot.val().employee_name != "N/A"){
+                                loaderCount++;
+                            }
                         });
 
-
+                        document.getElementById('badge_loader').innerHTML = loaderCount;
 
                         myTableRow4 += "</td></tr>";
 
@@ -344,11 +395,19 @@
                             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/others').once('value', function(othersSnapshot){
 
                                 absentCount = 0;
+                                othersCount = 0;
+
                                 myTableRow5 += "<tr><td colspan='2'>";
 
                                 othersSnapshot.forEach(function(othersChildSnapshot){
                                     myTableRow5 += "<div class='row'><div class='col-md-12'>" + othersChildSnapshot.val().employee_name + " - " + othersChildSnapshot.val().employee_position + "</div></div>";
+
+                                    if(othersChildSnapshot.val().employee_name != "N/A"){
+                                        othersCount++;
+                                    }
                                 });
+
+                                document.getElementById('badge_others').innerHTML = othersCount;
 
                                 myTableRow5 += "</td><td colspan='2'>";
                                 absentMotorpoolSnapshot.forEach(function(absentMotorpoolChildSnapshot){
@@ -386,6 +445,8 @@
                                     myTableRow5 += "<div class='row'><div class='col-md-12'>N/A</div></div>";
 
                                 }
+
+                                document.getElementById('badge_absent').innerHTML = absentCount;
 
                                 myTableRow5 += "</td></tr>";
 
@@ -463,17 +524,33 @@
                                 firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/forklift_operator').once('value', function(forkliftSnapshot){
                                     firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/mechanic').once('value', function(mechanicSnapshot){
                                 
+                                        machine1Count = 0;
+                                        machine3Count = 0;
                                         forkliftCount = 0;
+                                        mechanicCount = 0;
+
                                         myNewTableRow1 += "<tr><td>";
 
                                         machine1Snapshot.forEach(function(machine1ChildSnapshot){
                                             myNewTableRow1 += "<div class='row'><div class='col-md-12'>" + machine1ChildSnapshot.val().employee_name + " - " + machine1ChildSnapshot.val().employee_position + "</div></div>";
+
+                                            if(machine1ChildSnapshot.val().employee_name != "N/A"){
+                                                machine1Count++;
+                                            }
                                         });
+
+                                        document.getElementById('badge_new_machine1').innerHTML = machine1Count;
 
                                         myNewTableRow1 += "</td><td>";
                                         machine3Snapshot.forEach(function(machine3ChildSnapshot){
                                             myNewTableRow1 += "<div class='row'><div class='col-md-12'>" + machine3ChildSnapshot.val().employee_name + " - " + machine3ChildSnapshot.val().employee_position + "</div></div>";
+
+                                            if(machine3ChildSnapshot.val().employee_name != "N/A"){
+                                                machine3Count++;
+                                            }
                                         });
+
+                                        document.getElementById('badge_new_machine3').innerHTML = machine3Count;
 
                                         myNewTableRow1 += "</td><td>";
                                         forkliftSnapshot.forEach(function(forkliftChildSnapshot){
@@ -488,10 +565,18 @@
                                             myNewTableRow1 += "<div class='row'><div class='col-md-12'>N/A</div></div>";
                                         }
 
+                                        document.getElementById('badge_new_forklift').innerHTML = forkliftCount;
+
                                         myNewTableRow1 += "</td><td>";
                                         mechanicSnapshot.forEach(function(mechanicChildSnapshot){
                                             myNewTableRow1 += "<div class='row'><div class='col-md-12'>" + mechanicChildSnapshot.val().employee_name + "</div></div>";
+
+                                            if(mechanicChildSnapshot.val().employee_name != "N/A"){
+                                                mechanicCount++;
+                                            }
                                         });
+
+                                        document.getElementById('badge_new_mechanic').innerHTML = mechanicCount;
 
                                         myNewTableRow1 += "</td></tr>";
 
@@ -572,16 +657,31 @@
                         firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/tagapukpok').once('value', function(tagapukpokSnapshot){
                             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/checker').once('value', function(checkerSnapshot){
 
+                                tagapukpokCount = 0;
+                                checkerCount = 0;
+
                                 myNewTableRow3 += "<tr><td colspan='2'>";
 
                                 tagapukpokSnapshot.forEach(function(tagapukpokChildSnapshot){
                                     myNewTableRow3 += "<div class='row'><div class='col-md-12'>" + tagapukpokChildSnapshot.val().employee_name + " - " + tagapukpokChildSnapshot.val().employee_position +  "</div></div>";
+
+                                    if(tagapukpokChildSnapshot.val().employee_name != "N/A"){
+                                        tagapukpokCount++;
+                                    }
                                 });
+
+                                document.getElementById('badge_new_tagapukpok').innerHTML = tagapukpokCount;
 
                                 myNewTableRow3 += "</td><td colspan='2'>";
                                 checkerSnapshot.forEach(function(checkerChildSnapshot){
                                     myNewTableRow3 += "<div class='row'><div class='col-md-12'>" + checkerChildSnapshot.val().employee_name + " - " + checkerChildSnapshot.val().employee_position +  "</div></div>";
+
+                                    if(checkerChildSnapshot.val().employee_name != "N/A"){
+                                        checkerCount++;
+                                    }
                                 });
+
+                                document.getElementById('badge_new_checker').innerHTML = checkerCount;
 
                                 myNewTableRow3 += "</td></tr>";
 
@@ -593,23 +693,35 @@
                         firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/kamador').once('value', function(kamadorSnapshot){
                             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/loader').once('value', function(loaderSnapshot){
                                 
+                                kamadorCount = 0;
+                                loaderCount = 0;
 
-                                    myNewTableRow4 += "<tr><td colspan='2'>";
+                                myNewTableRow4 += "<tr><td colspan='2'>";
 
-                                    kamadorSnapshot.forEach(function(kamadorChildSnapshot){
-                                        myNewTableRow4 += "<div class='row'><div class='col-md-12'>" + kamadorChildSnapshot.val().employee_name + "</div></div>";
-                                    });
+                                kamadorSnapshot.forEach(function(kamadorChildSnapshot){
+                                    myNewTableRow4 += "<div class='row'><div class='col-md-12'>" + kamadorChildSnapshot.val().employee_name + "</div></div>";
+                                
+                                    if(kamadorChildSnapshot.val().employee_name != "N/A"){
+                                        kamadorCount++;
+                                    }
+                                });
 
-                                    myNewTableRow4 += "</td><td colspan='2'>";
-                                    loaderSnapshot.forEach(function(loaderChildSnapshot){
-                                        myNewTableRow4 += "<div class='row'><div class='col-md-12'>" + loaderChildSnapshot.val().employee_name + "</div></div>";
-                                    });
+                                document.getElementById('badge_new_kamador').innerHTML = kamadorCount;
 
+                                myNewTableRow4 += "</td><td colspan='2'>";
+                                loaderSnapshot.forEach(function(loaderChildSnapshot){
+                                    myNewTableRow4 += "<div class='row'><div class='col-md-12'>" + loaderChildSnapshot.val().employee_name + "</div></div>";
 
+                                    if(loaderChildSnapshot.val().employee_name != "N/A"){
+                                        loaderCount++;
+                                    }
+                                });
 
-                                    myNewTableRow4 += "</td></tr>";
+                                document.getElementById('badge_new_loader').innerHTML = loaderCount;
 
-                                    document.getElementById('row4_new_list').innerHTML = myNewTableRow4;
+                                myNewTableRow4 += "</td></tr>";
+
+                                document.getElementById('row4_new_list').innerHTML = myNewTableRow4;
                                         
                             });
                         });
@@ -620,11 +732,19 @@
                                     firebase.database().ref('attendance/'+plant+'/'+currentDate+'/new/others').once('value', function(othersSnapshot){
 
                                         absentCount = 0;
+                                        othersCount = 0;
+
                                         myNewTableRow5 += "<tr><td colspan='2'>";
 
                                         othersSnapshot.forEach(function(othersChildSnapshot){
                                             myNewTableRow5 += "<div class='row'><div class='col-md-12'>" + othersChildSnapshot.val().employee_name + " - " + othersChildSnapshot.val().employee_position + "</div></div>";
+
+                                            if(othersChildSnapshot.val().employee_name != "N/A"){
+                                                othersCount++;
+                                            }
                                         });
+
+                                        document.getElementById('badge_new_others').innerHTML = othersCount;
 
                                         myNewTableRow5 += "</td><td colspan='2'>";
                                         absentMotorpoolSnapshot.forEach(function(absentMotorpoolChildSnapshot){
@@ -658,6 +778,8 @@
 
                                             myNewTableRow5 += "<div class='row'><div class='col-md-12'>N/A</div></div>";
                                         }
+
+                                        document.getElementById('badge_new_absent').innerHTML = absentCount;
 
                                         myNewTableRow5 += "</td></tr>";
 
@@ -731,6 +853,9 @@
 
 .button-link, .new_set_table, .new_set_class{
     display: none;
+}
+.badge{
+    background-color: green;
 }
 </style>
 </head>
@@ -890,7 +1015,7 @@
                                             <tr id="id_date" class="header_line"></tr>
                                             <tr class="header_line">
                                                 <th class="col-md-3">
-                                                    MACHINE 1 
+                                                    MACHINE 1 <span class="badge pull-right" id="badge_machine1"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
@@ -901,7 +1026,7 @@
                                                     </div>
                                                 </th>
                                                 <th class="col-md-3">
-                                                    MACHINE 3
+                                                    MACHINE 3 <span class="badge pull-right" id="badge_machine3"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
@@ -912,7 +1037,7 @@
                                                     </div>
                                                 </th>
                                                 <th class="col-md-3">
-                                                    FORKLIFT OPERATOR
+                                                    FORKLIFT OPERATOR <span class="badge pull-right" id="badge_forklift"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
@@ -923,7 +1048,7 @@
                                                     </div>
                                                 </th>
                                                 <th class="col-md-3">
-                                                    MECHANIC
+                                                    MECHANIC <span class="badge pull-right" id="badge_mechanic"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
@@ -988,7 +1113,7 @@
                                         <thead>
                                             <tr class="header_line">
                                                 <th colspan="2">
-                                                    TAGAPUKPOK / WELDER / BISTAYAN / TAGADILIG
+                                                    TAGAPUKPOK / WELDER / BISTAYAN / TAGADILIG <span class="badge pull-right" id="badge_tagapukpok"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
@@ -999,7 +1124,7 @@
                                                     </div>
                                                 </th>
                                                 <th colspan="2">
-                                                    CHECKER / FOREMAN / BATCHER / SUPERVISOR
+                                                    CHECKER / FOREMAN / BATCHER / SUPERVISOR <span class="badge pull-right" id="badge_checker"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
@@ -1015,7 +1140,7 @@
                                         <thead>
                                             <tr class="header_line">
                                                 <th colspan="2">
-                                                    KAMADOR
+                                                    KAMADOR <span class="badge pull-right" id="badge_kamador"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
@@ -1026,7 +1151,7 @@
                                                     </div>
                                                 </th>
                                                 <th colspan="2">
-                                                    LOADER
+                                                    LOADER <span class="badge pull-right" id="badge_loader"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
@@ -1042,7 +1167,7 @@
                                         <thead>
                                             <tr class="header_line">
                                                 <th colspan="2">
-                                                    OTHERS
+                                                    OTHERS <span class="badge pull-right" id="badge_others"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
@@ -1053,7 +1178,7 @@
                                                     </div>
                                                 </th>
                                                 <th colspan="2">
-                                                    ABSENT
+                                                    ABSENT <span class="badge pull-right" id="badge_absent"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
@@ -1123,7 +1248,7 @@
                                             <tr id="id_date_new_set" class="header_line"></tr>
                                             <tr class="header_line">
                                                 <th class="col-md-3">
-                                                    MACHINE 1 
+                                                    MACHINE 1 <span class="badge pull-right" id="badge_new_machine1"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
@@ -1134,7 +1259,7 @@
                                                     </div>
                                                 </th>
                                                 <th class="col-md-3">
-                                                    MACHINE 3
+                                                    MACHINE 3 <span class="badge pull-right" id="badge_new_machine3"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
@@ -1145,7 +1270,7 @@
                                                     </div>
                                                 </th>
                                                 <th class="col-md-3">
-                                                    FORKLIFT OPERATOR
+                                                    FORKLIFT OPERATOR <span class="badge pull-right" id="badge_new_forklift"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
@@ -1156,7 +1281,7 @@
                                                     </div>
                                                 </th>
                                                 <th class="col-md-3">
-                                                    MECHANIC
+                                                    MECHANIC <span class="badge pull-right" id="badge_new_mechanic"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
@@ -1221,7 +1346,7 @@
                                         <thead>
                                             <tr class="header_line">
                                                 <th colspan="2">
-                                                    TAGAPUKPOK / WELDER / BISTAYAN / TAGADILIG
+                                                    TAGAPUKPOK / WELDER / BISTAYAN / TAGADILIG <span class="badge pull-right" id="badge_new_tagapukpok"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
@@ -1232,7 +1357,7 @@
                                                     </div>
                                                 </th>
                                                 <th colspan="2">
-                                                    CHECKER / FOREMAN / BATCHER / SUPERVISOR
+                                                    CHECKER / FOREMAN / BATCHER / SUPERVISOR <span class="badge pull-right" id="badge_new_checker"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
@@ -1248,7 +1373,7 @@
                                         <thead>
                                             <tr class="header_line">
                                                 <th colspan="2">
-                                                    KAMADOR
+                                                    KAMADOR <span class="badge pull-right" id="badge_new_kamador"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
@@ -1259,7 +1384,7 @@
                                                     </div>
                                                 </th>
                                                 <th colspan="2">
-                                                    LOADER
+                                                    LOADER <span class="badge pull-right" id="badge_new_loader"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
@@ -1275,7 +1400,7 @@
                                         <thead>
                                             <tr class="header_line">
                                                 <th colspan="2">
-                                                    OTHERS
+                                                    OTHERS <span class="badge pull-right" id="badge_new_others"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
@@ -1286,7 +1411,7 @@
                                                     </div>
                                                 </th>
                                                 <th colspan="2">
-                                                    ABSENT
+                                                    ABSENT <span class="badge pull-right" id="badge_new_absent"></span>
                                                     <div class="btn-group pull-right button-link">
                                                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
                                                             <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>

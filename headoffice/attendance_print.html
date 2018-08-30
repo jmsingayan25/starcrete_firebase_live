@@ -146,38 +146,6 @@
                     });
                 });
 
-                firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/absent/plant').once('value', function(plantSnapshot){
-                    firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/absent/motorpool').once('value', function(motorpoolSnapshot){
-                        firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/absent/trucking').once('value', function(truckingSnapshot){
-
-                            myTableAbsent += "<tr><td>";
-
-                            plantSnapshot.forEach(function(plantChildSnapshot){
-
-                                myTableAbsent += "<div class='row'><div class='col-md-12'>" + plantChildSnapshot.val().employee_name + " - " + plantChildSnapshot.val().employee_comment + "</div></div>";
-                            });
-
-                             myTableAbsent += "</td><td>";
-
-                            motorpoolSnapshot.forEach(function(motorpoolChildSnapshot){
-
-                                myTableAbsent += "<div class='row'><div class='col-md-12'>" + motorpoolChildSnapshot.val().employee_name + " - " + motorpoolChildSnapshot.val().employee_comment + "</div></div>";
-                            });
-
-                            myTableAbsent += "</td><td>";
-
-                            truckingSnapshot.forEach(function(truckingChildSnapshot){
-
-                                myTableAbsent += "<div class='row'><div class='col-md-12'>" + truckingChildSnapshot.val().employee_name + " - " + truckingChildSnapshot.val().employee_comment + "</div></div>";
-                            });
-
-                            myTableAbsent += "</td></tr>";
-
-                            document.getElementById('row_absent_list').innerHTML = myTableAbsent;
-                        });
-                    });
-                });
-
                 firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/nonskid1/employee').once('value', function(nonskid1Snapshot){
                     firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/nonskid2/employee').once('value', function(nonskid2Snapshot){
                         firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/nonskid3/employee').once('value', function(nonskid3Snapshot){
@@ -300,6 +268,60 @@
                     });
                 });
 
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/absent/plant').once('value', function(plantSnapshot){
+                    firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/absent/motorpool').once('value', function(motorpoolSnapshot){
+                        firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/absent/trucking').once('value', function(truckingSnapshot){
+
+                            plantCount = 0;
+                            motorpoolCount = 0;
+                            truckingCount = 0;
+
+                            myTableAbsent += "<tr><td>";
+
+                            plantSnapshot.forEach(function(plantChildSnapshot){
+
+                                myTableAbsent += "<div class='row'><div class='col-md-12'>" + plantChildSnapshot.val().employee_name + " - " + plantChildSnapshot.val().employee_comment + "</div></div>";
+
+                                if(plantChildSnapshot.val().employee_name != "N/A"){
+                                    plantCount++;
+                                }
+                            });
+
+                            document.getElementById('badge_plant').innerHTML = plantCount;
+
+                            myTableAbsent += "</td><td>";
+
+                            motorpoolSnapshot.forEach(function(motorpoolChildSnapshot){
+
+                                myTableAbsent += "<div class='row'><div class='col-md-12'>" + motorpoolChildSnapshot.val().employee_name + " - " + motorpoolChildSnapshot.val().employee_comment + "</div></div>";
+
+                                if(motorpoolChildSnapshot.val().employee_name != "N/A"){
+                                    motorpoolCount++;
+                                }
+                            });
+
+                            document.getElementById('badge_motorpool').innerHTML = motorpoolCount;
+
+                            myTableAbsent += "</td><td>";
+
+                            truckingSnapshot.forEach(function(truckingChildSnapshot){
+
+                                myTableAbsent += "<div class='row'><div class='col-md-12'>" + truckingChildSnapshot.val().employee_name + " - " + truckingChildSnapshot.val().employee_comment + "</div></div>";
+
+                                if(truckingChildSnapshot.val().employee_name != "N/A"){
+                                    truckingCount++;
+                                }
+                            });
+
+                            document.getElementById('badge_trucking').innerHTML = truckingCount;
+
+                            myTableAbsent += "</td></tr>";
+
+                            document.getElementById('row_absent_list').innerHTML = myTableAbsent;
+                        });
+                    });
+                });
+
                 firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/comment').once('value', function(commentSnapshot){
                     commentSnapshot.forEach(function(commentChildSnapshot){
 
@@ -337,6 +359,11 @@
     }
     #printPageButton{
         display: none;
+    }
+
+    .badge {
+        padding: 2px 6px;
+        border: 1px solid #000;
     }
 }
 </style>
@@ -417,9 +444,9 @@
                                         <table class="table table-bordered">
                                             <thead class="header_line">
                                                 <tr>
-                                                    <th class="col-md-4" style="text-align: center;">PLANT</th>
-                                                    <th class="col-md-4" style="text-align: center;">MOTORPOOL</th>
-                                                    <th class="col-md-4" style="text-align: center;">TRUCKING</th>
+                                                    <th class="col-md-4" style="text-align: center;">PLANT <span class="badge pull-right" id="badge_plant"></span></th>
+                                                    <th class="col-md-4" style="text-align: center;">MOTORPOOL <span class="badge pull-right" id="badge_motorpool"></span></th>
+                                                    <th class="col-md-4" style="text-align: center;">TRUCKING <span class="badge pull-right" id="badge_trucking"></span></th>
                                                 </tr>
                                             </thead>
                                             <tbody id="row_absent_list"></tbody>

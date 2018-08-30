@@ -131,17 +131,33 @@
                         firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/forklift_operator').once('value', function(forkliftSnapshot){
                             firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/mechanic').once('value', function(mechanicSnapshot){
                         
+                                machine1Count = 0;
+                                machine3Count = 0;
                                 forkliftCount = 0;
+                                mechanicCount = 0;
+
                                 myTableRow1 += "<tr><td>";
 
                                 machine1Snapshot.forEach(function(machine1ChildSnapshot){
                                     myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine1ChildSnapshot.val().employee_name + " - " + machine1ChildSnapshot.val().employee_position + "</div></div>";
+
+                                    if(machine1ChildSnapshot.val().employee_name != "N/A"){
+                                        machine1Count++;
+                                    }
                                 });
+
+                                document.getElementById('badge_machine1').innerHTML = machine1Count;
 
                                 myTableRow1 += "</td><td>";
                                 machine3Snapshot.forEach(function(machine3ChildSnapshot){
                                     myTableRow1 += "<div class='row'><div class='col-md-12'>" + machine3ChildSnapshot.val().employee_name + " - " + machine3ChildSnapshot.val().employee_position + "</div></div>";
+
+                                    if(machine3ChildSnapshot.val().employee_name != "N/A"){
+                                        machine3Count++;
+                                    }
                                 });
+
+                                document.getElementById('badge_machine3').innerHTML = machine3Count;
 
                                 myTableRow1 += "</td><td>";
                                 forkliftSnapshot.forEach(function(forkliftChildSnapshot){
@@ -157,10 +173,18 @@
                                     myTableRow1 += "<div class='row'><div class='col-md-12'>N/A</div></div>";
                                 }
 
+                                document.getElementById('badge_forklift').innerHTML = forkliftCount;
+
                                 myTableRow1 += "</td><td>";
                                 mechanicSnapshot.forEach(function(mechanicChildSnapshot){
                                     myTableRow1 += "<div class='row'><div class='col-md-12'>" + mechanicChildSnapshot.val().employee_name + "</div></div>";
+
+                                    if(mechanicChildSnapshot.val().employee_name != "N/A"){
+                                        mechanicCount++;
+                                    }
                                 });
+
+                                document.getElementById('badge_mechanic').innerHTML = mechanicCount;
 
                                 myTableRow1 += "</td></tr>";
 
@@ -241,16 +265,31 @@
                 firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/tagapukpok').once('value', function(tagapukpokSnapshot){
                     firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/checker').once('value', function(checkerSnapshot){
 
+                        tagapukpokCount = 0;
+                        checkerCount = 0;
+
                         myTableRow3 += "<tr><td colspan='2'>";
 
                         tagapukpokSnapshot.forEach(function(tagapukpokChildSnapshot){
                             myTableRow3 += "<div class='row'><div class='col-md-12'>" + tagapukpokChildSnapshot.val().employee_name + " - " + tagapukpokChildSnapshot.val().employee_position + "</div></div>";
+
+                            if(tagapukpokChildSnapshot.val().employee_name != "N/A"){
+                                tagapukpokCount++;
+                            }
                         });
+
+                        document.getElementById('badge_tagapukpok').innerHTML = tagapukpokCount;
 
                         myTableRow3 += "</td><td colspan='2'>";
                         checkerSnapshot.forEach(function(checkerChildSnapshot){
                             myTableRow3 += "<div class='row'><div class='col-md-12'>" + checkerChildSnapshot.val().employee_name + " - " + checkerChildSnapshot.val().employee_position + "</div></div>";
+
+                            if(checkerChildSnapshot.val().employee_name != "N/A"){
+                                checkerCount++;
+                            }
                         });
+
+                        document.getElementById('badge_checker').innerHTML = checkerCount;
 
                         myTableRow3 += "</td></tr>";
 
@@ -262,16 +301,30 @@
                 firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/kamador').once('value', function(kamadorSnapshot){
                     firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/loader').once('value', function(loaderSnapshot){
                         
+                        kamadorCount = 0;
+                        loaderCount = 0;
                         myTableRow4 += "<tr><td colspan='2'>";
 
                         kamadorSnapshot.forEach(function(kamadorChildSnapshot){
                             myTableRow4 += "<div class='row'><div class='col-md-12'>" + kamadorChildSnapshot.val().employee_name + "</div></div>";
+
+                            if(kamadorChildSnapshot.val().employee_name != "N/A"){
+                                kamadorCount++;
+                            }
                         });
+
+                        document.getElementById('badge_kamador').innerHTML = kamadorCount;
 
                         myTableRow4 += "</td><td colspan='2'>";
                         loaderSnapshot.forEach(function(loaderChildSnapshot){
                             myTableRow4 += "<div class='row'><div class='col-md-12'>" + loaderChildSnapshot.val().employee_name + "</div></div>";
+
+                            if(loaderChildSnapshot.val().employee_name != "N/A"){
+                                loaderCount++;
+                            }
                         });
+
+                        document.getElementById('badge_loader').innerHTML = loaderCount;
 
                         myTableRow4 += "</td></tr>";
 
@@ -286,11 +339,19 @@
                             firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/others').once('value', function(othersSnapshot){
 
                                 absentCount = 0;
+                                othersCount = 0;
+
                                 myTableRow5 += "<tr><td colspan='2'>";
 
                                 othersSnapshot.forEach(function(othersChildSnapshot){
                                     myTableRow5 += "<div class='row'><div class='col-md-12'>" + othersChildSnapshot.val().employee_name + " - " + othersChildSnapshot.val().employee_position + "</div></div>";
+
+                                    if(othersChildSnapshot.val().employee_name != "N/A"){
+                                        othersCount++;
+                                    }
                                 });
+
+                                document.getElementById('badge_others').innerHTML = othersCount;
 
                                 myTableRow5 += "</td><td colspan='2'>";
                                 absentMotorpoolSnapshot.forEach(function(absentMotorpoolChildSnapshot){
@@ -326,6 +387,8 @@
                                 if(absentCount == 0){
                                     myTableRow5 += "<div class='row'><div class='col-md-12'>N/A</div></div>";
                                 }
+
+                                document.getElementById('badge_absent').innerHTML = absentCount;
 
                                 myTableRow5 += "</td></tr>";
 
@@ -382,7 +445,10 @@
 	#printPageButton{
 		display: none;
 	}
-}
+    .badge{
+        padding: 2px 6px;
+        border: 1px solid #000;
+    }
 </style>
 </head>
 <body>
@@ -402,10 +468,10 @@
                                 <tbody>
                                     <tr id="id_date" class="header_line"></tr>
                                     <tr class="header_line">
-                                        <th class="col-md-3">MACHINE 1</th>
-                                        <th class="col-md-3">MACHINE 3</th>
-                                        <th class="col-md-3">FORKLIFT OPERATOR</th>
-                                        <th class="col-md-3">MECHANIC</th>
+                                        <th class="col-md-3">MACHINE 1 <span class="badge pull-right" id="badge_machine1"></span></th>
+                                        <th class="col-md-3">MACHINE 3 <span class="badge pull-right" id="badge_machine3"></span></th>
+                                        <th class="col-md-3">FORKLIFT OPERATOR <span class="badge pull-right" id="badge_forklift"></span></th>
+                                        <th class="col-md-3">MECHANIC <span class="badge pull-right" id="badge_mechanic"></span></th>
                                     </tr>
                                 </tbody>
                                 <tbody id="row1_list"></tbody>
@@ -420,22 +486,22 @@
                                 <tbody id="row2_list"></tbody>
                                 <tbody>
                                     <tr class="header_line">
-                                        <th colspan="2">TAGAPUKPOK / WELDER / BISTAYAN / TAGADILIG</th>
-                                        <th colspan="2">CHECKER / FOREMAN / BATCHER / SUPERVISOR</th>
+                                        <th colspan="2">TAGAPUKPOK / WELDER / BISTAYAN / TAGADILIG <span class="badge pull-right" id="badge_tagapukpok"></span></th>
+                                        <th colspan="2">CHECKER / FOREMAN / BATCHER / SUPERVISOR <span class="badge pull-right" id="badge_checker"></span></th>
                                     </tr>
                                 </tbody>
                                 <tbody id="row3_list"></tbody>
                                 <tbody>
                                     <tr class="header_line">
-                                        <th colspan="2">KAMADOR</th>
-                                        <th colspan="2">LOADER</th>
+                                        <th colspan="2">KAMADOR <span class="badge pull-right" id="badge_kamador"></span></th>
+                                        <th colspan="2">LOADER <span class="badge pull-right" id="badge_loader"></span></th>
                                     </tr>
                                 </tbody>
                                 <tbody id="row4_list"></tbody>
                                 <tbody>
                                     <tr class="header_line">
-                                        <th colspan="2">OTHER</th>
-                                        <th colspan="2">ABSENT</th>
+                                        <th colspan="2">OTHERS <span class="badge pull-right" id="badge_others"></span></th>
+                                        <th colspan="2">ABSENT <span class="badge pull-right" id="badge_absent"></span></th>
                                     </tr>
                                 </tbody>
                                 <tbody id="row5_list"></tbody>
