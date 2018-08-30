@@ -90,9 +90,9 @@
         // $input.on( "keyup", function( event ) {
 
         var $form = $( "#form" );
-        var $input = $form.find( "#quantity_out" );
+        var $input = $form.find( "#quantity_out,#pondo" );
 
-        $form.on( "keyup", "#quantity_out", function( event ) {
+        $form.on( "keyup", "#quantity_out,#pondo", function( event ) {
             
             
             // When user select text in the document, also abort.
