@@ -256,6 +256,8 @@ function submitForm(){
                  var time = new Date().toLocaleTimeString('en');
                  var date_input = dateFormat(document.getElementById('date_input').value);
                  var pondo_input = document.getElementById('pondo').value;
+                 pondo_input = pondo_input.replace(",","");
+
 
                  if(document.getElementById('time_input').value != ""){
                     var time_input = startTime(document.getElementById('time_input').value);
