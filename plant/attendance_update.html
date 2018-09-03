@@ -205,31 +205,29 @@
 
             var count = 0;
 
+            $(".button_add").show();
+
             document.getElementById('id_option').innerHTML = header_name + " DETAILS";
 
             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/employee').once('value', function(employeeSnapshot){
 
                 firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/helper').once('value', function(helperSnapshot){
 
-                    optionTable += "<thead><tr><th class='col-md-3 header_center'>Name</th></thead><tbody>";
-
-                    employeeSnapshot.forEach(function(employeeChildSnapshot){
-
-                        optionTable += "<tr><td><input type='text' name='update_employee_name[]' class='form-control input_type' value='" + employeeChildSnapshot.val().employee_name + "'></td></tr>";
-
-                        count++;
-                    });
-
-                    if(count != 2){
-
-                        optionTable += "<tr><td><input type='text' name='update_employee_name[]' class='form-control input_type' value='N/A'></td></tr>";
-                    }
-
-                    optionTable += "</thead></tbody><br><br><thead><tr><th class='col-md-3 header_center'>Helper Name</th></thead><tbody>";
+                    optionTable += "<thead><tr><th colspan='2' class='header_center'>Helper Name</th></thead><tbody>";
 
                     helperSnapshot.forEach(function(helperChildSnapshot){
 
-                        optionTable += "<tr><td><input type='text' id='update_helper_name' class='form-control input_type' value='" + helperChildSnapshot.val().helper_name + "'></td></tr>";
+                        optionTable += "<tr><td colspan='2'><input type='text' id='update_helper_name' class='form-control input_type' value='" + helperChildSnapshot.val().helper_name + "'></td></tr>";
+
+                    });
+
+                    optionTable += "</thead></tbody><br><br><thead><tr><th class='col-md-8 header_center'> Name</th><th class='col-md-1'></th></thead><tbody>";
+
+                    employeeSnapshot.forEach(function(employeeChildSnapshot){
+
+                        optionTable += "<tr><td><input type='text' name='update_employee_name[]' class='form-control input_type' value='" + employeeChildSnapshot.val().employee_name + "'></td><td><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + employeeChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
+
+                        count++;
                     });
 
                     optionTable += "</tbody>";
@@ -423,6 +421,10 @@
         }else if(option == "plant" || option == "motorpool" || option == "trucking" || option == "new_plant" || option == "new_motorpool" || option == "new_trucking"){
 
             $("#employee_table tr:last").before("<tr id='employee_row" + $rowno + "'><td><input type='text' name='update_employee_name[]' class='form-control input_type'></td><td><textarea name='update_employee_reason[]' class='form-control input_type' rows='2'></textarea></td><td class='col-md-1'><button type='button' class='btn btn-danger btn-md' onclick=remove_employee_row('employee_row" + $rowno + "')><strong>Remove</strong></button></td></tr>");
+        
+        }else if(option == "nonskid1" || option == "nonskid2" || option == "nonskid3" || option == "nonskid4" || option == "new_nonskid1" || option == "new_nonskid2" || option == "new_nonskid3" || option == "new_nonskid4"){
+
+            $("#employee_table tr:last").before("<tr id='employee_row" + $rowno + "'><td class='col-md-8'><input type='text' name='update_employee_name[]' class='form-control input_type'></td><td class='col-md-1'><button type='button' class='btn btn-danger btn-md' onclick=remove_employee_row('employee_row" + $rowno + "')><strong>Remove</strong></button></td></tr>");
         }
     }
 
@@ -519,6 +521,35 @@
                     }
                 });
             }
+
+        }else if(option == "nonskid1" || option == "nonskid2" || option == "nonskid3" || option == "nonskid4" || option == "new_nonskid1" || option == "new_nonskid2" || option == "new_nonskid3" || option == "new_nonskid4"){
+
+            if(option == "nonskid1" || option == "nonskid2" || option == "nonskid3" || option == "nonskid4"){
+                query_ext = option;
+            }else if(option == "new_nonskid1" || option == "new_nonskid2" || option == "new_nonskid3" || option == "new_nonskid4"){
+                new_option = option.replace("new_","");
+                query_ext = "new/"+new_option;
+            }
+
+            if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/employee/'+key).remove()){
+
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/employee').once('value', function(snapshot){
+                    if(snapshot.val() == null){
+
+                        var data = {
+                            employee_name: "N/A"
+                        }
+
+                        firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/employee').push(data);
+                        alert("Data has been removed");
+                        window.location.href='attendance.html';
+                        
+                    }else{
+                        alert("Data has been removed");
+                        location.reload();
+                    }
+                });
+            }
         }
     }
 
@@ -607,7 +638,7 @@
 
                 firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/helper').push(helperData)
 
-                for(var a = 0; a < 2; a++){
+                for(var a = 0; a < input_employee_name.length; a++){
 
                     var employeeData = {
                         employee_name: input_employee_name[a].toUpperCase() || "N/A"
@@ -617,7 +648,7 @@
                     count++;
                 }
 
-                if(count == 2){
+                if(count == input_employee_name.length){
                     alert("Data updated successfully");
                     window.location.href='attendance.html';
                 }
