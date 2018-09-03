@@ -82,18 +82,18 @@
     <script src="../js_config/function.js"></script>
 
 <script>
-	
-	var option = getUrlParameter('option');
-	var plant = getUrlParameter('plant');
-	var getCurrentDate = getUrlParameter('date');
-	var date_option = {year: "numeric", month: "long", day: "numeric"}
+    
+    var option = getUrlParameter('option');
+    var plant = getUrlParameter('plant');
+    var getCurrentDate = getUrlParameter('date');
+    var date_option = {year: "numeric", month: "long", day: "numeric"}
     var currentDate = new Date(getCurrentDate).toLocaleDateString('en', date_option);
     var optionTable = "";
 
     $(document).ready(function(){
 
-    	tableData();
-    	firebase.auth().onAuthStateChanged(function(user) {
+        tableData();
+        firebase.auth().onAuthStateChanged(function(user) {
             if (user != null) {
 
                 var uid = user.uid;
@@ -113,7 +113,7 @@
 
         document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
 
-    	document.getElementById('id_breadcrumb').innerHTML = "<li><i class='fa fa-home'></i><a href='lineup.html?plant=" + plant + "'>Line Up</a></li><li><i class='icon_document'></i>Line Up Update</li>  ";
+        document.getElementById('id_breadcrumb').innerHTML = "<li><i class='fa fa-home'></i><a href='lineup.html?plant=" + plant + "'>Line Up</a></li><li><i class='icon_document'></i>Line Up Update</li>  ";
 
     });
 
@@ -146,13 +146,13 @@
 
     function submitForm(){
 
-    	event.preventDefault();
+        event.preventDefault();
 
-    	var input_comment = document.getElementById('comment').value || "N/A";
+        var input_comment = document.getElementById('comment').value || "N/A";
 
-    	var commentData = {
-    		comment_lineup_headoffice: input_comment.toUpperCase()
-    	}
+        var commentData = {
+            comment_lineup_headoffice: input_comment.toUpperCase()
+        }
 
         if(option == "comment"){
             query_ext = option;
@@ -165,7 +165,7 @@
 
                  if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/'+commentChildSnapshot.key).update(commentData)){
                      alert("Date update successfully");
-                     window.location.href = "lineup2.html?plant="+plant;
+                     window.location.href = "lineup.html?plant="+plant;
                  }
             });
         });
@@ -276,22 +276,22 @@
                             </header>
                             <header class="panel-heading" style="text-align: center;"><strong>NOTE</strong></header>
                             <div class="panel-body">
-                            	<div class="row">                                          
-	                                <form class="form-horizontal" role="form" id="form" onsubmit='if(confirm("Proceed?")){submitForm();}else{ event.preventDefault();}'>
-										<div id="id_comment_field"></div>
-										<hr>
-	                                    <div class="col-md-12">
-	                                        <div class="form-group">
-	                                            <div class="row">
-	                                                <div class="col-md-offset-7 col-md-5">
-	                                                    <input type="submit" name="submit" id="submit" value="Update" class="btn btn-primary" style="font-weight: bold;">
-	                                                    <button type="button" class="btn btn-default" onclick="window.history.back();"><strong>Cancel</strong></button>
-	                                                </div>
-	                                            </div>
-	                                        </div>
-	                                    </div>
-	                                </form>
-	                            </div>
+                                <div class="row">                                          
+                                    <form class="form-horizontal" role="form" id="form" onsubmit='if(confirm("Proceed?")){submitForm();}else{ event.preventDefault();}'>
+                                        <div id="id_comment_field"></div>
+                                        <hr>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-offset-7 col-md-5">
+                                                        <input type="submit" name="submit" id="submit" value="Update" class="btn btn-primary" style="font-weight: bold;">
+                                                        <button type="button" class="btn btn-default" onclick="window.history.back();"><strong>Cancel</strong></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </section>
                     </div>
