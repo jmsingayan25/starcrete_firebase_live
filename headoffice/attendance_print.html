@@ -344,6 +344,81 @@
                 $(".se-pre-con").fadeOut("slow");
             }
         });
+
+        firebase.database().ref('attendance/Head Office/'+currentDate).once('value', function(headofficeSnapshot){
+
+            if(headofficeSnapshot.val() != null){
+
+                var officeRow = "";
+                var loopbookRow = "";
+
+                firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice/office').once('value', function(officeSnapshot){
+                    officeSnapshot.forEach(function(officeChildSnapshot){
+
+                        var employee_name = officeChildSnapshot.val().employee_name;
+                        var employee_timein = officeChildSnapshot.val().employee_timein;
+                        var employee_timeout = officeChildSnapshot.val().employee_timeout;
+
+                        var a = employee_timein.split(':');
+                        var employee_timein_seconds = (+a[0]) * 60 * 60 + (+a[1]);
+
+                        var b = "08:00".split(':');
+                        var timein_seconds = (+b[0]) * 60 * 60 + (+b[1]);
+
+                        if(employee_timein_seconds > timein_seconds){
+
+                            officeRow += "<tr><td>" + employee_name + "</td>";
+                            officeRow += "<td>" + employee_timein + "</td>";
+                            officeRow += "<td>" + employee_timeout + "</td><td>LATE</td></tr>";
+
+                        }else{
+
+                            officeRow += "<tr><td>" + employee_name + "</td>";
+                            officeRow += "<td>" + employee_timein + "</td>";
+                            officeRow += "<td>" + employee_timeout + "</td><td></td></tr>";
+
+                        }
+                        
+
+                    });
+
+                    document.getElementById('office_list').innerHTML = officeRow;
+                });
+
+                firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice/loopbook').once('value', function(loopbookSnapshot){
+                    loopbookSnapshot.forEach(function(loopbookChildSnapshot){
+
+                        var employee_name = loopbookChildSnapshot.val().employee_name;
+                        var employee_timein = loopbookChildSnapshot.val().employee_timein;
+                        var employee_timeout = loopbookChildSnapshot.val().employee_timeout;
+
+                        var a = employee_timein.split(':');
+                        var employee_timein_seconds = (+a[0]) * 60 * 60 + (+a[1]);
+
+                        var b = "08:00".split(':');
+                        var timein_seconds = (+b[0]) * 60 * 60 + (+b[1]);
+
+                        if(employee_timein_seconds > timein_seconds){
+
+                            loopbookRow += "<tr><td>" + employee_name + "</td>";
+                            loopbookRow += "<td>" + employee_timein + "</td>";
+                            loopbookRow += "<td>" + employee_timeout + "</td><td>LATE</td></tr>";
+
+                        }else{
+
+                            loopbookRow += "<tr><td>" + employee_name + "</td>";
+                            loopbookRow += "<td>" + employee_timein + "</td>";
+                            loopbookRow += "<td>" + employee_timeout + "</td><td></td></tr>";
+
+                        }
+                        
+
+                    });
+
+                    document.getElementById('loopbook_list').innerHTML = loopbookRow;
+                });
+            }
+        });
     });
 
 </script>
@@ -461,6 +536,57 @@
                             </tbody>
                             <tbody id="row_comment"></tbody>
                         </table>
+                    </section>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <section class="panel">
+                        <header class="panel-heading header_line"><strong>HEAD OFFICE ATTENDANCE</strong></header>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <table class="table table-bordered table-stripped">
+                                        <thead>
+                                            <tr class="header_line">
+                                                <th colspan="4">OFFICE</th>
+                                            </tr>
+                                            <tr class="header_line">
+                                                <th class="col-md-7">Name</th>
+                                                <th class="col-md-2">Time In</th>
+                                                <th class="col-md-2">Time Out</th>
+                                                <th class="col-md-1">Remarks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="office_list">
+                                            <tr>
+                                                <td colspan="4" style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-6">
+                                    <table class="table table-bordered table-stripped">
+                                        <thead>
+                                            <tr class="header_line">
+                                                <th colspan="4">LOOPBOOK</th>
+                                            </tr>
+                                            <tr class="header_line">
+                                                <th class="col-md-7">Name</th>
+                                                <th class="col-md-2">Time In</th>
+                                                <th class="col-md-2">Time Out</th>
+                                                <th class="col-md-1">Remarks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="loopbook_list">
+                                            <tr>
+                                                <td colspan="4" style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </section>
                 </div>
             </div>
