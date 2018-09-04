@@ -114,6 +114,12 @@
         });
 
         document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
+
+        if(plant == "Bravo"){
+            $('.headoffice_table').show();
+        }else if(plant == "Delta"){
+            $('.headoffice_table').hide();
+        }
     });
 
     function submitForm(){
@@ -138,14 +144,27 @@
         if(input_date != ''){
             var passcurrentDate = new Date(input_date).toLocaleDateString('en');
             var currentDate = new Date(input_date).toLocaleDateString('en', option);
+            var currentDate1 = new Date(input_date);
         }else{
             var passcurrentDate = new Date().toLocaleDateString('en');
             var currentDate = new Date().toLocaleDateString('en', option);
+            var currentDate1 = new Date();
         }
+
+        var yesterdayDate = currentDate1.setDate(currentDate1.getDate() - 1);
+        yesterdayDate = new Date(yesterdayDate).toLocaleDateString('en');
 
         document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-success btn-print' onclick=\"return tablePrint('old');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br>  Plant: " + plant + " <br> Result: <span id='id_record'></span> <br> <span id='id_time'></span></th>";
 
         document.getElementById('link_headoffice_update').innerHTML = "<a href='attendance_update.html?option=comment&date=" + passcurrentDate + "&plant=" + plant + "'>Update</a>";
+
+        document.getElementById('header_text').innerHTML = "<strong>HEAD OFFICE ATTENDANCE</strong> <button class='btn btn-md btn-success pull-right' onclick=\"window.location.href='attendance_form.html?plant=Bravo&date="+passcurrentDate+"'\"><span class='fa fa-plus'></span> <strong>Attendance Form</strong></button>";
+
+        document.getElementById('link_office_update').innerHTML = "<a href='attendance_update.html?option=office&date=" + passcurrentDate + "'>Update</a>";
+
+        document.getElementById('link_loopbook_update').innerHTML = "<a href='attendance_update.html?option=loopbook&date=" + passcurrentDate + "'>Update</a>";
+
+        $(".class_yesterday").text(yesterdayDate);
 
         firebase.database().ref('attendance/'+plant+'/'+currentDate).once('value', function(attendanceSnapshot){
 
@@ -622,12 +641,18 @@
                 var officeRow = "";
                 var loopbookRow = "";
 
+                firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice').once('value', function(noteSnapshot){
+
+                    document.getElementById('note_id').innerHTML = "<tr><td>" + noteSnapshot.val().note + "</td></tr>";
+                });
+
                 firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice/office').once('value', function(officeSnapshot){
                     officeSnapshot.forEach(function(officeChildSnapshot){
 
                         var employee_name = officeChildSnapshot.val().employee_name;
                         var employee_timein = officeChildSnapshot.val().employee_timein;
                         var employee_timeout = officeChildSnapshot.val().employee_timeout;
+                        var employee_remarks = officeChildSnapshot.val().employee_remarks;
 
                         var a = employee_timein.split(':');
                         var employee_timein_seconds = (+a[0]) * 60 * 60 + (+a[1]);
@@ -639,13 +664,15 @@
 
                             officeRow += "<tr style='background-color: #f77474; color: white;'><td>" + employee_name + "</td>";
                             officeRow += "<td>" + employee_timein + "</td>";
-                            officeRow += "<td>" + employee_timeout + "</td></tr>";
+                            officeRow += "<td>" + employee_timeout + "</td>";
+                            officeRow += "<td>" + employee_remarks + "</td></tr>";
 
                         }else{
 
                             officeRow += "<tr><td>" + employee_name + "</td>";
                             officeRow += "<td>" + employee_timein + "</td>";
-                            officeRow += "<td>" + employee_timeout + "</td></tr>";
+                            officeRow += "<td>" + employee_timeout + "</td>";
+                            officeRow += "<td>" + employee_remarks + "</td></tr>";
 
                         }
                         
@@ -661,6 +688,7 @@
                         var employee_name = loopbookChildSnapshot.val().employee_name;
                         var employee_timein = loopbookChildSnapshot.val().employee_timein;
                         var employee_timeout = loopbookChildSnapshot.val().employee_timeout;
+                        var employee_remarks = loopbookChildSnapshot.val().employee_remarks;
 
                         var a = employee_timein.split(':');
                         var employee_timein_seconds = (+a[0]) * 60 * 60 + (+a[1]);
@@ -672,13 +700,15 @@
 
                             loopbookRow += "<tr style='background-color: #f77474; color: white;'><td>" + employee_name + "</td>";
                             loopbookRow += "<td>" + employee_timein + "</td>";
-                            loopbookRow += "<td>" + employee_timeout + "</td></tr>";
+                            loopbookRow += "<td>" + employee_timeout + "</td>";
+                            loopbookRow += "<td>" + employee_remarks + "</td></tr>";
 
                         }else{
 
                             loopbookRow += "<tr><td>" + employee_name + "</td>";
                             loopbookRow += "<td>" + employee_timein + "</td>";
-                            loopbookRow += "<td>" + employee_timeout + "</td></tr>";
+                            loopbookRow += "<td>" + employee_timeout + "</td>";
+                            loopbookRow += "<td>" + employee_remarks + "</td></tr>";
 
                         }
                         
@@ -687,9 +717,17 @@
 
                     document.getElementById('loopbook_list').innerHTML = loopbookRow;
                 });
+
+
             }else{
-                document.getElementById('loopbook_list').innerHTML = "<tr><td colspan='3' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
-                document.getElementById('office_list').innerHTML = "<tr><td colspan='3' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+
+                document.getElementById('loopbook_list').innerHTML = "<tr><td colspan='4' style='height: 100%; background: white; text-align:center;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+
+                document.getElementById('office_list').innerHTML = "<tr><td colspan='4' style='height: 100%; background: white; text-align:center;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+
+                document.getElementById('note_id').innerHTML = "<tr><td style='height: 100%; background: white; text-align:center;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+
+
             }
         });
     }
@@ -899,7 +937,7 @@
                                                                             <tr class="header_line">
                                                                                 <th class="col-md-1" style="text-align: center;">NAME</th>
                                                                                 <th class="col-md-1" style="text-align: center;">TIME IN</th>
-                                                                                <th class="col-md-1" style="text-align: center;">TIME OUT (YESTERDAY)</th>
+                                                                                <th class="col-md-1" style="text-align: center;">TIME OUT (<span class='class_yesterday'></span>)</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody id="row_office_list" class="row_list_class"></tbody>
@@ -974,7 +1012,6 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    
                                 </div>
                             </div>
                         </section>
@@ -1006,7 +1043,7 @@
                                                             <tr class="header_line">
                                                                 <th class="col-md-1" style="text-align: center;">NAME</th>
                                                                 <th class="col-md-1" style="text-align: center;">TIME IN</th>
-                                                                <th class="col-md-1" style="text-align: center;">TIME OUT (YESTERDAY)</th>
+                                                                <th class="col-md-1" style="text-align: center;">TIME OUT (<span class='class_yesterday'></span>)</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody id="new_row_office_list" class="row_new_list_class"></tbody>
@@ -1082,23 +1119,39 @@
                         </section>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row headoffice_table">
                     <div class="col-md-12">
                         <section class="panel">
-                            <header class="panel-heading header_line" style="color: white;"><strong>HEAD OFFICE ATTENDANCE</strong></header>
+                            <header class="panel-heading header_line" id="header_text" style="color: white; padding-bottom: 5px; padding-top: 5px;"></header>
                             <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-stripped">
                                                 <thead>
                                                     <tr class="header_line">
-                                                        <th colspan="3">OFFICE</th>
+                                                        <th colspan="4">
+                                                            OFFICE
+                                                            <div class="btn-group pull-right new-button-link">
+                                                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
+                                                                    <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
+                                                                </a>
+                                                                <ul class="dropdown-menu">
+                                                                    <li id="link_office_update"></li>
+                                                                </ul>
+                                                            </div>
+                                                        </th>
                                                     </tr>
                                                     <tr class="header_line">
-                                                        <th class="col-md-8">Name</th>
+                                                        <th class="col-md-6">Name</th>
                                                         <th class="col-md-2">Time In</th>
-                                                        <th class="col-md-2">Time Out</th>
+                                                        <th class="col-md-2">Time Out (<span class='class_yesterday'></span>)</th>
+                                                        <th class="col-md-2">Remarks</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="office_list"></tbody>
@@ -1110,15 +1163,40 @@
                                             <table class="table table-bordered table-stripped">
                                                 <thead>
                                                     <tr class="header_line">
-                                                        <th colspan="3">LOOPBOOK</th>
+                                                        <th colspan="4">
+                                                            LOOPBOOK
+                                                            <div class="btn-group pull-right new-button-link">
+                                                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
+                                                                    <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
+                                                                </a>
+                                                                <ul class="dropdown-menu">
+                                                                    <li id="link_loopbook_update"></li>
+                                                                </ul>
+                                                            </div>
+                                                        </th>
                                                     </tr>
                                                     <tr class="header_line">
-                                                        <th class="col-md-8">Name</th>
+                                                        <th class="col-md-6">Name</th>
                                                         <th class="col-md-2">Time In</th>
-                                                        <th class="col-md-2">Time Out</th>
+                                                        <th class="col-md-2">Time Out (<span class='class_yesterday'></span>)</th>
+                                                        <th class="col-md-2">Remarks</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="loopbook_list"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-stripped">
+                                                <thead>
+                                                    <tr class="header_line">
+                                                        <th class="col-md-12">NOTE</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="note_id"></tbody>
                                             </table>
                                         </div>
                                     </div>
