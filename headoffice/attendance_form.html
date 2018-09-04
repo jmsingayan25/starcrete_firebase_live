@@ -83,7 +83,7 @@
 
 <script>
     
-    var getCurrentDate = getUrlParameter('date') || "9/1/18";
+    var getCurrentDate = getUrlParameter('date');
     var plant = getUrlParameter('plant');
     var date_option = {year: "numeric", month: "long", day: "numeric"}
     var currentDate = new Date(getCurrentDate).toLocaleDateString('en', date_option);
@@ -111,6 +111,8 @@
         document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
 
         document.getElementById('header_date').innerHTML = "Attendance Form for " + currentDate;
+
+        document.getElementById('id_breadcrumb').innerHTML = "<li><i class='fa fa-home'></i><a href='attendance.html?plant="+plant+"'>Attendance</a></li><li><i class='fa fa-file'></i><a href='attendance_form.html'>Head Office Attendance Form</a></li>";
     });
 
     function add_new_employee(type){
@@ -121,13 +123,13 @@
 
             $rowno = $("#employee_office_table tr").length;
             $rowno = $rowno + 1;
-            $("#employee_office_table tr:last").after("<tr id='employee_office_row" + $rowno + "'><td><input type='text' name='employee_office_name[]' class='form-control input_type' required></td><td><input type='time' name='employee_office_timein[]' class='form-control input_type'></td><td><input type='time' name='employee_office_timeout[]' class='form-control input_type'></td><td><button type='button' class='btn btn-danger btn-md' onclick=remove_office_employee('employee_office_row" + $rowno + "')><span class='fa fa-minus'></span></button></td></tr>");
+            $("#employee_office_table tr:last").after("<tr id='employee_office_row" + $rowno + "'><td><input type='text' name='employee_office_name[]' class='form-control input_type' required></td><td><input type='time' name='employee_office_timein[]' class='form-control input_type'></td><td><input type='time' name='employee_office_timeout[]' class='form-control input_type'></td><td><input type='text' name='employee_office_remarks[]' class='form-control input_type'></td><td><button type='button' class='btn btn-danger btn-md' onclick=remove_office_employee('employee_office_row" + $rowno + "')><span class='fa fa-minus'></span></button></td></tr>");
 
         }else if(type == "loopbook"){
 
             $rowno = $("#employee_loopbook_table tr").length;
             $rowno = $rowno + 1;
-            $("#employee_loopbook_table tr:last").after("<tr id='employee_loopbook_row" + $rowno + "'><td><input type='text' name='employee_loopbook_name[]' class='form-control input_type' required></td><td><input type='time' name='employee_loopbook_timein[]' class='form-control input_type'></td><td><input type='time' name='employee_loopbook_timeout[]' class='form-control input_type'></td><td><button type='button' class='btn btn-danger btn-md' onclick=remove_loopbook_employee('employee_loopbook_row" + $rowno + "')><span class='fa fa-minus'></span></button></td></tr>");
+            $("#employee_loopbook_table tr:last").after("<tr id='employee_loopbook_row" + $rowno + "'><td><input type='text' name='employee_loopbook_name[]' class='form-control input_type' required></td><td><input type='time' name='employee_loopbook_timein[]' class='form-control input_type'></td><td><input type='time' name='employee_loopbook_timeout[]' class='form-control input_type'></td><td><input type='text' name='employee_loopbook_remarks[]' class='form-control input_type'></td><td><button type='button' class='btn btn-danger btn-md' onclick=remove_loopbook_employee('employee_loopbook_row" + $rowno + "')><span class='fa fa-minus'></span></button></td></tr>");
         }
         
     }
@@ -147,10 +149,12 @@
         var input_employee_office_name = $("input[name='employee_office_name[]']").map(function(){return $(this).val() || "";}).get();
         var input_employee_office_timein = $("input[name='employee_office_timein[]']").map(function(){return $(this).val() || "";}).get();
         var input_employee_office_timeout = $("input[name='employee_office_timeout[]']").map(function(){return $(this).val() || "";}).get();
+        var input_employee_office_remarks = $("input[name='employee_office_remarks[]']").map(function(){return $(this).val() || "";}).get();
 
         var input_employee_loopbook_name = $("input[name='employee_loopbook_name[]']").map(function(){return $(this).val() || "";}).get();
         var input_employee_loopbook_timein = $("input[name='employee_loopbook_timein[]']").map(function(){return $(this).val() || "";}).get();
         var input_employee_loopbook_timeout = $("input[name='employee_loopbook_timeout[]']").map(function(){return $(this).val() || "";}).get();
+        var input_employee_loopbook_remarks = $("input[name='employee_loopbook_remarks[]']").map(function(){return $(this).val() || "";}).get();
 
         var input_note = document.getElementById('note_headoffice').value;
 
@@ -165,7 +169,8 @@
             var employeeData = {
                 employee_name: input_employee_office_name[a].toUpperCase(),
                 employee_timein: input_employee_office_timein[a],
-                employee_timeout: input_employee_office_timeout[a]
+                employee_timeout: input_employee_office_timeout[a],
+                employee_remarks: input_employee_office_remarks[a].toUpperCase()
             }
 
             firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice/office').push(employeeData);
@@ -177,7 +182,8 @@
             var employeeData = {
                 employee_name: input_employee_loopbook_name[a].toUpperCase(),
                 employee_timein: input_employee_loopbook_timein[a],
-                employee_timeout: input_employee_loopbook_timeout[a]
+                employee_timeout: input_employee_loopbook_timeout[a],
+                employee_remarks: input_employee_loopbook_remarks[a].toUpperCase()
             }
 
             firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice/loopbook').push(employeeData);
@@ -191,6 +197,7 @@
         }
         
     }
+    
 </script>
 <style>
 .header_text{
@@ -315,87 +322,11 @@
                  <!--overview start-->
                 <div class="row">
                     <div class="col-md-12">
-                        <!-- <h3 class="page-header"><i class="fa fa-home"></i> History</h3> -->
-                        <ol class="breadcrumb">
-                            <li><i class="fa fa-home"></i><a href="attendance.html">Attendance</a></li>                                   
-                            <li><i class="fa fa-file"></i><a href="attendance_form.html">Head Office Attendance Form</a></li>                                             
-                        </ol>
+                        <ol class="breadcrumb" id="id_breadcrumb"></ol>
                     </div>
                 </div>
                 <div class="row">
                     <form onsubmit="if(confirm('Proceed?')){ submitForm(); }else{ event.preventDefault(); }">
-                        <!-- <div class="col-md-6">
-                            <section class="panel">
-                                <header class="panel-heading">
-                                    OFFICE
-                                </header>
-                                <div class="panel-body">
-                                    <table class="table" id="employee_office_table">
-                                        <thead>
-                                            <tr>
-                                                <th class="col-md-7 header_text">Name</th>
-                                                <th class="col-md-2 header_text">Time In</th>
-                                                <th class="col-md-2 header_text">Time Out</th>
-                                                <th class="col-md-1"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr id="employee_row1">
-                                                <td><input type="text" name="employee_office_name[]" class="form-control input_type"></td>
-                                                <td><input type="time" name="employee_office_timein[]" class="form-control input_type"></td>
-                                                <td><input type="time" name="employee_office_timeout[]" class="form-control input_type"></td>
-                                                <td><button type="button" class="btn btn-primary btn-md" onclick="add_new_employee('office');"><span class="fa fa-plus"></span></button></td>
-                                            </tr>
-                                        </tbody>
-                                        
-                                    </table>
-                                </div>
-                            </section>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <section class="panel">
-                                        <header class="panel-heading">
-                                            LOOPBOOK
-                                        </header>
-                                        <div class="panel-body">
-                                            <table class="table" id="employee_loopbook_table">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="col-md-7 header_text">Name</th>
-                                                        <th class="col-md-2 header_text">Time In</th>
-                                                        <th class="col-md-2 header_text">Time Out</th>
-                                                        <th class="col-md-1"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr id="employee_row1">
-                                                        <td><input type="text" name="employee_loopbook_name[]" class="form-control input_type"></td>
-                                                        <td><input type="time" name="employee_loopbook_timein[]" class="form-control input_type"></td>
-                                                        <td><input type="time" name="employee_loopbook_timeout[]" class="form-control input_type"></td>
-                                                        <td><button type="button" class="btn btn-primary btn-md" onclick="add_new_employee('loopbook');"><span class="fa fa-plus"></span></button></td>
-                                                    </tr>
-                                                </tbody>
-                                                
-                                            </table>
-                                        </div>
-                                    </section>
-                                </div>
-                                <div class="col-md-12">
-                                    <section class="panel">
-                                        <header class="panel-heading">
-                                            NOTE
-                                        </header>
-                                        <div class="panel-body">
-                                            <textarea id="note_headoffice" class="form-control input_type" rows="5"></textarea>
-                                            <br>
-                                            <button type="submit" name="submit" class="btn btn-primary btn-md pull-right"><strong>Submit</strong></button>
-                                        </div>
-                                    </section>
-                                </div>
-                            </div>
-                        </div> -->
                         <div class="col-md-offset-2 col-md-8">
                             <section class="panel">
                                 <header class="panel-heading" id="header_date"></header>
@@ -410,9 +341,10 @@
                                                     <table class="table" id="employee_office_table">
                                                         <thead>
                                                             <tr>
-                                                                <th class="col-md-7 header_text">Name</th>
+                                                                <th class="col-md-5 header_text">Name</th>
                                                                 <th class="col-md-2 header_text">Time In</th>
                                                                 <th class="col-md-2 header_text">Time Out (Yesterday)</th>
+                                                                <th class="col-md-2 header_text">Remarks</th>
                                                                 <th class="col-md-1"></th>
                                                             </tr>
                                                         </thead>
@@ -421,6 +353,7 @@
                                                                 <td><input type="text" name="employee_office_name[]" class="form-control input_type"></td>
                                                                 <td><input type="time" name="employee_office_timein[]" class="form-control input_type"></td>
                                                                 <td><input type="time" name="employee_office_timeout[]" class="form-control input_type"></td>
+                                                                <td><input type="text" name="employee_office_remarks[]" class="form-control input_type"></td>
                                                                 <td><button type="button" class="btn btn-primary btn-md" onclick="add_new_employee('office');"><span class="fa fa-plus"></span></button></td>
                                                             </tr>
                                                         </tbody>
@@ -439,9 +372,10 @@
                                                     <table class="table" id="employee_loopbook_table">
                                                         <thead>
                                                             <tr>
-                                                                <th class="col-md-7 header_text">Name</th>
+                                                                <th class="col-md-5 header_text">Name</th>
                                                                 <th class="col-md-2 header_text">Time In</th>
                                                                 <th class="col-md-2 header_text">Time Out (Yesterday)</th>
+                                                                <th class="col-md-2 header_text">Remarks</th>
                                                                 <th class="col-md-1"></th>
                                                             </tr>
                                                         </thead>
@@ -450,6 +384,7 @@
                                                                 <td><input type="text" name="employee_loopbook_name[]" class="form-control input_type"></td>
                                                                 <td><input type="time" name="employee_loopbook_timein[]" class="form-control input_type"></td>
                                                                 <td><input type="time" name="employee_loopbook_timeout[]" class="form-control input_type"></td>
+                                                                <td><input type="text" name="employee_loopbook_remarks[]" class="form-control input_type"></td>
                                                                 <td><button type="button" class="btn btn-primary btn-md" onclick="add_new_employee('loopbook');"><span class="fa fa-plus"></span></button></td>
                                                             </tr>
                                                         </tbody>
