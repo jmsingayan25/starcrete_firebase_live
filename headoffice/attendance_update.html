@@ -89,17 +89,23 @@
 
 <script>
 
-	var option = getUrlParameter('option');
-	var plant = getUrlParameter('plant');
-	var getCurrentDate = getUrlParameter('date');
-	var date_option = {year: "numeric", month: "long", day: "numeric"}
+    var option = getUrlParameter('option');
+    var plant = getUrlParameter('plant');
+    var getCurrentDate = getUrlParameter('date');
+    var date_option = {year: "numeric", month: "long", day: "numeric"}
     var currentDate = new Date(getCurrentDate).toLocaleDateString('en', date_option);
+    var currentDate1 = new Date(getCurrentDate);
     var optionTable = "";
+
+    var yesterdayDate = currentDate1.setDate(currentDate1.getDate() - 1);
+    yesterdayDate = new Date(yesterdayDate).toLocaleDateString('en');
+    
+    
 
     $(document).ready(function(){
 
-    	tableData();
-    	firebase.auth().onAuthStateChanged(function(user) {
+        tableData();
+        firebase.auth().onAuthStateChanged(function(user) {
             if (user != null) {
 
                 var uid = user.uid;
@@ -118,9 +124,6 @@
         });
 
         document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
-
-    	document.getElementById('id_breadcrumb').innerHTML = "<li><i class='fa fa-home'></i><a href='attendance.html?plant=" + plant + "'>Attendance</a></li><li><i class='icon_document'></i>Attendance Update</li>  ";
-
     });
 
     function tableData(){
@@ -136,6 +139,8 @@
             }
 
             document.getElementById('id_option').innerHTML = "COMMENT DETAILS";
+
+            $('.button_add').hide();
 
             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(commentSnapshot){
                 // console.log('attendance/'+plant+'/'+currentDate+'/comment', commentSnapshot.val());
@@ -153,9 +158,11 @@
 
             document.getElementById('id_option').innerHTML = option.toUpperCase() + " EMPLOYEE LIST";
 
+            $('.button_add').show();
+
             firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice/'+option).once('value', function(attendanceSnapshot){
 
-                optionTable += "<thead><tr><th class='col-md-5 header_line'>Name</th><th class='col-md-2 header_line'>Time In</th><th class='col-md-2 header_line'>Time Out</th><th class='col-md-2 header_line'>Remarks</th><th class='col-md-1'></th></tr></thead><tbody>";
+                optionTable += "<thead><tr><th class='col-md-5 header_line'>NAME</th><th class='col-md-2 header_line'>TIME IN</th><th class='col-md-2 header_line'>TIME OUT (<span id='id_yesterday'></span>)</th><th class='col-md-2 header_line'>REMARKS</th><th class='col-md-1'></th></tr></thead><tbody>";
 
                 attendanceSnapshot.forEach(function(attendanceChildSnapshot){
 
@@ -164,6 +171,21 @@
                 });
 
                 optionTable += "</tbody>";
+
+                document.getElementById('id_table_view').innerHTML = optionTable;
+
+                document.getElementById('id_yesterday').innerHTML = yesterdayDate;
+            });
+
+        }else if(option == "office_note"){
+
+            document.getElementById('id_option').innerHTML = "HEAD OFFICE NOTE DETAILS";
+
+            $('.button_add').hide();
+
+            firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice/').once('value', function(noteSnapshot){
+
+                optionTable += "<div class='col-md-12'><textarea name='comment' id='comment' class='form-control input_type' rows='5' style='text-transform: uppercase;'>" + noteSnapshot.val().note  + "</textarea></div>";
 
                 document.getElementById('id_table_view').innerHTML = optionTable;
             });
@@ -217,7 +239,7 @@
 
     function submitForm(){
 
-    	event.preventDefault();
+        event.preventDefault();
 
         if(option == "comment" || option == "new_comment"){
 
@@ -269,6 +291,18 @@
                     alert("Data updated succesfully.");
                     window.location.href='attendance.html?plant=Bravo';
                 }
+            }
+        }else if(option == "office_note"){
+
+            var input_note = document.getElementById('comment').value;
+
+            var noteData = {
+                note: input_note.toUpperCase() || "N/A"
+            }
+
+            if(firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice/').update(noteData)){
+                alert("Update succesfully");
+                window.location.href='attendance.html?plant=Bravo';
             }
         }
     }

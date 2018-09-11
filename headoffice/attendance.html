@@ -154,6 +154,17 @@
         var yesterdayDate = currentDate1.setDate(currentDate1.getDate() - 1);
         yesterdayDate = new Date(yesterdayDate).toLocaleDateString('en');
 
+        firebase.database().ref('attendance/'+plant+'/'+yesterdayDate).once('value', function(yesterdayData){
+
+            if(yesterdayData.val() != null){
+                $(".class_yesterday").text(yesterdayDate);
+            }else{
+                var yesterdayDate = currentDate1.setDate(currentDate1.getDate() - 2);
+                yesterdayDate = new Date(yesterdayDate).toLocaleDateString('en');
+                $(".class_yesterday").text(yesterdayDate);
+            }
+        });
+
         document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-success btn-print' onclick=\"return tablePrint('old');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br>  Plant: " + plant + " <br> Result: <span id='id_record'></span> <br> <span id='id_time'></span></th>";
 
         document.getElementById('link_headoffice_update').innerHTML = "<a href='attendance_update.html?option=comment&date=" + passcurrentDate + "&plant=" + plant + "'>Update</a>";
@@ -164,7 +175,7 @@
 
         document.getElementById('link_loopbook_update').innerHTML = "<a href='attendance_update.html?option=loopbook&date=" + passcurrentDate + "'>Update</a>";
 
-        $(".class_yesterday").text(yesterdayDate);
+        
 
         firebase.database().ref('attendance/'+plant+'/'+currentDate).once('value', function(attendanceSnapshot){
 
@@ -638,6 +649,9 @@
 
             if(headofficeSnapshot.val() != null){
 
+                $('.office_list').show();
+                $('.no_data_text_office').hide();
+
                 var officeRow = "";
                 var loopbookRow = "";
 
@@ -675,8 +689,6 @@
                             officeRow += "<td>" + employee_remarks + "</td></tr>";
 
                         }
-                        
-
                     });
 
                     document.getElementById('office_list').innerHTML = officeRow;
@@ -711,23 +723,21 @@
                             loopbookRow += "<td>" + employee_remarks + "</td></tr>";
 
                         }
-                        
-
                     });
 
                     document.getElementById('loopbook_list').innerHTML = loopbookRow;
                 });
 
-
             }else{
 
-                document.getElementById('loopbook_list').innerHTML = "<tr><td colspan='4' style='height: 100%; background: white; text-align:center;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+                $('.office_list').hide();
+                $('.no_data_text_office').show();
 
-                document.getElementById('office_list').innerHTML = "<tr><td colspan='4' style='height: 100%; background: white; text-align:center;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+                // document.getElementById('loopbook_list').innerHTML = "<tr><td colspan='4' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
 
-                document.getElementById('note_id').innerHTML = "<tr><td style='height: 100%; background: white; text-align:center;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+                // document.getElementById('office_list').innerHTML = "<tr><td colspan='4' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
 
-
+                // document.getElementById('note_id').innerHTML = "<tr><td style='height: 100%; background: white; text-align:center;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
             }
         });
     }
@@ -1122,85 +1132,108 @@
                 <div class="row headoffice_table">
                     <div class="col-md-12">
                         <section class="panel">
-                            <header class="panel-heading header_line" id="header_text" style="color: white; padding-bottom: 5px; padding-top: 5px;"></header>
+                            <!-- <header class="panel-heading header_line" id="header_text" style="color: white; padding-bottom: 5px; padding-top: 5px;"></header> -->
                             <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered table-stripped">
-                                                <thead>
-                                                    <tr class="header_line">
-                                                        <th colspan="4">
-                                                            OFFICE
-                                                            <div class="btn-group pull-right new-button-link">
-                                                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
-                                                                    <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
-                                                                </a>
-                                                                <ul class="dropdown-menu">
-                                                                    <li id="link_office_update"></li>
-                                                                </ul>
-                                                            </div>
-                                                        </th>
-                                                    </tr>
-                                                    <tr class="header_line">
-                                                        <th class="col-md-6">Name</th>
-                                                        <th class="col-md-2">Time In</th>
-                                                        <th class="col-md-2">Time Out (<span class='class_yesterday'></span>)</th>
-                                                        <th class="col-md-2">Remarks</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="office_list"></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered table-stripped">
-                                                <thead>
-                                                    <tr class="header_line">
-                                                        <th colspan="4">
-                                                            LOOPBOOK
-                                                            <div class="btn-group pull-right new-button-link">
-                                                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
-                                                                    <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
-                                                                </a>
-                                                                <ul class="dropdown-menu">
-                                                                    <li id="link_loopbook_update"></li>
-                                                                </ul>
-                                                            </div>
-                                                        </th>
-                                                    </tr>
-                                                    <tr class="header_line">
-                                                        <th class="col-md-6">Name</th>
-                                                        <th class="col-md-2">Time In</th>
-                                                        <th class="col-md-2">Time Out (<span class='class_yesterday'></span>)</th>
-                                                        <th class="col-md-2">Remarks</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="loopbook_list"></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered table-stripped">
-                                                <thead>
-                                                    <tr class="header_line">
-                                                        <th class="col-md-12">NOTE</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="note_id"></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <td class="header_line" id="header_text" style="color: white;"></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="no_data_text_office">
+                                        <tr>
+                                            <td style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody class="office_list">
+                                        <tr>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered table-stripped">
+                                                                <thead>
+                                                                    <tr class="header_line">
+                                                                        <th colspan="4">
+                                                                            OFFICE
+                                                                            <div class="btn-group pull-right new-button-link">
+                                                                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
+                                                                                    <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
+                                                                                </a>
+                                                                                <ul class="dropdown-menu">
+                                                                                    <li id="link_office_update"></li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </th>
+                                                                    </tr>
+                                                                    <tr class="header_line">
+                                                                        <th class="col-md-6">NAME</th>
+                                                                        <th class="col-md-2">TIME IN</th>
+                                                                        <th class="col-md-2">TIME OUT (<span class='class_yesterday'></span>)</th>
+                                                                        <th class="col-md-2">REMARKS</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="office_list"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered table-stripped">
+                                                                <thead>
+                                                                    <tr class="header_line">
+                                                                        <th colspan="4">
+                                                                            LOOPBOOK
+                                                                            <div class="btn-group pull-right new-button-link">
+                                                                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
+                                                                                    <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
+                                                                                </a>
+                                                                                <ul class="dropdown-menu">
+                                                                                    <li id="link_loopbook_update"></li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </th>
+                                                                    </tr>
+                                                                    <tr class="header_line">
+                                                                        <th class="col-md-6">NAME</th>
+                                                                        <th class="col-md-2">TIME IN</th>
+                                                                        <th class="col-md-2">TIME OUT (<span class='class_yesterday'></span>)</th>
+                                                                        <th class="col-md-2">REMARKS</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="loopbook_list"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered table-stripped">
+                                                                <thead>
+                                                                    <tr class="header_line">
+                                                                        <th class="col-md-12">
+                                                                            NOTE
+                                                                            <div class="btn-group pull-right new-button-link">
+                                                                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
+                                                                                    <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
+                                                                                </a>
+                                                                                <ul class="dropdown-menu">
+                                                                                    <li id="link_office_note_update"></li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="note_id"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </section>
                     </div>

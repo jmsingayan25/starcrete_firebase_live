@@ -89,8 +89,6 @@
 
     $(document).ready(function(){
 
-        // startTime();
-
         firebase.auth().onAuthStateChanged(function(user) {
             if (user != null) {
 
@@ -106,6 +104,7 @@
 
                     displayForkliftList();
                     displayTruckingList();
+                    insertToEmployeeArray();
 
                     if(plant == 'Bravo'){
                         plant_name = "<a href='index.html' class='logo'>Starcrete <span class='lite'>Manufacturing Corporation</span></a>";
@@ -140,6 +139,21 @@
 
     });
 
+    function insertToEmployeeArray(){
+
+        var employee_array = [];
+
+        firebase.database().ref('employee_list/'+plant).once('value', function(listSnapshot){
+            listSnapshot.forEach(function(listChildSnapshot){
+
+                employee_array.push(listChildSnapshot.val().employee_name);
+
+            });
+
+            $('.employees').autocomplete({source: employee_array});
+        });
+    }
+
     function displayForkliftList(){
 
         var forkliftTbody = "";
@@ -148,7 +162,8 @@
             forkliftSnapshot.forEach(function(forkliftChildSnapshot){
 
                 // console.log(forkliftChildSnapshot.val());
-                forkliftTbody += "<tr><td class='col-md-3' style='text-align: center;'><strong>" + forkliftChildSnapshot.val().item + "</strong></td><input type='hidden' name='hidden_forklift[]' value='" + forkliftChildSnapshot.val().item + "'><td class='col-md-4'><input type='text' name='forklift_operator_name[]' class='form-control input_type'></td><td class='col-md-5'><input type='text' name='forklift_comment[]' class='form-control input_type'></td></tr>";
+                forkliftTbody += "<tr><td class='col-md-3' style='text-align: center;'><strong>" + forkliftChildSnapshot.val().item + "</strong></td><input type='hidden' name='hidden_forklift[]' value='" + forkliftChildSnapshot.val().item + "'><td class='col-md-4'><input type='text' name='forklift_operator_name[]' class='form-control input_type employees'></td><td class='col-md-5'><input type='text' name='forklift_comment[]' class='form-control input_type'></td></tr>";
+
             });
 
             document.getElementById('forkliftList').innerHTML = forkliftTbody;
@@ -162,7 +177,8 @@
         firebase.database().ref('trucking_list/'+plant).once('value', function(truckingSnapshot){
             truckingSnapshot.forEach(function(truckingChildSnapshot){
 
-                truckingTbody += "<tr style='text-align: center;'><td><strong>" + truckingChildSnapshot.val().item + "</strong></td><input type='hidden' name='hidden_trucking[]' value='" + truckingChildSnapshot.val().item + "'><td><textarea name='driver[]' rows='2' class='form-control input_type'></textarea></td><td><textarea name='pahinante1[]'rows='2' class='form-control input_type'></textarea></td><td><textarea name='pahinante2[]'rows='2' class='form-control input_type'></textarea></td><td><textarea name='trucking_reason[]' rows='2' class='form-control input_type'></textarea></td></tr>";
+                truckingTbody += "<tr style='text-align: center;'><td><strong>" + truckingChildSnapshot.val().item + "</strong></td><input type='hidden' name='hidden_trucking[]' value='" + truckingChildSnapshot.val().item + "'><td><textarea name='driver[]' rows='2' class='form-control input_type employees'></textarea></td><td><textarea name='pahinante1[]'rows='2' class='form-control input_type employees'></textarea></td><td><textarea name='pahinante2[]'rows='2' class='form-control input_type employees'></textarea></td><td><textarea name='trucking_reason[]' rows='2' class='form-control input_type'></textarea></td></tr>";
+
             });
 
             document.getElementById('truckingList').innerHTML = truckingTbody;
@@ -689,12 +705,6 @@
                             <span>Attendance</span>
                         </a>
                     </li>
-                    <li class="">
-                        <a class="" href="attendance.html">
-                            <i class="fa fa-list"></i>
-                            <span>Attendance</span>
-                        </a>
-                    </li>
                     <li class="active">
                         <a class="" href="lineup.html">
                             <i class="fa fa-list"></i>
@@ -827,7 +837,7 @@
                                                         </tr>
                                                         <tr id="office_row1" style="text-align: center;">
                                                             <td>
-                                                                <input type="text" name="employee_name[]" class="form-control input_type">
+                                                                <input type="text" name="employee_name[]" class="form-control input_type employees">
                                                             </td>
                                                             <td>
                                                                 <input type="time" name="employee_timein[]" class="form-control input_type">
@@ -880,7 +890,7 @@
                                                                                 </tr>
                                                                                 <tr id="plant_employee_row1" style="text-align: center;">
                                                                                     <td>
-                                                                                        <input type="text" name="plant_employee_name[]" class="form-control input_type">
+                                                                                        <input type="text" name="plant_employee_name[]" class="form-control  input_type employees">
                                                                                     </td>
                                                                                     <td>
                                                                                         <textarea name="plant_comment[]" class="form-control input_type" rows="2"></textarea>
@@ -918,7 +928,7 @@
                                                                                 </tr>
                                                                                 <tr id="motorpool_employee_row1" style="text-align: center;">
                                                                                     <td>
-                                                                                        <input type="text" name="motorpool_employee_name[]" class="form-control input_type">
+                                                                                        <input type="text" name="motorpool_employee_name[]" class="form-control input_type employees">
                                                                                     </td>
                                                                                     <td>
                                                                                         <textarea name="motorpool_comment[]" class="form-control input_type" rows="2"></textarea>
@@ -956,7 +966,7 @@
                                                                                 </tr>
                                                                                 <tr id="trucking_employee_row1" style="text-align: center;">
                                                                                     <td>
-                                                                                        <input type="text" name="trucking_employee_name[]" class="form-control input_type">
+                                                                                        <input type="text" name="trucking_employee_name[]" class="form-control input_type employees">
                                                                                     </td>
                                                                                     <td>
                                                                                         <textarea name="trucking_comment[]" class="form-control input_type" rows="2"></textarea>
@@ -1040,7 +1050,7 @@
                                                                         </tr>
                                                                         <tr id="machine1_row1">
                                                                             <td>
-                                                                                <input type="text" name="machine1_name[]" class="form-control input_type">
+                                                                                <input type="text" name="machine1_name[]" class="form-control input_type employees">
                                                                             </td>
                                                                             <td>
                                                                                 <input type="text" name="machine1_position[]" class="form-control input_type">
@@ -1075,7 +1085,7 @@
                                                                         </tr>
                                                                         <tr id="machine3_row1">
                                                                             <td>
-                                                                                <input type="text" name="machine3_name[]" class="form-control input_type">
+                                                                                <input type="text" name="machine3_name[]" class="form-control input_type employees">
                                                                             </td>
                                                                             <td>
                                                                                 <input type="text" name="machine3_position[]" class="form-control input_type">
@@ -1112,13 +1122,13 @@
                                                                         </tr>
                                                                         <tr id="nonskid1_row1">
                                                                             <td>
-                                                                                <input type="text" name="nonskid1_name[]" class="form-control input_type">
+                                                                                <input type="text" name="nonskid1_name[]" class="form-control input_type employees">
                                                                             </td>
                                                                             <td>
                                                                                 <button type="button" onclick="add_employee_row('nonskid1');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
                                                                             </td>
                                                                             <td>
-                                                                                <input type="text" id="nonskid1_helper_name" class="form-control input_type">
+                                                                                <input type="text" id="nonskid1_helper_name" class="form-control input_type employees">
                                                                             </td>
                                                                         </tr>                                            
                                                                     </table>
@@ -1149,13 +1159,13 @@
                                                                         </tr>
                                                                         <tr id="nonskid2_row1">
                                                                             <td>
-                                                                                <input type="text" name="nonskid2_name[]" class="form-control input_type">
+                                                                                <input type="text" name="nonskid2_name[]" class="form-control input_type employees">
                                                                             </td>
                                                                             <td>
                                                                                 <button type="button" onclick="add_employee_row('nonskid2');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
                                                                             </td>
                                                                             <td>
-                                                                                <input type="text" id="nonskid2_helper_name" class="form-control input_type">
+                                                                                <input type="text" id="nonskid2_helper_name" class="form-control input_type employees">
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -1186,13 +1196,13 @@
                                                                         </tr>
                                                                         <tr id="nonskid3_row1">
                                                                             <td>
-                                                                                <input type="text" name="nonskid3_name[]" class="form-control input_type">
+                                                                                <input type="text" name="nonskid3_name[]" class="form-control input_type employees">
                                                                             </td>
                                                                             <td>
                                                                                 <button type="button" onclick="add_employee_row('nonskid3');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
                                                                             </td>
                                                                             <td>
-                                                                                <input type="text" id="nonskid3_helper_name" class="form-control input_type">
+                                                                                <input type="text" id="nonskid3_helper_name" class="form-control input_type employees">
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -1223,13 +1233,13 @@
                                                                         </tr>
                                                                         <tr id="nonskid4_row1">
                                                                             <td>
-                                                                                <input type="text" name="nonskid4_name[]" class="form-control input_type">
+                                                                                <input type="text" name="nonskid4_name[]" class="form-control input_type employees">
                                                                             </td>
                                                                             <td>
                                                                                 <button type="button" onclick="add_employee_row('nonskid4');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
                                                                             </td>
                                                                             <td>
-                                                                                <input type="text" id="nonskid4_helper_name" class="form-control input_type">
+                                                                                <input type="text" id="nonskid4_helper_name" class="form-control input_type employees">
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -1271,7 +1281,7 @@
                                                                     </tr>
                                                                     <tr id="tagapukpok_row1" style="text-align: center;">
                                                                         <td>
-                                                                            <input type="text" name="tagapukpok_name[]" class="form-control input_type">
+                                                                            <input type="text" name="tagapukpok_name[]" class="form-control input_type employees">
                                                                         </td>
                                                                         <td>
                                                                             <input type="text" name="tagapukpok_position[]" class="form-control input_type">
@@ -1308,7 +1318,7 @@
                                                                     </tr>
                                                                     <tr id="checker_row1" style="text-align: center;">
                                                                         <td>
-                                                                            <input type="text" name="checker_name[]" class="form-control input_type">
+                                                                            <input type="text" name="checker_name[]" class="form-control input_type employees">
                                                                         </td>
                                                                         <td>
                                                                             <input type="text" name="checker_position[]" class="form-control input_type">
@@ -1353,7 +1363,9 @@
                                                                         <td class="col-md-1"></td>
                                                                     </tr>
                                                                     <tr id="kamador_row1" style="text-align: center;">
-                                                                        <td><input type="text" name="kamador_name[]" class="form-control input_type"></td>
+                                                                        <td>
+                                                                            <input type="text" name="kamador_name[]" class="form-control input_type employees">
+                                                                        </td>
                                                                         <td>
                                                                             <button type="button" onclick="add_employee_row('kamador');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
                                                                         </td>
@@ -1382,7 +1394,9 @@
                                                                         <td class="col-md-1"></td>
                                                                     </tr>
                                                                     <tr id="mechanic_row1" style="text-align: center;">
-                                                                        <td><input type="text" name="mechanic_name[]" class="form-control input_type"></td>
+                                                                        <td>
+                                                                            <input type="text" name="mechanic_name[]" class="form-control input_type employees">
+                                                                        </td>
                                                                         <td>
                                                                             <button type="button" onclick="add_employee_row('mechanic');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
                                                                         </td>
@@ -1411,7 +1425,9 @@
                                                                         <td class="col-md-1"></td>
                                                                     </tr>
                                                                     <tr id="loader_row1" style="text-align: center;">
-                                                                        <td><input type="text" name="loader_name[]" class="form-control input_type"></td>
+                                                                        <td>
+                                                                            <input type="text" name="loader_name[]" class="form-control input_type employees">
+                                                                        </td>
                                                                         <td>
                                                                             <button type="button" onclick="add_employee_row('loader');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
                                                                         </td>
@@ -1443,8 +1459,12 @@
                                                                         <td class="col-md-1"></td>
                                                                     </tr>
                                                                     <tr id="other_row1" style="text-align: center;">
-                                                                        <td><input type="text" name="others_name[]" class="form-control input_type"></td>
-                                                                        <td><input type="text" name="others_position[]" class="form-control input_type"></td>
+                                                                        <td>
+                                                                            <input type="text" name="others_name[]" class="form-control input_type employees">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" name="others_position[]" class="form-control input_type">
+                                                                        </td>
                                                                         <td>
                                                                             <button type="button" onclick="add_employee_row('others');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
                                                                         </td>
@@ -1543,7 +1563,7 @@
                                                                         </tr>
                                                                         <tr id="guard_day_row1">
                                                                             <td>
-                                                                                <input type="text" name="guard_day_name[]" class="form-control input_type">
+                                                                                <input type="text" name="guard_day_name[]" class="form-control input_type employees">
                                                                             </td>
                                                                             <td>
                                                                                 <input type="text" name="guard_day_position[]" class="form-control input_type">
@@ -1576,7 +1596,7 @@
                                                                         </tr>
                                                                         <tr id="guard_night_row1">
                                                                             <td>
-                                                                                <input type="text" name="guard_night_name[]" class="form-control input_type">
+                                                                                <input type="text" name="guard_night_name[]" class="form-control input_type employees">
                                                                             </td>
                                                                             <td>
                                                                                 <input type="text" name="guard_night_position[]" class="form-control input_type">

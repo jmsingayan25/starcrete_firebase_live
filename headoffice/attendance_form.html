@@ -90,6 +90,15 @@
 
     $(document).ready(function(){
 
+        insertToEmployeeArray();
+
+        var currentDate1 = new Date(getCurrentDate);
+        var yesterdayDate = currentDate1.setDate(currentDate1.getDate() - 1);
+        yesterdayDate = new Date(yesterdayDate).toLocaleDateString('en');
+        todayDate = new Date(currentDate).toLocaleDateString('en');
+        $(".class_yesterday").text(yesterdayDate);
+        $('.class_today').text(todayDate);
+
         firebase.auth().onAuthStateChanged(function(user) {
             if (user != null) {
 
@@ -110,10 +119,25 @@
 
         document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
 
-        document.getElementById('header_date').innerHTML = "Attendance Form for " + currentDate;
+        document.getElementById('header_date').innerHTML = "Attendance Form for " + currentDate + "<a href='employee_form.html' class='btn btn-md btn-primary pull-right'><span class='fa fa-list'></span> <strong>List of Employee</strong></a>";
 
-        document.getElementById('id_breadcrumb').innerHTML = "<li><i class='fa fa-home'></i><a href='attendance.html?plant="+plant+"'>Attendance</a></li><li><i class='fa fa-file'></i><a href='attendance_form.html'>Head Office Attendance Form</a></li>";
+        document.getElementById('id_breadcrumb').innerHTML = "<li><i class='fa fa-home'></i><a href='attendance.html?plant="+plant+"'>Attendance</a></li><li><i class='icon_document'></i><a href='attendance_form.html'>Head Office Attendance Form</a></li>";
     });
+
+    function insertToEmployeeArray(){
+
+        var employee_array = [];
+
+        firebase.database().ref('employee_list/Head Office').once('value', function(listSnapshot){
+            listSnapshot.forEach(function(listChildSnapshot){
+
+                employee_array.push(listChildSnapshot.val().employee_name);
+
+            });
+
+            $('.employees').autocomplete({source: employee_array});
+        });
+    }
 
     function add_new_employee(type){
 
@@ -123,14 +147,26 @@
 
             $rowno = $("#employee_office_table tr").length;
             $rowno = $rowno + 1;
-            $("#employee_office_table tr:last").after("<tr id='employee_office_row" + $rowno + "'><td><input type='text' name='employee_office_name[]' class='form-control input_type' required></td><td><input type='time' name='employee_office_timein[]' class='form-control input_type'></td><td><input type='time' name='employee_office_timeout[]' class='form-control input_type'></td><td><input type='text' name='employee_office_remarks[]' class='form-control input_type'></td><td><button type='button' class='btn btn-danger btn-md' onclick=remove_office_employee('employee_office_row" + $rowno + "')><span class='fa fa-minus'></span></button></td></tr>");
+            $("#employee_office_table tr:last").after("<tr id='employee_office_row" + $rowno + "'><td><input type='text' name='employee_office_name[]' class='form-control input_type employees' required></td><td><input type='time' name='employee_office_timein[]' class='form-control input_type'></td><td><input type='time' name='employee_office_timeout[]' class='form-control input_type'></td><td><input type='text' name='employee_office_remarks[]' class='form-control input_type'></td><td><button type='button' class='btn btn-danger btn-md' onclick=remove_office_employee('employee_office_row" + $rowno + "')><span class='fa fa-minus'></span></button></td></tr>");
 
         }else if(type == "loopbook"){
 
             $rowno = $("#employee_loopbook_table tr").length;
             $rowno = $rowno + 1;
-            $("#employee_loopbook_table tr:last").after("<tr id='employee_loopbook_row" + $rowno + "'><td><input type='text' name='employee_loopbook_name[]' class='form-control input_type' required></td><td><input type='time' name='employee_loopbook_timein[]' class='form-control input_type'></td><td><input type='time' name='employee_loopbook_timeout[]' class='form-control input_type'></td><td><input type='text' name='employee_loopbook_remarks[]' class='form-control input_type'></td><td><button type='button' class='btn btn-danger btn-md' onclick=remove_loopbook_employee('employee_loopbook_row" + $rowno + "')><span class='fa fa-minus'></span></button></td></tr>");
+            $("#employee_loopbook_table tr:last").after("<tr id='employee_loopbook_row" + $rowno + "'><td><input type='text' name='employee_loopbook_name[]' class='form-control input_type employees' required></td><td><input type='time' name='employee_loopbook_timein[]' class='form-control input_type'></td><td><input type='time' name='employee_loopbook_timeout[]' class='form-control input_type'></td><td><input type='text' name='employee_loopbook_remarks[]' class='form-control input_type'></td><td><button type='button' class='btn btn-danger btn-md' onclick=remove_loopbook_employee('employee_loopbook_row" + $rowno + "')><span class='fa fa-minus'></span></button></td></tr>");
         }
+
+        var employee_array = [];
+
+        firebase.database().ref('employee_list/Head Office').once('value', function(listSnapshot){
+            listSnapshot.forEach(function(listChildSnapshot){
+
+                employee_array.push(listChildSnapshot.val().employee_name);
+
+            });
+
+            $('.employees').autocomplete({source: employee_array});
+        });
         
     }
 
@@ -329,7 +365,7 @@
                     <form onsubmit="if(confirm('Proceed?')){ submitForm(); }else{ event.preventDefault(); }">
                         <div class="col-md-offset-2 col-md-8">
                             <section class="panel">
-                                <header class="panel-heading" id="header_date"></header>
+                                <header class="panel-heading" id="header_date" style='padding-top: 10px; padding-bottom: 10px;'></header>
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -342,15 +378,15 @@
                                                         <thead>
                                                             <tr>
                                                                 <th class="col-md-5 header_text">Name</th>
-                                                                <th class="col-md-2 header_text">Time In</th>
-                                                                <th class="col-md-2 header_text">Time Out (Yesterday)</th>
+                                                                <th class="col-md-2 header_text">Time In (<span class='class_today'></span>)</th>
+                                                                <th class="col-md-2 header_text">Time Out (<span class='class_yesterday'></span>)</th>
                                                                 <th class="col-md-2 header_text">Remarks</th>
                                                                 <th class="col-md-1"></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr id="employee_row1">
-                                                                <td><input type="text" name="employee_office_name[]" class="form-control input_type"></td>
+                                                                <td><input type="text" name="employee_office_name[]" class="form-control input_type employees" required></td>
                                                                 <td><input type="time" name="employee_office_timein[]" class="form-control input_type"></td>
                                                                 <td><input type="time" name="employee_office_timeout[]" class="form-control input_type"></td>
                                                                 <td><input type="text" name="employee_office_remarks[]" class="form-control input_type"></td>
@@ -373,15 +409,15 @@
                                                         <thead>
                                                             <tr>
                                                                 <th class="col-md-5 header_text">Name</th>
-                                                                <th class="col-md-2 header_text">Time In</th>
-                                                                <th class="col-md-2 header_text">Time Out (Yesterday)</th>
+                                                                <th class="col-md-2 header_text">Time In (<span class='class_today'></span>)</th>
+                                                                <th class="col-md-2 header_text">Time Out (<span class='class_yesterday'></span>)</th>
                                                                 <th class="col-md-2 header_text">Remarks</th>
                                                                 <th class="col-md-1"></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr id="employee_row1">
-                                                                <td><input type="text" name="employee_loopbook_name[]" class="form-control input_type"></td>
+                                                                <td><input type="text" name="employee_loopbook_name[]" class="form-control input_type employees" required></td>
                                                                 <td><input type="time" name="employee_loopbook_timein[]" class="form-control input_type"></td>
                                                                 <td><input type="time" name="employee_loopbook_timeout[]" class="form-control input_type"></td>
                                                                 <td><input type="text" name="employee_loopbook_remarks[]" class="form-control input_type"></td>
