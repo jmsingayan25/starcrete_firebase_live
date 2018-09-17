@@ -172,22 +172,22 @@
                 employeeSnapshot.forEach(function(employeeChildSnapshot){
           
                     myTable += "<tr><td>" + count + ".</td>";
-                    myTable += "<td>" + employeeChildSnapshot.val().employee_name + "</td>";
-                    myTable += "<td><button type='button' class='btn btn-sm btn-danger pull-right' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + employeeChildSnapshot.key + "\");}else{ event.preventDefault();}'><strong>Remove</strong></button></td></tr>";
+                    // myTable += "<td>" + employeeChildSnapshot.val().employee_name + "</td>";
+                    myTable += "<td>" + employeeChildSnapshot.val().employee_name + "<button type='button' class='btn btn-sm btn-danger pull-right' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + employeeChildSnapshot.key + "\");}else{ event.preventDefault();}'><strong>Remove</strong></button></td></tr>";
 
                     count++;
                 });
-
-                document.getElementById('employee_list').innerHTML = myTable;
 
             }else{
 
                 myTable = "<tr><td style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
 
-                document.getElementById('employee_list').innerHTML = myTable;
-
             }
+
+            document.getElementById('employee_list').innerHTML = myTable;
             
+            document.getElementById('count_employee').innerHTML = "Total: " + Number(count - 1);
+
         });
     }
 
@@ -403,7 +403,7 @@
                             <header class="panel-heading">
                                 <div class="row">
                                     <div class="col-md-12" style="text-align: center;">
-                                        <span><strong>HEAD OFFICE</strong></span>
+                                        <span><strong>EMPLOYEE LIST</strong></span>
                                     </div>
                                 </div>
                             </header>
@@ -412,7 +412,7 @@
                                     <thead>
                                         <tr class="filterable">
                                             <th colspan="3">
-                                                <button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
+                                                <span id="count_employee"></span> <button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
                                             </th>
                                         </tr>
                                         <tr class="filters" style="background-color: #00a3cc;">

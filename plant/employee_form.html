@@ -183,15 +183,16 @@
                     count++;
                 });
 
-                document.getElementById('employee_list').innerHTML = myTable;
-
             }else{
 
                 myTable = "<tr><td style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
 
-                document.getElementById('employee_list').innerHTML = myTable;
 
             }
+
+            document.getElementById('employee_list').innerHTML = myTable;
+            document.getElementById('count_employee').innerHTML = "Total: " + Number(count - 1);
+
             
         });
     }
@@ -242,6 +243,28 @@
             alert("Data added successfully");
             window.location.href='lineup_form2.html';
         }
+    }
+
+    function checkName(input_name){
+
+        var array_employee_list = [];
+
+        firebase.database().ref("employee_list/"+plant).once("value", function(employeeSnapshot){
+
+            employeeSnapshot.forEach(function(employeeChildSnapshot){
+
+                employee_name = employeeChildSnapshot.val().employee_name;
+
+                array_employee_list.push(employee_name);
+            });
+
+           result = array_employee_list.indexOf(input_name);
+
+            // if(Number(result) > -1){
+                console.log(result);
+                // document.getElementById('employee_name1').style.borderColor = "red";
+            // }
+        });
     }
 
 </script>
@@ -436,7 +459,7 @@
                                     <thead>
                                         <tr class="filterable">
                                             <th colspan="3">
-                                                <button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
+                                                <span id="count_employee"></span><button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
                                             </th>
                                         </tr>
                                         <tr class="filters" style="background-color: #00a3cc;">
@@ -467,7 +490,7 @@
                                         <tbody>
                                             <tr id="employee_row1">
                                                 <td>1.</td>
-                                                <td><input type="text" name="employee_name[]" class="form-control input_type" required></td>
+                                                <td><input type="text" name="employee_name[]" id="employee_name1" class="form-control input_type" onblur="checkName(this.value);" required></td>
                                                 <td><button type="button" class="btn btn-md btn-primary" onclick="add_employee();"><span class="fa fa-plus"></span></button></td>
                                             </tr>
                                         </tbody>
