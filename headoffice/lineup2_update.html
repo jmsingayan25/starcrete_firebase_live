@@ -88,6 +88,7 @@
     var getCurrentDate = getUrlParameter('date');
     var date_option = {year: "numeric", month: "long", day: "numeric"}
     var currentDate = new Date(getCurrentDate).toLocaleDateString('en', date_option);
+    var passDate = new Date(getCurrentDate).toLocaleDateString('en');
     var optionTable = "";
 
     $(document).ready(function(){
@@ -152,7 +153,6 @@
         var currentSystemDate = new Date().toLocaleDateString('en');
         var currentTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
         var timeStamp = new Date().getTime();
-        var fromOffice = "Head Office";
         timeStamp = timeStamp * -1;
 
         if(option == "comment"){
@@ -173,15 +173,13 @@
                     notifData = {
                         time: currentTime,
                         date: currentSystemDate,
-                        message: "You have a comment in Line Up from Head Office",
+                        message: "Head Office sent a note on Line Up Page",
                         isRead: 1,
                         reverseDate: timeStamp,
-                        fromOffice: fromOffice,
+                        fromOffice: "Head Office",
                         toOffice: plant,
-                        page: "lineup2.html?date="+currentDate
+                        page: "lineup2.html?date="+passDate
                     }
-
-                    console.log(notifData);
 
                     if(firebase.database().ref('notification').push(notifData)){
 

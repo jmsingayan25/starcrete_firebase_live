@@ -89,6 +89,7 @@
 
     var date_option = {year: "numeric", month: "long", day: "numeric"}
     var currentDate = new Date(getCurrentDate).toLocaleDateString('en', date_option);
+    var passDate = new Date(getCurrentDate).toLocaleDateString('en');
     var optionTable = "";
 
     $(document).ready(function(){
@@ -552,6 +553,65 @@
     function submitForm(){
 
         event.preventDefault();
+
+        if(option == "machine1" || option == "new_machine1"){
+            headline = "MACHINE 1 SECTION";
+        }else if(option == "machine3" || option == "new_machine3"){
+            headline = "MACHINE 3 SECTION";
+        }else if(option == "forklift_operator" || option == "new_forklift_operator"){
+            headline = "FORKLIFT OPERATOR SECTION";
+        }else if(option == "mechanic" || option == "new_mechanic"){
+            headline = "MECHANIC SECTION";
+        }else if(option == "nonskid1" || option == "new_nonskid1"){
+            headline = "NON-SKID 1 SECTION";
+        }else if(option == "nonskid2" || option == "new_nonskid2"){
+            headline = "NON-SKID 2 SECTION";
+        }else if(option == "nonskid3" || option == "new_nonskid3"){
+            headline = "NON-SKID 3 SECTION";
+        }else if(option == "nonskid4" || option == "new_nonskid4"){
+            headline = "NON-SKID 4 SECTION";
+        }else if(option == "tagapukpok" || option == "new_tagapukpok"){
+            headline = "TAGAPUKPOK / WELDER / BISTAYAN / TAGADILIG SECTION";
+        }else if(option == "checker" || option == "new_checker"){
+            headline = "CHECKER / FOREMAN / BATCHER / SUPERVISOR SECTION";
+        }else if(option == "kamador" || option == "new_kamador"){
+            headline = "KAMADOR SECTION";
+        }else if(option == "loader" || option == "new_loader"){
+            headline = "LOADER SECTION";
+        }else if(option == "others" || option == "new_others"){
+            headline = "OTHERS SECTION";
+        }else if(option == "absent_plant" || option == "new_absent_plant"){
+            headline = "ABSENT IN PLANT SECTION";
+        }else if(option == "absent_motorpool" || option == "new_absent_motorpool"){
+            headline = "ABSENT IN MOTORPOOL SECTION";
+        }else if(option == "absent_trucking" || option == "new_absent_trucking"){
+            headline = "ABSENT IN TRUCKING SECTION";
+        }else if(option == "comment" || option == "new_comment"){
+            headline = "COMMENT SECTION";
+        }else if(option == "trucking" || option == "new_trucking"){
+            headline = "TRUCKING SECTION";
+        }
+
+        var currentSystemDate = new Date().toLocaleDateString('en');
+        var currentTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        var timeStamp = new Date().getTime();
+        timeStamp = timeStamp * -1;
+        message = plant + " had updated the " + headline + " in Line Up Page";
+
+        notifData = {
+            time: currentTime,
+            date: currentSystemDate,
+            message: message,
+            isRead: 1,
+            reverseDate: timeStamp,
+            fromOffice: plant,
+            toOffice: "Head Office",
+            page: "lineup2.html?plant="+plant+"&date="+passDate
+        }
+
+        console.log(notifData);
+
+        firebase.database().ref('notification').push(notifData);
 
         if(option == "absent_plant" || option == "absent_motorpool" || option == "absent_trucking" || option == "new_absent_plant" || option == "new_absent_motorpool" || option == "new_absent_trucking"){
 

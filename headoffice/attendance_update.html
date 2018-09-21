@@ -95,6 +95,7 @@
     var date_option = {year: "numeric", month: "long", day: "numeric"}
     var currentDate = new Date(getCurrentDate).toLocaleDateString('en', date_option);
     var currentDate1 = new Date(getCurrentDate);
+    var passDate = new Date(getCurrentDate).toLocaleDateString('en');
     var optionTable = "";
 
     var yesterdayDate = currentDate1.setDate(currentDate1.getDate() - 1);
@@ -241,6 +242,11 @@
 
         event.preventDefault();
 
+        var currentSystemDate = new Date().toLocaleDateString('en');
+        var currentTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        var timeStamp = new Date().getTime();
+        timeStamp = timeStamp * -1;
+
         if(option == "comment" || option == "new_comment"){
 
             var input_note = document.getElementById('comment').value;
@@ -258,8 +264,22 @@
             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(commentSnapshot){
                 commentSnapshot.forEach(function(commentChildSnapshot){
                     if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/'+commentChildSnapshot.key).update(commentData)){
-                        alert("Update succesfully");
-                        window.location.href='attendance.html?plant='+plant;
+
+                        notifData = {
+                            time: currentTime,
+                            date: currentSystemDate,
+                            message: "Head Office sent a note on Attendance Page.",
+                            isRead: 1,
+                            reverseDate: timeStamp,
+                            fromOffice: "Head Office",
+                            toOffice: plant,
+                            page: "attendance.html?date="+passDate
+                        }
+
+                        if(firebase.database().ref('notification').push(notifData)){
+                            alert("Update succesfully");
+                            window.location.href='attendance.html?plant='+plant;
+                        }
                     }
                 });
             });

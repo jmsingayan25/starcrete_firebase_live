@@ -88,6 +88,7 @@
     var getCurrentDate = getUrlParameter('date');
     var date_option = {year: "numeric", month: "long", day: "numeric"}
     var currentDate = new Date(getCurrentDate).toLocaleDateString('en', date_option);
+    var passDate = new Date(getCurrentDate).toLocaleDateString('en');
     var optionTable = "";
 
     $(document).ready(function(){
@@ -557,6 +558,64 @@
 
         event.preventDefault();
 
+        if(option == "office" || option == "new_office"){
+            headline = "OFFICE SECTION";
+        }else if(option == "new_employee" || option == "new_employee_hired"){
+            headline = "NEW EMPLOYEE SECTION";
+        }else if(option == "nonskid1" || option == "nonskid2" || option == "nonskid3" || option == "nonskid4" || option == "new_nonskid1" || option == "new_nonskid2" || option == "new_nonskid3" || option == "new_nonskid4"){
+
+            if(option == "nonskid1" || option == "new_nonskid1"){
+                headline = "NON-SKID 1 SECTION";
+            }else if(option == "nonskid2" || option == "new_nonskid2"){
+                headline = "NON-SKID 2 SECTION";
+            }else if(option == "nonskid3" || option == "new_nonskid3"){
+                headline = "NON-SKID 3 SECTION";
+            }else if(option == "nonskid4" || option == "new_nonskid4"){
+                headline = "NON-SKID 4 SECTION";
+            }
+
+        }else if(option == "truck" || option == "new_truck"){
+            headline = "TRUCKING SECTION";
+        }else if(option == "forklift_operator" || option == "new_forklift_operator"){
+            headline = "FORKLIFT OPERATOR SECTION";
+        }else if(option == "guard" || option == "new_guard"){
+            headline = "GUARD SECTION";
+        }else if(option == "plant" || option == "motorpool" || option == "trucking" || option == "new_plant" || option == "new_motorpool" || option == "new_trucking"){
+
+            if(option == "plant" || option == "new_plant"){
+                headline = "ABSENT IN PLANT SECTION";
+            }else if(option == "motorpool" || option == "new_motorpool"){
+                headline = "ABSENT IN MOTORPOOL SECTION";
+            }else if(option == "trucking" || option == "new_trucking"){
+                headline = "ABSENT IN TRUCKING SECTION";
+            }
+
+        }else if(option == "note" || option == "new_note"){
+            headline = "NOTE SECTION";
+        }
+
+        var currentSystemDate = new Date().toLocaleDateString('en');
+        var currentTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        var timeStamp = new Date().getTime();
+        timeStamp = timeStamp * -1;
+
+        message = plant + " had updated the " + headline + " in Attendance Page";
+
+        notifData = {
+            time: currentTime,
+            date: currentSystemDate,
+            message: message,
+            isRead: 1,
+            reverseDate: timeStamp,
+            fromOffice: plant,
+            toOffice: "Head Office",
+            page: "attendance.html?plant="+plant+"&date="+passDate
+        }
+
+        console.log(notifData);
+
+        firebase.database().ref('notification').push(notifData);
+
         count = 0;
         if(option == "office" || option == "new_office"){
 
@@ -825,6 +884,9 @@
             });
 
         }
+
+
+
     }
 
 </script>
