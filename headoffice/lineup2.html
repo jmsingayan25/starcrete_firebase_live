@@ -84,8 +84,15 @@
 <script>
 
     var plant = getUrlParameter('plant');
+    var getDate = getUrlParameter('date');
 
     $(document).ready(function(){
+
+        if(getDate != ''){   
+
+            pass_date = dateDashFormat(getDate);
+            document.getElementById('input_date').value = pass_date;
+        }
 
         submitForm();
 
@@ -110,7 +117,7 @@
         });
 
         document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
-        document.getElementById('id_breadcrumb').innerHTML = "<li><i class='icon_document'></i><a href='attendance.html?plant=" + plant + "'>Line Up</a></li>";
+        document.getElementById('id_breadcrumb').innerHTML = "<li><i class='icon_document'></i><a href='lineup2.html?plant=" + plant + "'>Line Up</a></li>";
 
     });
 

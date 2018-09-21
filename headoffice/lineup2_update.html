@@ -149,10 +149,11 @@
         event.preventDefault();
 
         var input_comment = document.getElementById('comment').value || "N/A";
-
-        var commentData = {
-            comment_lineup_headoffice: input_comment.toUpperCase()
-        }
+        var currentSystemDate = new Date().toLocaleDateString('en');
+        var currentTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        var timeStamp = new Date().getTime();
+        var fromOffice = "Head Office";
+        timeStamp = timeStamp * -1;
 
         if(option == "comment"){
             query_ext = option;
@@ -163,10 +164,31 @@
         firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(commentSnapshot){
             commentSnapshot.forEach(function(commentChildSnapshot){
 
+                var commentData = {
+                    comment_lineup_headoffice: input_comment.toUpperCase()
+                }
+
                  if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/'+commentChildSnapshot.key).update(commentData)){
-                     alert("Date update successfully");
-                     window.location.href = "lineup.html?plant="+plant;
-                 }
+
+                    notifData = {
+                        time: currentTime,
+                        date: currentSystemDate,
+                        message: "You have a comment in Line Up from Head Office",
+                        isRead: 1,
+                        reverseDate: timeStamp,
+                        fromOffice: fromOffice,
+                        toOffice: plant,
+                        page: "lineup2.html?date="+currentDate
+                    }
+
+                    console.log(notifData);
+
+                    if(firebase.database().ref('notification').push(notifData)){
+
+                        alert("Date update successfully");
+                        window.location.href = "lineup2.html?plant="+plant;
+                    }
+                }
             });
         });
     }

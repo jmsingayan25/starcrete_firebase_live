@@ -84,8 +84,15 @@
 <script>
 
     var plant = "";
+    var getDate = getUrlParameter('date');
 
     $(document).ready(function(){
+
+        if(getDate != ''){
+
+            pass_date = dateDashFormat(getDate);
+            document.getElementById('input_date').value = pass_date;
+        }
 
         firebase.auth().onAuthStateChanged(function(user) {
             if (user != null) {
@@ -1030,6 +1037,25 @@
                                                     <table class="table table-bordered table-stripped">
                                                         <thead>
                                                             <tr class="header_line">
+                                                                <th colspan="2">
+                                                                    COMMENT FROM PLANT
+                                                                    <div class="btn-group pull-right button-link">
+                                                                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
+                                                                            <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
+                                                                        </a>
+                                                                        <ul class="dropdown-menu">
+                                                                            <li id="link_comment_update"></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </th>
+                                                                <th colspan="2">
+                                                                    COMMENT FROM HEAD OFFICE
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="row6_list" class="row_list_class"></tbody>
+                                                        <thead>
+                                                            <tr class="header_line">
                                                                 <th class="col-md-3">
                                                                     MACHINE 1 <span class="badge pull-right" id="badge_machine1"></span>
                                                                     <div class="btn-group pull-right button-link">
@@ -1228,25 +1254,6 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody id='row7_list' class="row_list_class"></tbody>
-                                                        <thead>
-                                                            <tr class="header_line">
-                                                                <th colspan="2">
-                                                                    COMMENT FROM PLANT
-                                                                    <div class="btn-group pull-right button-link">
-                                                                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">
-                                                                            <span class="fa fa-cog" ></span> <span class="fa fa-chevron-down"></span>
-                                                                        </a>
-                                                                        <ul class="dropdown-menu">
-                                                                            <li id="link_comment_update"></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </th>
-                                                                <th colspan="2">
-                                                                    COMMENT FROM HEAD OFFICE
-                                                                </th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="row6_list" class="row_list_class"></tbody>
                                                     </table>
                                                 </td>
                                             </tr>

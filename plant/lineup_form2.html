@@ -191,6 +191,7 @@
 
         var date_of_attendance = document.getElementById('date_selected').value;
         var option = {year: "numeric", month: "long", day: "numeric"};
+        var pass_date = new Date(date_of_attendance).toLocaleDateString('en');
         date_of_attendance = new Date(date_of_attendance).toLocaleDateString('en', option);
 
         var time_start = document.getElementById('time_start_selected').value;
@@ -256,6 +257,11 @@
 
         var input_note_lineup = document.getElementById('note_lineup').value;
         var input_note_attendance = document.getElementById('note_attendance').value;
+
+        var currentDate = new Date().toLocaleDateString('en');
+        var currentTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        var timeStamp = new Date().getTime();
+        timeStamp = timeStamp * -1;
 
         if(date_newSet == ""){
             query_ext = "";
@@ -626,6 +632,19 @@
             count++;
         }
         /*END GUARD EMPLOYEE*/
+
+        notifData = {
+            time: currentTime,
+            date: currentDate,
+            message: "New Line Up has been updated.",
+            isRead: 1,
+            reverseDate: timeStamp,
+            fromOffice: plant,
+            toOffice: "Head Office",
+            page: "lineup2.html?date="+pass_date+"&plant="+plant
+        }
+
+        firebase.database().ref('notification').push(notifData);
 
         if(count == input_nightshift_name.length){
             alert("Line Up recorded");

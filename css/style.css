@@ -9830,7 +9830,7 @@ table.sliders tr td {
 
 }
 
-.message:before {
+/*.message:before {
 
     border-color: #2095FE;
 
@@ -9856,7 +9856,7 @@ table.sliders tr td {
 
     z-index: -1;
 
-}
+}*/
 
 .message.from:before {
 
