@@ -105,6 +105,7 @@
         startTime();
         tableData();   
         displayNotif();           
+        refreshNotif();
 
         firebase.database().ref('purchase_order').on('child_changed', function(){
             $(".se-pre-con").fadeIn("fast");

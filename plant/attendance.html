@@ -84,10 +84,15 @@
 <script>
 
     var plant = "";
+    var getPassDate = getUrlParameter('date') || "";
 
     $(document).ready(function(){
 
-        // startTime();
+        if(getPassDate != ''){
+
+            pass_date = dashDateFormat(getPassDate);
+            document.getElementById('input_date').value = pass_date;
+        }
 
         firebase.auth().onAuthStateChanged(function(user) {
             if (user != null) {
@@ -103,8 +108,6 @@
                     }
                     
                     submitForm();
-                    // totalCountBadge();
-                    // goAway(plant);
                     
                     if(plant == 'Bravo'){
                         plant_name = "<a href='index.html' class='logo'>Starcrete <span class='lite'>Manufacturing Corporation</span></a>";

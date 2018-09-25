@@ -1,4 +1,13 @@
 
+    function refreshNotif(){
+
+        firebase.database().ref('notification').on('child_added', function(){
+            setTimeout(function() {
+                displayNotif();
+            }, 1000);
+        });
+    }
+    
 	function dateFormat(date){
 
         var input_date = new Date(date);

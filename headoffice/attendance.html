@@ -90,8 +90,15 @@
 <script>
 
     var plant = getUrlParameter('plant');
+    var getPassDate = getUrlParameter('date');
 
     $(document).ready(function(){
+
+        if(getPassDate != ''){
+
+            pass_date = dateDashFormat(getPassDate);
+            document.getElementById('input_date').value = pass_date;
+        }
 
         submitForm();
 
