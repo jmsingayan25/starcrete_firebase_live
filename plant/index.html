@@ -240,7 +240,7 @@
                 document.getElementById('id_ongoing_order').innerHTML = Number(ongoing_order_count).toLocaleString('en');
             }
     
-    $(".se-pre-con").fadeOut("slow");
+            $(".se-pre-con").fadeOut("slow");
         });
 
         if(ongoing_order_count == 0){
@@ -248,7 +248,7 @@
             document.getElementById('id_ongoing_order').innerHTML = ongoing_order_count;
 
     
-    $(".se-pre-con").fadeOut("slow");
+            $(".se-pre-con").fadeOut("slow");
         }
 
         /*END OF ONGOING ORDER BLOCK*/
@@ -275,15 +275,13 @@
 
             }
 
-    
-    $(".se-pre-con").fadeOut("slow");
+            $(".se-pre-con").fadeOut("slow");
         });
 
         if(delivered_order_count == 0){
             document.getElementById('id_delivered_order').innerHTML = delivered_order_count;
 
-    
-    $(".se-pre-con").fadeOut("slow");
+            $(".se-pre-con").fadeOut("slow");
         }
 
         /*END OF DELIVERY ORDER BLOCK*/
@@ -306,15 +304,13 @@
                 document.getElementById('id_backloaded_order').innerHTML = Number(backloaded_order_count).toLocaleString('en');
             }
 
-    
-    $(".se-pre-con").fadeOut("slow");
+            $(".se-pre-con").fadeOut("slow");
         });
 
         if(backloaded_order_count == 0){
             document.getElementById('id_backloaded_order').innerHTML = backloaded_order_count;
 
-    
-    $(".se-pre-con").fadeOut("slow");
+            $(".se-pre-con").fadeOut("slow");
         }
 
         /*END OF BACKLOADED ORDER BLOCK*/
@@ -331,9 +327,8 @@
         if(diesel_count == 0){
             document.getElementById('id_diesel').innerHTML = Number(diesel_count).toLocaleString('en');
 
-    
-    $(".se-pre-con").fadeOut("slow");
-        }
+        $(".se-pre-con").fadeOut("slow");
+    }
 
 
         /*END OF DIESEL STOCK*/
@@ -467,9 +462,6 @@
                                 <p class="blue">You have <span class="class_notif"></span> new messages</p>
                             </li>
                             <span id="id_notif_list"></span>
-<!--                             <li>
-                                <a href="#" onclick="">See all messages</a>
-                            </li> -->
                         </ul>
                     </li>
                     <!-- inbox notificatoin end -->
