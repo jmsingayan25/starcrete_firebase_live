@@ -365,6 +365,8 @@
                 var employeeData = {
                     employee_name: input_new_employee[a].toUpperCase()
                 }
+
+                firebase.database().ref('employee_list/'+plant).push(employeeData);
             }
             firebase.database().ref('attendance/'+plant+'/'+date_of_attendance+query_ext+'/new_employee').push(employeeData);
         }
