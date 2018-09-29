@@ -168,25 +168,25 @@
                     comment_lineup_headoffice: input_comment.toUpperCase()
                 }
 
-                 if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/'+commentChildSnapshot.key).update(commentData)){
+                firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/'+commentChildSnapshot.key).update(commentData);
 
-                    notifData = {
-                        time: currentTime,
-                        date: currentSystemDate,
-                        message: "Head Office sent a note on Line Up Page",
-                        isRead: 1,
-                        reverseDate: timeStamp,
-                        fromOffice: "Head Office",
-                        toOffice: plant,
-                        page: "lineup2.html?date="+passDate
-                    }
-
-                    if(firebase.database().ref('notification').push(notifData)){
-
-                        alert("Date update successfully");
-                        window.location.href = "lineup2.html?plant="+plant;
-                    }
+                notifData = {
+                    time: currentTime,
+                    date: currentSystemDate,
+                    message: "Head Office sent a note on Line Up Page",
+                    isRead: 1,
+                    reverseDate: timeStamp,
+                    fromOffice: "Head Office",
+                    toOffice: plant,
+                    page: "lineup2.html?date="+passDate
                 }
+
+                if(firebase.database().ref('notification').push(notifData)){
+
+                    alert("Date update successfully");
+                    window.location.href = "lineup2.html?plant="+plant;
+                }
+                
             });
         });
     }

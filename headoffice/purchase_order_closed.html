@@ -155,7 +155,8 @@
             }
         });
 
-        tableData(plant);
+        // tableData(plant);
+        submitForm();
         startTime();
 
         firebase.auth().onAuthStateChanged(function(user) {
@@ -188,211 +189,211 @@
 
     });
 
-    function submitForm(){
+    // function submitForm(){
 
-        event.preventDefault();
+    //     event.preventDefault();
 
-        $(".se-pre-con").fadeIn("fast");
+    //     $(".se-pre-con").fadeIn("fast");
 
-        var myTbody = "";
-        var count = 1;
-        // var fromDate = document.getElementById('start_date').value;
-        // var endDate = document.getElementById('end_date').value;
-        var search_text = document.getElementById('search').value;
+    //     var myTbody = "";
+    //     var count = 1;
+    //     // var fromDate = document.getElementById('start_date').value;
+    //     // var endDate = document.getElementById('end_date').value;
+    //     var search_text = document.getElementById('search').value;
 
-        if(fromDate == '' && endDate == ''){
+    //     if(fromDate == '' && endDate == ''){
 
-            firebase.database().ref('purchase_order_closed').orderByChild('reverseDate').on('child_added', function(poCloseSnapshot){
-                if(poCloseSnapshot.val().issued_po_plant == plant){
+    //         firebase.database().ref('purchase_order_closed').orderByChild('reverseDate').on('child_added', function(poCloseSnapshot){
+    //             if(poCloseSnapshot.val().issued_po_plant == plant){
 
-                    firebase.database().ref('purchase_order_closed/'+poCloseSnapshot.key+'/project_detail').once('value', function(projectSnapshot){
-                        projectSnapshot.forEach(function(projectChildSnapshot){
+    //                 firebase.database().ref('purchase_order_closed/'+poCloseSnapshot.key+'/project_detail').once('value', function(projectSnapshot){
+    //                     projectSnapshot.forEach(function(projectChildSnapshot){
 
-                            text_po_no = poCloseSnapshot.val().po_no.toLowerCase();
-                            text_item_no = poCloseSnapshot.val().item_no.toLowerCase();
-                            text_project_name = projectChildSnapshot.val().project_name.toLowerCase();
-                            text_project_address = projectChildSnapshot.val().project_address.toLowerCase();
+    //                         text_po_no = poCloseSnapshot.val().po_no.toLowerCase();
+    //                         text_item_no = poCloseSnapshot.val().item_no.toLowerCase();
+    //                         text_project_name = projectChildSnapshot.val().project_name.toLowerCase();
+    //                         text_project_address = projectChildSnapshot.val().project_address.toLowerCase();
 
-                            all_text = text_po_no + " " + text_item_no + " " + text_project_name + " " + text_project_address;
+    //                         all_text = text_po_no + " " + text_item_no + " " + text_project_name + " " + text_project_address;
 
-                            search = searchMatch(search_text, all_text);
+    //                         search = searchMatch(search_text, all_text);
 
-                            if(search != null){
+    //                         if(search != null){
 
-                                po_no = poCloseSnapshot.val().po_no;
-                                item_no = poCloseSnapshot.val().item_no;
-                                psi = poCloseSnapshot.val().psi;
+    //                             po_no = poCloseSnapshot.val().po_no;
+    //                             item_no = poCloseSnapshot.val().item_no;
+    //                             psi = poCloseSnapshot.val().psi;
 
-                                if(psi != ""){
-                                    psi_ext = " (" + psi + " PSI)";
-                                }else{
-                                    psi_ext = "";
-                                }
+    //                             if(psi != ""){
+    //                                 psi_ext = " (" + psi + " PSI)";
+    //                             }else{
+    //                                 psi_ext = "";
+    //                             }
 
-                                quantity = poCloseSnapshot.val().quantity || "";
-                                balance = poCloseSnapshot.val().balance || "";
-                                project_name = projectChildSnapshot.val().project_name;
-                                project_address = projectChildSnapshot.val().project_address;
-                                date = dateFormat(poCloseSnapshot.val().date);
-                                status = poCloseSnapshot.val().status;
-                                reason = poCloseSnapshot.val().reason;
-                                po_no_key = poCloseSnapshot.val().po_no_key;
+    //                             quantity = poCloseSnapshot.val().quantity || "";
+    //                             balance = poCloseSnapshot.val().balance || "";
+    //                             project_name = projectChildSnapshot.val().project_name;
+    //                             project_address = projectChildSnapshot.val().project_address;
+    //                             date = dateFormat(poCloseSnapshot.val().date);
+    //                             status = poCloseSnapshot.val().status;
+    //                             reason = poCloseSnapshot.val().reason;
+    //                             po_no_key = poCloseSnapshot.val().po_no_key;
 
-                                if(quantity != ""){
-                                    closed_quantity = Number(quantity).toLocaleString('en');
-                                }else{
-                                    closed_quantity = Number(balance).toLocaleString('en');
-                                }
+    //                             if(quantity != ""){
+    //                                 closed_quantity = Number(quantity).toLocaleString('en');
+    //                             }else{
+    //                                 closed_quantity = Number(balance).toLocaleString('en');
+    //                             }
 
-                                myTbody += "<tr><td><strong>" + count + "</strong></td>";
-                                // myTbody += "<td><strong>" + po_no + "</strong></td>";
-                                myTbody += "<td style='cursor: pointer;'><div class='tooltips' data-original-title='Click for more details about P.O. No. " + po_no + "' data-placement='top' onclick=\"window.location='delivery_po_summary.html?po_no_key=" + po_no_key + "&plant=" + plant + "'\"><strong>" + po_no + "</strong></div></td>";
-                                myTbody += "<td><strong>" + item_no + psi_ext + "</strong></td>";
-                                myTbody += "<td><strong>" + closed_quantity + " pcs</strong></td>";
-                                myTbody += "<td><strong>" + project_name + "</strong></td>";
-                                myTbody += "<td><strong>" + project_address + "</strong></td>";
-                                myTbody += "<td><a data-toggle='collapse' data-target='#contacts"+count+"' style='cursor: default; color: inherit;'>Click to view</a><div id='contacts"+count+"' class='collapse'>";
+    //                             myTbody += "<tr><td><strong>" + count + "</strong></td>";
+    //                             // myTbody += "<td><strong>" + po_no + "</strong></td>";
+    //                             myTbody += "<td style='cursor: pointer;'><div class='tooltips' data-original-title='Click for more details about P.O. No. " + po_no + "' data-placement='top' onclick=\"window.location='delivery_po_summary.html?po_no_key=" + po_no_key + "&plant=" + plant + "'\"><strong>" + po_no + "</strong></div></td>";
+    //                             myTbody += "<td><strong>" + item_no + psi_ext + "</strong></td>";
+    //                             myTbody += "<td><strong>" + closed_quantity + " pcs</strong></td>";
+    //                             myTbody += "<td><strong>" + project_name + "</strong></td>";
+    //                             myTbody += "<td><strong>" + project_address + "</strong></td>";
+    //                             myTbody += "<td><a data-toggle='collapse' data-target='#contacts"+count+"' style='cursor: default; color: inherit;'>Click to view</a><div id='contacts"+count+"' class='collapse'>";
 
-                                firebase.database().ref('purchase_order_closed/'+poCloseSnapshot.key+'/contact').once('value', function(contactSnapshot){
-                                    contactSnapshot.forEach(function(contactChildSnapshot){
+    //                             firebase.database().ref('purchase_order_closed/'+poCloseSnapshot.key+'/contact').once('value', function(contactSnapshot){
+    //                                 contactSnapshot.forEach(function(contactChildSnapshot){
 
-                                        contact_name = contactChildSnapshot.val().contact_name;
-                                        contact_no = contactChildSnapshot.val().contact_no;
-                                        myTbody += "<div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><strong>" + contact_name + "<br> (" + contact_no + ") <br><br></strong></div></div>";
-                                    }); 
-                                });
+    //                                     contact_name = contactChildSnapshot.val().contact_name;
+    //                                     contact_no = contactChildSnapshot.val().contact_no;
+    //                                     myTbody += "<div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><strong>" + contact_name + "<br> (" + contact_no + ") <br><br></strong></div></div>";
+    //                                 }); 
+    //                             });
 
-                                myTbody += "</td>";
-                                myTbody += "<td><strong>" + date + "</strong></td>";
-                                myTbody += "<td><strong>" + status + "</strong></td>";
-                                myTbody += "<td><strong>" + reason + "</strong></td></tr>";
+    //                             myTbody += "</td>";
+    //                             myTbody += "<td><strong>" + date + "</strong></td>";
+    //                             myTbody += "<td><strong>" + status + "</strong></td>";
+    //                             myTbody += "<td><strong>" + reason + "</strong></td></tr>";
 
-                                // document.getElementById('orderList').innerHTML = myTbody;
-                                count++;
-                            }
-                        });
-                    });
-                }
-            });
+    //                             // document.getElementById('orderList').innerHTML = myTbody;
+    //                             count++;
+    //                         }
+    //                     });
+    //                 });
+    //             }
+    //         });
 
-        }else{
+    //     }else{
 
-            if(fromDate == ''){
-                newFromDate = new Date().toLocaleDateString('en');
-                fromDate = new Date(newFromDate);
-            }else{
-                newFromDate = new Date(fromDate).toLocaleDateString('en');
-                fromDate = new Date(newFromDate);
-            }
+    //         if(fromDate == ''){
+    //             newFromDate = new Date().toLocaleDateString('en');
+    //             fromDate = new Date(newFromDate);
+    //         }else{
+    //             newFromDate = new Date(fromDate).toLocaleDateString('en');
+    //             fromDate = new Date(newFromDate);
+    //         }
 
-            if(endDate == ''){
-                newEndDate = new Date().toLocaleDateString('en');
-                endDate = new Date(newEndDate);
-            }else{
-                newEndDate = new Date(endDate).toLocaleDateString('en');
-                endDate = new Date(newEndDate);
-            }
+    //         if(endDate == ''){
+    //             newEndDate = new Date().toLocaleDateString('en');
+    //             endDate = new Date(newEndDate);
+    //         }else{
+    //             newEndDate = new Date(endDate).toLocaleDateString('en');
+    //             endDate = new Date(newEndDate);
+    //         }
 
 
-            // firebase.database().ref('purchase_order_closed').orderByChild('date').startAt(fromDate).endAt(endDate).on('child_added', function(poCloseSnapshot){
-            firebase.database().ref('purchase_order_closed').orderByChild('reverseDate').on('child_added', function(poCloseSnapshot){
+    //         // firebase.database().ref('purchase_order_closed').orderByChild('date').startAt(fromDate).endAt(endDate).on('child_added', function(poCloseSnapshot){
+    //         firebase.database().ref('purchase_order_closed').orderByChild('reverseDate').on('child_added', function(poCloseSnapshot){
 
-                orderDate = new Date(poCloseSnapshot.val().date);
+    //             orderDate = new Date(poCloseSnapshot.val().date);
 
-                if(orderDate.getTime() >= fromDate.getTime() && orderDate.getTime() <= endDate.getTime()){
+    //             if(orderDate.getTime() >= fromDate.getTime() && orderDate.getTime() <= endDate.getTime()){
 
-                    if(poCloseSnapshot.val().issued_po_plant == plant){
+    //                 if(poCloseSnapshot.val().issued_po_plant == plant){
 
-                        firebase.database().ref('purchase_order_closed/'+poCloseSnapshot.key+'/project_detail').once('value', function(projectSnapshot){
-                            projectSnapshot.forEach(function(projectChildSnapshot){
+    //                     firebase.database().ref('purchase_order_closed/'+poCloseSnapshot.key+'/project_detail').once('value', function(projectSnapshot){
+    //                         projectSnapshot.forEach(function(projectChildSnapshot){
 
-                                text_po_no = poCloseSnapshot.val().po_no.toLowerCase();
-                                text_item_no = poCloseSnapshot.val().item_no.toLowerCase();
-                                text_project_name = projectChildSnapshot.val().project_name.toLowerCase();
-                                text_project_address = projectChildSnapshot.val().project_address.toLowerCase();
+    //                             text_po_no = poCloseSnapshot.val().po_no.toLowerCase();
+    //                             text_item_no = poCloseSnapshot.val().item_no.toLowerCase();
+    //                             text_project_name = projectChildSnapshot.val().project_name.toLowerCase();
+    //                             text_project_address = projectChildSnapshot.val().project_address.toLowerCase();
 
-                                all_text = text_po_no + " " + text_item_no + " " + text_project_name + " " + text_project_address;
+    //                             all_text = text_po_no + " " + text_item_no + " " + text_project_name + " " + text_project_address;
 
-                                search = searchMatch(search_text, all_text);
+    //                             search = searchMatch(search_text, all_text);
 
-                                if(search != null){
+    //                             if(search != null){
 
-                                    po_no = poCloseSnapshot.val().po_no;
-                                    item_no = poCloseSnapshot.val().item_no;
-                                    psi = poCloseSnapshot.val().psi;
+    //                                 po_no = poCloseSnapshot.val().po_no;
+    //                                 item_no = poCloseSnapshot.val().item_no;
+    //                                 psi = poCloseSnapshot.val().psi;
 
-                                    if(psi != ""){
-                                        psi_ext = " (" + psi + " PSI)";
-                                    }else{
-                                        psi_ext = "";
-                                    }
+    //                                 if(psi != ""){
+    //                                     psi_ext = " (" + psi + " PSI)";
+    //                                 }else{
+    //                                     psi_ext = "";
+    //                                 }
 
-                                    quantity = poCloseSnapshot.val().quantity || "";
-                                    balance = poCloseSnapshot.val().balance || "";
-                                    project_name = projectChildSnapshot.val().project_name;
-                                    project_address = projectChildSnapshot.val().project_address;
-                                    date = dateFormat(poCloseSnapshot.val().date);
-                                    status = poCloseSnapshot.val().status;
-                                    reason = poCloseSnapshot.val().reason;
-                                    po_no_key = poCloseSnapshot.val().po_no_key;
+    //                                 quantity = poCloseSnapshot.val().quantity || "";
+    //                                 balance = poCloseSnapshot.val().balance || "";
+    //                                 project_name = projectChildSnapshot.val().project_name;
+    //                                 project_address = projectChildSnapshot.val().project_address;
+    //                                 date = dateFormat(poCloseSnapshot.val().date);
+    //                                 status = poCloseSnapshot.val().status;
+    //                                 reason = poCloseSnapshot.val().reason;
+    //                                 po_no_key = poCloseSnapshot.val().po_no_key;
 
-                                    if(quantity != ""){
-                                        closed_quantity = Number(quantity).toLocaleString('en');
-                                    }else{
-                                        closed_quantity = Number(balance).toLocaleString('en');
-                                    }
+    //                                 if(quantity != ""){
+    //                                     closed_quantity = Number(quantity).toLocaleString('en');
+    //                                 }else{
+    //                                     closed_quantity = Number(balance).toLocaleString('en');
+    //                                 }
 
-                                    myTbody += "<tr><td><strong>" + count + "</strong></td>";
-                                    myTbody += "<td style='cursor: pointer;'><div class='tooltips' data-original-title='Click for more details about P.O. No. " + po_no + "' data-placement='top' onclick=\"window.location='delivery_po_summary.html?po_no_key=" + po_no_key + "&plant=" + plant + "'\"><strong>" + po_no + "</strong></div></td>";
-                                    myTbody += "<td><strong>" + item_no + psi_ext + "</strong></td>";
-                                    myTbody += "<td><strong>" + closed_quantity + " pcs</strong></td>";
-                                    myTbody += "<td><strong>" + project_name + "</strong></td>";
-                                    myTbody += "<td><strong>" + project_address + "</strong></td>";
-                                    myTbody += "<td><a data-toggle='collapse' data-target='#contacts"+count+"' style='cursor: default; color: inherit;'>Click to view</a><div id='contacts"+count+"' class='collapse'>";
+    //                                 myTbody += "<tr><td><strong>" + count + "</strong></td>";
+    //                                 myTbody += "<td style='cursor: pointer;'><div class='tooltips' data-original-title='Click for more details about P.O. No. " + po_no + "' data-placement='top' onclick=\"window.location='delivery_po_summary.html?po_no_key=" + po_no_key + "&plant=" + plant + "'\"><strong>" + po_no + "</strong></div></td>";
+    //                                 myTbody += "<td><strong>" + item_no + psi_ext + "</strong></td>";
+    //                                 myTbody += "<td><strong>" + closed_quantity + " pcs</strong></td>";
+    //                                 myTbody += "<td><strong>" + project_name + "</strong></td>";
+    //                                 myTbody += "<td><strong>" + project_address + "</strong></td>";
+    //                                 myTbody += "<td><a data-toggle='collapse' data-target='#contacts"+count+"' style='cursor: default; color: inherit;'>Click to view</a><div id='contacts"+count+"' class='collapse'>";
 
-                                    firebase.database().ref('purchase_order_closed/'+poCloseSnapshot.key+'/contact').once('value', function(contactSnapshot){
-                                        contactSnapshot.forEach(function(contactChildSnapshot){
+    //                                 firebase.database().ref('purchase_order_closed/'+poCloseSnapshot.key+'/contact').once('value', function(contactSnapshot){
+    //                                     contactSnapshot.forEach(function(contactChildSnapshot){
 
-                                            contact_name = contactChildSnapshot.val().contact_name;
-                                            contact_no = contactChildSnapshot.val().contact_no;
-                                            myTbody += "<div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><strong>" + contact_name + "<br> (" + contact_no + ") <br><br></strong></div></div>";
-                                        }); 
-                                    });
+    //                                         contact_name = contactChildSnapshot.val().contact_name;
+    //                                         contact_no = contactChildSnapshot.val().contact_no;
+    //                                         myTbody += "<div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><strong>" + contact_name + "<br> (" + contact_no + ") <br><br></strong></div></div>";
+    //                                     }); 
+    //                                 });
 
-                                    myTbody += "</td>";
-                                    myTbody += "<td><strong>" + date + "</strong></td>";
-                                    myTbody += "<td><strong>" + status + "</strong></td>";
-                                    myTbody += "<td><strong>" + reason + "</strong></td></tr>";
+    //                                 myTbody += "</td>";
+    //                                 myTbody += "<td><strong>" + date + "</strong></td>";
+    //                                 myTbody += "<td><strong>" + status + "</strong></td>";
+    //                                 myTbody += "<td><strong>" + reason + "</strong></td></tr>";
 
-                                    // document.getElementById('orderList').innerHTML = myTbody;
-                                    count++;
-                                }
-                            });
-                        });
-                    }
-                }
-            });
-        }
+    //                                 // document.getElementById('orderList').innerHTML = myTbody;
+    //                                 count++;
+    //                             }
+    //                         });
+    //                     });
+    //                 }
+    //             }
+    //         });
+    //     }
 
-        if(myTbody == ''){
+    //     if(myTbody == ''){
 
-            myTbody = "<tr><td colspan='10' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+    //         myTbody = "<tr><td colspan='10' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
 
-            document.getElementById('printPo').style.display = 'none';
-            document.getElementById("orderList").innerHTML = myTbody;
+    //         document.getElementById('printPo').style.display = 'none';
+    //         document.getElementById("orderList").innerHTML = myTbody;
 
-            $(".se-pre-con").fadeOut("slow");
-        }else{
+    //         $(".se-pre-con").fadeOut("slow");
+    //     }else{
 
-            document.getElementById('printPo').style.display = 'inline';
-            document.getElementById("orderList").innerHTML = myTbody;
+    //         document.getElementById('printPo').style.display = 'inline';
+    //         document.getElementById("orderList").innerHTML = myTbody;
 
-            $(function(){ $(".tooltips").tooltip(); });
+    //         $(function(){ $(".tooltips").tooltip(); });
 
-            $(".se-pre-con").fadeOut("slow");
+    //         $(".se-pre-con").fadeOut("slow");
 
-        }
-    }
+    //     }
+    // }
     
     // function tableData(plant){
 
@@ -583,6 +584,15 @@
                                         count++;
                                     }
                                 });
+
+                                if(myTbody == ''){
+                                    myTbody = "<tr><td colspan='8' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+
+                                    document.getElementById('printPo').style.display = 'none';
+                                    document.getElementById("orderList").innerHTML = myTbody;
+
+                                    $(".se-pre-con").fadeOut("slow");
+                                }
                             });
                         }
                     });
@@ -593,6 +603,8 @@
 
                     document.getElementById('printPo').style.display = 'none';
                     document.getElementById("orderList").innerHTML = myTbody;
+
+                    $(".se-pre-con").fadeOut("slow");
                 }
             });
 
@@ -626,19 +638,99 @@
 
                             if(orderChildSnapshot.val().issued_po_plant == plant){
 
-                                firebase.database().ref('purchase_order_closed/'+poCloseSnapshot.key+'/project_detail').once('value', function(projectSnapshot){
+                                firebase.database().ref('purchase_order_closed/'+orderChildSnapshot.key+'/project_detail').once('value', function(projectSnapshot){
                                     projectSnapshot.forEach(function(projectChildSnapshot){
 
+                                        text_po_no = orderChildSnapshot.val().po_no.toLowerCase();
+                                        text_item_no = orderChildSnapshot.val().item_no.toLowerCase();
+                                        text_project_name = projectChildSnapshot.val().project_name.toLowerCase();
+                                        text_project_address = projectChildSnapshot.val().project_address.toLowerCase();
 
+                                        all_text = text_po_no + " " + text_item_no + " " + text_project_name + " " + text_project_address;
 
+                                        search = searchMatch(search_text, all_text);
+
+                                        if(search != null){
+
+                                            po_no = orderChildSnapshot.val().po_no;
+                                            item_no = orderChildSnapshot.val().item_no;
+                                            psi = orderChildSnapshot.val().psi;
+
+                                            if(psi != ""){
+                                                psi_ext = " (" + psi + " PSI)";
+                                            }else{
+                                                psi_ext = "";
+                                            }
+
+                                            quantity = orderChildSnapshot.val().quantity || "";
+                                            balance = orderChildSnapshot.val().balance || "";
+                                            project_name = projectChildSnapshot.val().project_name;
+                                            project_address = projectChildSnapshot.val().project_address;
+                                            date = dateFormat(orderChildSnapshot.val().date);
+                                            status = orderChildSnapshot.val().status;
+                                            reason = orderChildSnapshot.val().reason;
+                                            po_no_key = orderChildSnapshot.val().po_no_key;
+
+                                            if(quantity != ""){
+                                                closed_quantity = Number(quantity).toLocaleString('en');
+                                            }else{
+                                                closed_quantity = Number(balance).toLocaleString('en');
+                                            }
+
+                                            myTbody += "<tr><td><strong>" + count + "</strong></td>";
+                                            // myTbody += "<td><strong>" + po_no + "</strong></td>";
+                                            myTbody += "<td style='cursor: pointer;'><div class='tooltips' data-original-title='Click for more details about P.O. No. " + po_no + "' data-placement='top' onclick=\"window.location='delivery_po_summary.html?po_no_key=" + po_no_key + "&plant=" + plant + "'\"><strong>" + po_no + "</strong></div></td>";
+                                            myTbody += "<td><strong>" + item_no + psi_ext + "</strong></td>";
+                                            myTbody += "<td><strong>" + closed_quantity + " pcs</strong></td>";
+                                            myTbody += "<td><strong>" + project_name + "</strong></td>";
+                                            myTbody += "<td><strong>" + project_address + "</strong></td>";
+                                            myTbody += "<td><a data-toggle='collapse' data-target='#contacts"+count+"' style='cursor: default; color: inherit;'>Click to view</a><div id='contacts"+count+"' class='collapse'>";
+
+                                            firebase.database().ref('purchase_order_closed/'+orderChildSnapshot.key+'/contact').once('value', function(contactSnapshot){
+                                                contactSnapshot.forEach(function(contactChildSnapshot){
+
+                                                    contact_name = contactChildSnapshot.val().contact_name;
+                                                    contact_no = contactChildSnapshot.val().contact_no;
+                                                    myTbody += "<div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><strong>" + contact_name + "<br> (" + contact_no + ") <br><br></strong></div></div>";
+                                                }); 
+                                            });
+
+                                            myTbody += "</td>";
+                                            myTbody += "<td><strong>" + date + "</strong></td>";
+                                            myTbody += "<td><strong>" + status + "</strong></td>";
+                                            myTbody += "<td><strong>" + reason + "</strong></td></tr>";
+
+                                            document.getElementById('orderList').innerHTML = myTbody;
+                                            count++;
+                                        }
                                     });
+
+                                    if(myTbody == ''){
+                                        myTbody = "<tr><td colspan='8' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+
+                                        document.getElementById('printPo').style.display = 'none';
+                                        document.getElementById("orderList").innerHTML = myTbody;
+
+                                        $(".se-pre-con").fadeOut("slow");
+                                    }
                                 });
                             }
                         }
                     });
+                }else{
+
+                    myTbody = "<tr><td colspan='10' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+
+                    document.getElementById('printPo').style.display = 'none';
+                    document.getElementById("orderList").innerHTML = myTbody;
+
+                    $(".se-pre-con").fadeOut("slow");
                 }
             });
         }
+
+            document.getElementById('id_page_header').innerHTML = "<a href='purchase_order_closed.html?plant=" + plant + "' style='color: inherit;'>" + plant + " Closed Purchase Order</a>";
+            document.getElementById('id_breadcrumb').innerHTML = "<li><i class='fa fa-building'></i>" + plant + "</li><li><i class='icon_document'></i><a href='purchase_order.html?plant=" + plant + "'>Pending P.O.</a></li><li><i class='icon_document'></i>Closed P.O.</li> ";
     }
 
     function startTime() {

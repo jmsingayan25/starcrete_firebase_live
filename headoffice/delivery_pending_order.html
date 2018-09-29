@@ -810,11 +810,22 @@
 
     function printPo(){
 
-        // var fromDate = document.getElementById('start_date').value;
-        // var endDate = document.getElementById('end_date').value;
+        if(fromDate == ''){
+            var passFromDate = "";
+        }else{
+            var passFromDate = new Date(fromDate).toLocaleDateString('en');
+
+        }
+
+        if(endDate == ''){
+            var passEndDate = "";
+        }else{
+            var passEndDate = new Date(endDate).toLocaleDateString('en');
+        }
+        
         var search_text = document.getElementById('search').value;
 
-        window.open('delivery_pending_order_print.html?plant='+plant+'&fromDate='+fromDate+'&endDate='+endDate+'&search_text='+search_text,'_blank');
+        window.open('delivery_pending_order_print.html?plant='+plant+'&fromDate='+passFromDate+'&endDate='+passEndDate+'&search_text='+search_text,'_blank');
     }
 
 </script> 
