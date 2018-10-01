@@ -127,6 +127,19 @@
         document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
     });
 
+    function insertToEmployeeArray(){
+
+        var employee_array = [];
+
+        firebase.database().ref('employee_list/Head Office').orderByChild('employee_name').once('value', function(listSnapshot){
+            listSnapshot.forEach(function(listChildSnapshot){
+                employee_array.push(listChildSnapshot.val().employee_name);
+            });
+
+            $('.employees').autocomplete({source: employee_array});
+        });
+    } 
+
     function tableData(){
 
         var optionTable = "";
@@ -167,7 +180,7 @@
 
                 attendanceSnapshot.forEach(function(attendanceChildSnapshot){
 
-                    optionTable += "<tr><td><input type='text' name='update_employee_name[]' class='form-control input_type' value='" + attendanceChildSnapshot.val().employee_name + "'></td><td><input type='time' name='update_employee_timein[]' class='form-control' value='" + attendanceChildSnapshot.val().employee_timein + "'></td><td><input type='time' name='update_employee_timeout[]' class='form-control' value='" + attendanceChildSnapshot.val().employee_timeout + "'></td><td><input type='text' name='update_employee_remarks[]' class='form-control input_type' value='" + attendanceChildSnapshot.val().employee_remarks + "'></td></td><td><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + attendanceChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
+                    optionTable += "<tr><td><input type='text' name='update_employee_name[]' class='form-control input_type employees' value='" + attendanceChildSnapshot.val().employee_name + "'></td><td><input type='time' name='update_employee_timein[]' class='form-control' value='" + attendanceChildSnapshot.val().employee_timein + "'></td><td><input type='time' name='update_employee_timeout[]' class='form-control' value='" + attendanceChildSnapshot.val().employee_timeout + "'></td><td><input type='text' name='update_employee_remarks[]' class='form-control input_type' value='" + attendanceChildSnapshot.val().employee_remarks + "'></td></td><td><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + attendanceChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
 
                 });
 
@@ -201,7 +214,17 @@
         $rowno = $("#employee_table tr").length;
         $rowno = $rowno + 1;
 
-        $("#employee_table tr:last").before("<tr id='employee_row" + $rowno + "'><td class='col-md-5'><input type='text' name='update_employee_name[]' class='form-control input_type' required></td><td class='col-md-2'><input type='time' name='update_employee_timein[]' class='form-control'></td><td class='col-md-2'><input type='time' name='update_employee_timeout[]' class='form-control'></td><td class='col-md-2'><input type='text' name='update_employee_remarks[]' class='form-control'></td><td class='col-md-1'><button type='button' class='btn btn-danger btn-md' onclick=remove_employee_row('employee_row" + $rowno + "')><strong>Remove</strong></button></td></tr>");
+        $("#employee_table tr:last").before("<tr id='employee_row" + $rowno + "'><td class='col-md-5'><input type='text' name='update_employee_name[]' class='form-control input_type employees' required></td><td class='col-md-2'><input type='time' name='update_employee_timein[]' class='form-control'></td><td class='col-md-2'><input type='time' name='update_employee_timeout[]' class='form-control'></td><td class='col-md-2'><input type='text' name='update_employee_remarks[]' class='form-control'></td><td class='col-md-1'><button type='button' class='btn btn-danger btn-md' onclick=remove_employee_row('employee_row" + $rowno + "')><strong>Remove</strong></button></td></tr>");
+
+        var employee_array = [];
+
+        firebase.database().ref('employee_list/Head Office').orderByChild('employee_name').once('value', function(listSnapshot){
+            listSnapshot.forEach(function(listChildSnapshot){
+                employee_array.push(listChildSnapshot.val().employee_name);
+            });
+
+            $('.employees').autocomplete({source: employee_array});
+        });
 
     }
 
