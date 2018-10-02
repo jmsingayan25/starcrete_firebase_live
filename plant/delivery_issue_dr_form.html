@@ -201,7 +201,7 @@
 		var gate_pass = document.getElementById('gate_pass_no').value;
 		var date = new Date().toLocaleDateString('en');
         var time = new Date().toLocaleTimeString('en');
-        var time_timestamp = new Date(date).getTime();
+        var time_timestamp = new Date(date).getTime() * -1;
 
 		firebase.database().ref('purchase_order/'+orderKey).once('value', function(orderSnapshot){
 			firebase.database().ref('purchase_order/'+orderKey+'/item/'+itemKey).once('value', function(itemSnapshot){

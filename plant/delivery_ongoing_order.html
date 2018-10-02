@@ -115,7 +115,6 @@
 
 	$(document).ready(function(){
 
-
         $('.filterable .btn-filter').click(function(){
             var $panel = $(this).parents('.filterable'),
             $filters = $panel.find('.filters input'),
@@ -232,7 +231,7 @@
         var myTbody = "";
         var count = 1;
         var search_text = document.getElementById('search').value;
-        var plant = document.getElementById('hidden_plant').value;
+        // var plant = document.getElementById('hidden_plant').value;
 
         if(fromDate == '' && endDate == ''){
 
@@ -497,7 +496,7 @@
             var status = "DELIVERED";
             var issued_po_plant = orderSnapshot.val().issued_po_plant;
             var delivered_plant = orderSnapshot.val().issued_dr_plant;
-            var time_timestamp = new Date().getTime();
+            var time_timestamp = new Date().getTime() * -1;
 
             var drData = {
                 date: date,
@@ -857,7 +856,7 @@
             var status = "BACKLOADED";
             var issued_po_plant = ongoingOrderSnapshot.val().issued_po_plant;
             var backloaded_plant = ongoingOrderSnapshot.val().issued_dr_plant;
-            var time_timestamp = new Date(date).getTime();
+            var time_timestamp = new Date(date).getTime() * -1;
 
             var drData = {
                 date: date,
@@ -868,7 +867,8 @@
                 item_no: item_no,
                 item_key: item_key,
                 psi: psi,
-                reverseDate: firebase.database.ServerValue.TIMESTAMP,
+                // reverseDate: firebase.database.ServerValue.TIMESTAMP,
+                reverseDate: time_timestamp,
                 quantity: quantity,
                 po_no_key: po_no_key,
                 status: status,
