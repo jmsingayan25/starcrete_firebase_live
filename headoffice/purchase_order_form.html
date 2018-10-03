@@ -151,10 +151,25 @@
         $rowno=$rowno+1;
         $("#item_table tr:last").after("<tr id='row"+$rowno+"' style='text-align: center;'><td class='col-md-1'><div class='form-group'><select name='item_no[]' class='form-control' required><option value=''>Select</option></select></div></td><td class='col-md-1'><div class='form-group'><input type='text' name='psi[]' class='form-control' autocomplete='off' placeholder='PSI'></div></td><td class='col-md-1'><div class='form-group'><input type='text'  name='quantity[]' class='form-control' placeholder='Quantity' required></div></td><td class='col-md-1'><div class='form-group'><button type='button' class='btn btn-danger btn-md' onclick=delete_row('row"+$rowno+"') style='font-weight: bold;'><span class='fa fa-minus'></span></button></div></td></tr>");
 
+        // firebase.database().ref('item').once('value').then(function(snapshot){
+        //     snapshot.forEach(function(childSnapshot){
+        //         $('[name="item_no[]"]').append("<option value='" + childSnapshot.val().item + "'>" + childSnapshot.val().item + "</option>");
+        //     });
+        // });
+
+        var item_array = [];
+        var myItem = "";
+
         firebase.database().ref('item').once('value').then(function(snapshot){
             snapshot.forEach(function(childSnapshot){
-                $('[name="item_no[]"]').append("<option value='" + childSnapshot.val().item + "'>" + childSnapshot.val().item + "</option>");
+                item_array.push(childSnapshot.val().item);
             });
+            myItem += "<option>Select</option>";
+            for(var a = 0; a < item_array.length; a++){
+                myItem += "<option value='" + item_array[a] + "'>" + item_array[a] + "</option>";
+            }
+
+            $('[name="item_no[]"]').html(myItem);
         });
     }
 
@@ -224,11 +239,19 @@
 
     function itemList(){
 
+        var item_array = [];
+        var myItem = "";
+
         firebase.database().ref('item').once('value').then(function(snapshot){
             snapshot.forEach(function(childSnapshot){
-                $('[name="item_no[]"]').append("<option value='" + childSnapshot.val().item + "'>" + childSnapshot.val().item + "</option>");
+                item_array.push(childSnapshot.val().item);
             });
-            // console.log(snapshot.val());
+            myItem += "<option>Select</option>";
+            for(var a = 0; a < item_array.length; a++){
+                myItem += "<option value='" + item_array[a] + "'>" + item_array[a] + "</option>";
+            }
+
+            $('[name="item_no[]"]').html(myItem);
         });
     }
 
@@ -717,7 +740,7 @@
                                             <tr id="row1" style="text-align: center;">
                                                 <td class="col-md-1">
                                                     <div class="form-group">
-                                                        <select name="item_no[]" class="form-control" required>
+                                                        <select name="item_no[]" id="item_no_id" class="form-control" required>
                                                             <option value="">Select</option>
                                                         </select>
                                                     </div>
