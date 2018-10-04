@@ -403,7 +403,6 @@
 
 
         firebase.database().ref('project/'+client_id+'/'+project_id).once('value').then(function(snapshot){
-        //     // console.log(snapshot.val());
 
             var poData = {
                 po_no: po_no,
@@ -476,7 +475,6 @@
                         contact_no: childSnapshot.val().project_contact_no
                     }
 
-                    // console.log(childSnapshot.key, contactData);
                     firebase.database().ref('purchase_order/'+postId+'/contact/'+childSnapshot.key).set(contactData);
                     
                 });
@@ -497,12 +495,12 @@
                     history: client_name + " ordered " + item_ext + " with P.O. No. " + po_no + " to be delivered to " + snapshot.val().project_name + " in " + snapshot.val().project_address
                 }
 
-                var postHistoryData = firebase.database().ref('history/'+plant+'/');
-                var newHistoryPostRef = postHistoryData.push();
-                newHistoryPostRef.set(historyData);
+                // var postHistoryData = firebase.database().ref('history/'+plant+'/');
+                // var newHistoryPostRef = postHistoryData.push();
+                // newHistoryPostRef.set(historyData);
 
-                // firebase.database().ref('history/'+plant).push(historyData);
-                var postHistoryId = newHistoryPostRef.key;
+                firebase.database().ref('history/'+plant).push(historyData);
+                // var postHistoryId = newHistoryPostRef.key;
                 
                 // firebase.database().ref().child('history/'+plant+'/'+postHistoryId).once('value', function(snapshot){
 
