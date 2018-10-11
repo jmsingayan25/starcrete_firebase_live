@@ -229,8 +229,8 @@
 
                 var quantityout = Number(dieselChildSnapshot.val().quantity_out).toLocaleString("en");
                 var address = dieselChildSnapshot.val().destination || "";
-
-                if (quantityin == "NaN"){quantityholder = "";}
+                if (dieselChildSnapshot.val().TransactionType == "In" ||dieselChildSnapshot.val().TransactionType == "Out"){
+                   if (quantityin == "NaN"){quantityholder = "";}
                 else{quantityholder = quantityin + " liter(s)" ;}
                 if (quantityout == "NaN"){quantityoutholder = "";}
                 else{quantityoutholder = quantityout + " liter(s)";}
@@ -272,6 +272,7 @@
                         myTbody += "<td></td></tr>";
                     }
                     $(".se-pre-con").fadeOut("slow");
+                } 
                 }
                 $(".se-pre-con").fadeOut("slow");
                 });//endloop
@@ -314,8 +315,8 @@
                           
                             var quantityout = Number(dieselChildSnapshot.val().quantity_out).toLocaleString("en");
                             var address = dieselChildSnapshot.val().destination || "";
-
-                            if (quantityin == "NaN"){quantityholder = "";}
+                            if (dieselChildSnapshot.val().TransactionType == "In" ||dieselChildSnapshot.val().TransactionType == "Out"){
+                                if (quantityin == "NaN"){quantityholder = "";}
                             else{quantityholder = quantityin + " liter(s)";}
                             if (quantityout == "NaN"){quantityoutholder = "";}
                             else{quantityoutholder = quantityout + " liter(s)";}
@@ -357,6 +358,7 @@
                                     myTbody += "<td></td></tr>";
                                 }
                                 $(".se-pre-con").fadeOut("slow");
+                            }
                             }
                             }//enddate
                             });//endloop
@@ -403,49 +405,52 @@ function DisplayCurrentData(){
 
             var quantityout = Number(dieselChildSnapshot.val().quantity_out).toLocaleString("en");
             var address = dieselChildSnapshot.val().destination || "";
-            
-            if (quantityin == "NaN"){quantityholder = "";}
-            else{quantityholder = quantityin + " liter(s)" ;}
-            if (quantityout == "NaN"){quantityoutholder = "";}
-            else{quantityoutholder = quantityout + " liter(s)";}
-            if (pondo == "NaN"){pondo= "";}
-            else{pondo = pondo + " liter(s)";}
-            if (dieselChildSnapshot.val().TransactionType == "In"){
-                myTbody += "<tr style ='background-color:#006080'>";
-                myTbody += "<td style ='color: white'><strong>" + truckno + "</strong></td>";
-                myTbody += "<td style ='color: white'><strong>" + suppliername + "</strong></td>";
-                myTbody += "<td style ='color: white'><strong>" + quantityholder  + "</strong></td>";
-                myTbody += "<td style ='color: white'><strong>" + pondo  + "</strong></td>";
-                myTbody += "<td style ='color: white'><strong>" + quantityoutholder  + "</strong></td>";
-                myTbody += "<td style ='color: white'><strong>" + availablestock + " liter(s)" + "</strong></td>";
-                myTbody += "<td style ='color: white'><strong>" + address + "</strong></td>";
-                myTbody += "<td style ='color: white'><strong>" + time + "</strong></td>";
-                myTbody += "<td style ='color: white'><strong>" + drno + "</strong></td>";
-                myTbody += "<td style ='color: white'><strong>" + dates + "</strong></td>";
-                if (Seperatecurrentdate == Seperatedate || SeperatecurrentdateOne == Seperatedate || SeperatecurrentdateTwo == Seperatedate){
-                    myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
+
+            if (dieselChildSnapshot.val().TransactionType == "In" ||dieselChildSnapshot.val().TransactionType == "Out"){
+                if (quantityin == "NaN"){quantityholder = "";}
+                else{quantityholder = quantityin + " liter(s)" ;}
+                if (quantityout == "NaN"){quantityoutholder = "";}
+                else{quantityoutholder = quantityout + " liter(s)";}
+                if (pondo == "NaN"){pondo= "";}
+                else{pondo = pondo + " liter(s)";}
+
+                if (dieselChildSnapshot.val().TransactionType == "In"){
+                    myTbody += "<tr style ='background-color:#006080'>";
+                    myTbody += "<td style ='color: white'><strong>" + truckno + "</strong></td>";
+                    myTbody += "<td style ='color: white'><strong>" + suppliername + "</strong></td>";
+                    myTbody += "<td style ='color: white'><strong>" + quantityholder  + "</strong></td>";
+                    myTbody += "<td style ='color: white'><strong>" + pondo  + "</strong></td>";
+                    myTbody += "<td style ='color: white'><strong>" + quantityoutholder  + "</strong></td>";
+                    myTbody += "<td style ='color: white'><strong>" + availablestock + " liter(s)" + "</strong></td>";
+                    myTbody += "<td style ='color: white'><strong>" + address + "</strong></td>";
+                    myTbody += "<td style ='color: white'><strong>" + time + "</strong></td>";
+                    myTbody += "<td style ='color: white'><strong>" + drno + "</strong></td>";
+                    myTbody += "<td style ='color: white'><strong>" + dates + "</strong></td>";
+                    if (Seperatecurrentdate == Seperatedate || SeperatecurrentdateOne == Seperatedate || SeperatecurrentdateTwo == Seperatedate){
+                        myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
+                    }else{
+                        myTbody += "<td></td></tr>";
+                    }
+                    $(".se-pre-con").fadeOut("slow");
                 }else{
-                     myTbody += "<td></td></tr>";
+                    myTbody += "<tr>";
+                    myTbody += "<td><strong>" + truckno + "</strong></td>";
+                    myTbody += "<td><strong>" + suppliername + "</strong></td>";
+                    myTbody += "<td><strong>" + quantityholder  + "</strong></td>";
+                    myTbody += "<td><strong>" + pondo  + "</strong></td>";
+                    myTbody += "<td><strong>" + quantityoutholder  + "</strong></td>";
+                    myTbody += "<td><strong>" + availablestock + " liter(s)" + "</strong></td>";
+                    myTbody += "<td><strong>" + address + "</strong></td>";
+                    myTbody += "<td><strong>" + time + "</strong></td>";
+                    myTbody += "<td><strong>" + drno + "</strong></td>";
+                    myTbody += "<td><strong>" + dates + "</strong></td>";
+                    if (Seperatecurrentdate == Seperatedate || SeperatecurrentdateOne == Seperatedate || SeperatecurrentdateTwo == Seperatedate){
+                        myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
+                    }else{
+                        myTbody += "<td></td></tr>";
+                    }
+                    $(".se-pre-con").fadeOut("slow");
                 }
-                $(".se-pre-con").fadeOut("slow");
-            }else{
-                myTbody += "<tr>";
-                myTbody += "<td><strong>" + truckno + "</strong></td>";
-                myTbody += "<td><strong>" + suppliername + "</strong></td>";
-                myTbody += "<td><strong>" + quantityholder  + "</strong></td>";
-                myTbody += "<td><strong>" + pondo  + "</strong></td>";
-                myTbody += "<td><strong>" + quantityoutholder  + "</strong></td>";
-                myTbody += "<td><strong>" + availablestock + " liter(s)" + "</strong></td>";
-                myTbody += "<td><strong>" + address + "</strong></td>";
-                myTbody += "<td><strong>" + time + "</strong></td>";
-                myTbody += "<td><strong>" + drno + "</strong></td>";
-                myTbody += "<td><strong>" + dates + "</strong></td>";
-                if (Seperatecurrentdate == Seperatedate || SeperatecurrentdateOne == Seperatedate || SeperatecurrentdateTwo == Seperatedate){
-                    myTbody += "<td><form onsubmit=\"if(confirm('Proceed?')){DeleteRowData(\'" + key + "\',\'" + plant + "\');}else{ event.preventDefault();}\"><button type='submit' class='fa fa-trash btn btn-danger btn-md btn-block'><strong> Delete</strong></button></form></td></tr>";
-                }else{
-                     myTbody += "<td></td></tr>";
-                }
-                $(".se-pre-con").fadeOut("slow");
             }
         });
         if (myTbody == ""){
@@ -505,7 +510,7 @@ function DeleteRowData(key,plant)
                 var gettimestamp = getDate + " " + gettime; 
                 var newTimestamp = new Date(gettimestamp).getTime();
                 var getAvailableStock = AvailableSnapshot.val().Liters;
-           
+            
                 if (getTransactionType == "Out"){
                      NoKeyIncomingSnapshot.forEach(function(foreachSnapshot){
                         var geteachDate = foreachSnapshot.val().date;
@@ -514,8 +519,8 @@ function DeleteRowData(key,plant)
                         var neweachTimeStamp = new Date(eachTimeStamp).getTime();
 
                         if (neweachTimeStamp >= newTimestamp){
-
                             var RollbackResult = Number(getQuantityOut) + Number(foreachSnapshot.val().currentstockCopy);
+                            RollbackResult = RollbackResult.toString();
                             var stock_available  = {currentstockCopy: RollbackResult};
                             firebase.database().ref().child("incoming_diesel/" + plant + "/" + foreachSnapshot.key).update(stock_available);
 
@@ -526,6 +531,16 @@ function DeleteRowData(key,plant)
                           firebase.database().ref().child("incoming_diesel/" + plant + "/" + key).remove();
                         }
                      });
+                     // var OutgoingData = {
+                     // Date_Input: "",
+                     // TransactionType: "Reserve",
+                     // destination: "",
+                     // operator: "",
+                     // pondo_Input: "",
+                     // quantity_out: "",
+                     // time_input: "",
+                     // truck_no: ""};
+                    // firebase.database().ref().child("incoming_diesel/" + plant + "/" + key).update(OutgoingData);
                        $(".se-pre-con").fadeOut("slow");
                             window.location.reload();
                 }else if(getTransactionType == "In"){
