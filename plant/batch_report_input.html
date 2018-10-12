@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+    <link rel="shortcut icon" href="../img/favicon.png">
+
+    <title>Line Up Form</title>
+
+    <!-- Firebase App is always required and must be first -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/5.0.3/firebase-app.js"></script>
+
+    <!-- Add additional services you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>
+    <script src="../js_config/firebase_config.js"></script>
+
+    <!-- Bootstrap CSS -->    
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="../css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="../css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="../css/font-awesome.min.css" rel="stylesheet" />    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- owl carousel -->
+    <link rel="stylesheet" href="../css/owl.carousel.css" type="text/css">
+    <link href="../css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="../css/fullcalendar.css">
+    <link href="../css/widgets.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/style-responsive.css" rel="stylesheet" />
+    <link href="../css/xcharts.min.css" rel=" stylesheet">  
+    <link href="../css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+
+    <!-- javascripts -->
+    <script src="../js/jquery.js"></script>
+    <script src="../js/jquery-ui-1.10.4.min.js"></script>
+    <script src="../js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-ui-1.9.2.custom.min.js"></script>
+    <!-- bootstrap -->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- nice scroll -->
+    <script src="../js/jquery.scrollTo.min.js"></script>
+    <script src="../js/jquery.nicescroll.js" type="text/javascript"></script>
+    <!-- charts scripts -->
+    <script src="../assets/jquery-knob/js/jquery.knob.js"></script>
+    <script src="../js/jquery.sparkline.js" type="text/javascript"></script>
+    <script src="../assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
+    <script src="../js/owl.carousel.js" ></script>
+    <!-- jQuery full calendar -->
+    <script src="../js/fullcalendar.min.js"></script> <!-- Full Google Calendar - Calendar -->
+    <script src="../assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
+    <!--script for this page only-->
+    <script src="../js/calendar-custom.js"></script>
+    <script src="../js/jquery.rateit.min.js"></script>
+    <!-- custom select -->
+    <script src="../js/jquery.customSelect.min.js" ></script>
+    <script src="../assets/chart-master/Chart.js"></script>
+
+    <!--custome script for all page-->
+    <script src="../js/scripts.js"></script>
+    <!-- custom script for this page-->
+    <script src="../js/sparkline-chart.js"></script>
+    <script src="../js/easy-pie-chart.js"></script>
+    <script src="../js/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="../js/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="../js/xcharts.min.js"></script>
+    <script src="../js/jquery.autosize.min.js"></script>
+    <script src="../js/jquery.placeholder.min.js"></script>
+    <script src="../js/gdp-data.js"></script>  
+    <script src="../js/morris.min.js"></script>
+    <script src="../js/sparklines.js"></script>    
+    <script src="../js/charts.js"></script>
+    <script src="../js/jquery.slimscroll.min.js"></script>
+    <script src="../js_config/function.js"></script>
+    <script src="../js_config/attendance2.js"></script>
+
+<script>
+    
+    var plant = "";
+    var date_newSet = getUrlParameter('date');
+
+    $(document).ready(function(){
+
+        // startTime();
+
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user != null) {
+
+                var uid = user.uid;
+        
+                firebase.database().ref('users/'+uid).once('value').then(function(snapshot) {
+
+                    plant = snapshot.val().office;
+
+                    if(plant == 'Head Office'){
+                        window.location.href = '../headoffice/index.html';
+                    }
+
+                    DropdownCategory();
+
+                    if(plant == 'Bravo'){
+                        plant_name = "<a href='index.html' class='logo'>Starcrete <span class='lite'>Manufacturing Corporation</span></a>";
+                    }else{
+                        plant_name = "<a href='index.html' class='logo'>Quality Star <span class='lite'>Concrete Products, Inc.</span></a>";
+                    }
+
+                    document.getElementById('id_plant_name').innerHTML = plant_name;
+                    document.getElementById('username').innerHTML = snapshot.val().firstname; 
+
+                },(error) => {
+                    console.log(error);
+                });
+            } else {
+                window.location.href = '../login.html';
+            }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
+        
+        document.getElementById('header_form').innerHTML = "<h4><strong>DAILY PRODUCTION INPUT</strong></h4>";
+       
+
+    });
+
+function submitcategory()
+{
+    event.preventDefault();
+    firebase.database().ref().child("item").once('value',function(Snapshot){
+        var textcategory = document.getElementById('textcategory').value; 
+        var text_category  = {item: textcategory.toUpperCase()};
+
+        var postData = firebase.database().ref('item/');
+        var newPostRef = postData.push();
+        newPostRef.set(text_category);
+        var postId = newPostRef.key;
+
+        var clearText = document.getElementById("textcategory");
+        clearText.value = "";
+        window.location.reload();
+    });
+}
+
+function DropdownCategory(){
+    var dd_category = "<option value=''>Select</option>"
+    firebase.database().ref().child("item/").once('value',function(Snapshot){
+        Snapshot.forEach(function(ChildSnapshot){
+            dd_category += "<option value ='" + ChildSnapshot.val().item  + "'>" + ChildSnapshot.val().item +"</option>";
+            document.getElementById("selectsys1").innerHTML = dd_category;
+            document.getElementById("selectsys2").innerHTML = dd_category;
+            document.getElementById("selectsys3").innerHTML = dd_category;
+            document.getElementById("selectsys4").innerHTML = dd_category;
+            document.getElementById("selectsys5").innerHTML = dd_category;
+        })
+    });
+}
+
+function SubmitBatch(){
+    event.preventDefault();
+
+    var date_of_batch = document.getElementById("date_selected").value;
+    var option = {year: "numeric", month: "long", day: "numeric"};
+    date_of_batch = new Date(date_of_batch).toLocaleDateString('en',option);
+
+    // machine_1
+    var Cement_KG = document.getElementById("cementKG1").value;
+
+    var CementKG_Holder = {
+
+        Cement_KG: Cement_KG
+    }
+
+    firebase.database().ref('Daily_Production_Report/'+plant+'/'+date_of_batch+'/Machine1').set(CementKG_Holder);
+
+}
+    
+
+</script>
+<style>
+.view_details_btn{
+    color: #333; 
+    float: right; 
+    margin-right: -15px; 
+    margin-top: -25px;
+}
+.input_type{
+    text-transform: uppercase;
+}
+.align_center{
+    text-align: center;
+}
+</style>
+</head>
+<body>
+    <!-- <div class="se-pre-con"></div> -->
+    <section id="container" class="">
+        <header class="header dark-bg">
+            <div class="toggle-nav">
+            <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="icon_menu"></i></div>
+            </div>
+
+            <!--logo start-->
+
+            <!--logo end-->
+            <span id="id_plant_name"></span>
+            <div class="top-nav notification-row">                
+                <!-- notificatoin dropdown start-->
+                <ul class="nav pull-right top-menu">
+                    <!-- user login dropdown start-->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <!--  <span class="profile-ava">
+                        <img alt="" src="img/avatar1_small.jpg">
+                        </span> -->
+                            <span class="username" id="username"></span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu extended logout">
+                            <div class="log-arrow-up"></div>
+                            <li>
+                                <a href="" id="logoutBtn"><i class="icon_key_alt"></i> Log Out</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- user login dropdown end -->
+                </ul>
+                <!-- notificatoin dropdown end-->
+            </div>
+        </header>  
+        <!--sidebar start-->
+        <aside>
+            <div id="sidebar"  class="nav-collapse ">
+                <!-- sidebar menu start-->
+                <ul class="sidebar-menu">                
+                    <li class="">
+                        <a class="" href="index.html">
+                            <i class="icon_house"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="" href="transaction_log.html">
+                            <i class="fa fa-list"></i>
+                            <span>Transaction Log</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="" href="attendance.html">
+                            <i class="fa fa-list"></i>
+                            <span>Attendance</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="" href="attendance.html">
+                            <i class="fa fa-list"></i>
+                            <span>Attendance</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a class="" href="lineup.html">
+                            <i class="fa fa-list"></i>
+                            <span>Line Up</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="" href="diesel.html">
+                            <i class="fa fa-building"></i>
+                            <span>Diesel</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="" href="diesel_category.html">
+                            <i class="fa fa-building"></i>
+                            <span>Oil</span>
+                        </a>
+                    </li>
+                    <li class="sub-menu">
+                        <a href="javascript:;" class="">
+                            <i class="fa fa-building"></i>
+                            <span>Purchase Order</span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
+                        </a>
+                        <ul class="sub">
+                            <li><a class="" href="purchase_order.html">Pending P.O.</a></li>
+                            <li><a class="" href="purchase_order_closed.html">Closed P.O.</a></li>
+                        </ul>
+                    </li>  
+                    <li class="sub-menu">
+                        <a href="javascript:;" class="">
+                            <i class="fa fa-building"></i>
+                            <span>Delivery Order</span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
+                        </a>
+                        <ul class="sub">
+                            <li><a class="" href="delivery_pending_order.html">Existing P.O. <span id="id_count_existing_po"></span></a></li>    
+                            <li><a class="" href="delivery_ongoing_order.html">Ongoing Delivery <span id="id_count_ongoing_order"></span></a></li>                          
+                            <li><a class="" href="delivery_delivered_order.html">Delivered Order</a></li>
+                            <li><a class="" href="delivery_backloaded_order.html">Backloaded Order</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu">
+                        <a href="javascript:;" class="">
+                            <i class="fa fa-building"></i>
+                            <span>Summary Report</span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
+                        </a>
+                        <ul class="sub">
+                            <li><a class="" href="summaryreport_deliveredorder.html">Delivered Order</a></li>
+                        </ul>
+                    </li>  
+                </ul>
+                <!-- sidebar menu end-->
+            </div>
+        </aside>
+        <!--sidebar end-->
+
+        <!--main content start-->
+        <section id="main-content">
+            <section class="wrapper">
+                 <!--overview start-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <ol class="breadcrumb">
+                            <li><i class="icon_document"></i><a href="lineup.html">Line Up</a></li>                       
+                            <li><i class="icon_document"></i>Line Up Form</li>                       
+                        </ol>
+                    </div>
+                </div>
+
+                <section class="panel">
+                    <header class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-offset-4 col-md-4">
+                                <span id="header_form" style="text-align: center;"></span>
+                            </div>
+                        </div>
+                    </header>
+                    <form id="form" name="form" onsubmit="if(confirm('Proceed?')){submitForm();}else{ event.preventDefault();}">
+                        <header class="panel-heading">
+                            <div class="row" style="padding-bottom: 10px; padding-top: 10px;">
+                                <div class="col-md-1" style="margin-right: -50px">
+                                    Date:
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="date" name="date_selected" id="date_selected" class="form-control" required>
+                                </div>
+                                <!-- startmodal -->
+                                <div class="col-md-3 pull-right" style="margin-right: -70px">
+                                     <button type="addcateg" id = "addcateg" class="btn btn-md btn-info" style=""  data-toggle="modal" data-target="#myModal"><span class="fa fa-plus"></span><strong> Add New Cement Type</strong></button>
+                                </div>
+
+                                <div id="myModal" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">ADD CATEGORY</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="col-md-12 form-group">
+                                                    <label for="supplier" class=" control-label" style="font-size:15px">NEW CEMENT TYPE: </label>
+                                                    <input type="text" name="textcategory" id="textcategory" class="form-control" autocomplete="off" style="text-transform: uppercase;">  
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" id = "submitcateg" class="btn btn-md btn-info" style="" onclick="submitcategory()"><strong>Add</strong></button>
+                                                <button type="button" onclick ="clearclose()" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <!-- end modal -->
+                            </div>
+
+                        </header>
+                        <!-- PanelBodyStart -->
+                        <div class="panel-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                    <th rowspan="4" style="vertical-align: middle; text-align: center;">Time</th>
+                                    <th colspan="2">Machine-1</th>
+                                    <th colspan="2">Machine-2</th>
+                                    <th colspan="2">Machine-3</th>
+                                    <th colspan="2">Machine-4</th>
+                                    <th colspan="2">Machine-5</th>
+                                </tr>
+                               <tr>
+                                <th colspan="2">Cement (kg): <input type="text" name="cementKG1" id="cementKG1" autocomplete="off" style="text-transform: uppercase; width: 100px" required></th>
+                             
+                                <th colspan="2">Cement (kg): <input type="text" name="cementKG2" id="cementKG2" autocomplete="off" style="text-transform: uppercase; width: 100px" required></th>
+            
+                                <th colspan="2">Cement (kg): <input type="text" name="cementKG3" id="cementKG3" autocomplete="off" style="text-transform: uppercase; width: 100px" required></th>
+                       
+                                <th colspan="2">Cement (kg): <input type="text" name="cementKG4" id="cementKG4" autocomplete="off" style="text-transform: uppercase; width: 100px" required></th>
+                  
+                                <th colspan="2">Cement (kg): <input type="text" name="cementKG5" id="cementKG5" autocomplete="off" style="text-transform: uppercase; width: 100px" required></th>
+                        
+                               </tr>
+
+                               <tr>
+                                <th colspan="2">Comment: <input type="text" name="cementKG1" id="cementKG1" autocomplete="off" style="text-transform: uppercase; width: 100px" required></th>
+                             
+                                <th colspan="2">Comment : <input type="text" name="cementKG2" id="cementKG2" autocomplete="off" style="text-transform: uppercase; width: 100px" required></th>
+            
+                                <th colspan="2">Comment : <input type="text" name="cementKG3" id="cementKG3" autocomplete="off" style="text-transform: uppercase; width: 100px" required></th>
+                       
+                                <th colspan="2">Comment : <input type="text" name="cementKG4" id="cementKG4" autocomplete="off" style="text-transform: uppercase; width: 100px" required></th>
+                  
+                                <th colspan="2">Comment : <input type="text" name="cementKG5" id="cementKG5" autocomplete="off" style="text-transform: uppercase; width: 100px" required></th>
+                        
+                               </tr>
+
+                                 <tr>
+                                    <th colspan="2" style="text-align: center;">Cement Type 1 <select id="selectsys1" class ="form-control"></select></th>
+                                    <th colspan="2" style="text-align: center;">Cement Type 2 <select id="selectsys2" class ="form-control"></select></th>
+                                    <th colspan="2" style="text-align: center;">Cement Type 3 <select id="selectsys3" class ="form-control"></select></th>
+                                    <th colspan="2" style="text-align: center;">Cement Type 4 <select id="selectsys4" class ="form-control"></select></th>
+                                    <th colspan="2" style="text-align: center;">Cement Type 5 <select id="selectsys5" class ="form-control"></select></th>
+                                   
+                                </tr>
+
+                                <tr>
+                                    <th class="align_center">AM</th>
+                                    <th  colspan="1" class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th>
+                                    <th  colspan="1" class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th>
+                                    <th  colspan="1"class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th>
+                                    <th  colspan="1" class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th>
+                                    <th  colspan="1" class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th> 
+                                </tr>
+
+                                 <tr>
+                                    <th>6:00 - 7:00</th>
+                                    <!-- m1 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch1" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment1" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m2 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch2" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment2" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m3 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch3" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment3" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m4 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch4" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment4" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m5 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch5" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment5" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th>7:00 - 8:00</th>
+                                    <!-- m1 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch1" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment1" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m2 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch2" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment2" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m3 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch3" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment3" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m4 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch4" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment4" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m5 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch5" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment5" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th>8:00 - 9:00</th>
+                                    <!-- m1 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch1" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment1" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m2 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch2" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment2" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m3 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch3" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment3" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m4 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch4" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment4" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m5 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch5" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment5" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th>9:00 - 10:00</th>
+                                    <!-- m1 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch1" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment1" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m2 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch2" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment2" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m3 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch3" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment3" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m4 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch4" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment4" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m5 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch5" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment5" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th>10:00 - 11:00</th>
+                                    <!-- m1 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch1" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment1" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m2 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch2" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment2" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m3 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch3" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment3" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m4 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch4" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment4" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m5 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch5" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment5" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th>11:00 - 12:00</th>
+                                    <!-- m1 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch1" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment1" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m2 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch2" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment2" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m3 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch3" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment3" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m4 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch4" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment4" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m5 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch5" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment5" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                </tr>
+
+                                 <tr>
+                                    <th class="align_center">PM</th>
+                                    <th  colspan="1" class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th>
+                                    <th  colspan="1" class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th>
+                                    <th  colspan="1"class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th>
+                                    <th  colspan="1" class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th>
+                                    <th  colspan="1" class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th> 
+                                </tr>
+
+                                <tr>
+                                    <th>12:00 - 1:00</th>
+                                    <!-- m1 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch1" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment1" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m2 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch2" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment2" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m3 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch3" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment3" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m4 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch4" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment4" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m5 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch5" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment5" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th>1:00 - 2:00</th>
+                                    <!-- m1 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch1" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment1" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m2 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch2" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment2" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m3 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch3" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment3" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m4 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch4" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment4" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m5 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch5" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment5" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th>2:00 - 3:00</th>
+                                    <!-- m1 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch1" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment1" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m2 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch2" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment2" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m3 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch3" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment3" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m4 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch4" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment4" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m5 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch5" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment5" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th>3:00 - 4:00</th>
+                                    <!-- m1 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch1" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment1" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m2 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch2" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment2" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m3 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch3" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment3" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m4 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch4" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment4" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m5 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch5" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment5" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th>4:00 - 5:00</th>
+                                    <!-- m1 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch1" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment1" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m2 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch2" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment2" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m3 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch3" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment3" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m4 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch4" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment4" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m5 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch5" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment5" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th>5:00 - 6:00</th>
+                                    <!-- m1 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch1" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment1" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m2 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch2" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment2" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m3 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch3" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment3" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m4 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch4" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment4" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m5 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch5" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment5" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th>6:00 - 7:00</th>
+                                    <!-- m1 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch1" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment1" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m2 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch2" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment2" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m3 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch3" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment3" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m4 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch4" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment4" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m5 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch5" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment5" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th>7:00 - 8:00</th>
+                                    <!-- m1 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch1" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment1" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m2 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch2" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment2" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m3 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch3" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment3" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m4 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch4" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment4" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m5 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch5" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment5" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th>8:00 - 9:00</th>
+                                    <!-- m1 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch1" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment1" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m2 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch2" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment2" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m3 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch3" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment3" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m4 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch4" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment4" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m5 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch5" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment5" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th>9:00 - 10:00</th>
+                                    <!-- m1 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch1" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment1" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m2 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch2" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment2" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m3 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch3" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment3" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m4 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch4" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment4" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m5 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch5" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment5" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th>10:00 - 11:00</th>
+                                    <!-- m1 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch1" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment1" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m2 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch2" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment2" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m3 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch3" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment3" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m4 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch4" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment4" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m5 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch5" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment5" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th>11:00 - 12:00</th>
+                                    <!-- m1 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch1" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment1" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m2 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch2" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment2" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m3 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch3" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment3" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m4 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch4" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment4" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m5 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch5" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment5" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                </tr>
+
+                                 <tr>
+                                    <th class="align_center">TOTAL</th>
+                                    <th  colspan="2" class="align_center">0</th>
+                                    <th  colspan="2" class="align_center">0</th>
+                                    <th  colspan="2" class="align_center">0</th>
+                                    <th  colspan="2" class="align_center">0</th>
+                                    <th  colspan="2" class="align_center">0</th>
+                                  
+                                    
+                                </tr>
+
+                                </tbody>
+                                
+                            </table>
+
+                        </div>
+
+                        <!-- PaneBodtEnd -->
+                        <footer class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-offset-4 col-md-4">
+                                    <button type="submit" class="btn btn-primary btn-block" onclick="SubmitBatch()"><strong>Submit</strong></button>
+                                </div>
+                            </div>
+                        </footer>
+                    </form>
+                </section>
+            </section>
+        </section>
+    </section>
+</body>
+</html>
