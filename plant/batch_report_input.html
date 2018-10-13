@@ -156,7 +156,8 @@
         document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
         
         document.getElementById('header_form').innerHTML = "<h4><strong>DAILY PRODUCTION INPUT</strong></h4>";
-       
+        
+        $(".se-pre-con").fadeOut("slow");
 
     });
 
@@ -193,6 +194,7 @@ function DropdownCategory(){
 }
 
 function SubmitBatch(){
+     $(".se-pre-con").fadeIn("slow");
     event.preventDefault();
 
     var date_of_batch = document.getElementById("date_selected").value;
@@ -229,6 +231,7 @@ function SubmitBatch(){
      }
  //machine_1_end
 
+
  // machine_2
     var machine2_cementkg = document.getElementById("cementKG2").value;
     var machine2_comment = document.getElementById("commentKG2").value;
@@ -257,7 +260,7 @@ function SubmitBatch(){
         firebase.database().ref('Daily_Production_Report/'+plant+'/'+date_of_batch+'/Machine2'+'/Time').push(machine2_time_holder); 
         count++;
      }
- //machine_3_end
+ //machine_2_end
 
   // machine_3
     var machine3_cementkg = document.getElementById("cementKG3").value;
@@ -346,12 +349,15 @@ function SubmitBatch(){
         }
         firebase.database().ref('Daily_Production_Report/'+plant+'/'+date_of_batch+'/Machine5'+'/Time').push(machine5_time_holder); 
         count++;
+
      }
- //machine_5_end
 
+     window.setTimeout(function(){
+        window.location.reload();
+          $(".se-pre-con").fadeOut("slow");
+     }, 5000);
 
-
-
+  //machine_5_end
 }
     
 
@@ -372,7 +378,7 @@ function SubmitBatch(){
 </style>
 </head>
 <body>
-    <!-- <div class="se-pre-con"></div> -->
+    <div class="se-pre-con"></div>
     <section id="container" class="">
         <header class="header dark-bg">
             <div class="toggle-nav">
@@ -422,12 +428,6 @@ function SubmitBatch(){
                         <a class="" href="transaction_log.html">
                             <i class="fa fa-list"></i>
                             <span>Transaction Log</span>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a class="" href="attendance.html">
-                            <i class="fa fa-list"></i>
-                            <span>Attendance</span>
                         </a>
                     </li>
                     <li class="">
@@ -486,6 +486,16 @@ function SubmitBatch(){
                         </a>
                         <ul class="sub">
                             <li><a class="" href="summaryreport_deliveredorder.html">Delivered Order</a></li>
+                        </ul>
+                    </li>
+                     <li class="sub-menu">
+                        <a href="javascript:;" class="">
+                            <i class="fa fa-building"></i>
+                            <span>Daily Production</span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
+                        </a>
+                        <ul class="sub">
+                            <li><a class="" href="view_daily_production_report.html">Daily Production Report</a></li>
                         </ul>
                     </li>  
                 </ul>
@@ -551,14 +561,15 @@ function SubmitBatch(){
 
                                     </div>
                                 </div>
-
-
                                 <!-- end modal -->
+                             
                             </div>
 
                         </header>
+                      
                         <!-- PanelBodyStart -->
                         <div class="panel-body">
+
                             <table class="table table-bordered">
                                 <tbody>
                                     <tr>
@@ -583,15 +594,15 @@ function SubmitBatch(){
                                </tr>
 
                                <tr>
-                                <th colspan="2">Comment: <input type="text" name="commentKG1" id="commentKG1" autocomplete="off" style="text-transform: uppercase; width: 100px" required></th>
+                                <th colspan="2">Comment: <input type="text" name="commentKG1" id="commentKG1" autocomplete="off" style="text-transform: uppercase; width: 100px"></th>
                              
-                                <th colspan="2">Comment : <input type="text" name="commentKG2" id="commentKG2" autocomplete="off" style="text-transform: uppercase; width: 100px" required></th>
+                                <th colspan="2">Comment : <input type="text" name="commentKG2" id="commentKG2" autocomplete="off" style="text-transform: uppercase; width: 100px"></th>
             
-                                <th colspan="2">Comment : <input type="text" name="commentKG3" id="commentKG3" autocomplete="off" style="text-transform: uppercase; width: 100px" required></th>
+                                <th colspan="2">Comment : <input type="text" name="commentKG3" id="commentKG3" autocomplete="off" style="text-transform: uppercase; width: 100px"></th>
                        
-                                <th colspan="2">Comment : <input type="text" name="commentKG4" id="commentKG4" autocomplete="off" style="text-transform: uppercase; width: 100px" required></th>
+                                <th colspan="2">Comment : <input type="text" name="commentKG4" id="commentKG4" autocomplete="off" style="text-transform: uppercase; width: 100px"></th>
                   
-                                <th colspan="2">Comment : <input type="text" name="commentKG5" id="commentKG5" autocomplete="off" style="text-transform: uppercase; width: 100px" required></th>
+                                <th colspan="2">Comment : <input type="text" name="commentKG5" id="commentKG5" autocomplete="off" style="text-transform: uppercase; width: 100px"></th>
                         
                                </tr>
 
@@ -653,7 +664,7 @@ function SubmitBatch(){
                                         <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -692,7 +703,7 @@ function SubmitBatch(){
                                         <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -731,7 +742,7 @@ function SubmitBatch(){
                                         <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -770,7 +781,7 @@ function SubmitBatch(){
                                         <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -809,7 +820,7 @@ function SubmitBatch(){
                                         <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -848,7 +859,7 @@ function SubmitBatch(){
                                         <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -901,7 +912,7 @@ function SubmitBatch(){
                                         <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -940,7 +951,7 @@ function SubmitBatch(){
                                         <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -979,7 +990,7 @@ function SubmitBatch(){
                                         <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1018,7 +1029,7 @@ function SubmitBatch(){
                                         <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1057,7 +1068,7 @@ function SubmitBatch(){
                                         <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1096,7 +1107,7 @@ function SubmitBatch(){
                                         <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1135,7 +1146,7 @@ function SubmitBatch(){
                                         <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1174,7 +1185,7 @@ function SubmitBatch(){
                                         <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1213,7 +1224,7 @@ function SubmitBatch(){
                                         <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1252,7 +1263,7 @@ function SubmitBatch(){
                                         <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1291,7 +1302,7 @@ function SubmitBatch(){
                                         <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1330,19 +1341,8 @@ function SubmitBatch(){
                                         <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
-                                </tr>
-
-                                 <tr>
-                                    <th class="align_center">TOTAL</th>
-                                    <th  colspan="2" class="align_center">0</th>
-                                    <th  colspan="2" class="align_center">0</th>
-                                    <th  colspan="2" class="align_center">0</th>
-                                    <th  colspan="2" class="align_center">0</th>
-                                    <th  colspan="2" class="align_center">0</th>
-                                  
-                                    
                                 </tr>
 
                                 </tbody>
