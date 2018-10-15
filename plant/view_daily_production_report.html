@@ -166,12 +166,15 @@ function Go(){
     var option = {year: "numeric", month: "long", day: "numeric"};
     date_of_batch = new Date(date_of_batch).toLocaleDateString('en',option);
 
+    // machine1_start
     firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine1').once('value',function(DailyProductionSnapShot1){
           var cementKG_holder1 = DailyProductionSnapShot1.val().machine1_cementkg;
           var maincomment1_holder1 = DailyProductionSnapShot1.val().machine1_comment;
+          var cementtype_holder1 = DailyProductionSnapShot1.val().machine1_cementType;
 
           document.getElementById("machine1_cementkg1").innerHTML = cementKG_holder1;
           document.getElementById("machine1_maincomment1").innerHTML = maincomment1_holder1;
+          document.getElementById("machine1_cementype1").innerHTML = cementtype_holder1;
 
           firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine1'+'/Time').once('value',function(DailyProductionSnapShottime1){
                 count =1;
@@ -187,6 +190,105 @@ function Go(){
           });
 
     });
+    //machine1_end
+
+      // machine2_start
+    firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine2').once('value',function(DailyProductionSnapShot2){
+          var cementKG_holder2 = DailyProductionSnapShot2.val().machine2_cementkg;
+          var maincomment2_holder2 = DailyProductionSnapShot2.val().machine2_comment;
+          // var cementtype_holder2 = DailyProductionSnapShot2.val().machine2_cementType;
+
+          document.getElementById("machine2_cementkg2").innerHTML = cementKG_holder2;
+          document.getElementById("machine2_maincomment2").innerHTML = maincomment2_holder2;
+          // document.getElementById("machine1_cementype2").innerHTML = cementtype_holder2;
+
+          firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine2'+'/Time').once('value',function(DailyProductionSnapShottime2){
+                count =1;
+            DailyProductionSnapShottime2.forEach(function(foreachtime){
+
+               var batch_holder2 = foreachtime.val().machine2_time_batch;
+               document.getElementById('machine2_batch'+count).innerHTML = batch_holder2;
+
+               var comment_holder2 = foreachtime.val().machine2_time_comment;
+               document.getElementById('machine2_comment'+count).innerHTML = comment_holder2;
+               count++;
+            });
+          });
+
+    });
+    //machine2_end
+
+     // machine3_start
+    firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine3').once('value',function(DailyProductionSnapShot3){
+          var cementKG_holder3 = DailyProductionSnapShot3.val().machine3_cementkg;
+          var maincomment3_holder3 = DailyProductionSnapShot3.val().machine3_comment;
+
+          document.getElementById("machine3_cementkg3").innerHTML = cementKG_holder3;
+          document.getElementById("machine3_maincomment3").innerHTML = maincomment3_holder3;
+
+          firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine3'+'/Time').once('value',function(DailyProductionSnapShottime3){
+                count =1;
+            DailyProductionSnapShottime3.forEach(function(foreachtime){
+
+               var batch_holder3 = foreachtime.val().machine3_time_batch;
+               document.getElementById('machine3_batch'+count).innerHTML = batch_holder3;
+
+               var comment_holder3 = foreachtime.val().machine3_time_comment;
+               document.getElementById('machine3_comment'+count).innerHTML = comment_holder3;
+               count++;
+            });
+          });
+
+    });
+    //machine3_end
+
+     // machine4_start
+    firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine4').once('value',function(DailyProductionSnapShot4){
+          var cementKG_holder4 = DailyProductionSnapShot4.val().machine4_cementkg;
+          var maincomment4_holder4 = DailyProductionSnapShot4.val().machine4_comment;
+
+          document.getElementById("machine4_cementkg4").innerHTML = cementKG_holder4;
+          document.getElementById("machine4_maincomment4").innerHTML = maincomment4_holder4;
+
+          firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine4'+'/Time').once('value',function(DailyProductionSnapShottime4){
+                count =1;
+            DailyProductionSnapShottime4.forEach(function(foreachtime){
+
+               var batch_holder4 = foreachtime.val().machine4_time_batch;
+               document.getElementById('machine4_batch'+count).innerHTML = batch_holder4;
+
+               var comment_holder4 = foreachtime.val().machine4_time_comment;
+               document.getElementById('machine4_comment'+count).innerHTML = comment_holder4;
+               count++;
+            });
+          });
+
+    });
+    //machine4_end
+
+      // machine5_start
+    firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine5').once('value',function(DailyProductionSnapShot5){
+          var cementKG_holder5 = DailyProductionSnapShot5.val().machine5_cementkg;
+          var maincomment5_holder5 = DailyProductionSnapShot5.val().machine5_comment;
+
+          document.getElementById("machine5_cementkg5").innerHTML = cementKG_holder5;
+          document.getElementById("machine5_maincomment5").innerHTML = maincomment5_holder5;
+
+          firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine5'+'/Time').once('value',function(DailyProductionSnapShottime5){
+                count =1;
+            DailyProductionSnapShottime5.forEach(function(foreachtime){
+
+               var batch_holder5 = foreachtime.val().machine5_time_batch;
+               document.getElementById('machine5_batch'+count).innerHTML = batch_holder5;
+
+               var comment_holder5 = foreachtime.val().machine5_time_comment;
+               document.getElementById('machine5_comment'+count).innerHTML = comment_holder5;
+               count++;
+            });
+          });
+
+    });
+    //machine5_end
 }
 
 </script>
@@ -407,11 +509,11 @@ function Go(){
                                </tr>
 
                                  <tr>
-                                    <th colspan="2" style="text-align: center;">Cement Type 1 </th>
-                                    <th colspan="2" style="text-align: center;">Cement Type 2 </th>
-                                    <th colspan="2" style="text-align: center;">Cement Type 3 </th>
-                                    <th colspan="2" style="text-align: center;">Cement Type 4 </th>
-                                    <th colspan="2" style="text-align: center;">Cement Type 5 </th>
+                                    <th colspan="2" style="text-align: center;">Cement Type 1  <span id="machine1_cementype1"></span></th>
+                                    <th colspan="2" style="text-align: center;">Cement Type 2  <span id="machine2_cementype2"></span></th>
+                                    <th colspan="2" style="text-align: center;">Cement Type 3  <span id="machine3_cementype3"></span></th>
+                                    <th colspan="2" style="text-align: center;">Cement Type 4  <span id="machine4_cementype4"></span></th>
+                                    <th colspan="2" style="text-align: center;">Cement Type 5  <span id="machine5_cementype5"></span></th>
                                    
                                 </tr>
 
