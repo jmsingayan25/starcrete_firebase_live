@@ -196,11 +196,11 @@ function Go(){
     firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine2').once('value',function(DailyProductionSnapShot2){
           var cementKG_holder2 = DailyProductionSnapShot2.val().machine2_cementkg;
           var maincomment2_holder2 = DailyProductionSnapShot2.val().machine2_comment;
-          // var cementtype_holder2 = DailyProductionSnapShot2.val().machine2_cementType;
+          var cementtype_holder2 = DailyProductionSnapShot2.val().machine2_cementType;
 
           document.getElementById("machine2_cementkg2").innerHTML = cementKG_holder2;
           document.getElementById("machine2_maincomment2").innerHTML = maincomment2_holder2;
-          // document.getElementById("machine1_cementype2").innerHTML = cementtype_holder2;
+          document.getElementById("machine2_cementype2").innerHTML = cementtype_holder2;
 
           firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine2'+'/Time').once('value',function(DailyProductionSnapShottime2){
                 count =1;
@@ -222,9 +222,11 @@ function Go(){
     firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine3').once('value',function(DailyProductionSnapShot3){
           var cementKG_holder3 = DailyProductionSnapShot3.val().machine3_cementkg;
           var maincomment3_holder3 = DailyProductionSnapShot3.val().machine3_comment;
+          var cementtype_holder3 = DailyProductionSnapShot3.val().machine3_cementType;
 
           document.getElementById("machine3_cementkg3").innerHTML = cementKG_holder3;
           document.getElementById("machine3_maincomment3").innerHTML = maincomment3_holder3;
+          document.getElementById("machine3_cementype3").innerHTML = cementtype_holder3;
 
           firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine3'+'/Time').once('value',function(DailyProductionSnapShottime3){
                 count =1;
@@ -246,9 +248,11 @@ function Go(){
     firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine4').once('value',function(DailyProductionSnapShot4){
           var cementKG_holder4 = DailyProductionSnapShot4.val().machine4_cementkg;
           var maincomment4_holder4 = DailyProductionSnapShot4.val().machine4_comment;
+          var cementtype_holder4 = DailyProductionSnapShot4.val().machine4_cementType;
 
           document.getElementById("machine4_cementkg4").innerHTML = cementKG_holder4;
           document.getElementById("machine4_maincomment4").innerHTML = maincomment4_holder4;
+          document.getElementById("machine4_cementype4").innerHTML = cementtype_holder4;
 
           firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine4'+'/Time').once('value',function(DailyProductionSnapShottime4){
                 count =1;
@@ -270,9 +274,11 @@ function Go(){
     firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine5').once('value',function(DailyProductionSnapShot5){
           var cementKG_holder5 = DailyProductionSnapShot5.val().machine5_cementkg;
           var maincomment5_holder5 = DailyProductionSnapShot5.val().machine5_comment;
+          var cementtype_holder5 = DailyProductionSnapShot5.val().machine5_cementType;
 
           document.getElementById("machine5_cementkg5").innerHTML = cementKG_holder5;
           document.getElementById("machine5_maincomment5").innerHTML = maincomment5_holder5;
+          document.getElementById("machine5_cementype5").innerHTML = cementtype_holder5;
 
           firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine5'+'/Time').once('value',function(DailyProductionSnapShottime5){
                 count =1;
