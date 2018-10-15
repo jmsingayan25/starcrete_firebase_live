@@ -8,7 +8,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="../img/favicon.png">
 
-    <title>Line Up Form</title>
+    <title>Daily Production Report</title>
 
     <!-- Firebase App is always required and must be first -->
     <!-- <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script> -->
@@ -85,7 +85,8 @@
 <script>
     
     var plant = "";
-    var date_newSet = getUrlParameter('date');
+    var plant = getUrlParameter('plant');
+    var date = getUrlParameter('date');
 
     $(document).ready(function(){
 
@@ -134,14 +135,16 @@
                         window.location.href = '../headoffice/index.html';
                     }
 
+                     print_date();
+
                     if(plant == 'Bravo'){
                         plant_name = "<a href='index.html' class='logo'>Starcrete <span class='lite'>Manufacturing Corporation</span></a>";
                     }else{
                         plant_name = "<a href='index.html' class='logo'>Quality Star <span class='lite'>Concrete Products, Inc.</span></a>";
                     }
 
-                    document.getElementById('id_plant_name').innerHTML = plant_name;
-                    document.getElementById('username').innerHTML = snapshot.val().firstname; 
+                    // document.getElementById('id_plant_name').innerHTML = plant_name;
+                    // document.getElementById('username').innerHTML = snapshot.val().firstname; 
 
                 },(error) => {
                     console.log(error);
@@ -159,15 +162,15 @@
 
     });
 
-function Go(){
-    $(".se-pre-con").fadeIn("slow");
-    event.preventDefault();
+function print_date(){
+    //$(".se-pre-con").fadeIn("slow");
+    //event.preventDefault();
 
-    var date_of_batch = document.getElementById("date_selected").value;
+    var date_of_batch = date;
     var option = {year: "numeric", month: "long", day: "numeric"};
     date_of_batch = new Date(date_of_batch).toLocaleDateString('en',option);
 
-    document.getElementById("searched_Date").innerHTML = date_of_batch;
+    document.getElementById("required_date").innerHTML = date_of_batch;
 
      firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch).once('value',function(Dailydate){
         if (Dailydate.val() != null){
@@ -325,31 +328,31 @@ function Go(){
           });
 
     });
-
-     $(".se-pre-con").fadeOut("slow");
+     // $(".se-pre-con").fadeOut("slow");
     //machine5_end
-    }else{
-        alert("No Record Found!");
-        window.location.reload();
-        $(".se-pre-con").fadeOut("slow");
     }
+    // else{
+    //     alert("No Record Found!");
+    //     window.location.reload();
+    //     $(".se-pre-con").fadeOut("slow");
+    // }
 }); 
 
 }
 
-function datePrint()
-{
-    if(document.getElementById('date_selected').value != ""){
-        var date = document.getElementById('date_selected').value;
-    }else{
-        var date = new Date().toLocaleDateString('en');
-    }
-
-    window.open("view_daily_production_print.html?plant="+plant+"&date="+date, "_blank");
-}
-
 </script>
 <style>
+@media print {
+  table{
+    font-size: 11px;
+  }
+  #printPageButton{
+    display: none;
+  }
+ /* #wrapper{
+    margin-top: 50px; 
+  }*/
+}
 .view_details_btn{
     color: #333; 
     float: right; 
@@ -366,28 +369,15 @@ function datePrint()
 </head>
 <body>
     <div class="se-pre-con"></div>
-    <section id="container" class="">
-        <header class="header dark-bg">
-            <div class="toggle-nav">
-            <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="icon_menu"></i></div>
-            </div>
 
-            <!--logo start-->
-
-            <!--logo end-->
-            <span id="id_plant_name"></span>
+    <!-- <section id="container" class="panel"> -->
+        <!-- <header class="header dark-bg"> -->
             <div class="top-nav notification-row">                
                 <!-- notificatoin dropdown start-->
                 <ul class="nav pull-right top-menu">
                     <!-- user login dropdown start-->
                     <li class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <!--  <span class="profile-ava">
-                        <img alt="" src="img/avatar1_small.jpg">
-                        </span> -->
-                            <span class="username" id="username"></span>
-                            <b class="caret"></b>
-                        </a>
+                       
                         <ul class="dropdown-menu extended logout">
                             <div class="log-arrow-up"></div>
                             <li>
@@ -399,137 +389,31 @@ function datePrint()
                 </ul>
                 <!-- notificatoin dropdown end-->
             </div>
-        </header>  
-        <!--sidebar start-->
-        <aside>
-            <div id="sidebar"  class="nav-collapse ">
-                <!-- sidebar menu start-->
-                <ul class="sidebar-menu">                
-                    <li class="">
-                        <a class="" href="index.html">
-                            <i class="icon_house"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a class="" href="transaction_log.html">
-                            <i class="fa fa-list"></i>
-                            <span>Transaction Log</span>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a class="" href="attendance.html">
-                            <i class="fa fa-list"></i>
-                            <span>Attendance</span>
-                        </a>
-                    </li>
-                    <li class="active">
-                        <a class="" href="lineup.html">
-                            <i class="fa fa-list"></i>
-                            <span>Line Up</span>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a class="" href="diesel.html">
-                            <i class="fa fa-building"></i>
-                            <span>Diesel</span>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a class="" href="diesel_category.html">
-                            <i class="fa fa-building"></i>
-                            <span>Oil</span>
-                        </a>
-                    </li>
-                    <li class="sub-menu">
-                        <a href="javascript:;" class="">
-                            <i class="fa fa-building"></i>
-                            <span>Purchase Order</span>
-                            <span class="menu-arrow arrow_carrot-down"></span>
-                        </a>
-                        <ul class="sub">
-                            <li><a class="" href="purchase_order.html">Pending P.O.</a></li>
-                            <li><a class="" href="purchase_order_closed.html">Closed P.O.</a></li>
-                        </ul>
-                    </li>  
-                    <li class="sub-menu">
-                        <a href="javascript:;" class="">
-                            <i class="fa fa-building"></i>
-                            <span>Delivery Order</span>
-                            <span class="menu-arrow arrow_carrot-down"></span>
-                        </a>
-                        <ul class="sub">
-                            <li><a class="" href="delivery_pending_order.html">Existing P.O. <span id="id_count_existing_po"></span></a></li>    
-                            <li><a class="" href="delivery_ongoing_order.html">Ongoing Delivery <span id="id_count_ongoing_order"></span></a></li>                          
-                            <li><a class="" href="delivery_delivered_order.html">Delivered Order</a></li>
-                            <li><a class="" href="delivery_backloaded_order.html">Backloaded Order</a></li>
-                        </ul>
-                    </li>
-                    <li class="sub-menu">
-                        <a href="javascript:;" class="">
-                            <i class="fa fa-building"></i>
-                            <span>Summary Report</span>
-                            <span class="menu-arrow arrow_carrot-down"></span>
-                        </a>
-                        <ul class="sub">
-                            <li><a class="" href="summaryreport_deliveredorder.html">Delivered Order</a></li>
-                        </ul>
-                    </li>
-                     <li class="sub-menu">
-                        <a href="javascript:;" class="">
-                            <i class="fa fa-building"></i>
-                            <span>Daily Production</span>
-                            <span class="menu-arrow arrow_carrot-down"></span>
-                        </a>
-                        <ul class="sub">
-                            <li><a class="" href="batch_report_input.html">Daily Production Input</a></li>
-                        </ul>
-                    </li>  
-                </ul>
-                <!-- sidebar menu end-->
-            </div>
-        </aside>
-        <!--sidebar end-->
-
+       <!--  </header>   -->
+       
         <!--main content start-->
-        <section id="main-content">
-            <section class="wrapper">
-                 <!--overview start-->
-                <div class="row">
-                    <div class="col-md-12">
-                        <ol class="breadcrumb">
-                            <li><i class="icon_document"></i><a href="lineup.html">Line Up</a></li>                       
-                            <li><i class="icon_document"></i>Line Up Form</li>                       
-                        </ol>
-                    </div>
-                </div>
-
-                <section class="panel">
-                    <header class="panel-heading">
+      <!--   <section id="main-content"> -->
+            <section class="wrapper" style="margin-top: -10px">
+                 
+               <!--  <section class="panel"> -->
+                    <!-- <header class="panel-heading"> -->
+                       <button class="btn btn-info btn-md" id="printPageButton" onclick="return window.print();" style="float: right;"><strong><span class="fa fa-print"></span> Print</strong></button>
                         <div class="row">
                             <div class="col-md-offset-4 col-md-4">
                                 <span id="header_form" style="text-align: center;"></span>
                             </div>
                         </div>
-                    </header>
+                    <!-- </header> -->
                     <!-- <form id="form" name="form" onclick="" ="PrintPreview()"> -->
-                        <header class="panel-heading">
+                       <!--  <header class="panel-heading"> -->
                             <div class="row" style="padding-bottom: 10px; padding-top: 10px;">
-                                <div class="col-md-1" style="margin-right: -50px">
-                                    Date:
-                                </div>
-                                <button type="submit" id = "submitGo" class="btn btn-md btn-info" style="" onclick="Go()"><strong>Go</strong></button>
-                                <div class="col-md-2">
-                                    <input type="date" name="date_selected" id="date_selected" class="form-control" required>
-                                </div>
+                                <div class="col-md-12">Date: <span id="required_date"></span></div>
 
-                                 <div class="col-md-3 pull-right" style="margin-right: -50px">
-                                    Search Date:  <span id="searched_Date"></span>
-                                </div>
                             </div>     
-                        </header>
+
+                        <!-- </header> -->
                         <!-- PanelBodyStart -->
-                        <div class="panel-body">
+                        <!-- <div class="panel-body"> -->
 
                             <table class="table table-bordered">
                                 <tbody>
@@ -586,22 +470,22 @@ function datePrint()
                                    
                                 </tr>
 
-                                <tr style="background-color: #00111a; color:white;">
-                                    <th class="align_center" style="color:white;">AM</th>
-                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
-                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
-                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
-                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
-                                    <th  colspan="1"class="align_center" style="color:white;">Batch</th>
-                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
-                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
-                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
-                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
-                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th> 
+                                <tr>
+                                    <th class="align_center">AM</th>
+                                    <th  colspan="1" class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th>
+                                    <th  colspan="1" class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th>
+                                    <th  colspan="1"class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th>
+                                    <th  colspan="1" class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th>
+                                    <th  colspan="1" class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th> 
                                 </tr>
 
                                  <tr>
-                                    <th style="background-color: #0099ff; color:white; text-align: center;">6:00 - 7:00</th>
+                                    <th style="text-align: center;">6:00 - 7:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch1"></span>   
@@ -641,7 +525,7 @@ function datePrint()
                                 </tr>
 
                                 <tr>
-                                    <th style="background-color: #0099ff; color:white; text-align: center;">7:00 - 8:00</th>
+                                    <th style="text-align: center;">7:00 - 8:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch2"></span>   
@@ -681,7 +565,7 @@ function datePrint()
                                 </tr>
 
                                 <tr>
-                                    <th style="background-color: #0099ff; color:white; text-align: center;">8:00 - 9:00</th>
+                                    <th style="text-align: center;">8:00 - 9:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch3"></span>   
@@ -720,7 +604,7 @@ function datePrint()
                                 </tr>
 
                                 <tr>
-                                    <th style="background-color: #0099ff; color:white; text-align: center;">9:00 - 10:00</th>
+                                    <th style="text-align: center;">9:00 - 10:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch4"></span>   
@@ -759,7 +643,7 @@ function datePrint()
                                 </tr>
 
                                 <tr>
-                                    <th style="background-color: #0099ff; color:white; text-align: center;">10:00 - 11:00</th>
+                                    <th style="text-align: center;">10:00 - 11:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch5"></span>   
@@ -798,7 +682,7 @@ function datePrint()
                                 </tr>
 
                                 <tr>
-                                    <th style="background-color: #0099ff; color:white; text-align: center;">11:00 - 12:00</th>
+                                    <th style="text-align: center;">11:00 - 12:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch6"></span>   
@@ -836,22 +720,22 @@ function datePrint()
                                     </th>
                                 </tr>
 
-                                 <tr style="background-color: #00111a; color:white;">
-                                    <th class="align_center" style="color:white;">PM</th>
-                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
-                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
-                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
-                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
-                                    <th  colspan="1"class="align_center" style="color:white;">Batch</th>
-                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
-                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
-                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
-                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
-                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th> 
+                                 <tr>
+                                    <th class="align_center">PM</th>
+                                    <th  colspan="1" class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th>
+                                    <th  colspan="1" class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th>
+                                    <th  colspan="1"class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th>
+                                    <th  colspan="1" class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th>
+                                    <th  colspan="1" class="align_center">Batch</th>
+                                    <th  colspan="1" class="align_center">Comment</th> 
                                 </tr>
 
                                 <tr>
-                                    <th style="background-color: #0099ff; color:white; text-align: center;">12:00 - 1:00</th>
+                                    <th style="text-align: center;">12:00 - 1:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch7"></span>   
@@ -890,7 +774,7 @@ function datePrint()
                                 </tr>
 
                                 <tr>
-                                    <th style="background-color: #0099ff; color:white; text-align: center;">1:00 - 2:00</th>
+                                    <th style="text-align: center;">1:00 - 2:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch8"></span>   
@@ -929,7 +813,7 @@ function datePrint()
                                 </tr>
 
                                 <tr>
-                                    <th style="background-color: #0099ff; color:white; text-align: center;">2:00 - 3:00</th>
+                                    <th style="text-align: center;">2:00 - 3:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch9"></span>   
@@ -968,7 +852,7 @@ function datePrint()
                                 </tr>
 
                                 <tr>
-                                    <th style="background-color: #0099ff; color:white; text-align: center;">3:00 - 4:00</th>
+                                    <th style="text-align: center;">3:00 - 4:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch10"></span>   
@@ -1007,7 +891,7 @@ function datePrint()
                                 </tr>
 
                                 <tr>
-                                    <th style="background-color: #0099ff; color:white; text-align: center;">4:00 - 5:00</th>
+                                    <th style="text-align: center;">4:00 - 5:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch11"></span>   
@@ -1046,7 +930,7 @@ function datePrint()
                                 </tr>
 
                                 <tr>
-                                    <th style="background-color: #0099ff; color:white; text-align: center;">5:00 - 6:00</th>
+                                    <th style="text-align: center;">5:00 - 6:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch12"></span>   
@@ -1085,7 +969,7 @@ function datePrint()
                                 </tr>
 
                                 <tr>
-                                    <th style="background-color: #0099ff; color:white; text-align: center;">6:00 - 7:00</th>
+                                    <th style="text-align: center;">6:00 - 7:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch13"></span>   
@@ -1124,7 +1008,7 @@ function datePrint()
                                 </tr>
 
                                 <tr>
-                                    <th style="background-color: #0099ff; color:white; text-align: center;">7:00 - 8:00</th>
+                                    <th style="text-align: center;">7:00 - 8:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch14"></span>   
@@ -1163,7 +1047,7 @@ function datePrint()
                                 </tr>
 
                                 <tr>
-                                    <th style="background-color: #0099ff; color:white; text-align: center;">8:00 - 9:00</th>
+                                    <th style="text-align: center;">8:00 - 9:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch15"></span>   
@@ -1202,7 +1086,7 @@ function datePrint()
                                 </tr>
 
                                 <tr>
-                                    <th style="background-color: #0099ff; color:white; text-align: center;">9:00 - 10:00</th>
+                                    <th style="text-align: center;">9:00 - 10:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch16"></span>   
@@ -1241,7 +1125,7 @@ function datePrint()
                                 </tr>
 
                                 <tr>
-                                    <th style="background-color: #0099ff; color:white; text-align: center;">10:00 - 11:00</th>
+                                    <th style="text-align: center;">10:00 - 11:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch17"></span>   
@@ -1280,7 +1164,7 @@ function datePrint()
                                 </tr>
 
                                 <tr>
-                                    <th style="background-color: #0099ff; color:white; text-align: center;">11:00 - 12:00</th>
+                                    <th style="text-align: center;">11:00 - 12:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch18"></span>   
@@ -1318,21 +1202,21 @@ function datePrint()
                                     </th>
                                 </tr>
 
-                                  <tr style="background-color: #00111a; color:white;">
-                                    <th class="align_center" style="color:white;">TOTAL</th>
-                                    <th  colspan="2" class="align_center" style="color:white;">
+                                  <tr>
+                                    <th class="align_center">TOTAL</th>
+                                    <th  colspan="2" class="align_center">
                                         <span id="machine1_total"></span>
                                     </th>
-                                    <th  colspan="2" class="align_center" style="color:white;">
+                                    <th  colspan="2" class="align_center">
                                         <span id="machine2_total"></span>
                                     </th>
-                                    <th  colspan="2" class="align_center" style="color:white;">
+                                    <th  colspan="2" class="align_center">
                                         <span id="machine3_total"></span>
                                     </th>
-                                    <th  colspan="2" class="align_center" style="color:white;">
+                                    <th  colspan="2" class="align_center">
                                         <span id="machine4_total"></span>
                                     </th>
-                                    <th  colspan="2"class="align_center" style="color:white;"><span id="machine5_total">
+                                    <th  colspan="2"class="align_center"><span id="machine5_total">
                                         
                                     </span>
                                 </th>
@@ -1343,21 +1227,11 @@ function datePrint()
                                 
                             </table>
 
-                        </div>
-
-                        <!-- PaneBodtEnd -->
-                          <footer class="panel-footer">
-                            <div class="row">
-                                <div class="col-md-offset-5 col-md-5">
-                                    <button type="button" class="btn btn-info btn-md" id="datePrint" onclick= "datePrint()" style="float: left;"><span class="fa fa-print"></span> <strong>Print Preview</strong></button>
-                                </div>
-                            </div>
-                        </footer>
-
+                        <!-- </div> -->
                     <!-- </form> -->
-                </section>
+               <!--  </section> -->
             </section>
-        </section>
-    </section>
+        <!-- </section> -->
+   <!--  </section> -->
 </body>
 </html>
