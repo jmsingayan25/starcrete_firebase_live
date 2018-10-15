@@ -178,6 +178,7 @@ function Go(){
 
           firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine1'+'/Time').once('value',function(DailyProductionSnapShottime1){
                 count =1;
+                value =0;
             DailyProductionSnapShottime1.forEach(function(foreachtime){
 
                var batch_holder1 = foreachtime.val().machine1_time_batch;
@@ -186,10 +187,15 @@ function Go(){
                var comment_holder1 = foreachtime.val().machine1_time_comment;
                document.getElementById('machine1_comment'+count).innerHTML = comment_holder1;
                count++;
+
+               var batchtotal1 = foreachtime.val().machine1_time_batch;
+               value += Number(batchtotal1);
+               document.getElementById('machine1_total').innerHTML = value;       
             });
           });
-
+       
     });
+
     //machine1_end
 
       // machine2_start
@@ -204,6 +210,7 @@ function Go(){
 
           firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine2'+'/Time').once('value',function(DailyProductionSnapShottime2){
                 count =1;
+                 value =0;
             DailyProductionSnapShottime2.forEach(function(foreachtime){
 
                var batch_holder2 = foreachtime.val().machine2_time_batch;
@@ -212,6 +219,10 @@ function Go(){
                var comment_holder2 = foreachtime.val().machine2_time_comment;
                document.getElementById('machine2_comment'+count).innerHTML = comment_holder2;
                count++;
+
+               var batchtotal2 = foreachtime.val().machine2_time_batch;
+               value += Number(batchtotal2);
+               document.getElementById('machine2_total').innerHTML = value;  
             });
           });
 
@@ -230,6 +241,7 @@ function Go(){
 
           firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine3'+'/Time').once('value',function(DailyProductionSnapShottime3){
                 count =1;
+                value =0;
             DailyProductionSnapShottime3.forEach(function(foreachtime){
 
                var batch_holder3 = foreachtime.val().machine3_time_batch;
@@ -238,6 +250,10 @@ function Go(){
                var comment_holder3 = foreachtime.val().machine3_time_comment;
                document.getElementById('machine3_comment'+count).innerHTML = comment_holder3;
                count++;
+
+               var batchtotal3 = foreachtime.val().machine3_time_batch;
+               value += Number(batchtotal3);
+               document.getElementById('machine3_total').innerHTML = value;
             });
           });
 
@@ -256,6 +272,7 @@ function Go(){
 
           firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine4'+'/Time').once('value',function(DailyProductionSnapShottime4){
                 count =1;
+                value =0;
             DailyProductionSnapShottime4.forEach(function(foreachtime){
 
                var batch_holder4 = foreachtime.val().machine4_time_batch;
@@ -264,6 +281,10 @@ function Go(){
                var comment_holder4 = foreachtime.val().machine4_time_comment;
                document.getElementById('machine4_comment'+count).innerHTML = comment_holder4;
                count++;
+
+               var batchtotal4 = foreachtime.val().machine4_time_batch;
+               value += Number(batchtotal4);
+               document.getElementById('machine4_total').innerHTML = value;
             });
           });
 
@@ -282,6 +303,7 @@ function Go(){
 
           firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine5'+'/Time').once('value',function(DailyProductionSnapShottime5){
                 count =1;
+                value =0;
             DailyProductionSnapShottime5.forEach(function(foreachtime){
 
                var batch_holder5 = foreachtime.val().machine5_time_batch;
@@ -290,6 +312,10 @@ function Go(){
                var comment_holder5 = foreachtime.val().machine5_time_comment;
                document.getElementById('machine5_comment'+count).innerHTML = comment_holder5;
                count++;
+
+                var batchtotal5 = foreachtime.val().machine5_time_batch;
+               value += Number(batchtotal5);
+               document.getElementById('machine5_total').innerHTML = value;
             });
           });
 
@@ -523,18 +549,18 @@ function Go(){
                                    
                                 </tr>
 
-                                <tr>
-                                    <th class="align_center">AM</th>
-                                    <th  colspan="1" class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th>
-                                    <th  colspan="1" class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th>
-                                    <th  colspan="1"class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th>
-                                    <th  colspan="1" class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th>
-                                    <th  colspan="1" class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th> 
+                                <tr style="background-color: #00111a; color:white;">
+                                    <th class="align_center" style="color:white;">AM</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
+                                    <th  colspan="1"class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th> 
                                 </tr>
 
                                  <tr>
@@ -773,18 +799,18 @@ function Go(){
                                     </th>
                                 </tr>
 
-                                 <tr>
-                                    <th class="align_center">PM</th>
-                                    <th  colspan="1" class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th>
-                                    <th  colspan="1" class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th>
-                                    <th  colspan="1"class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th>
-                                    <th  colspan="1" class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th>
-                                    <th  colspan="1" class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th> 
+                                 <tr style="background-color: #00111a; color:white;">
+                                    <th class="align_center" style="color:white;">PM</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
+                                    <th  colspan="1"class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th> 
                                 </tr>
 
                                 <tr>
@@ -1255,13 +1281,13 @@ function Go(){
                                     </th>
                                 </tr>
 
-                                  <tr>
-                                    <th class="align_center">TOTAL</th>
-                                    <th  colspan="2" class="align_center">0</th>
-                                    <th  colspan="2" class="align_center">0</th>
-                                    <th  colspan="2" class="align_center">0</th>
-                                    <th  colspan="2" class="align_center">0</th>
-                                    <th  colspan="2"class="align_center">0</th>
+                                  <tr style="background-color: #00111a; color:white;">
+                                    <th class="align_center" style="color:white;">TOTAL</th>
+                                    <th  colspan="2" class="align_center" style="color:white;"><span id="machine1_total"></span></th>
+                                    <th  colspan="2" class="align_center" style="color:white;"><span id="machine2_total"></span></th>
+                                    <th  colspan="2" class="align_center" style="color:white;"><span id="machine3_total"></span></th>
+                                    <th  colspan="2" class="align_center" style="color:white;"><span id="machine4_total"></span></th>
+                                    <th  colspan="2"class="align_center" style="color:white;"><span id="machine5_total"></span></th>
                                   
                                 </tr>
 
