@@ -160,13 +160,19 @@
     });
 
 function Go(){
+    $(".se-pre-con").fadeIn("slow");
     event.preventDefault();
 
     var date_of_batch = document.getElementById("date_selected").value;
     var option = {year: "numeric", month: "long", day: "numeric"};
     date_of_batch = new Date(date_of_batch).toLocaleDateString('en',option);
 
-    // machine1_start
+    document.getElementById("searched_Date").innerHTML = date_of_batch;
+
+     firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch).once('value',function(Dailydate){
+        if (Dailydate.val() != null){
+
+             // machine1_start
     firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine1').once('value',function(DailyProductionSnapShot1){
           var cementKG_holder1 = DailyProductionSnapShot1.val().machine1_cementkg;
           var maincomment1_holder1 = DailyProductionSnapShot1.val().machine1_comment;
@@ -181,7 +187,7 @@ function Go(){
                 value =0;
             DailyProductionSnapShottime1.forEach(function(foreachtime){
 
-               var batch_holder1 = foreachtime.val().machine1_time_batch;
+               var batch_holder1 = Number(foreachtime.val().machine1_time_batch).toLocaleString("en");
                document.getElementById('machine1_batch'+count).innerHTML = batch_holder1;
 
                var comment_holder1 = foreachtime.val().machine1_time_comment;
@@ -190,12 +196,11 @@ function Go(){
 
                var batchtotal1 = foreachtime.val().machine1_time_batch;
                value += Number(batchtotal1);
-               document.getElementById('machine1_total').innerHTML = value;       
+               document.getElementById('machine1_total').innerHTML = value.toLocaleString("en");       
             });
           });
        
     });
-
     //machine1_end
 
       // machine2_start
@@ -213,7 +218,7 @@ function Go(){
                  value =0;
             DailyProductionSnapShottime2.forEach(function(foreachtime){
 
-               var batch_holder2 = foreachtime.val().machine2_time_batch;
+               var batch_holder2 = Number(foreachtime.val().machine2_time_batch).toLocaleString("en");
                document.getElementById('machine2_batch'+count).innerHTML = batch_holder2;
 
                var comment_holder2 = foreachtime.val().machine2_time_comment;
@@ -222,7 +227,7 @@ function Go(){
 
                var batchtotal2 = foreachtime.val().machine2_time_batch;
                value += Number(batchtotal2);
-               document.getElementById('machine2_total').innerHTML = value;  
+               document.getElementById('machine2_total').innerHTML = value.toLocaleString("en");  
             });
           });
 
@@ -244,7 +249,7 @@ function Go(){
                 value =0;
             DailyProductionSnapShottime3.forEach(function(foreachtime){
 
-               var batch_holder3 = foreachtime.val().machine3_time_batch;
+               var batch_holder3 = Number(foreachtime.val().machine3_time_batch).toLocaleString("en");
                document.getElementById('machine3_batch'+count).innerHTML = batch_holder3;
 
                var comment_holder3 = foreachtime.val().machine3_time_comment;
@@ -253,7 +258,7 @@ function Go(){
 
                var batchtotal3 = foreachtime.val().machine3_time_batch;
                value += Number(batchtotal3);
-               document.getElementById('machine3_total').innerHTML = value;
+               document.getElementById('machine3_total').innerHTML = value.toLocaleString("en");
             });
           });
 
@@ -275,7 +280,7 @@ function Go(){
                 value =0;
             DailyProductionSnapShottime4.forEach(function(foreachtime){
 
-               var batch_holder4 = foreachtime.val().machine4_time_batch;
+               var batch_holder4 = Number(foreachtime.val().machine4_time_batch).toLocaleString("en");
                document.getElementById('machine4_batch'+count).innerHTML = batch_holder4;
 
                var comment_holder4 = foreachtime.val().machine4_time_comment;
@@ -284,7 +289,7 @@ function Go(){
 
                var batchtotal4 = foreachtime.val().machine4_time_batch;
                value += Number(batchtotal4);
-               document.getElementById('machine4_total').innerHTML = value;
+               document.getElementById('machine4_total').innerHTML = value.toLocaleString("en");
             });
           });
 
@@ -306,7 +311,7 @@ function Go(){
                 value =0;
             DailyProductionSnapShottime5.forEach(function(foreachtime){
 
-               var batch_holder5 = foreachtime.val().machine5_time_batch;
+               var batch_holder5 = Number(foreachtime.val().machine5_time_batch).toLocaleString("en");
                document.getElementById('machine5_batch'+count).innerHTML = batch_holder5;
 
                var comment_holder5 = foreachtime.val().machine5_time_comment;
@@ -315,12 +320,26 @@ function Go(){
 
                 var batchtotal5 = foreachtime.val().machine5_time_batch;
                value += Number(batchtotal5);
-               document.getElementById('machine5_total').innerHTML = value;
+               document.getElementById('machine5_total').innerHTML = value.toLocaleString("en");
             });
           });
 
     });
+
+     $(".se-pre-con").fadeOut("slow");
     //machine5_end
+    }else{
+        alert("No Record Found!");
+        window.location.reload();
+        $(".se-pre-con").fadeOut("slow");
+    }
+}); 
+
+}
+
+function PrintPreview()
+{
+   
 }
 
 </script>
@@ -487,7 +506,7 @@ function Go(){
                             </div>
                         </div>
                     </header>
-                    <form id="form" name="form" onsubmit="if(confirm('Proceed?')){SubmitBatch();}else{ event.preventDefault();}">
+                    <form id="form" name="form" onsubmit="PrintPreview()">
                         <header class="panel-heading">
                             <div class="row" style="padding-bottom: 10px; padding-top: 10px;">
                                 <div class="col-md-1" style="margin-right: -50px">
@@ -497,10 +516,12 @@ function Go(){
                                 <div class="col-md-2">
                                     <input type="date" name="date_selected" id="date_selected" class="form-control" required>
                                 </div>
-                            </div>
 
+                                 <div class="col-md-3 pull-right" style="margin-right: -50px">
+                                    Search Date:  <span id="searched_Date"></span>
+                                </div>
+                            </div>     
                         </header>
-                      
                         <!-- PanelBodyStart -->
                         <div class="panel-body">
 
@@ -508,11 +529,11 @@ function Go(){
                                 <tbody>
                                     <tr>
                                     <th rowspan="4" style="vertical-align: middle; text-align: center;">Time</th>
-                                    <th colspan="2">Machine-1</th>
-                                    <th colspan="2">Machine-2</th>
-                                    <th colspan="2">Machine-3</th>
-                                    <th colspan="2">Machine-4</th>
-                                    <th colspan="2">Machine-5</th>
+                                    <th colspan="2" style="text-align: center;">Machine-1</th>
+                                    <th colspan="2" style="text-align: center;">Machine-2</th>
+                                    <th colspan="2" style="text-align: center;">Machine-3</th>
+                                    <th colspan="2" style="text-align: center;">Machine-4</th>
+                                    <th colspan="2" style="text-align: center;">Machine-5</th>
                                 </tr>
                                <tr>
                                 <th colspan="2">Cement (kg): <span id="machine1_cementkg1"></span></th>
@@ -541,11 +562,21 @@ function Go(){
                                </tr>
 
                                  <tr>
-                                    <th colspan="2" style="text-align: center;">Cement Type 1  <span id="machine1_cementype1"></span></th>
-                                    <th colspan="2" style="text-align: center;">Cement Type 2  <span id="machine2_cementype2"></span></th>
-                                    <th colspan="2" style="text-align: center;">Cement Type 3  <span id="machine3_cementype3"></span></th>
-                                    <th colspan="2" style="text-align: center;">Cement Type 4  <span id="machine4_cementype4"></span></th>
-                                    <th colspan="2" style="text-align: center;">Cement Type 5  <span id="machine5_cementype5"></span></th>
+                                    <th colspan="2" style="text-align: center;">Cement Type 1  
+                                       <br><span id="machine1_cementype1"></span>
+                                    </th>
+                                    <th colspan="2" style="text-align: center;">Cement Type 2  
+                                        <br><span id="machine2_cementype2"></span>
+                                    </th>
+                                    <th colspan="2" style="text-align: center;">Cement Type 3  
+                                        <br><span id="machine3_cementype3"></span>
+                                    </th>
+                                    <th colspan="2" style="text-align: center;">Cement Type 4  
+                                        <br><span id="machine4_cementype4"></span>
+                                    </th>
+                                    <th colspan="2" style="text-align: center;">Cement Type 5  
+                                        <br><span id="machine5_cementype5"></span>
+                                    </th>
                                    
                                 </tr>
 
@@ -564,7 +595,7 @@ function Go(){
                                 </tr>
 
                                  <tr>
-                                    <th>6:00 - 7:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">6:00 - 7:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch1"></span>   
@@ -604,7 +635,7 @@ function Go(){
                                 </tr>
 
                                 <tr>
-                                    <th>7:00 - 8:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">7:00 - 8:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch2"></span>   
@@ -644,7 +675,7 @@ function Go(){
                                 </tr>
 
                                 <tr>
-                                    <th>8:00 - 9:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">8:00 - 9:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch3"></span>   
@@ -683,7 +714,7 @@ function Go(){
                                 </tr>
 
                                 <tr>
-                                    <th>9:00 - 10:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">9:00 - 10:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch4"></span>   
@@ -722,7 +753,7 @@ function Go(){
                                 </tr>
 
                                 <tr>
-                                    <th>10:00 - 11:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">10:00 - 11:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch5"></span>   
@@ -761,7 +792,7 @@ function Go(){
                                 </tr>
 
                                 <tr>
-                                    <th>11:00 - 12:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">11:00 - 12:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch6"></span>   
@@ -814,7 +845,7 @@ function Go(){
                                 </tr>
 
                                 <tr>
-                                    <th>12:00 - 1:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">12:00 - 1:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch7"></span>   
@@ -853,7 +884,7 @@ function Go(){
                                 </tr>
 
                                 <tr>
-                                    <th>1:00 - 2:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">1:00 - 2:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch8"></span>   
@@ -892,7 +923,7 @@ function Go(){
                                 </tr>
 
                                 <tr>
-                                    <th>2:00 - 3:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">2:00 - 3:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch9"></span>   
@@ -931,7 +962,7 @@ function Go(){
                                 </tr>
 
                                 <tr>
-                                    <th>3:00 - 4:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">3:00 - 4:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch10"></span>   
@@ -970,7 +1001,7 @@ function Go(){
                                 </tr>
 
                                 <tr>
-                                    <th>4:00 - 5:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">4:00 - 5:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch11"></span>   
@@ -1009,7 +1040,7 @@ function Go(){
                                 </tr>
 
                                 <tr>
-                                    <th>5:00 - 6:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">5:00 - 6:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch12"></span>   
@@ -1048,7 +1079,7 @@ function Go(){
                                 </tr>
 
                                 <tr>
-                                    <th>6:00 - 7:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">6:00 - 7:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch13"></span>   
@@ -1087,7 +1118,7 @@ function Go(){
                                 </tr>
 
                                 <tr>
-                                    <th>7:00 - 8:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">7:00 - 8:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch14"></span>   
@@ -1126,7 +1157,7 @@ function Go(){
                                 </tr>
 
                                 <tr>
-                                    <th>8:00 - 9:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">8:00 - 9:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch15"></span>   
@@ -1165,7 +1196,7 @@ function Go(){
                                 </tr>
 
                                 <tr>
-                                    <th>9:00 - 10:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">9:00 - 10:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch16"></span>   
@@ -1204,7 +1235,7 @@ function Go(){
                                 </tr>
 
                                 <tr>
-                                    <th>10:00 - 11:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">10:00 - 11:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch17"></span>   
@@ -1243,7 +1274,7 @@ function Go(){
                                 </tr>
 
                                 <tr>
-                                    <th>11:00 - 12:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">11:00 - 12:00</th>
                                      <!-- m1 -->
                                     <th colspan="1">
                                     <span id="machine1_batch18"></span>   
@@ -1283,11 +1314,22 @@ function Go(){
 
                                   <tr style="background-color: #00111a; color:white;">
                                     <th class="align_center" style="color:white;">TOTAL</th>
-                                    <th  colspan="2" class="align_center" style="color:white;"><span id="machine1_total"></span></th>
-                                    <th  colspan="2" class="align_center" style="color:white;"><span id="machine2_total"></span></th>
-                                    <th  colspan="2" class="align_center" style="color:white;"><span id="machine3_total"></span></th>
-                                    <th  colspan="2" class="align_center" style="color:white;"><span id="machine4_total"></span></th>
-                                    <th  colspan="2"class="align_center" style="color:white;"><span id="machine5_total"></span></th>
+                                    <th  colspan="2" class="align_center" style="color:white;">
+                                        <span id="machine1_total"></span>
+                                    </th>
+                                    <th  colspan="2" class="align_center" style="color:white;">
+                                        <span id="machine2_total"></span>
+                                    </th>
+                                    <th  colspan="2" class="align_center" style="color:white;">
+                                        <span id="machine3_total"></span>
+                                    </th>
+                                    <th  colspan="2" class="align_center" style="color:white;">
+                                        <span id="machine4_total"></span>
+                                    </th>
+                                    <th  colspan="2"class="align_center" style="color:white;"><span id="machine5_total">
+                                        
+                                    </span>
+                                </th>
                                   
                                 </tr>
 
@@ -1298,10 +1340,10 @@ function Go(){
                         </div>
 
                         <!-- PaneBodtEnd -->
-                        <footer class="panel-footer">
+                          <footer class="panel-footer">
                             <div class="row">
                                 <div class="col-md-offset-4 col-md-4">
-                                    <button type="submit" class="btn btn-primary btn-block"><strong>Submit</strong></button>
+                                    <button type="submit" class="btn btn-primary btn-block"><strong>Print Preview</strong></button>
                                 </div>
                             </div>
                         </footer>

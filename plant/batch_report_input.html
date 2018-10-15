@@ -221,8 +221,9 @@ function SubmitBatch(){
     //machine_1_content
     count = 6;
     for (var i = 0; i < machine1_time_batch.length; i++){
+         machine1_time_batch_replace = machine1_time_batch[i].replace(",","");
         var machine1_time_holder = {
-            machine1_time_batch: machine1_time_batch[i],
+            machine1_time_batch: machine1_time_batch_replace,
             machine1_time_comment: machine1_time_comment[i],
             time_assigned: count
         }
@@ -252,8 +253,9 @@ function SubmitBatch(){
     //machine_2_content
     count = 6;
     for (var i = 0; i < machine2_time_batch.length; i++){
+         machine2_time_batch_replace = machine2_time_batch[i].replace(",","");
         var machine2_time_holder = {
-            machine2_time_batch: machine2_time_batch[i],
+            machine2_time_batch: machine2_time_batch_replace,
             machine2_time_comment: machine2_time_comment[i],
             time_assigned: count
         }
@@ -282,8 +284,9 @@ function SubmitBatch(){
     //machine_3_content
     count = 6;
     for (var i = 0; i < machine3_time_batch.length; i++){
+        machine3_time_batch_replace = machine3_time_batch[i].replace(",","");
         var machine3_time_holder = {
-            machine3_time_batch: machine3_time_batch[i],
+            machine3_time_batch: machine3_time_batch_replace,
             machine3_time_comment: machine3_time_comment[i],
             time_assigned: count
         }
@@ -312,8 +315,9 @@ function SubmitBatch(){
     //machine_4_content
     count = 6;
     for (var i = 0; i < machine4_time_batch.length; i++){
+        machine4_time_batch_replace = machine4_time_batch[i].replace(",","");
         var machine4_time_holder = {
-            machine4_time_batch: machine4_time_batch[i],
+            machine4_time_batch: machine4_time_batch_replace,
             machine4_time_comment: machine4_time_comment[i],
             time_assigned: count
         }
@@ -342,8 +346,9 @@ function SubmitBatch(){
     //machine_5_content
     count = 6;
     for (var i = 0; i < machine5_time_batch.length; i++){
+        machine5_time_batch_replace = machine5_time_batch[i].replace(",","");
         var machine5_time_holder = {
-            machine5_time_batch: machine5_time_batch[i],
+            machine5_time_batch: machine5_time_batch_replace,
             machine5_time_comment: machine5_time_comment[i],
             time_assigned: count
         }
@@ -353,7 +358,7 @@ function SubmitBatch(){
      }
 
      window.setTimeout(function(){
-        window.location.reload();
+         window.location.reload();
           $(".se-pre-con").fadeOut("slow");
      }, 5000);
 
@@ -574,11 +579,11 @@ function SubmitBatch(){
                                 <tbody>
                                     <tr>
                                     <th rowspan="4" style="vertical-align: middle; text-align: center;">Time</th>
-                                    <th colspan="2">Machine-1</th>
-                                    <th colspan="2">Machine-2</th>
-                                    <th colspan="2">Machine-3</th>
-                                    <th colspan="2">Machine-4</th>
-                                    <th colspan="2">Machine-5</th>
+                                    <th colspan="2" style="text-align: center;">Machine-1</th>
+                                    <th colspan="2" style="text-align: center;">Machine-2</th>
+                                    <th colspan="2" style="text-align: center;">Machine-3</th>
+                                    <th colspan="2" style="text-align: center;">Machine-4</th>
+                                    <th colspan="2" style="text-align: center;">Machine-5</th>
                                 </tr>
                                <tr>
                                 <th colspan="2">Cement (kg): <input type="text" name="cementKG1" id="cementKG1" autocomplete="off" style="text-transform: uppercase; width: 100px" required></th>
@@ -615,22 +620,22 @@ function SubmitBatch(){
                                    
                                 </tr>
 
-                                <tr>
-                                    <th class="align_center">AM</th>
-                                    <th  colspan="1" class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th>
-                                    <th  colspan="1" class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th>
-                                    <th  colspan="1"class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th>
-                                    <th  colspan="1" class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th>
-                                    <th  colspan="1" class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th> 
+                                <tr style="background-color: #00111a; color:white;">
+                                    <th class="align_center" style="color:white;">AM</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
+                                    <th  colspan="1"class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th> 
                                 </tr>
 
                                  <tr>
-                                    <th>6:00 - 7:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">6:00 - 7:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                         <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
@@ -669,7 +674,7 @@ function SubmitBatch(){
                                 </tr>
 
                                 <tr>
-                                    <th>7:00 - 8:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">7:00 - 8:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                         <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
@@ -708,7 +713,7 @@ function SubmitBatch(){
                                 </tr>
 
                                 <tr>
-                                    <th>8:00 - 9:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">8:00 - 9:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                         <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
@@ -747,7 +752,7 @@ function SubmitBatch(){
                                 </tr>
 
                                 <tr>
-                                    <th>9:00 - 10:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">9:00 - 10:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                         <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
@@ -786,7 +791,7 @@ function SubmitBatch(){
                                 </tr>
 
                                 <tr>
-                                    <th>10:00 - 11:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">10:00 - 11:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                         <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
@@ -825,7 +830,7 @@ function SubmitBatch(){
                                 </tr>
 
                                 <tr>
-                                    <th>11:00 - 12:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">11:00 - 12:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                         <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
@@ -863,61 +868,22 @@ function SubmitBatch(){
                                     </th>
                                 </tr>
 
-                                 <tr>
-                                    <th class="align_center">PM</th>
-                                    <th  colspan="1" class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th>
-                                    <th  colspan="1" class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th>
-                                    <th  colspan="1"class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th>
-                                    <th  colspan="1" class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th>
-                                    <th  colspan="1" class="align_center">Batch</th>
-                                    <th  colspan="1" class="align_center">Comment</th> 
+                                 <tr style="background-color: #00111a; color:white;">
+                                    <th class="align_center" class="align_center" style="color:white;">PM</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
+                                    <th  colspan="1"class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Batch</th>
+                                    <th  colspan="1" class="align_center" style="color:white;">Comment</th> 
                                 </tr>
 
                                 <tr>
-                                    <th>12:00 - 1:00</th>
-                                    <!-- m1 -->
-                                    <th colspan="1">
-                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
-                                    </th>
-                                    <th colspan="1">
-                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
-                                    </th>
-                                     <!-- m2 -->
-                                    <th colspan="1">
-                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
-                                    </th>
-                                    <th colspan="1">
-                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
-                                    </th>
-                                     <!-- m3 -->
-                                    <th colspan="1">
-                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
-                                    </th>
-                                    <th colspan="1">
-                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
-                                    </th>
-                                     <!-- m4 -->
-                                    <th colspan="1">
-                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
-                                    </th>
-                                    <th colspan="1">
-                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
-                                    </th>
-                                     <!-- m5 -->
-                                    <th colspan="1">
-                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
-                                    </th>
-                                    <th colspan="1">
-                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
-                                    </th>
-                                </tr>
-
-                                <tr>
-                                    <th>1:00 - 2:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">12:00 - 1:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                         <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
@@ -956,7 +922,7 @@ function SubmitBatch(){
                                 </tr>
 
                                 <tr>
-                                    <th>2:00 - 3:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">1:00 - 2:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                         <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
@@ -995,7 +961,7 @@ function SubmitBatch(){
                                 </tr>
 
                                 <tr>
-                                    <th>3:00 - 4:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">2:00 - 3:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                         <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
@@ -1034,7 +1000,7 @@ function SubmitBatch(){
                                 </tr>
 
                                 <tr>
-                                    <th>4:00 - 5:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">3:00 - 4:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                         <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
@@ -1073,7 +1039,7 @@ function SubmitBatch(){
                                 </tr>
 
                                 <tr>
-                                    <th>5:00 - 6:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">4:00 - 5:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                         <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
@@ -1112,7 +1078,7 @@ function SubmitBatch(){
                                 </tr>
 
                                 <tr>
-                                    <th>6:00 - 7:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">5:00 - 6:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                         <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
@@ -1151,7 +1117,7 @@ function SubmitBatch(){
                                 </tr>
 
                                 <tr>
-                                    <th>7:00 - 8:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">6:00 - 7:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                         <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
@@ -1190,7 +1156,7 @@ function SubmitBatch(){
                                 </tr>
 
                                 <tr>
-                                    <th>8:00 - 9:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">7:00 - 8:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                         <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
@@ -1229,7 +1195,7 @@ function SubmitBatch(){
                                 </tr>
 
                                 <tr>
-                                    <th>9:00 - 10:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">8:00 - 9:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                         <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
@@ -1268,7 +1234,7 @@ function SubmitBatch(){
                                 </tr>
 
                                 <tr>
-                                    <th>10:00 - 11:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">9:00 - 10:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                         <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
@@ -1307,7 +1273,46 @@ function SubmitBatch(){
                                 </tr>
 
                                 <tr>
-                                    <th>11:00 - 12:00</th>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">10:00 - 11:00</th>
+                                    <!-- m1 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m2 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m3 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m4 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                     <!-- m5 -->
+                                    <th colspan="1">
+                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                    <th colspan="1">
+                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th style="background-color: #0099ff; color:white; text-align: center;">11:00 - 12:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
                                         <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
