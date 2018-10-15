@@ -89,17 +89,24 @@
 
 <script>
 
-	var option = getUrlParameter('option');
-	var plant = getUrlParameter('plant');
-	var getCurrentDate = getUrlParameter('date');
-	var date_option = {year: "numeric", month: "long", day: "numeric"}
+    var option = getUrlParameter('option');
+    var plant = getUrlParameter('plant');
+    var getCurrentDate = getUrlParameter('date');
+    var date_option = {year: "numeric", month: "long", day: "numeric"}
     var currentDate = new Date(getCurrentDate).toLocaleDateString('en', date_option);
+    var currentDate1 = new Date(getCurrentDate);
+    var passDate = new Date(getCurrentDate).toLocaleDateString('en');
     var optionTable = "";
+
+    var yesterdayDate = currentDate1.setDate(currentDate1.getDate() - 1);
+    yesterdayDate = new Date(yesterdayDate).toLocaleDateString('en');
+    
+    
 
     $(document).ready(function(){
 
-    	tableData();
-    	firebase.auth().onAuthStateChanged(function(user) {
+        tableData();
+        firebase.auth().onAuthStateChanged(function(user) {
             if (user != null) {
 
                 var uid = user.uid;
@@ -118,59 +125,240 @@
         });
 
         document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
-
-    	document.getElementById('id_breadcrumb').innerHTML = "<li><i class='fa fa-home'></i><a href='attendance.html?plant=" + plant + "'>Attendance</a></li><li><i class='icon_document'></i>Attendance Update</li>  ";
-
     });
+
+    function insertToEmployeeArray(){
+
+        var employee_array = [];
+
+        firebase.database().ref('employee_list/Head Office').orderByChild('employee_name').once('value', function(listSnapshot){
+            listSnapshot.forEach(function(listChildSnapshot){
+                employee_array.push(listChildSnapshot.val().employee_name);
+            });
+
+            $('.employees').autocomplete({source: employee_array});
+        });
+    } 
 
     function tableData(){
 
-        if(option == "comment"){
-            var query_ext = option;
-        }else if(option == "new_comment"){
-            var query_ext = "new/comment";
+        var optionTable = "";
+
+        if(option == "comment" || option == "new_comment"){
+
+            if(option == "comment"){
+                var query_ext = option;
+            }else if(option == "new_comment"){
+                var query_ext = "new/comment";
+            }
+
+            document.getElementById('id_option').innerHTML = "COMMENT DETAILS";
+
+            $('.button_add').hide();
+
+            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(commentSnapshot){
+                // console.log('attendance/'+plant+'/'+currentDate+'/comment', commentSnapshot.val());
+
+                commentSnapshot.forEach(function(commentChildSnapshot){
+
+                    optionTable += "<div class='col-md-12'><textarea name='comment' id='comment' class='form-control input_type' rows='5' style='text-transform: uppercase;'>" + commentChildSnapshot.val().comment_attendance_headoffice  + "</textarea></div>";
+
+                });
+
+                document.getElementById('id_table_view').innerHTML = optionTable;
+            });
+
+        }else if(option == "office" || option == "loopbook"){
+
+            document.getElementById('id_option').innerHTML = option.toUpperCase() + " EMPLOYEE LIST";
+
+            $('.button_add').show();
+
+            firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice/'+option).once('value', function(attendanceSnapshot){
+
+                optionTable += "<thead><tr><th class='col-md-5 header_line'>NAME</th><th class='col-md-2 header_line'>TIME IN</th><th class='col-md-2 header_line'>TIME OUT (<span id='id_yesterday'></span>)</th><th class='col-md-2 header_line'>REMARKS</th><th class='col-md-1'></th></tr></thead><tbody>";
+
+                attendanceSnapshot.forEach(function(attendanceChildSnapshot){
+
+                    optionTable += "<tr><td><input type='text' name='update_employee_name[]' class='form-control input_type employees' value='" + attendanceChildSnapshot.val().employee_name + "'></td><td><input type='time' name='update_employee_timein[]' class='form-control' value='" + attendanceChildSnapshot.val().employee_timein + "'></td><td><input type='time' name='update_employee_timeout[]' class='form-control' value='" + attendanceChildSnapshot.val().employee_timeout + "'></td><td><input type='text' name='update_employee_remarks[]' class='form-control input_type' value='" + attendanceChildSnapshot.val().employee_remarks + "'></td></td><td><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + attendanceChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
+
+                });
+
+                optionTable += "</tbody>";
+
+                document.getElementById('id_table_view').innerHTML = optionTable;
+
+                document.getElementById('id_yesterday').innerHTML = yesterdayDate;
+            });
+
+        }else if(option == "office_note"){
+
+            document.getElementById('id_option').innerHTML = "HEAD OFFICE NOTE DETAILS";
+
+            $('.button_add').hide();
+
+            firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice/').once('value', function(noteSnapshot){
+
+                optionTable += "<div class='col-md-12'><textarea name='comment' id='comment' class='form-control input_type' rows='5' style='text-transform: uppercase;'>" + noteSnapshot.val().note  + "</textarea></div>";
+
+                document.getElementById('id_table_view').innerHTML = optionTable;
+            });
         }
+        
+    }
 
-    	firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(commentSnapshot){
-    		// console.log('attendance/'+plant+'/'+currentDate+'/comment', commentSnapshot.val());
+    function add_new_employee(){
 
-    		commentSnapshot.forEach(function(commentChildSnapshot){
+        event.preventDefault();
 
-    			optionTable += "<div class='col-md-12'><textarea name='comment' id='comment' class='form-control input_type' rows='5' style='text-transform: uppercase;'>" + commentChildSnapshot.val().comment_attendance_headoffice  + "</textarea></div>";
+        $rowno = $("#employee_table tr").length;
+        $rowno = $rowno + 1;
 
-    		});
+        $("#employee_table tr:last").before("<tr id='employee_row" + $rowno + "'><td class='col-md-5'><input type='text' name='update_employee_name[]' class='form-control input_type employees' required></td><td class='col-md-2'><input type='time' name='update_employee_timein[]' class='form-control'></td><td class='col-md-2'><input type='time' name='update_employee_timeout[]' class='form-control'></td><td class='col-md-2'><input type='text' name='update_employee_remarks[]' class='form-control'></td><td class='col-md-1'><button type='button' class='btn btn-danger btn-md' onclick=remove_employee_row('employee_row" + $rowno + "')><strong>Remove</strong></button></td></tr>");
 
-    		document.getElementById('id_comment_field').innerHTML = optionTable;
-    	});
+        var employee_array = [];
+
+        firebase.database().ref('employee_list/Head Office').orderByChild('employee_name').once('value', function(listSnapshot){
+            listSnapshot.forEach(function(listChildSnapshot){
+                employee_array.push(listChildSnapshot.val().employee_name);
+            });
+
+            $('.employees').autocomplete({source: employee_array});
+        });
+
+    }
+
+    function remove_employee_row(rowno){
+        $('#'+rowno).remove();
+    }
+
+    function removeEmployee(option, key){
+
+        event.preventDefault();
+
+        if(firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice/'+option+'/'+key).remove()){
+
+            firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice/'+option).once('value', function(attendanceSnapshot){
+
+                if(attendanceSnapshot.val() == null){
+
+                    var employeeData = {
+                        employee_name: "N/A",
+                        employee_timein: "",
+                        employee_timeout: "",
+                        employee_remarks: "N/A",
+                    }
+
+                    if(firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice/'+option).push(employeeData)){
+                        alert("Employee remove succesfully.");
+                        window.location.href='attendance.html?plant=Bravo';
+                    }
+                }else{
+                    alert("Employee remove succesfully.");
+                    window.location.reload(true);
+                }
+            });
+        }
     }
 
     function submitForm(){
 
-    	event.preventDefault();
+        event.preventDefault();
 
-    	var input_note = document.getElementById('comment').value;
+        var currentSystemDate = new Date().toLocaleDateString('en');
+        var currentTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        var timeStamp = new Date().getTime();
+        timeStamp = timeStamp * -1;
 
-    	var commentData = {
-    		comment_attendance_headoffice: input_note.toUpperCase() || "N/A"
-    	}
+        if(option == "comment" || option == "new_comment"){
 
-        if(option == "comment"){
-            query_ext = option;
-        }else if(option == "new_comment"){
-            query_ext = "new/comment";
+            var input_note = document.getElementById('comment').value;
+
+            var commentData = {
+                comment_attendance_headoffice: input_note.toUpperCase() || "N/A"
+            }
+
+            if(option == "comment"){
+                query_ext = option;
+            }else if(option == "new_comment"){
+                query_ext = "new/comment";
+            }
+
+            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(commentSnapshot){
+                commentSnapshot.forEach(function(commentChildSnapshot){
+                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/'+commentChildSnapshot.key).update(commentData);
+
+                    notifData = {
+                        time: currentTime,
+                        date: currentSystemDate,
+                        message: "Head Office sent a note on Attendance Page.",
+                        isRead: 1,
+                        reverseDate: timeStamp,
+                        fromOffice: "Head Office",
+                        toOffice: plant,
+                        page: "attendance.html?date="+passDate
+                    }
+
+                    if(firebase.database().ref('notification').push(notifData)){
+                        alert("Update succesfully");
+                        window.location.href='attendance.html?plant='+plant;
+                    }
+                    
+                });
+            });
+
+        }else if(option == "office" || option == "loopbook"){
+
+            var input_employee_name = $("input[name='update_employee_name[]']").map(function(){return $(this).val();}).get();
+            var input_employee_timein = $("input[name='update_employee_timein[]']").map(function(){return $(this).val();}).get();
+            var input_employee_timeout = $("input[name='update_employee_timeout[]']").map(function(){return $(this).val();}).get();
+            var input_employee_remarks = $("input[name='update_employee_remarks[]']").map(function(){return $(this).val();}).get();
+
+            count = 0;
+            if(firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice/'+option).remove()){
+
+                for(var a = 0; a < input_employee_name.length; a++){
+
+                    var employeeData = {
+                        employee_name: input_employee_name[a].toUpperCase(),
+                        employee_timein: input_employee_timein[a],
+                        employee_timeout: input_employee_timeout[a],
+                        employee_remarks: input_employee_remarks[a]
+                    }
+
+                    firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice/'+option).push(employeeData);
+                    count++;
+                }
+
+                if(count == input_employee_name.length){
+                    alert("Data updated succesfully.");
+                    window.location.href='attendance.html?plant=Bravo';
+                }
+            }
+        }else if(option == "office_note"){
+
+            var input_note = document.getElementById('comment').value;
+
+            var noteData = {
+                note: input_note.toUpperCase() || "N/A"
+            }
+
+            if(firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice/').update(noteData)){
+                alert("Update succesfully");
+                window.location.href='attendance.html?plant=Bravo';
+            }
         }
-
-    	firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(commentSnapshot){
-    		commentSnapshot.forEach(function(commentChildSnapshot){
-	    		if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/'+commentChildSnapshot.key).update(commentData)){
-					alert("Update succesfully");
-					window.location.href='attendance.html?plant='+plant;
-				}
-			});
-    	});
     }
     
 </script>
+<style>
+.header_line{
+    text-align: center;
+}
+.input_type{
+    text-transform: uppercase;
+}
+</style>
 </head>
 <body>
 	<!-- <div class="se-pre-con"></div> -->
@@ -300,26 +488,37 @@
                             <header class="panel-heading">
                             Update Form
                             </header>
-                            <header class="panel-heading" style="text-align: center;"><strong>NOTE</strong></header>
+                            <header class="panel-heading" id="id_option" style="text-align: center; font-weight: bold;"></header>
                             <div class="panel-body">
-                            	<div class="row">                                          
-	                                <form class="form-horizontal" role="form" id="form" onsubmit='if(confirm("Proceed?")){submitForm();}else{ event.preventDefault();}'>
-										<div id="id_comment_field"></div>
-										<hr>
-	                                    <div class="col-md-12">
-	                                        <div class="form-group">
-	                                            <div class="row">
-	                                                <!-- <div class="form-group"> -->
-	                                                <div class="col-md-offset-7 col-md-5">
-	                                                    <input type="submit" name="submit" id="submit" value="Update" class="btn btn-primary" style="font-weight: bold;">
-	                                                    <button type="button" class="btn btn-default" onclick="window.history.back();"><strong>Cancel</strong></button>
-	                                                <!-- </div> -->
-	                                                </div>
-	                                            </div>
-	                                        </div>
-	                                    </div>
-	                                </form>
-	                            </div>
+                                <div class="row">  
+                                    <div class="col-md-12">                                        
+                                        <form class="form-horizontal" role="form" id="form" onsubmit='if(confirm("Proceed?")){submitForm();}else{ event.preventDefault();}'>
+                                            <table class="table" id="id_table_view"></table>
+                                            <table class="table" id="employee_table">
+                                                <tr id="employee_row1"></tr>
+                                            </table>
+                                            <div class="row button_add">
+                                                <!-- <hr> -->
+                                                <div class="col-md-offset-3 col-md-6">
+                                                    <button type="button" onclick="add_new_employee();" class="btn btn-primary btn-block"><strong>Add</strong></button>                                                        
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <!-- <div class="form-group"> -->
+                                                        <div class="col-md-offset-7 col-md-5">
+                                                            <input type="submit" name="submit" id="submit" value="Update" class="btn btn-primary" style="font-weight: bold;">
+                                                            <button type="button" class="btn btn-default" onclick="window.location.href='attendance.html';"><strong>Cancel</strong></button>
+                                                        <!-- </div> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </section>
                     </div>

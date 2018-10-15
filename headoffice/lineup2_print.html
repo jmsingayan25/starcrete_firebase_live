@@ -89,11 +89,11 @@
     ======================================================= -->
 
 <script>
-	
+    
     var option_table = getUrlParameter('option');
-	var plant = getUrlParameter('plant');
-	var date = getUrlParameter('date');
-	var option = {year: "numeric", month: "long", day: "numeric"}
+    var plant = getUrlParameter('plant');
+    var date = getUrlParameter('date');
+    var option = {year: "numeric", month: "long", day: "numeric"}
     var currentDate = new Date(date).toLocaleDateString('en', option);
     var myTableRow1 = "";
     var myTableRow2 = "";
@@ -103,11 +103,11 @@
     var myTableRow6 = "";
     var myTableRow7 = "";
 
-	$(document).ready(function(){
+    $(document).ready(function(){
 
-		document.getElementById('page_header').innerHTML = plant + " LINE UP";
+        document.getElementById('page_header').innerHTML = plant + " LINE UP";
 
-		document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-info btn-md' id='printPageButton' onclick='return window.print();' style='float: right;'><span class='fa fa-print'></span> <strong>Print</strong></button> <br> <span id='id_schedule'></span></th>";
+        document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-info btn-md' id='printPageButton' onclick='return window.print();' style='float: right;'><span class='fa fa-print'></span> <strong>Print</strong></button> <br> <span id='id_schedule'></span></th>";
 
         firebase.database().ref('attendance/'+plant+'/'+currentDate).once('value', function(tableContentData){
 
@@ -434,17 +434,17 @@
                 $(".se-pre-con").fadeOut("slow");
             }            
         });
-	});
+    });
 
 </script>
 <style>
 @media print{
-	table{
-	    font-size: 10px;
-	}
-	#printPageButton{
-		display: none;
-	}
+    table{
+        font-size: 10px;
+    }
+    #printPageButton{
+        display: none;
+    }
     .badge{
         padding: 2px 6px;
         border: 1px solid #000;
@@ -453,18 +453,18 @@
 </head>
 <body>
     <div class="se-pre-con"></div>
-	<div class="container">
-		<section id="wrapper">
-			<div class="row">
-	            <div class="col-md-12">
-	                <h3 class="page-header" id="page_header"></h3>
-	            </div>
-	        </div>
-			<div class="row">
-				<div class="col-md-12">
-					<section class="panel">
-						<div>
-							<table class="table table-bordered table-stripped table-condensed">
+    <div class="container">
+        <section id="wrapper">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="page-header" id="page_header"></h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <section class="panel">
+                        <div>
+                            <table class="table table-bordered table-stripped table-condensed">
                                 <tbody>
                                     <tr id="id_date" class="header_line"></tr>
                                     <tr class="header_line">
@@ -519,11 +519,11 @@
                                 </tbody>
                                 <tbody id="row6_list"></tbody>
                             </table>
-						</div>
-					</section>
-				</div>
-			</div>
-		</section>
-	</div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </div>
 </body>
 </html>

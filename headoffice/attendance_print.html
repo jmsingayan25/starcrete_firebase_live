@@ -11,14 +11,14 @@
     <title>Attendance</title>
 
     <!-- Firebase App is always required and must be first -->
-	<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script>
 
-	<!-- Add additional services you want to use -->
-	<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-auth.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>
-	<script src="../js_config/firebase_config.js"></script>
+    <!-- Add additional services you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>
+    <script src="../js_config/firebase_config.js"></script>
 
-	<!-- Bootstrap CSS -->    
+    <!-- Bootstrap CSS -->    
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <!-- bootstrap theme -->
     <link href="../css/bootstrap-theme.css" rel="stylesheet">
@@ -35,7 +35,7 @@
     <link href="../css/widgets.css" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
     <link href="../css/style-responsive.css" rel="stylesheet" />
-    <link href="../css/xcharts.min.css" rel=" stylesheet">	
+    <link href="../css/xcharts.min.css" rel=" stylesheet">  
     <link href="../css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 
     <!-- javascripts -->
@@ -94,6 +94,7 @@
     var type = getUrlParameter('type');
     var option = {year: "numeric", month: "long", day: "numeric"}
     var currentDate = new Date(date).toLocaleDateString('en', option);
+    var currentDate1 = new Date(date);
     var myTableOfficeEmployee = "";
     var myTableNewEmployee = "";
     var myTableAbsent = "";
@@ -103,8 +104,13 @@
     var myTableDayshiftGuard = "";
     var myTableNightshiftGuard = "";
     var myTableComment = "";
+    var yesterdayDate = currentDate1.setDate(currentDate1.getDate() - 1);
+    yesterdayDate = new Date(yesterdayDate).toLocaleDateString('en');
 
     $(document).ready(function(){
+
+        // document.getElementById('id_yesterday').innerHTML = yesterdayDate;
+        $(".class_yesterday").text(yesterdayDate);
 
         document.getElementById('page_header').innerHTML = plant + " ATTENDANCE";
 
@@ -223,7 +229,7 @@
 
                 firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/trucking').once('value', function(truckingSnapshot){
 
-                    myTableTrucking += "<tr><td colspan='4'><table class='table table-bordered'><thead><tr class='header_line'><th class='col-md-2' style='text-align: center;'>TRUCK NO.</th><th class='col-md-2' style='text-align: center;'>DRIVER</th><th class='col-md-2' style='text-align: center;'>PAHINANTE 1</th><th class='col-md-2' style='text-align: center;'>PAHINANTE 2</th><th class='col-md-3' style='text-align: center;'>COMMENT</th></tr></thead><tbody>";
+                    myTableTrucking += "<tr><td colspan='4'><table class='table table-bordered'><thead><tr><th class='col-md-2' style='text-align: center;'>TRUCK NO.</th><th class='col-md-2' style='text-align: center;'>DRIVER</th><th class='col-md-2' style='text-align: center;'>PAHINANTE 1</th><th class='col-md-2' style='text-align: center;'>PAHINANTE 2</th><th class='col-md-3' style='text-align: center;'>COMMENT</th></tr></thead><tbody>";
 
                     truckingSnapshot.forEach(function(truckingChildSnapshot){
                         myTableTrucking += "<tr align='center'><td>" + truckingChildSnapshot.val().truck_no + "</td><td>" + truckingChildSnapshot.val().driver + "</td><td>" + truckingChildSnapshot.val().pahinante1 + "</td><td>" + truckingChildSnapshot.val().pahinante2 + "</td><td>" +  truckingChildSnapshot.val().comment + "</td></tr>";
@@ -240,20 +246,20 @@
                         firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/guard/dayshift').once('value', function(guardDayshiftSnapshot){
                             firebase.database().ref('attendance/'+plant+'/'+currentDate+query_ext+'/guard/nightshift').once('value', function(guardNightshiftSnapshot){
 
-                                myTableForklift += "<tr><td colspan='2'><table class='table table-bordered'><thead><tr class='header_line'><th class='col-md-3' style='text-align: center;'>FORKLIFT NO.</th><th class='col-md-5' style='text-align: center;'>OPERATOR</th><th class='col-md-4' style='text-align: center;'>COMMENT</th></tr></thead><tbody>";
+                                myTableForklift += "<tr><td colspan='2'><table class='table table-bordered'><thead><tr><th class='col-md-3' style='text-align: center;'>FORKLIFT NO.</th><th class='col-md-5' style='text-align: center;'>OPERATOR</th><th class='col-md-4' style='text-align: center;'>COMMENT</th></tr></thead><tbody>";
 
                                 forkliftSnapshot.forEach(function(forkliftChildSnapshot){
                                     myTableForklift += "<tr align='center'><td>" + forkliftChildSnapshot.val().forklift_no + "</td><td>" + forkliftChildSnapshot.val().operator + "</td><td>" + forkliftChildSnapshot.val().comment + "</td></tr>";
                                 });
 
-                                myTableForklift += "</tbody></table></td><td colspan='2'><table class='table table-bordered'><thead><tr><th>Guard: <strong>" + guardSnapshot.val().agency_name + "<strong></th></tr><tr class='header_line'><th>DAY SHIFT</th></tr></thead><tbody><tr><td>";
+                                myTableForklift += "</tbody></table></td><td colspan='2'><table class='table table-bordered'><thead><tr><th>Guard: <strong>" + guardSnapshot.val().agency_name + "<strong></th></tr><tr><th>DAY SHIFT</th></tr></thead><tbody><tr><td>";
 
                                 guardDayshiftSnapshot.forEach(function(guardDayshiftChildSnapshot){
 
                                     myTableForklift += "<div class='row'><div class='col-md-12'>" + guardDayshiftChildSnapshot.val().guard_name + " - " + guardDayshiftChildSnapshot.val().guard_position + "</div></div>";
                                 });
 
-                                myTableForklift += "</td></tr></tbody><thead><tr class='header_line'><th>NIGHT SHIFT</th></tr></thead><tbody><tr><td>";
+                                myTableForklift += "</td></tr></tbody><thead><tr><th>NIGHT SHIFT</th></tr></thead><tbody><tr><td>";
 
                                 guardNightshiftSnapshot.forEach(function(guardNightshiftChildSnapshot){
 
@@ -344,6 +350,90 @@
                 $(".se-pre-con").fadeOut("slow");
             }
         });
+
+        firebase.database().ref('attendance/Head Office/'+currentDate).once('value', function(headofficeSnapshot){
+
+            if(headofficeSnapshot.val() != null){
+
+                var officeRow = "";
+                var loopbookRow = "";
+
+                firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice').once('value', function(noteSnapshot){
+
+                    document.getElementById('note_id').innerHTML = "<tr><td colspan='2'>" + noteSnapshot.val().note + "</td></tr>";
+                });
+
+                firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice/office').once('value', function(officeSnapshot){
+                    officeSnapshot.forEach(function(officeChildSnapshot){
+
+                        var employee_name = officeChildSnapshot.val().employee_name;
+                        var employee_timein = officeChildSnapshot.val().employee_timein;
+                        var employee_timeout = officeChildSnapshot.val().employee_timeout;
+                        var employee_remarks = officeChildSnapshot.val().employee_remarks;
+
+                        var a = employee_timein.split(':');
+                        var employee_timein_seconds = (+a[0]) * 60 * 60 + (+a[1]);
+
+                        var b = "08:00".split(':');
+                        var timein_seconds = (+b[0]) * 60 * 60 + (+b[1]);
+
+                        if(employee_timein_seconds > timein_seconds){
+
+                            officeRow += "<tr style='background-color: #f77474; color: white;'><td>" + employee_name + "</td>";
+                            officeRow += "<td>" + employee_timein + "</td>";
+                            officeRow += "<td>" + employee_timeout + "</td>";
+                            officeRow += "<td>" + employee_remarks + "</td></tr>";
+
+                        }else{
+
+                            officeRow += "<tr><td>" + employee_name + "</td>";
+                            officeRow += "<td>" + employee_timein + "</td>";
+                            officeRow += "<td>" + employee_timeout + "</td>";
+                            officeRow += "<td>" + employee_remarks + "</td></tr>";
+
+                        }
+                        
+                    });
+
+                    document.getElementById('office_list').innerHTML = officeRow;
+                });
+
+                firebase.database().ref('attendance/Head Office/'+currentDate+'/headoffice/loopbook').once('value', function(loopbookSnapshot){
+                    loopbookSnapshot.forEach(function(loopbookChildSnapshot){
+
+                        var employee_name = loopbookChildSnapshot.val().employee_name;
+                        var employee_timein = loopbookChildSnapshot.val().employee_timein;
+                        var employee_timeout = loopbookChildSnapshot.val().employee_timeout;
+                        var employee_remarks = loopbookChildSnapshot.val().employee_remarks;
+
+                        var a = employee_timein.split(':');
+                        var employee_timein_seconds = (+a[0]) * 60 * 60 + (+a[1]);
+
+                        var b = "08:00".split(':');
+                        var timein_seconds = (+b[0]) * 60 * 60 + (+b[1]);
+
+                        if(employee_timein_seconds > timein_seconds){
+
+                            loopbookRow += "<tr style='background-color: #f77474; color: white;'><td>" + employee_name + "</td>";
+                            loopbookRow += "<td>" + employee_timein + "</td>";
+                            loopbookRow += "<td>" + employee_timeout + "</td>";
+                            loopbookRow += "<td>" + employee_remarks + "</td></tr>";
+
+                        }else{
+
+                            loopbookRow += "<tr><td>" + employee_name + "</td>";
+                            loopbookRow += "<td>" + employee_timein + "</td>";
+                            loopbookRow += "<td>" + employee_timeout + "</td>";
+                            loopbookRow += "<td>" + employee_remarks + "</td></tr>";
+
+                        }
+                        
+                    });
+
+                    document.getElementById('loopbook_list').innerHTML = loopbookRow;
+                });
+            }
+        });
     });
 
 </script>
@@ -365,7 +455,13 @@
         padding: 2px 6px;
         border: 1px solid #000;
     }
+
+    tr td{
+      padding: 2px !important;
+      margin: 2px !important;
+    }
 }
+
 </style>
 </head>
 <body>
@@ -380,10 +476,10 @@
             <div class="row">
                 <div class="col-md-12">
                     <section class="panel">
-                        <table class="table table-bordered table-stripped table-condensed" cellpadding="0" cellspacing="0">
+                        <table class="table table-bordered table-condensed" cellpadding="0" cellspacing="0">
                             <tbody>
-                                <tr id="id_date" class="header_line"></tr>
-                                <tr class="header_line">
+                                <tr id="id_date"></tr>
+                                <tr>
                                     <th colspan="3">
                                         OFFICE
                                     </th>
@@ -397,10 +493,10 @@
                                     <td colspan="3" >
                                         <table class="table">
                                             <tbody>
-                                                <tr class="header_line">
+                                                <tr>
                                                     <th class="col-md-3" style="text-align: center;">NAME</th>
                                                     <th class="col-md-3" style="text-align: center;">TIME IN</th>
-                                                    <th class="col-md-3" style="text-align: center;">TIME OUT</th>
+                                                    <th class="col-md-3" style="text-align: center;">TIME OUT (<span class="class_yesterday"></span>)</th>
                                                 </tr>
                                             </tbody>
                                             <tbody id="row_office_list"></tbody>
@@ -410,7 +506,7 @@
                                 </tr>
                             </tbody>
                             <tbody>
-                                <tr class="header_line">
+                                <tr>
                                     <th class="col-md-3">NON-SKID 1</th>
                                     <th class="col-md-3">NON-SKID 2</th>
                                     <th class="col-md-3">NON-SKID 3</th>
@@ -419,20 +515,20 @@
                             </tbody>
                             <tbody id="row_nonskid_list"></tbody>
                             <tbody>
-                                <tr class="header_line">
+                                <tr>
                                     <th colspan="4">TRUCKING</th>
                                 </tr>
                             </tbody>
                             <tbody id="row_trucking_list"></tbody>
                             <tbody>
-                                <tr class="header_line">
+                                <tr>
                                     <th colspan="2">FORKLIFT</th>
                                     <th colspan="2">GUARD</th>
                                 </tr>
                             </tbody>
                             <tbody id="row_forklift_list"></tbody>
                             <tbody>
-                                <tr class="header_line">
+                                <tr>
                                     <th colspan="4">
                                         ABSENT
                                     </th>
@@ -442,7 +538,7 @@
                                 <tr>
                                     <td colspan="4">
                                         <table class="table table-bordered">
-                                            <thead class="header_line">
+                                            <thead>
                                                 <tr>
                                                     <th class="col-md-4" style="text-align: center;">PLANT <span class="badge pull-right" id="badge_plant"></span></th>
                                                     <th class="col-md-4" style="text-align: center;">MOTORPOOL <span class="badge pull-right" id="badge_motorpool"></span></th>
@@ -455,11 +551,80 @@
                                 </tr>
                             </tbody>
                             <tbody>
-                                <tr class="header_line">
+                                <tr>
                                     <th colspan="4">NOTE</th>
                                 </tr>
                             </tbody>
                             <tbody id="row_comment"></tbody>
+                        </table>
+                    </section>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <section class="panel">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td colspan="2">
+                                        <strong>HEAD OFFICE ATTENDANCE</strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                       <table class="table table-bordered table-stripped">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="4">OFFICE</th>
+                                                </tr>
+                                                <tr>
+                                                    <th class="col-md-7">Name</th>
+                                                    <th class="col-md-2">Time In</th>
+                                                    <th class="col-md-2">Time Out (<span class="class_yesterday"></span>)</th>
+                                                    <th class="col-md-1">Remarks</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="office_list">
+                                                <tr>
+                                                    <td colspan="4" style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h6><p class='text-muted'>No data found</p></h6></td>
+                                                </tr>
+                                            </tbody>
+                                        </table> 
+                                    </td>
+                                    <td>
+                                        <table class="table table-bordered table-stripped">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="4">LOOPBOOK</th>
+                                                </tr>
+                                                <tr>
+                                                    <th class="col-md-7">Name</th>
+                                                    <th class="col-md-2">Time In</th>
+                                                    <th class="col-md-2">Time Out (<span class="class_yesterday"></span>)</th>
+                                                    <th class="col-md-1">Remarks</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="loopbook_list">
+                                                <tr>
+                                                    <td colspan="4" style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h6><p class='text-muted'>No data found</p></h6></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody>
+                                <tr>
+                                    <td colspan="2"><strong>NOTE</strong></td>
+                                </tr>
+                            </tbody>
+                            <tbody id="note_id">
+                                <tr>
+                                    <td colspan="2" style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h6><p class='text-muted'>No data found</p></h6></td>     
+                                </tr>
+                            </tbody>
                         </table>
                     </section>
                 </div>

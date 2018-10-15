@@ -103,6 +103,7 @@
                     }
                     
                     tableData();
+                    displayNotif();
                     // goAway(plant);
                     
                     if(plant == 'Bravo'){
@@ -239,7 +240,7 @@
                 document.getElementById('id_ongoing_order').innerHTML = Number(ongoing_order_count).toLocaleString('en');
             }
     
-    $(".se-pre-con").fadeOut("slow");
+            $(".se-pre-con").fadeOut("slow");
         });
 
         if(ongoing_order_count == 0){
@@ -247,7 +248,7 @@
             document.getElementById('id_ongoing_order').innerHTML = ongoing_order_count;
 
     
-    $(".se-pre-con").fadeOut("slow");
+            $(".se-pre-con").fadeOut("slow");
         }
 
         /*END OF ONGOING ORDER BLOCK*/
@@ -274,15 +275,13 @@
 
             }
 
-    
-    $(".se-pre-con").fadeOut("slow");
+            $(".se-pre-con").fadeOut("slow");
         });
 
         if(delivered_order_count == 0){
             document.getElementById('id_delivered_order').innerHTML = delivered_order_count;
 
-    
-    $(".se-pre-con").fadeOut("slow");
+            $(".se-pre-con").fadeOut("slow");
         }
 
         /*END OF DELIVERY ORDER BLOCK*/
@@ -305,15 +304,13 @@
                 document.getElementById('id_backloaded_order').innerHTML = Number(backloaded_order_count).toLocaleString('en');
             }
 
-    
-    $(".se-pre-con").fadeOut("slow");
+            $(".se-pre-con").fadeOut("slow");
         });
 
         if(backloaded_order_count == 0){
             document.getElementById('id_backloaded_order').innerHTML = backloaded_order_count;
 
-    
-    $(".se-pre-con").fadeOut("slow");
+            $(".se-pre-con").fadeOut("slow");
         }
 
         /*END OF BACKLOADED ORDER BLOCK*/
@@ -330,9 +327,8 @@
         if(diesel_count == 0){
             document.getElementById('id_diesel').innerHTML = Number(diesel_count).toLocaleString('en');
 
-    
-    $(".se-pre-con").fadeOut("slow");
-        }
+        $(".se-pre-con").fadeOut("slow");
+    }
 
 
         /*END OF DIESEL STOCK*/
@@ -373,6 +369,61 @@
         return i;
     }
 
+    function displayNotif(){
+
+        var myList = "";
+        count = 0;
+
+        firebase.database().ref('notification').orderByChild('reverseDate').once('value', function(notifSnapshot){
+
+            if(notifSnapshot.val() != null){
+
+                notifSnapshot.forEach(function(notifChildSnapshot){
+
+                    if(notifChildSnapshot.val().toOffice == plant){
+
+                        date = notifChildSnapshot.val().date;
+                        fromOffice = notifChildSnapshot.val().fromOffice;
+                        message = notifChildSnapshot.val().message;
+                        page = notifChildSnapshot.val().page;
+                        // page = "#";
+                        time = notifChildSnapshot.val().time;
+                        key = notifChildSnapshot.key;
+
+                        if(notifChildSnapshot.val().isRead == 1){
+
+                             myList += "<li><a href=\"" + page + "\" onclick=\"return visitSite('" + key + "');\"><span class='subject'><span class='from'>From " + fromOffice + "</span><span class='time'>" + time + "</span></span><span class='message'>" + message + "</span><span class='subject'><span class='from'></span><span class='time'>" + date + "</span></span></a></li>";
+
+                             count++;
+
+                        }else if(notifChildSnapshot.val().isRead == 0){
+
+                            myList += "<li><a href=\"" + page + "\" onclick=\"return visitSite('" + key + "');\" style='color: #595959;'><span class='subject'><span class='from'>From " + fromOffice + "</span><span class='time'>" + time + "</span></span><span class='message'>" + message + "</span><span class='subject'><span class='from'></span><span class='time'>" + date + "</span></span></a></li>";
+
+                        }
+                    }
+                });
+
+                document.getElementById('id_notif_list').innerHTML = myList;
+
+                if(count != 0){
+                    document.getElementById('id_badge').innerHTML = "<span class='badge bg-important'>" + count + "</span>";
+                }
+            }
+
+            $('.class_notif').text(count);
+        });
+    }
+
+    function visitSite(key){
+
+        notifData = {
+            isRead: 0
+        }
+
+        firebase.database().ref('notification/'+key).update(notifData);
+    }
+
 </script>
 <style>
 .view_details_btn{
@@ -398,6 +449,23 @@
             <div class="top-nav notification-row">                
                 <!-- notificatoin dropdown start-->
                 <ul class="nav pull-right top-menu">
+
+                    <!-- inbox notificatoin start-->
+                    <li id="mail_notificatoin_bar" class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <i class="icon-envelope-l"></i>
+                            <span id="id_badge"></span>
+                        </a>
+                        <ul class="dropdown-menu extended inbox" style="max-height: 500px; overflow-y: auto">
+                            <div class="notify-arrow notify-arrow-blue"></div>
+                            <li>
+                                <p class="blue">You have <span class="class_notif"></span> new messages</p>
+                            </li>
+                            <span id="id_notif_list"></span>
+                        </ul>
+                    </li>
+                    <!-- inbox notificatoin end -->
+
                     <!-- user login dropdown start-->
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">

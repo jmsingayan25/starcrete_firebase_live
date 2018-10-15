@@ -1178,6 +1178,14 @@ ul.top-menu > li > a {
 
 
 
+/*ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {    
+
+    background: transparent !important;
+
+    color: #D7D7D7 !important;
+
+}*/
+
 ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {    
 
     background: transparent !important;
@@ -9830,7 +9838,7 @@ table.sliders tr td {
 
 }
 
-.message:before {
+/*.message:before {
 
     border-color: #2095FE;
 
@@ -9856,7 +9864,7 @@ table.sliders tr td {
 
     z-index: -1;
 
-}
+}*/
 
 .message.from:before {
 

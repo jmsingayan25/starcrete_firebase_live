@@ -131,7 +131,7 @@
             }
         });
 
-        tableData();
+        submitForm();
 
         firebase.auth().onAuthStateChanged(function(user) {
             if (user != null) {
@@ -154,6 +154,106 @@
         document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
     });
 
+    // function submitForm(){
+
+    //     event.preventDefault();
+
+    //     $(".se-pre-con").fadeIn("fast");
+
+    //     var myTbody = "";
+    //     var search_text = document.getElementById('search').value;
+
+    //     firebase.database().ref('client').orderByChild('client_name').on('child_added', function(clientSnapshot){
+
+    //         var text_client_name = clientSnapshot.val().client_name;
+    //         var text_client_address = clientSnapshot.val().client_address;
+
+    //         all_text = text_client_name + " " + text_client_address;
+
+    //         search = searchMatch(search_text, all_text);
+
+    //         if(search != null){
+
+    //             var client_name = clientSnapshot.val().client_name;
+    //             var client_address = clientSnapshot.val().client_address;
+    //             var clientKey = clientSnapshot.key;
+
+    //             myTbody += "<tr><td><strong>" + client_name + "</strong></td>";
+    //             myTbody += "<td><strong>" + client_address + "</strong></td>";
+    //             myTbody += "<td>";
+
+    //             firebase.database().ref('client/'+clientKey+'/contact').orderByChild('client_contact_name').once('value',function(contactSnapshot){
+    //                 contactSnapshot.forEach(function(contactChildSnapshot){
+    //                         // console.log(contactChildSnapshot.val());
+
+    //                     myTbody += "<div class='row' style=margin-bottom: 2px;><div class='col-md-6'><strong>" + contactChildSnapshot.val().client_contact_name + "</strong></div><div class='col-md-1'>-</div><div class='col-md-5'><strong>" + contactChildSnapshot.val().client_contact_no + "</strong></div></div>";
+    //                 });
+    //             });
+
+    //             myTbody += "</td>";
+    //             myTbody += "<td><div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><a href='add_client_contact.html?key=" + clientKey + "'><button class='btn btn-sm btn-block' style='background-color: #1976d2; color: white;'><span class='fa fa-plus'></span> <strong>Add Contact</strong></button></a></div></div><div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><a href='client_update_info.html?key=" + clientKey + "'><button class='btn btn-sm btn-block' style='background-color: #ffa000; color: white;'><span class='fa fa-edit'></span> <strong>Update</strong></button></a></div></div><div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><a href='project.html?key=" + clientKey + "' class='btn btn-sm btn-block' style='background-color: #388e3c; color: white;'><span class='fa fa-info-circle'></span> <strong>Projects</strong></a></div></div></td></tr>";
+    //         }
+
+    //     });
+
+    //     if(myTbody == ""){
+
+    //         myTbody = "<tr><td colspan='4' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+
+    //         document.getElementById("clientList").innerHTML = myTbody;
+
+    //         $(".se-pre-con").fadeOut("slow");
+    //     }else{
+    //         document.getElementById("clientList").innerHTML = myTbody;
+
+    //         $(".se-pre-con").fadeOut("slow");
+    //     }
+    // }
+
+    // function tableData(){
+
+    //     $(".se-pre-con").fadeIn("fast");
+
+    //     var myTbody = "";
+
+    //     firebase.database().ref('client').once('value', function(clientSnapshot){
+            
+    //         if(clientSnapshot.val() == null){
+    //             myTbody = "<tr><td colspan='4' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+
+    //             document.getElementById("clientList").innerHTML = myTbody;
+    //             $(".se-pre-con").fadeOut("slow");
+    //         }
+    //     });
+
+    //     document.getElementById("clientList").innerHTML = "<tr><td colspan='4' style='background-color: white;'><div class='spinner'><div></div></div></td></tr>";
+
+    //     firebase.database().ref('client').orderByChild('client_name').on('child_added', function(clientSnapshot){
+
+    //         var client_name = clientSnapshot.val().client_name;
+    //         var client_address = clientSnapshot.val().client_address;
+    //         var clientKey = clientSnapshot.key;
+
+    //         myTbody += "<tr><td><strong>" + client_name + "</strong></td>";
+    //         myTbody += "<td><strong>" + client_address + "</strong></td>";
+    //         myTbody += "<td>";
+
+    //         firebase.database().ref('client/'+clientKey+'/contact').orderByChild('client_contact_name').once('value',function(contactSnapshot){
+    //             contactSnapshot.forEach(function(contactChildSnapshot){
+
+    //                 myTbody += "<div class='row' style=margin-bottom: 2px;><div class='col-md-6'><strong>" + contactChildSnapshot.val().client_contact_name + "</strong></div><div class='col-md-1'>-</div><div class='col-md-5'><strong>" + contactChildSnapshot.val().client_contact_no + "</strong></div></div>";
+    //             });
+    //         });
+
+    //         myTbody += "</td>";
+    //         myTbody += "<td><div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><a href='add_client_contact.html?key=" + clientKey + "'><button class='btn btn-sm btn-block' style='background-color: #1976d2; color: white;'><span class='fa fa-plus'></span> <strong>Add Contact</strong></button></a></div></div><div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><a href='client_update_info.html?key=" + clientKey + "'><button class='btn btn-sm btn-block' style='background-color: #ffa000; color: white;'><span class='fa fa-edit'></span> <strong>Update</strong></button></a></div></div><div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><a href='project.html?key=" + clientKey + "' class='btn btn-sm btn-block' style='background-color: #388e3c; color: white;'><span class='fa fa-info-circle'></span> <strong>Projects</strong></a></div></div></td></tr>";
+
+    //         document.getElementById("clientList").innerHTML = myTbody;
+
+    //         $(".se-pre-con").fadeOut("slow");
+    //     });
+    // }
+
     function submitForm(){
 
         event.preventDefault();
@@ -163,94 +263,63 @@
         var myTbody = "";
         var search_text = document.getElementById('search').value;
 
-        firebase.database().ref('client').orderByChild('client_name').on('child_added', function(clientSnapshot){
+        firebase.database().ref('client').once('value', function(clientSnapshot){
 
-            var text_client_name = clientSnapshot.val().client_name;
-            var text_client_address = clientSnapshot.val().client_address;
+            if(clientSnapshot.val() != null){
 
-            all_text = text_client_name + " " + text_client_address;
+                clientSnapshot.forEach(function(clientChildSnapshot){
 
-            search = searchMatch(search_text, all_text);
+                    firebase.database().ref('client/'+clientChildSnapshot.key+'/contact').once('value', function(contactSnapshot){
 
-            if(search != null){
+                        text_client_name = clientChildSnapshot.val().client_name;
+                        text_client_address = clientChildSnapshot.val().client_address;
 
-                var client_name = clientSnapshot.val().client_name;
-                var client_address = clientSnapshot.val().client_address;
-                var clientKey = clientSnapshot.key;
+                        all_text = text_client_name + " " + text_client_address;
 
-                myTbody += "<tr><td><strong>" + client_name + "</strong></td>";
-                myTbody += "<td><strong>" + client_address + "</strong></td>";
-                myTbody += "<td>";
+                        search = searchMatch(search_text, all_text);
 
-                firebase.database().ref('client/'+clientKey+'/contact').orderByChild('client_contact_name').once('value',function(contactSnapshot){
-                    contactSnapshot.forEach(function(contactChildSnapshot){
-                            // console.log(contactChildSnapshot.val());
+                        if(search != null){
 
-                        myTbody += "<div class='row' style=margin-bottom: 2px;><div class='col-md-6'><strong>" + contactChildSnapshot.val().client_contact_name + "</strong></div><div class='col-md-1'>-</div><div class='col-md-5'><strong>" + contactChildSnapshot.val().client_contact_no + "</strong></div></div>";
+                            client_name = clientChildSnapshot.val().client_name;
+                            client_address = clientChildSnapshot.val().client_address;
+                            clientKey = clientChildSnapshot.key;
+
+                            myTbody += "<tr><td><strong>" + client_name + "</strong></td>";
+                            myTbody += "<td><strong>" + client_address + "</strong></td>";
+                            myTbody += "<td>";
+
+                            contactSnapshot.forEach(function(contactChildSnapshot){
+                                
+                                myTbody += "<div class='row' style='margin-bottom: 2px;'><div class='col-md-6'><strong>" + contactChildSnapshot.val().client_contact_name + "</strong></div><div class='col-md-1'>-</div><div class='col-md-5'><strong>" + contactChildSnapshot.val().client_contact_no + "</strong></div></div>";
+                            });
+                            
+                            myTbody += "</td>";
+                            myTbody += "<td><div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><a href='add_client_contact.html?key=" + clientKey + "'><button class='btn btn-sm btn-block' style='background-color: #1976d2; color: white;'><span class='fa fa-plus'></span> <strong>Add Contact</strong></button></a></div></div><div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><a href='client_update_info.html?key=" + clientKey + "'><button class='btn btn-sm btn-block' style='background-color: #ffa000; color: white;'><span class='fa fa-edit'></span> <strong>Update</strong></button></a></div></div><div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><a href='project.html?key=" + clientKey + "' class='btn btn-sm btn-block' style='background-color: #388e3c; color: white;'><span class='fa fa-info-circle'></span> <strong>Projects</strong></a></div></div></td></tr>";
+
+                            document.getElementById("clientList").innerHTML = myTbody;
+                            
+                        }
+
+                        if(myTbody == ''){
+
+                            myTbody = "<tr><td colspan='4' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+
+                            document.getElementById("clientList").innerHTML = myTbody;
+
+                        }
                     });
+                    
+                    $(".se-pre-con").fadeOut("slow");
                 });
 
-                myTbody += "</td>";
-                myTbody += "<td><div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><a href='add_client_contact.html?key=" + clientKey + "'><button class='btn btn-sm btn-block' style='background-color: #1976d2; color: white;'><span class='fa fa-plus'></span> <strong>Add Contact</strong></button></a></div></div><div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><a href='client_update_info.html?key=" + clientKey + "'><button class='btn btn-sm btn-block' style='background-color: #ffa000; color: white;'><span class='fa fa-edit'></span> <strong>Update</strong></button></a></div></div><div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><a href='project.html?key=" + clientKey + "' class='btn btn-sm btn-block' style='background-color: #388e3c; color: white;'><span class='fa fa-info-circle'></span> <strong>Projects</strong></a></div></div></td></tr>";
-            }
+            }else{
 
-        });
-
-        if(myTbody == ""){
-
-            myTbody = "<tr><td colspan='4' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
-
-            document.getElementById("clientList").innerHTML = myTbody;
-
-            $(".se-pre-con").fadeOut("slow");
-        }else{
-            document.getElementById("clientList").innerHTML = myTbody;
-
-            $(".se-pre-con").fadeOut("slow");
-        }
-    }
-
-    function tableData(){
-
-        $(".se-pre-con").fadeIn("fast");
-
-        var myTbody = "";
-
-        firebase.database().ref('client').once('value', function(clientSnapshot){
-            
-            if(clientSnapshot.val() == null){
                 myTbody = "<tr><td colspan='4' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
 
                 document.getElementById("clientList").innerHTML = myTbody;
+
                 $(".se-pre-con").fadeOut("slow");
             }
-        });
-
-        document.getElementById("clientList").innerHTML = "<tr><td colspan='4' style='background-color: white;'><div class='spinner'><div></div></div></td></tr>";
-
-        firebase.database().ref('client').orderByChild('client_name').on('child_added', function(clientSnapshot){
-
-            var client_name = clientSnapshot.val().client_name;
-            var client_address = clientSnapshot.val().client_address;
-            var clientKey = clientSnapshot.key;
-
-            myTbody += "<tr><td><strong>" + client_name + "</strong></td>";
-            myTbody += "<td><strong>" + client_address + "</strong></td>";
-            myTbody += "<td>";
-
-            firebase.database().ref('client/'+clientKey+'/contact').orderByChild('client_contact_name').once('value',function(contactSnapshot){
-                contactSnapshot.forEach(function(contactChildSnapshot){
-
-                    myTbody += "<div class='row' style=margin-bottom: 2px;><div class='col-md-6'><strong>" + contactChildSnapshot.val().client_contact_name + "</strong></div><div class='col-md-1'>-</div><div class='col-md-5'><strong>" + contactChildSnapshot.val().client_contact_no + "</strong></div></div>";
-                });
-            });
-
-            myTbody += "</td>";
-            myTbody += "<td><div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><a href='add_client_contact.html?key=" + clientKey + "'><button class='btn btn-sm btn-block' style='background-color: #1976d2; color: white;'><span class='fa fa-plus'></span> <strong>Add Contact</strong></button></a></div></div><div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><a href='client_update_info.html?key=" + clientKey + "'><button class='btn btn-sm btn-block' style='background-color: #ffa000; color: white;'><span class='fa fa-edit'></span> <strong>Update</strong></button></a></div></div><div class='row' style='margin-bottom: 2px;'><div class='col-md-12'><a href='project.html?key=" + clientKey + "' class='btn btn-sm btn-block' style='background-color: #388e3c; color: white;'><span class='fa fa-info-circle'></span> <strong>Projects</strong></a></div></div></td></tr>";
-
-            document.getElementById("clientList").innerHTML = myTbody;
-
-            $(".se-pre-con").fadeOut("slow");
         });
     }
 

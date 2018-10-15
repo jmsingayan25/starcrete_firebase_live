@@ -413,23 +413,24 @@
 
         document.getElementById("dieselList").innerHTML = "<tr><td colspan='8' style='background-color: white;'><div class='spinner'><div></div></div></td></tr>";
         
-        firebase.database().ref('incoming_diesel/'+plant).once('value', function(dieselSnapshot){
+        // firebase.database().ref('incoming_diesel/'+plant).once('value', function(dieselSnapshot){
 
-            // console.log(dieselSnapshot.val(), dateFormat(currentDate));
-            if(dieselSnapshot.val() == null){
+        //     // console.log(dieselSnapshot.val(), dateFormat(currentDate));
+        //     if(dieselSnapshot.val() == null){
 
-                myTbody = "<tr><td colspan='8' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+        //         myTbody = "<tr><td colspan='8' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
 
-                document.getElementById('dieselList').innerHTML = myTbody;
+        //         document.getElementById('dieselList').innerHTML = myTbody;
 
-                $(".se-pre-con").fadeOut("slow");
-            }
-        });
-
-        
+        //         $(".se-pre-con").fadeOut("slow");
+        //     }
+        // });
 
         firebase.database().ref('incoming_diesel/'+plant).orderByChild('reverseDate').once('value', function(dieselSnapshot){
-            dieselSnapshot.forEach(function(dieselChildSnapshot){
+
+            if(dieselSnapshot.val() != null){
+
+                dieselSnapshot.forEach(function(dieselChildSnapshot){
 
                 // console.log(dieselChildSnapshot.val().date, dateFormat(currentDate));
                 // if(dieselChildSnapshot.val().Date_Input == dateFormat(currentDate)){
@@ -468,9 +469,9 @@
                     }
 
                     if(supplier != ""){
-                        person = supplier;
+                        var person = supplier;
                     }else if(operator != ""){
-                        person = operator
+                        var person = operator;
                     }
 
                     if(dieselChildSnapshot.val().TransactionType == "In"){
@@ -502,7 +503,13 @@
 
                     document.getElementById('dieselList').innerHTML = myTbody;
                 // }
-            });
+                });
+            }else{
+
+                myTbody = "<tr><td colspan='8' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+
+                document.getElementById('dieselList').innerHTML = myTbody;
+            }
 
             $(".se-pre-con").fadeOut("slow");
         });
