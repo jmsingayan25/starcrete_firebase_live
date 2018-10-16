@@ -90,9 +90,9 @@
         // $input.on( "keyup", function( event ) {
 
         var $form = $( "#form" );
-        var $input = $form.find( "#quantity_out,#pondo" );
+        var $input = $form.find( "#transmittal_no" );
 
-        $form.on( "keyup", "#quantity_out,#pondo", function( event ) {
+        $form.on( "keyup", "#transmittal_no", function( event ) {
             
             
             // When user select text in the document, also abort.
@@ -134,7 +134,7 @@
                     }
                     
                     // tableData(plant);
-                   
+
                     document.getElementById('username').innerHTML = snapshot.val().firstname; 
                 },(error) => {
                     console.log(error);
@@ -159,6 +159,49 @@ function add_form(){
 function remove_others_row(rowno){
     $('#'+rowno).remove();
 }
+
+function submitForm(){
+    event.preventDefault();
+
+    var displayDate = new Date();
+    var option = {year: "numeric", month: "long", day: "numeric"};
+    displayDate = new Date(displayDate).toLocaleDateString('en',option);
+
+    var plant_holder = document.getElementById("selectsys").value;
+    var transmittal_no_holder = document.getElementById("transmittal_no").value;
+    var delivered_by_holder = document.getElementById("delivered_by").value;
+
+    var item_Batch =  $("input[name='batch1[]']").map(function(){return $(this).val() || "";}).get();
+    var quantity_Batch =  $("input[name='batch2[]']").map(function(){return $(this).val() || "";}).get();
+    var purpose_batch=  $("input[name='batch3[]']").map(function(){return $(this).val() || "";}).get();
+
+    var main_holder ={
+
+        plant: plant_holder,
+        transmittal_no: transmittal_no_holder,
+        delivered_by: delivered_by_holder
+    }
+
+     var postData = firebase.database().ref('transmittal_input/' + plant+'/'+ displayDate);
+     var newPostRef = postData.push();
+     newPostRef.set(main_holder);
+
+     var postId = newPostRef.key;
+
+      for (var i = 0; i < item_Batch.length; i++){
+        var items_holder = {
+           item_Batch: item_Batch[i],
+           quantity_Batch: quantity_Batch[i],
+           purpose_batch: purpose_batch[i]
+        }
+        firebase.database().ref('transmittal_input/'+plant+'/'+ displayDate +'/'+postId+"/Items").push(items_holder); 
+     }
+   
+}
+
+
+   
+
 
 </script>    
 </head>
@@ -304,7 +347,7 @@ function remove_others_row(rowno){
                                     <div class="form-group">
                                         <label for="plant_input" class="col-md-4 control-label">Plant<span class="required" style="color: red;">*</span></label>
                                          <div class="col-md-7">
-                                            <select id="selectsys" class ="form-control">
+                                            <select id="selectsys" name="selectsys" class ="form-control">
                                                 <option>Select</option>
                                                 <option value="Bravo">Bravo</option>
                                                 <option value="Delta">Delta</option>
@@ -328,7 +371,7 @@ function remove_others_row(rowno){
                                     <div class="form-group">
                                         <div class="col-md-offset-4 col-md-5">
                                             <input type="submit" name="submit" id="submit" value="Done" class="btn btn-primary" style="font-weight: bold;">
-                                            <input type="submit" name="submit" id="submit" value="Reset" class="btn btn-primary" style="font-weight: bold;">
+                                            <!-- <button type="submit" name="submit" id="submit" value="Reset" class="btn btn-primary" style="font-weight: bold;"><strong>Reset</strong></button> -->
                                         </div>
                                     </div>
                                 </div>
@@ -337,7 +380,6 @@ function remove_others_row(rowno){
                     </div>
                     <!-- 2nd set -->
                     <div class="col-md-7">
-                        <form id="form" name="form" class="form-horizontal" onsubmit="if(confirm('Proceed?')){submitForm();}else{ event.preventDefault();}">
                             <section class="panel">
                                 <header class="panel-heading">
                                     Item
@@ -356,7 +398,7 @@ function remove_others_row(rowno){
                                                     </tr>
 
                                                      <tr id="clone1">
-                                                        <th><input type="text" name="batch1[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;"></th>
+                                                        <th><input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;"></th>
                                                         <th><input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;"></th>
                                                         <th><input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;"></th>
                                                         <th> <button type="button" name="submit" id="submit"  class="btn btn-primary fa fa-plus" style="font-weight: bold;" onclick="add_form()"></button></th>
@@ -371,7 +413,6 @@ function remove_others_row(rowno){
                                     <p class="help-block">Note: <strong>N/A</strong> for not available.</p>
                                 </footer>
                             </section>
-                        </form>
                     </div>
                 </div>
                <!--  start -->
