@@ -150,6 +150,7 @@
 
 
 function Display_items(){
+    
      var tbody = "";
     firebase.database().ref('transmittal_input/').once('value',function(MainReceiveSnapShot){
         MainReceiveSnapShot.forEach(function(ForeachMain){
@@ -355,6 +356,7 @@ function ReceiveRowData(key,date,receive,count){
                         </a>
                         <ul class="sub">
                             <li><a class="" href="transmittal_input.html">Transmittal Input</a></li>
+                            <li><a class="" href="transmittal_receive.html">Incoming Items</a></li>
                         </ul>
                     </li>  
                 </ul>
@@ -379,29 +381,29 @@ function ReceiveRowData(key,date,receive,count){
                 <div class="row"> 
                     <div class="col-md-12 col-md-offset-0">
                             <section class="panel">
-                                <header class="panel-heading">
-                                    Outgoing Items
+                                <header class="panel-heading" style="font-size: 20px; text-align: center;">
+                                  OUTGOING ITEMS
                                 </header>
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="col-md-12">
                                              <table class="table table-bordered" id="main_table">
                                                 <thead>
-                                                     <tr>
-                                                        <th colspan="1" style="vertical-align: middle; text-align: center;">Date
+                                                     <tr style="background-color: #00111a; color:white; text-align: center;">
+                                                        <th colspan="1" style="vertical-align: middle; text-align: center; color:white;">Date
                                                         </th>
-                                                        <th colspan="1" style="vertical-align: middle; text-align: center;">To
+                                                        <th colspan="1" style="vertical-align: middle; text-align: center; color:white;">To
                                                         </th>
-                                                        <th colspan="1" style="vertical-align: middle; text-align: center;">Delivered By
+                                                        <th colspan="1" style="vertical-align: middle; text-align: center; color:white;">Delivered By
                                                         </th>
-                                                          <th colspan="1" style="vertical-align: middle; text-align: center;">Transmittal No.
+                                                          <th colspan="1" style="vertical-align: middle; text-align: center; color:white;">Transmittal No.
                                                         </th>
-                                                        <th colspan="1" style="vertical-align: middle; text-align: center;">Item
+                                                        <th colspan="1" style="vertical-align: middle; text-align: center; color:white;">Item
                                                         </th>
-                                                        <th  colspan="1" style="vertical-align: middle; text-align: center;">Quantity</th>
-                                                        <th colspan="1" style="vertical-align: middle; text-align: center;">Purpose</th>
-                                                        <th colspan="1" style="vertical-align: middle; text-align: center;">Comment</th>
-                                                        <th colspan="1" style="vertical-align: middle; text-align: center;">status</th>
+                                                        <th  colspan="1" style="vertical-align: middle; text-align: center; color:white;">Quantity</th>
+                                                        <th colspan="1" style="vertical-align: middle; text-align: center; color:white;">Purpose</th>
+                                                        <th colspan="1" style="vertical-align: middle; text-align: center; color:white;">Comment</th>
+                                                        <th colspan="1" style="vertical-align: middle; text-align: center; color:white;">status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="tbody">
