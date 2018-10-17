@@ -158,7 +158,7 @@ function Display_items(){
                     firebase.database().ref('transmittal_input/'+'/'+ ForeachMain.key+'/'+ReceiveForEachSnap.key+'/Items').once('value',function(mainItem){
                         var count =0;
                         mainItem.forEach(function(ItemForEachSnap){
-                            if (ReceiveForEachSnap.val().to ==plant) {
+                            if (ReceiveForEachSnap.val().from ==plant) {
                                 if (ItemForEachSnap.val().status == 1) {
                                     var date_holder = ForeachMain.key;
                                     var transmittal_no_holder = ReceiveForEachSnap.val().transmittal_no;
@@ -390,7 +390,7 @@ function ReceiveRowData(key,date,receive,count){
                                                      <tr>
                                                         <th colspan="1" style="vertical-align: middle; text-align: center;">Date
                                                         </th>
-                                                        <th colspan="1" style="vertical-align: middle; text-align: center;">From
+                                                        <th colspan="1" style="vertical-align: middle; text-align: center;">To
                                                         </th>
                                                         <th colspan="1" style="vertical-align: middle; text-align: center;">Delivered By
                                                         </th>
