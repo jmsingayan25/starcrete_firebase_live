@@ -156,7 +156,7 @@ function Display_items(){
             firebase.database().ref('transmittal_input/'+'/'+ ForeachMain.key).once('value',function(SecondaryReceiveSnapShot){
                 SecondaryReceiveSnapShot.forEach(function(ReceiveForEachSnap){
                     firebase.database().ref('transmittal_input/'+'/'+ ForeachMain.key+'/'+ReceiveForEachSnap.key+'/Items').once('value',function(mainItem){
-                        var count =0;
+                      
                         mainItem.forEach(function(ItemForEachSnap){
                             if (ReceiveForEachSnap.val().from ==plant) {
                                 if (ItemForEachSnap.val().status == 1) {
@@ -167,7 +167,7 @@ function Display_items(){
                                     var items_holder = ItemForEachSnap.val().item_Batch;
                                     var quantity_holder = ItemForEachSnap.val().quantity_Batch;
                                     var purpose_holder = ItemForEachSnap.val().purpose_batch;
-
+                                    var comment_holder = ItemForEachSnap.val().comment;
                                     
                                     tbody += "<tr><td><strong>" + date_holder + "</strong></td>";
                                     tbody += "<td><strong>" + from_holder + "</strong></td>";
@@ -176,9 +176,9 @@ function Display_items(){
                                     tbody += "<td><strong>" + items_holder + "</strong></td>";
                                     tbody += "<td><strong>" + quantity_holder + "</strong></td>";
                                     tbody += "<td><strong>" + purpose_holder + "</strong></td>";
-                                    tbody += "<td><strong>" + " <input type='text' name='receive_comment' id='receive_comment"+count+"'class='form-control' autocomplete='off' style='text-transform: uppercase;' required>" + "</strong></td>";
+                                    tbody += "<td><strong>" + comment_holder + "</strong></td>";
                                     tbody +=  "<td><span style='color: green'><strong>Receive</span></td></strong></tr>"
-                                    count++;
+                                   
                                 }
                                 else if (ItemForEachSnap.val().status == 0) {
                                     var date_holder = ForeachMain.key;
@@ -188,7 +188,7 @@ function Display_items(){
                                     var items_holder = ItemForEachSnap.val().item_Batch;
                                     var quantity_holder = ItemForEachSnap.val().quantity_Batch;
                                     var purpose_holder = ItemForEachSnap.val().purpose_batch;
-
+                                    var comment_holder = ItemForEachSnap.val().comment;
                                     
                                     tbody += "<tr><td><strong>" + date_holder + "</strong></td>";
                                     tbody += "<td><strong>" + from_holder + "</strong></td>";
@@ -197,9 +197,9 @@ function Display_items(){
                                     tbody += "<td><strong>" + items_holder + "</strong></td>";
                                     tbody += "<td><strong>" + quantity_holder + "</strong></td>";
                                     tbody += "<td><strong>" + purpose_holder + "</strong></td>";
-                                    tbody += "<td><strong>" + " <input type='text' name='receive_comment' id='receive_comment"+count+"'class='form-control' autocomplete='off' style='text-transform: uppercase;' required>" + "</strong></td>";
+                                    tbody += "<td><strong>" + comment_holder + "</strong></td>";
                                     tbody +=  "<td><span style='color: red'><strong>Ongoing</span></td></strong></tr>"
-                                    count++;
+                                    
                                 }
                             }
                         });
