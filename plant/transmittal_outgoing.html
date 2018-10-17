@@ -159,7 +159,7 @@ function Display_items(){
                         var count =0;
                         mainItem.forEach(function(ItemForEachSnap){
                             if (ReceiveForEachSnap.val().to ==plant) {
-                                if (ItemForEachSnap.val().status == 0) {
+                                if (ItemForEachSnap.val().status == 1) {
                                     var date_holder = ForeachMain.key;
                                     var transmittal_no_holder = ReceiveForEachSnap.val().transmittal_no;
                                     var from_holder = ReceiveForEachSnap.val().from;
@@ -177,7 +177,28 @@ function Display_items(){
                                     tbody += "<td><strong>" + quantity_holder + "</strong></td>";
                                     tbody += "<td><strong>" + purpose_holder + "</strong></td>";
                                     tbody += "<td><strong>" + " <input type='text' name='receive_comment' id='receive_comment"+count+"'class='form-control' autocomplete='off' style='text-transform: uppercase;' required>" + "</strong></td>";
-                                    tbody += "<strong>" + "<td><form onsubmit=\"if(confirm('Proceed?')){ReceiveRowData(\'" + ItemForEachSnap.key + "\',\'"+ date_holder +"\',\'"+ReceiveForEachSnap.key+"\',\'"+count+"\');}else{ event.preventDefault();}\"><button type='submit' class=' btn btn-success btn-md btn-block'><strong> Receive</strong></button></form></td></tr>" + "</strong></td>"
+                                    tbody +=  "<td><span style='color: green'><strong>Receive</span></td></strong></tr>"
+                                    count++;
+                                }
+                                else if (ItemForEachSnap.val().status == 0) {
+                                    var date_holder = ForeachMain.key;
+                                    var transmittal_no_holder = ReceiveForEachSnap.val().transmittal_no;
+                                    var from_holder = ReceiveForEachSnap.val().from;
+                                    var delivered_by_holder = ReceiveForEachSnap.val().delivered_by;
+                                    var items_holder = ItemForEachSnap.val().item_Batch;
+                                    var quantity_holder = ItemForEachSnap.val().quantity_Batch;
+                                    var purpose_holder = ItemForEachSnap.val().purpose_batch;
+
+                                    
+                                    tbody += "<tr><td><strong>" + date_holder + "</strong></td>";
+                                    tbody += "<td><strong>" + from_holder + "</strong></td>";
+                                    tbody += "<td><strong>" + delivered_by_holder + "</strong></td>";
+                                    tbody += "<td><strong>" + transmittal_no_holder + "</strong></td>";
+                                    tbody += "<td><strong>" + items_holder + "</strong></td>";
+                                    tbody += "<td><strong>" + quantity_holder + "</strong></td>";
+                                    tbody += "<td><strong>" + purpose_holder + "</strong></td>";
+                                    tbody += "<td><strong>" + " <input type='text' name='receive_comment' id='receive_comment"+count+"'class='form-control' autocomplete='off' style='text-transform: uppercase;' required>" + "</strong></td>";
+                                    tbody +=  "<td><span style='color: red'><strong>Ongoing</span></td></strong></tr>"
                                     count++;
                                 }
                             }
@@ -359,7 +380,7 @@ function ReceiveRowData(key,date,receive,count){
                     <div class="col-md-12 col-md-offset-0">
                             <section class="panel">
                                 <header class="panel-heading">
-                                    Incoming Items
+                                    Outgoing Items
                                 </header>
                                 <div class="panel-body">
                                     <div class="row">
@@ -380,7 +401,7 @@ function ReceiveRowData(key,date,receive,count){
                                                         <th  colspan="1" style="vertical-align: middle; text-align: center;">Quantity</th>
                                                         <th colspan="1" style="vertical-align: middle; text-align: center;">Purpose</th>
                                                         <th colspan="1" style="vertical-align: middle; text-align: center;">Comment</th>
-                                                        <th colspan="1" style="vertical-align: middle; text-align: center;">Action</th>
+                                                        <th colspan="1" style="vertical-align: middle; text-align: center;">status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="tbody">
