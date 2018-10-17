@@ -181,7 +181,6 @@ function submitForm(){
         transmittal_no: transmittal_no_holder,
         delivered_by: delivered_by_holder,
         from: plant,
-        receive_date:""
     }
 
      var postData = firebase.database().ref('transmittal_input/' + '/'+ displayDate);
@@ -197,7 +196,8 @@ function submitForm(){
            quantity_Batch: quantity_Batch[i],
            purpose_batch: purpose_batch[i],
            status: "0",
-           comment: ""
+           comment: "",
+           receive_date:""
         }
         firebase.database().ref('transmittal_input/'+'/'+ displayDate +'/'+postId+"/Items").push(items_holder); 
      }
@@ -321,6 +321,16 @@ function submitForm(){
                         </a>
                         <ul class="sub">
                             <li><a class="" href="summaryreport_deliveredorder.html">Delivered Order</a></li>
+                        </ul>
+                    </li>
+                     <li class="sub-menu">
+                        <a href="javascript:;" class="">
+                            <i class="fa fa-building"></i>
+                            <span>Transmittal</span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
+                        </a>
+                        <ul class="sub">
+                            <li><a class="" href="transmittal_receive.html">Incoming Items</a></li>
                         </ul>
                     </li>  
                 </ul>
