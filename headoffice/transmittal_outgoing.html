@@ -8,7 +8,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="../img/favicon.png">
 
-    <title>Transmittal Form</title>
+    <title>Transmittal Incoming Items</title>
 
     <!-- Firebase App is always required and must be first -->
     <!-- <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script> -->
@@ -85,36 +85,7 @@
 
     $(document).ready(function(){
 
-        var $form = $( "#form" );
-        var $input = $form.find( "#input_trans_no" );
-
-        $form.on( "keyup", "#input_trans_no", function( event ) {
-            
-            
-            // When user select text in the document, also abort.
-            var selection = window.getSelection().toString();
-            if ( selection !== '' ) {
-                return;
-            }
-            
-            // When the arrow keys are pressed, abort.
-            if ( $.inArray( event.keyCode, [38,40,37,39] ) !== -1 ) {
-                return;
-            }
-            
-            
-            var $this = $( this );
-            
-            // Get the value.
-            var input = $this.val();
-            
-            var input = input.replace(/[\D\s\._\-]+/g, "");
-                    input = input ? parseInt( input, 10 ) : 0;
-
-                    $this.val( function() {
-                        return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
-                    } );
-        } ); 
+        tableData();
 
         firebase.auth().onAuthStateChanged(function(user) {
             if (user != null) {
@@ -137,78 +108,94 @@
         });
 
         document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
-        document.getElementById('id_breadcrumb').innerHTML = "<li><i class='icon_document'></i><a href='#'>Transmittal</a></li>";
+        document.getElementById('id_breadcrumb').innerHTML = "<li><i class='icon_document'></i><a href='#'>Transmittal</a></li><li><i class='icon_document'></i><a href='#'>Outgoing Items</a></li>";
 
     });
 
-    function add_row(){
+    function tableData(){
 
-        event.preventDefault();
+        var tBody = "";
+        var count = 0;
 
-        $rowno = $("#itemTable tr").length;
-        $rowno = $rowno + 1;
+        firebase.database().ref('transmittal_input').once('value', function(dateSnapshot){
+            dateSnapshot.forEach(function(dateChildSnapshot){
+                firebase.database().ref('transmittal_input/'+dateChildSnapshot.key).once('value', function(transmittalSnapshot){
+                    transmittalSnapshot.forEach(function(transmittalChildSnapshot){
+                        firebase.database().ref('transmittal_input/'+dateChildSnapshot.key+'/'+transmittalChildSnapshot.key+'/Items').once('value', function(itemSnapshot){
 
-        $("#itemTable tr:last").after("<tr id='item_row" + $rowno + "'><td><input type='text' name='input_item[]' class='form-control'></td><td><input type='text' name='input_quantity[]' class='form-control'></td><td><input type='text' name='input_purpose[]' class='form-control'></td><td><button type='button' class='btn btn-danger btn-md' onclick=remove_row('item_row" + $rowno + "')><span class='fa fa-minus'></span></button></td></tr>");
-    }
+                            itemSnapshot.forEach(function(itemChildSnapshot){
 
-    function remove_row(rowno){
-        $("#"+rowno).remove();
-    }
+                                console.log(itemChildSnapshot.val());
 
-    function submitForm(){
+                                var date_holder = dateChildSnapshot.key;
+                                var key = transmittalChildSnapshot.key;
+                                var item_key = itemChildSnapshot.key;
+                                var delivered_by = transmittalChildSnapshot.val().delivered_by;
+                                var from_plant = transmittalChildSnapshot.val().from;
+                                var to_plant = transmittalChildSnapshot.val().to;
+                                var transmittal_no = transmittalChildSnapshot.val().transmittal_no;
+                                var comment = itemChildSnapshot.val().comment;
+                                var item_no = itemChildSnapshot.val().item_Batch;
+                                var purpose = itemChildSnapshot.val().purpose_batch;
+                                var quantity = itemChildSnapshot.val().quantity_Batch;
+                                var receive = itemChildSnapshot.val().receive_date;
+                                var comment = itemChildSnapshot.val().comment;
+                                var status = itemChildSnapshot.val().status;
 
-        event.preventDefault();
+                                if(from_plant == "Head Office" && status == 0){
 
-        var displayDate = new Date();
-        var option = {year: "numeric", month: "long", day: "numeric"};
-        displayDate = new Date(displayDate).toLocaleDateString('en',option);
+                                    tBody += "<tr><td><strong>" + date_holder + "</strong></td>";
+                                    tBody += "<td><strong>" + to_plant + "</strong></td>";
+                                    tBody += "<td><strong>" + delivered_by + "</strong></td>";
+                                    tBody += "<td><strong>" + transmittal_no + "</strong></td>";
+                                    tBody += "<td><strong>" + item_no + "</strong></td>";
+                                    tBody += "<td><strong>" + quantity + "</strong></td>";
+                                    tBody += "<td><strong>" + purpose + "</strong></td>";
+                                    tBody += "<td><strong>" + comment + "</strong></td>";
+                                    tBody += "<td class='text_center' style='background-color: #ff1a1a; color: white; vertical-align: middle;'><strong>Ongoing</strong></td></tr>";
 
-        var to_plant = document.getElementById('input_plant').value;
-        var transmittal_no = document.getElementById('input_trans_no').value;
-        var deliver_by = document.getElementById('input_deliver_by').value;
+                                    count++;
 
-        var item_no =  $("input[name='input_item[]']").map(function(){return $(this).val() || "";}).get();
-        var item_quantity =  $("input[name='input_quantity[]']").map(function(){return $(this).val() || "";}).get();
-        var item_purpose =  $("input[name='input_purpose[]']").map(function(){return $(this).val() || "";}).get();
+                                }else if(from_plant == "Head Office" && status == 1){
 
-        var transmittalData = {
-            delivered_by: deliver_by,
-            from: "Head Office",
-            to: to_plant,
-            transmittal_no: transmittal_no
-        }
+                                    tBody += "<tr><td><strong>" + date_holder + "</strong></td>";
+                                    tBody += "<td><strong>" + to_plant + "</strong></td>";
+                                    tBody += "<td><strong>" + delivered_by + "</strong></td>";
+                                    tBody += "<td><strong>" + transmittal_no + "</strong></td>";
+                                    tBody += "<td><strong>" + item_no + "</strong></td>";
+                                    tBody += "<td><strong>" + quantity + "</strong></td>";
+                                    tBody += "<td><strong>" + purpose + "</strong></td>";
+                                    tBody += "<td><strong>" + comment + "</strong></td>";
+                                    tBody += "<td class='text_center' style='background-color: #33cc33; color: white; vertical-align: middle;'><strong>Received</strong></td></tr>";
 
-        var postData = firebase.database().ref('transmittal_input/'+displayDate);
-        var newPostRef = postData.push();
-        newPostRef.set(transmittalData);
+                                    count++;
+                                }
 
-        var postId = newPostRef.key;
+                                document.getElementById('itemBody').innerHTML = tBody;
+                            });
+                        });
+                    });   
+                    if(tBody == ""){
+                        tBody = "<tr><td colspan='9' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
 
-        for(a = 0; a < item_no.length; a++){
-
-            var itemData = {
-                comment: "",
-                item_Batch: item_no[a],
-                purpose_batch: item_purpose[a],
-                quantity_Batch: item_quantity[a],
-                receive_date: "",
-                receive_time: "",
-                status: "0"
-            }
-
-            firebase.database().ref('transmittal_input/'+displayDate+'/'+postId+'/Items').push(itemData);
-        }
-
-        window.location.reload();
+                        document.getElementById('itemBody').innerHTML = tBody;
+                    }                 
+                });
+            });
+        });
     }
 
 </script>
 <style>
-    
+.text_center{
+    text-align: center;
+}
+.text_white{
+    color: white;
+}
 </style>
 </head>
 <body>
-    
     <section id="container" class="">
         <header class="header dark-bg">
             <div class="toggle-nav">
@@ -323,77 +310,34 @@
                         </ol>
                     </div>
                 </div>
-                <form id="form" name="form" class="form-horizontal" onsubmit="if(confirm('Proceed?')){submitForm();}else{ event.preventDefault();}">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <section class="panel">
-                                <header class="panel-heading">
-                                    Transfer Form
-                                </header>
-                                <div class="panel-body">
-                                    <div class="form-group">
-                                        <label for="input_plant" class="col-md-4 control-label">Plant<span class="required" style="color: red">*</span></label>
-                                        <div class="col-md-7">
-                                            <select id="input_plant" class="form-control">
-                                                <option>Select</option>
-                                                <option value="Bravo">Bravo</option>
-                                                <option value="Delta">Delta</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="input_trans_no" class="col-md-4 control-label">Transmittal No.<span class="required" style="color: red;">*</span></label>
-                                        <div class="col-md-7">
-                                            <input type="text" id="input_trans_no" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="input_deliver_by" class="col-md-4 control-label">Delivered By<span class="required" style="color: red;">*</span></label>
-                                        <div class="col-md-7">
-                                            <input type="text" id="input_deliver_by" class="form-control" style="text-transform: uppercase;">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-md-offset-4 col-md-5">
-                                            <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" style="font-weight: bold;">
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
-                        <div class="col-md-7">
-                            <section class="panel">
-                                <header class="panel-heading">
-                                    Item
-                                </header>
-                                <div class="panel-body">
-                                    <table class="table table-bordered" id="itemTable">
-                                        <thead>
-                                            <tr>
-                                                <th class="col-md-4" style="text-align: center;">Item<span class="required" style="color: red;">*</span></th>
-                                                <th class="col-md-2" style="text-align: center;">Quantity<span class="required" style="color: red;">*</span></th>
-                                                <th class="col-md-5" style="text-align: center;">Purpose<span class="required" style="color: red;">*</span></th>
-                                                <th class="col-md-1"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr id="item_row1">
-                                                <td><input type="text" name="input_item[]" class="form-control"></td>
-                                                <td><input type="text" name="input_quantity[]" class="form-control"></td>
-                                                <td><input type="text" name="input_purpose[]" class="form-control"></td>
-                                                <td><button type="button" class="btn btn-primary btn-md" onclick="add_row()"><span class="fa fa-plus"></span></button></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <footer class="panel-footer">
-                                    <p class="help-block"><span class="required" style="color: red;">*</span> - required</p>
-                                    <p class="help-block">Note: <strong>N/A</strong> for not available.</p>
-                                </footer>
-                            </section>
-                        </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <section class="panel">
+                            <header class="panel-heading text_center" style="font-size: 20px;">
+                                OUTGOING ITEMS
+                            </header>
+                            <div class="panel-body">
+                                <form id="form" name="form" class="form-horizontal"></form>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr style="background-color: #00111a;">
+                                            <th colspan="1" class="text_center text_white">Date</th>
+                                            <th colspan="1" class="text_center text_white">To</th>
+                                            <th colspan="1" class="text_center text_white">Delivered By</th>
+                                            <th colspan="1" class="text_center text_white">Transmittal No.</th>
+                                            <th colspan="1" class="text_center text_white">Item</th>
+                                            <th colspan="1" class="text_center text_white">Quantity</th>
+                                            <th colspan="1" class="text_center text_white">Purpose</th>
+                                            <th colspan="1" class="text_center text_white">Comment</th>
+                                            <th colspan="1" class="text_center text_white">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="itemBody"></tbody>
+                                </table>
+                            </div>
+                        </section>
                     </div>
-                </form>
+                </div>
             </section>
         </section>
     </section>
