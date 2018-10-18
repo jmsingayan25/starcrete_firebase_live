@@ -158,14 +158,12 @@
         
         document.getElementById('header_form').innerHTML = "<h4><strong>DAILY PRODUCTION REPORT</strong></h4>";
         
-        // $(".se-pre-con").fadeOut("slow");
+  
 
     });
-   // $(".se-pre-con").fadeIn("slow");
-function print_date(){
-    //$(".se-pre-con").fadeIn("slow");
-    //event.preventDefault();
 
+function print_date(){
+   
     var date_of_batch = date;
     var option = {year: "numeric", month: "long", day: "numeric"};
     date_of_batch = new Date(date_of_batch).toLocaleDateString('en',option);
@@ -326,17 +324,12 @@ function print_date(){
                document.getElementById('machine5_total').innerHTML = value.toLocaleString("en");
             });
           });
-
+   $(".se-pre-con").fadeOut("slow");
     });
-     // $(".se-pre-con").fadeOut("slow");
+  
     //machine5_end
     }
-    // else{
-    //     alert("No Record Found!");
-    //     window.location.reload();
-    //     $(".se-pre-con").fadeOut("slow");
-    // }
-     //$(".se-pre-con").fadeOut("slow");
+   
 }); 
 
 }

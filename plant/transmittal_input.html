@@ -197,7 +197,8 @@ function submitForm(){
            purpose_batch: purpose_batch[i],
            status: "0",
            comment: "",
-           receive_date:""
+           receive_date:"",
+           receive_time:""
         }
         firebase.database().ref('transmittal_input/'+'/'+ displayDate +'/'+postId+"/Items").push(items_holder); 
      }
@@ -323,6 +324,17 @@ function submitForm(){
                             <li><a class="" href="summaryreport_deliveredorder.html">Delivered Order</a></li>
                         </ul>
                     </li>
+                       <li class="sub-menu">
+                        <a href="javascript:;" class="">
+                            <i class="fa fa-building"></i>
+                            <span>Daily Production</span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
+                        </a>
+                        <ul class="sub">
+                            <li><a class="" href="batch_report_input.html">Daily Production Input</a></li>
+                            <li><a class="" href="view_daily_production_report.html">Daily Production Report</a></li>
+                        </ul>
+                    </li>
                      <li class="sub-menu">
                         <a href="javascript:;" class="">
                             <i class="fa fa-building"></i>
@@ -368,7 +380,7 @@ function submitForm(){
                                                 <option>Select</option>
                                                 <option value="Bravo">Bravo</option>
                                                 <option value="Delta">Delta</option>
-                                                <option value="Delta">Head Office</option>
+                                                <option value="Head Office">Head Office</option>
                                             </select>
                                         </div>
                                        
@@ -393,6 +405,10 @@ function submitForm(){
                                         </div>
                                     </div>
                                 </div>
+                                <footer class="panel-footer">
+                                    <p class="help-block"><span class="required" style="color: red;">*</span> - required</p>
+                                    <p class="help-block">Note: <strong>N/A</strong> for not available.</p>
+                                </footer>
                             </section>
                         </form>
                     </div>
@@ -425,11 +441,7 @@ function submitForm(){
                                              </table>
                                         </div>
                                     </div>
-                                </div>
-                                <footer class="panel-footer">
-                                    <p class="help-block"><span class="required" style="color: red;">*</span> - required</p>
-                                    <p class="help-block">Note: <strong>N/A</strong> for not available.</p>
-                                </footer>
+                                </div> 
                             </section>
                     </div>
                 </div>

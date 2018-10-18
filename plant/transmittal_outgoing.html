@@ -150,8 +150,7 @@
 
 
 function Display_items(){
-    
-     var tbody = "";
+    var tbody = "";
     firebase.database().ref('transmittal_input/').once('value',function(MainReceiveSnapShot){
         MainReceiveSnapShot.forEach(function(ForeachMain){
             firebase.database().ref('transmittal_input/'+'/'+ ForeachMain.key).once('value',function(SecondaryReceiveSnapShot){
@@ -163,7 +162,7 @@ function Display_items(){
                                 if (ItemForEachSnap.val().status == 1) {
                                     var date_holder = ForeachMain.key;
                                     var transmittal_no_holder = ReceiveForEachSnap.val().transmittal_no;
-                                    var from_holder = ReceiveForEachSnap.val().from;
+                                    var from_holder = ReceiveForEachSnap.val().to;
                                     var delivered_by_holder = ReceiveForEachSnap.val().delivered_by;
                                     var items_holder = ItemForEachSnap.val().item_Batch;
                                     var quantity_holder = ItemForEachSnap.val().quantity_Batch;
@@ -178,13 +177,13 @@ function Display_items(){
                                     tbody += "<td><strong>" + quantity_holder + "</strong></td>";
                                     tbody += "<td><strong>" + purpose_holder + "</strong></td>";
                                     tbody += "<td><strong>" + comment_holder + "</strong></td>";
-                                    tbody +=  "<td><span style='color: green'><strong>Receive</span></td></strong></tr>"
+                                    tbody +=  "<td style='background-color: #33cc33; text-align: center;'><span style='color: white'><strong>RECEIVE</span></td></strong></tr>"
                                    
                                 }
                                 else if (ItemForEachSnap.val().status == 0) {
                                     var date_holder = ForeachMain.key;
                                     var transmittal_no_holder = ReceiveForEachSnap.val().transmittal_no;
-                                    var from_holder = ReceiveForEachSnap.val().from;
+                                    var from_holder = ReceiveForEachSnap.val().to;
                                     var delivered_by_holder = ReceiveForEachSnap.val().delivered_by;
                                     var items_holder = ItemForEachSnap.val().item_Batch;
                                     var quantity_holder = ItemForEachSnap.val().quantity_Batch;
@@ -199,18 +198,25 @@ function Display_items(){
                                     tbody += "<td><strong>" + quantity_holder + "</strong></td>";
                                     tbody += "<td><strong>" + purpose_holder + "</strong></td>";
                                     tbody += "<td><strong>" + comment_holder + "</strong></td>";
-                                    tbody +=  "<td><span style='color: red'><strong>Ongoing</span></td></strong></tr>"
+                                    tbody +=  "<td style='background-color: #ff1a1a; text-align: center;'><span style='color: white'><strong>ONGOING</span></td></strong></tr>"
                                     
                                 }
                             }
                         });
                         //endloop
-                        document.getElementById("tbody").innerHTML = tbody;
+                         if (tbody == ""){
+                            tbody ="<tr><td colspan='8' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+                            document.getElementById("tbody").innerHTML = tbody;
+                        }else{
+                             document.getElementById("tbody").innerHTML = tbody;
+                        }
                     });
                 });
+                     $(".se-pre-con").fadeOut("slow");
             });
         });
     });
+ 
 }
 
 function ReceiveRowData(key,date,receive,count){
@@ -237,6 +243,7 @@ function ReceiveRowData(key,date,receive,count){
 </script>    
 </head>
 <body>
+     <div class="se-pre-con"></div>
     <!-- container section start -->
     <section id="container" class="">
         <header class="header dark-bg">
@@ -348,6 +355,17 @@ function ReceiveRowData(key,date,receive,count){
                             <li><a class="" href="summaryreport_deliveredorder.html">Delivered Order</a></li>
                         </ul>
                     </li>
+                       <li class="sub-menu">
+                        <a href="javascript:;" class="">
+                            <i class="fa fa-building"></i>
+                            <span>Daily Production</span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
+                        </a>
+                        <ul class="sub">
+                            <li><a class="" href="batch_report_input.html">Daily Production Input</a></li>
+                            <li><a class="" href="view_daily_production_report.html">Daily Production Report</a></li>
+                        </ul>
+                    </li>
                      <li class="sub-menu">
                         <a href="javascript:;" class="">
                             <i class="fa fa-building"></i>
@@ -403,7 +421,7 @@ function ReceiveRowData(key,date,receive,count){
                                                         <th  colspan="1" style="vertical-align: middle; text-align: center; color:white;">Quantity</th>
                                                         <th colspan="1" style="vertical-align: middle; text-align: center; color:white;">Purpose</th>
                                                         <th colspan="1" style="vertical-align: middle; text-align: center; color:white;">Comment</th>
-                                                        <th colspan="1" style="vertical-align: middle; text-align: center; color:white;">status</th>
+                                                        <th colspan="1" style="vertical-align: middle; text-align: center; color:white;">Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="tbody">

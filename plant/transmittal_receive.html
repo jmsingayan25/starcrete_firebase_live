@@ -135,6 +135,7 @@
                     
                     // tableData(plant);
                     Display_items();
+                    realtimeUpdate();
 
                     document.getElementById('username').innerHTML = snapshot.val().firstname; 
                 },(error) => {
@@ -150,16 +151,15 @@
 
 
 function Display_items(){
-     var tbody = "";
+    var tbody = "";
     firebase.database().ref('transmittal_input/').once('value',function(MainReceiveSnapShot){
         MainReceiveSnapShot.forEach(function(ForeachMain){
             firebase.database().ref('transmittal_input/'+'/'+ ForeachMain.key).once('value',function(SecondaryReceiveSnapShot){
                 SecondaryReceiveSnapShot.forEach(function(ReceiveForEachSnap){
                     firebase.database().ref('transmittal_input/'+'/'+ ForeachMain.key+'/'+ReceiveForEachSnap.key+'/Items').once('value',function(mainItem){
-                        var count =0;
+                        var count = 0;
                         mainItem.forEach(function(ItemForEachSnap){
-                            if (ReceiveForEachSnap.val().to ==plant) {
-                                if (ItemForEachSnap.val().status == 0) {
+                            if (ReceiveForEachSnap.val().to == plant && ItemForEachSnap.val().status == 0){
                                     var date_holder = ForeachMain.key;
                                     var transmittal_no_holder = ReceiveForEachSnap.val().transmittal_no;
                                     var from_holder = ReceiveForEachSnap.val().from;
@@ -179,16 +179,25 @@ function Display_items(){
                                     tbody += "<td><strong>" + " <input type='text' name='receive_comment' id='receive_comment"+count+"'class='form-control' autocomplete='off' style='text-transform: uppercase;' required>" + "</strong></td>";
                                     tbody += "<strong>" + "<td><form onsubmit=\"if(confirm('Proceed?')){ReceiveRowData(\'" + ItemForEachSnap.key + "\',\'"+ date_holder +"\',\'"+ReceiveForEachSnap.key+"\',\'"+count+"\');}else{ event.preventDefault();}\"><button type='submit' class=' btn btn-success btn-md btn-block'><strong> Receive</strong></button></form></td></tr>" + "</strong></td>"
                                     count++;
-                                }
+                              
                             }
                         });
                         //endloop
-                        document.getElementById("tbody").innerHTML = tbody;
+                     
+                    
                     });
                 });
+                    if (tbody == ""){
+                            tbody ="<tr><td colspan='8' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+                            document.getElementById("tbody").innerHTML = tbody;
+                        }else{
+                             document.getElementById("tbody").innerHTML = tbody;
+                        }
+                         $(".se-pre-con").fadeOut("slow");
             });
         });
     });
+
 }
 
 function ReceiveRowData(key,date,receive,count){
@@ -198,13 +207,15 @@ function ReceiveRowData(key,date,receive,count){
     var receive_date_holder = new Date();
     var option = {year: "numeric", month: "long", day: "numeric"};
     receive_date_holder = new Date(receive_date_holder).toLocaleDateString('en',option);
+    var receive_time_holder = new Date().toLocaleTimeString('en');
 
     firebase.database().ref('transmittal_input/'+date+'/'+receive+'/Items/'+key).once('value',function(MainReceiveSnapShot){
 
         var update_item_holder = {
             comment: comment_holder,
             receive_date: receive_date_holder,
-            status:"1"
+            status:"1",
+            receive_time: receive_time_holder
         }
 
         firebase.database().ref('transmittal_input/'+date+'/'+receive+'/Items/'+key).update(update_item_holder); 
@@ -212,9 +223,19 @@ function ReceiveRowData(key,date,receive,count){
     });
 }
 
+function realtimeUpdate(){
+
+    firebase.database().ref('transmittal_input').on('child_changed',function(){
+        setTimeout(function(){
+           Display_items();
+        },1000);
+    });
+}
+
 </script>    
 </head>
 <body>
+      <div class="se-pre-con"></div>
     <!-- container section start -->
     <section id="container" class="">
         <header class="header dark-bg">
@@ -324,6 +345,17 @@ function ReceiveRowData(key,date,receive,count){
                         </a>
                         <ul class="sub">
                             <li><a class="" href="summaryreport_deliveredorder.html">Delivered Order</a></li>
+                        </ul>
+                    </li>
+                       <li class="sub-menu">
+                        <a href="javascript:;" class="">
+                            <i class="fa fa-building"></i>
+                            <span>Daily Production</span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
+                        </a>
+                        <ul class="sub">
+                            <li><a class="" href="batch_report_input.html">Daily Production Input</a></li>
+                            <li><a class="" href="view_daily_production_report.html">Daily Production Report</a></li>
                         </ul>
                     </li>
                      <li class="sub-menu">
