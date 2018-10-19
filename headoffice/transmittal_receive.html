@@ -150,11 +150,11 @@
                                 var rowData = {
                                     key: key,
                                     item_key: item_key,
-
+                                    receive: receive,
                                     date_holder: date_holder,
                                     from_plant: from_plant,
                                     to_plant: to_plant,
-                                    deiivered_by: delivered_by,
+                                    delivered_by: delivered_by,
                                     transmittal_no: transmittal_no,
                                     item_no: item_no,
                                     quantity: quantity,
@@ -177,8 +177,8 @@
             for(var a = 0; a < array.length; a++){
 
                 var date_holder = array[a].date_holder;
-                var key = "";
-                var item_key = "";
+                var key = array[a].key;
+                var item_key = array[a].item_key;
                 var delivered_by = array[a].delivered_by;
                 var from_plant = array[a].from_plant;
                 var to_plant = array[a].to_plant;
@@ -187,7 +187,7 @@
                 var item_no = array[a].item_no;
                 var purpose = array[a].purpose;
                 var quantity = array[a].quantity;
-                var receive = "";
+                var receive = array[a].receive;
                 var status = array[a].status;
             
                 if(array[a].to_plant == "Head Office"){
@@ -219,13 +219,9 @@
                     }
                 }
 
-                if(tBody == ""){
-                    tBody = "<tr><td colspan='9' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
-
-                    document.getElementById('itemBody').innerHTML = tBody;
-                }else{
-                    document.getElementById('itemBody').innerHTML = tBody;
-                }
+                
+                document.getElementById('itemBody').innerHTML = tBody;
+                
             }
 
 
