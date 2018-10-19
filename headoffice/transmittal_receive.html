@@ -152,11 +152,25 @@
                                     tBody += "<td><strong>" + quantity + "</strong></td>";
                                     tBody += "<td><strong>" + purpose + "</strong></td>";
                                     tBody += "<td><strong><input type='text' id='input_comment" + count + "' name='input_comment[]' class='form-control'></strong></td>";
-                                    tBody += "<td class='text_center'><strong><button type='button' class='btn btn-success btn-md' onclick=\"if(confirm('Proceed?')){submitForm(\'" + count + "\', \'" + date_holder + "\', \'" + key + "\', \'" + item_key + "\')}else{event.preventDefault();}\"><strong>Receive</strong></button></strong></td></tr>";
+                                    tBody += "<td class='text_center'><strong><button type='button' class='btn btn-primary btn-md' onclick=\"if(confirm('Proceed?')){submitForm(\'" + count + "\', \'" + date_holder + "\', \'" + key + "\', \'" + item_key + "\')}else{event.preventDefault();}\"><strong>Receive</strong></button></strong></td></tr>";
 
                                     document.getElementById('itemBody').innerHTML = tBody;
                                     count++;
 
+                                }else if(to_plant == "Head Office" && status == 1){
+
+                                    tBody += "<tr><td><strong>" + date_holder + "</strong></td>";
+                                    tBody += "<td><strong>" + from_plant + "</strong></td>";
+                                    tBody += "<td><strong>" + delivered_by + "</strong></td>";
+                                    tBody += "<td><strong>" + transmittal_no + "</strong></td>";
+                                    tBody += "<td><strong>" + item_no + "</strong></td>";
+                                    tBody += "<td><strong>" + quantity + "</strong></td>";
+                                    tBody += "<td><strong>" + purpose + "</strong></td>";
+                                    tBody += "<td><strong>" + comment + "</strong></td>";
+                                    tBody += "<td class='text_center' style='background-color: #33cc33; color: white;'><strong>ACCEPT</strong></td></tr>";
+
+                                    document.getElementById('itemBody').innerHTML = tBody;
+                                    count++;
                                 }
                             });
                         });

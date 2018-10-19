@@ -8,7 +8,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="../img/favicon.png">
 
-    <title>Transmittal Incoming Items</title>
+    <title>Transmittal Outgoing Items</title>
 
     <!-- Firebase App is always required and must be first -->
     <!-- <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script> -->
@@ -86,6 +86,7 @@
     $(document).ready(function(){
 
         tableData();
+        refreshTransmittal();
 
         firebase.auth().onAuthStateChanged(function(user) {
             if (user != null) {
@@ -108,14 +109,13 @@
         });
 
         document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
-        document.getElementById('id_breadcrumb').innerHTML = "<li><i class='icon_document'></i><a href='#'>Transmittal</a></li><li><i class='icon_document'></i><a href='#'>Outgoing Items</a></li>";
-
+        document.getElementById('id_breadcrumb').innerHTML = "<li><i class='icon_document'></i><a href='#'>Transmittal</a></li><li><i class='icon_document'></i><a href='transmittal_outgoing.html'>Outgoing Items</a></li>";
     });
 
     function tableData(){
 
         var tBody = "";
-        var count = 0;
+        count = 0;
 
         firebase.database().ref('transmittal_input').once('value', function(dateSnapshot){
             dateSnapshot.forEach(function(dateChildSnapshot){
@@ -124,8 +124,6 @@
                         firebase.database().ref('transmittal_input/'+dateChildSnapshot.key+'/'+transmittalChildSnapshot.key+'/Items').once('value', function(itemSnapshot){
 
                             itemSnapshot.forEach(function(itemChildSnapshot){
-
-                                console.log(itemChildSnapshot.val());
 
                                 var date_holder = dateChildSnapshot.key;
                                 var key = transmittalChildSnapshot.key;
@@ -152,9 +150,7 @@
                                     tBody += "<td><strong>" + quantity + "</strong></td>";
                                     tBody += "<td><strong>" + purpose + "</strong></td>";
                                     tBody += "<td><strong>" + comment + "</strong></td>";
-                                    tBody += "<td class='text_center' style='background-color: #ff1a1a; color: white; vertical-align: middle;'><strong>Ongoing</strong></td></tr>";
-
-                                    count++;
+                                    tBody += "<td class='text_center' style='background-color: #ff1a1a; color: white; vertical-align: middle;'><strong>ONGOING</strong></td></tr>";
 
                                 }else if(from_plant == "Head Office" && status == 1){
 
@@ -166,22 +162,33 @@
                                     tBody += "<td><strong>" + quantity + "</strong></td>";
                                     tBody += "<td><strong>" + purpose + "</strong></td>";
                                     tBody += "<td><strong>" + comment + "</strong></td>";
-                                    tBody += "<td class='text_center' style='background-color: #33cc33; color: white; vertical-align: middle;'><strong>Received</strong></td></tr>";
-
-                                    count++;
+                                    tBody += "<td class='text_center' style='background-color: #008ae6; color: white; vertical-align: middle;'><strong>RECEIVED</strong></td></tr>";
+            
                                 }
+                                
+                                count++;
+                            });
+
+                            if(count == 0){
+                                tBody = "<tr><td colspan='9' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
 
                                 document.getElementById('itemBody').innerHTML = tBody;
-                            });
+                            }else{
+                                document.getElementById('itemBody').innerHTML = tBody;
+                            }
                         });
-                    });   
-                    if(tBody == ""){
-                        tBody = "<tr><td colspan='9' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
-
-                        document.getElementById('itemBody').innerHTML = tBody;
-                    }                 
+                    });              
                 });
             });
+        });
+    }
+
+    function refreshTransmittal(){
+
+        firebase.database().ref('transmittal_input').on('child_changed', function(){
+            setTimeout(function() {
+                tableData();
+            }, 1000);
         });
     }
 
