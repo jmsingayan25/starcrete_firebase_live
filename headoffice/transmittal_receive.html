@@ -113,10 +113,17 @@
 
     });
 
+    function SortByName(a, b){
+        var aName = Number(a.status);
+        var bName = Number(b.status); 
+        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+    }
+
     function tableData(){
 
         var tBody = "";
-        var count = 0;
+        count = 0;
+        var array = [];
 
         firebase.database().ref('transmittal_input').once('value', function(dateSnapshot){
             dateSnapshot.forEach(function(dateChildSnapshot){
@@ -125,8 +132,6 @@
                         firebase.database().ref('transmittal_input/'+dateChildSnapshot.key+'/'+transmittalChildSnapshot.key+'/Items').once('value', function(itemSnapshot){
 
                             itemSnapshot.forEach(function(itemChildSnapshot){
-
-                                console.log(itemChildSnapshot.val());
 
                                 var date_holder = dateChildSnapshot.key;
                                 var key = transmittalChildSnapshot.key;
@@ -142,46 +147,88 @@
                                 var receive = itemChildSnapshot.val().receive_date;
                                 var status = itemChildSnapshot.val().status;
 
-                                if(to_plant == "Head Office" && status == 0){
+                                var rowData = {
+                                    key: key,
+                                    item_key: item_key,
 
-                                    tBody += "<tr><td><strong>" + date_holder + "</strong></td>";
-                                    tBody += "<td><strong>" + from_plant + "</strong></td>";
-                                    tBody += "<td><strong>" + delivered_by + "</strong></td>";
-                                    tBody += "<td><strong>" + transmittal_no + "</strong></td>";
-                                    tBody += "<td><strong>" + item_no + "</strong></td>";
-                                    tBody += "<td><strong>" + quantity + "</strong></td>";
-                                    tBody += "<td><strong>" + purpose + "</strong></td>";
-                                    tBody += "<td><strong><input type='text' id='input_comment" + count + "' name='input_comment[]' class='form-control'></strong></td>";
-                                    tBody += "<td class='text_center'><strong><button type='button' class='btn btn-primary btn-md' onclick=\"if(confirm('Proceed?')){submitForm(\'" + count + "\', \'" + date_holder + "\', \'" + key + "\', \'" + item_key + "\')}else{event.preventDefault();}\"><strong>Receive</strong></button></strong></td></tr>";
-
-                                    document.getElementById('itemBody').innerHTML = tBody;
-                                    count++;
-
-                                }else if(to_plant == "Head Office" && status == 1){
-
-                                    tBody += "<tr><td><strong>" + date_holder + "</strong></td>";
-                                    tBody += "<td><strong>" + from_plant + "</strong></td>";
-                                    tBody += "<td><strong>" + delivered_by + "</strong></td>";
-                                    tBody += "<td><strong>" + transmittal_no + "</strong></td>";
-                                    tBody += "<td><strong>" + item_no + "</strong></td>";
-                                    tBody += "<td><strong>" + quantity + "</strong></td>";
-                                    tBody += "<td><strong>" + purpose + "</strong></td>";
-                                    tBody += "<td><strong>" + comment + "</strong></td>";
-                                    tBody += "<td class='text_center' style='background-color: #33cc33; color: white;'><strong>ACCEPT</strong></td></tr>";
-
-                                    document.getElementById('itemBody').innerHTML = tBody;
-                                    count++;
+                                    date_holder: date_holder,
+                                    from_plant: from_plant,
+                                    to_plant: to_plant,
+                                    deiivered_by: delivered_by,
+                                    transmittal_no: transmittal_no,
+                                    item_no: item_no,
+                                    quantity: quantity,
+                                    purpose: purpose,
+                                    comment: comment,
+                                    status: status
                                 }
+
+                                array.push(rowData);
                             });
                         });
                     });
-                    if(tBody == ""){
-                        tBody = "<tr><td colspan='9' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
-
-                        document.getElementById('itemBody').innerHTML = tBody;
-                    }
                 });
             });
+
+            array.sort(function(a,b){
+                return Number(a.status) - Number(b.status);
+            });
+
+            for(var a = 0; a < array.length; a++){
+
+                var date_holder = array[a].date_holder;
+                var key = "";
+                var item_key = "";
+                var delivered_by = array[a].delivered_by;
+                var from_plant = array[a].from_plant;
+                var to_plant = array[a].to_plant;
+                var transmittal_no = array[a].transmittal_no;
+                var comment = array[a].comment;
+                var item_no = array[a].item_no;
+                var purpose = array[a].purpose;
+                var quantity = array[a].quantity;
+                var receive = "";
+                var status = array[a].status;
+            
+                if(array[a].to_plant == "Head Office"){
+
+                    if(status == 0){
+
+                        tBody += "<tr><td><strong>" + date_holder + "</strong></td>";
+                        tBody += "<td><strong>" + from_plant + "</strong></td>";
+                        tBody += "<td><strong>" + delivered_by + "</strong></td>";
+                        tBody += "<td><strong>" + transmittal_no + "</strong></td>";
+                        tBody += "<td><strong>" + item_no + "</strong></td>";
+                        tBody += "<td><strong>" + quantity + "</strong></td>";
+                        tBody += "<td><strong>" + purpose + "</strong></td>";
+                        tBody += "<td><strong><input type='text' id='input_comment" + a + "' name='input_comment[]' class='form-control'></strong></td>";
+                        tBody += "<td class='text_center'><strong><button type='button' class='btn btn-primary btn-md' onclick=\"if(confirm('Proceed?')){submitForm(\'" + a + "\', \'" + date_holder + "\', \'" + key + "\', \'" + item_key + "\')}else{event.preventDefault();}\"><strong>Receive</strong></button></strong></td></tr>";
+
+                    }else if(to_plant == "Head Office" && status == 1){
+
+                        tBody += "<tr><td><strong>" + date_holder + "</strong></td>";
+                        tBody += "<td><strong>" + from_plant + "</strong></td>";
+                        tBody += "<td><strong>" + delivered_by + "</strong></td>";
+                        tBody += "<td><strong>" + transmittal_no + "</strong></td>";
+                        tBody += "<td><strong>" + item_no + "</strong></td>";
+                        tBody += "<td><strong>" + quantity + "</strong></td>";
+                        tBody += "<td><strong>" + purpose + "</strong></td>";
+                        tBody += "<td><strong>" + comment + "</strong></td>";
+                        tBody += "<td class='text_center' style='background-color: #33cc33; color: white;'><strong>ACCEPTED</strong></td></tr>";
+
+                    }
+                }
+
+                if(tBody == ""){
+                    tBody = "<tr><td colspan='9' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+
+                    document.getElementById('itemBody').innerHTML = tBody;
+                }else{
+                    document.getElementById('itemBody').innerHTML = tBody;
+                }
+            }
+
+
         });
     }
 
