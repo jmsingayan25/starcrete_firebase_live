@@ -86,7 +86,6 @@
     
     var plant = "";
     var date_newSet = getUrlParameter('date');
-    var option = {year: "numeric", month: "long", day: "numeric"};
 
     $(document).ready(function(){
 
@@ -106,7 +105,6 @@
                     displayForkliftList();
                     displayTruckingList();
                     insertToEmployeeArray();
-                    autofillfield();
 
                     if(plant == 'Bravo'){
                         plant_name = "<a href='index.html' class='logo'>Starcrete <span class='lite'>Manufacturing Corporation</span></a>";
@@ -134,381 +132,12 @@
             document.getElementById('date_selected').value = chosen_date;
             document.getElementById('date_selected').readOnly = true;
             document.getElementById('header_form').innerHTML = "<h4><strong>PLANT NEW LINE UP</strong></h4>";
-
         }else{
             document.getElementById('header_form').innerHTML = "<h4><strong>PLANT LINE UP</strong></h4>";
             console.log("no data"); 
         }
 
     });
-
-    function autofillfield(){
-
-        if(date_newSet != ''){
-
-            chosen_date = new Date(date_newSet).toLocaleDateString('en', option);
-
-            firebase.database().ref('attendance/'+plant+'/'+chosen_date+'/office').once('value', function(officeSnapshot){
-
-                var officeTable = "";
-                count = 1;
-
-                officeSnapshot.forEach(function(officeChildSnapshot){
-
-                    var employee_name = officeChildSnapshot.val().employee_name;
-                    var employee_timein = officeChildSnapshot.val().employee_timein;
-                    var employee_timeout = officeChildSnapshot.val().employee_timeout;
-                    if(count == 1){
-                        var button_ext = "<button type='button' onclick=\"add_employee_row('office');\" class='btn btn-primary btn-md'><span class='fa fa-plus'></span></button>";
-                    }else{
-                        var button_ext = "<button type='button' onclick=remove_office_row('office_row" + count + "'); class='btn btn-danger btn-md'><span class='fa fa-minus'></span></button>";
-                    }
-
-                    officeTable += "<tr id='office_row" + count + "' style='text-align: center;'><td><input type='text' name='employee_name[]' class='form-control input_type employees' value='" + employee_name + "'></td><td><input type='time' name='employee_timein[]' class='form-control input_type' value='" + employee_timein + "'></td><td><input type='time' name='employee_timeout[]' class='form-control input_type' value='" + employee_timeout + "'></td><td>" + button_ext + "</td></tr>";
-                    
-                    document.getElementById('officeid').innerHTML = officeTable;
-                    count++;
-                });
-            });
-
-            firebase.database().ref('attendance/'+plant+'/'+chosen_date+'/absent/plant').once('value', function(absentPlantSnapshot){
-
-                var absentPlantTable = "";
-                count = 1;
-
-                absentPlantSnapshot.forEach(function(absentPlantChildSnapshot){
-
-                    var employee_name = absentPlantChildSnapshot.val().employee_name;
-                    var employee_comment = absentPlantChildSnapshot.val().employee_comment;
-
-                    if(count == 1){
-                        var button_ext = "<button type='button' onclick=\"add_employee_row('absent_plant');\" class='btn btn-primary btn-md'><span class='fa fa-plus'></span></button>";
-                    }else{
-                        var button_ext = "<button type='button' onclick=remove_plant_employee('plant_employee_row" + count + "'); class='btn btn-danger btn-md'><span class='fa fa-minus'></span></button>";
-                    }
-
-                    absentPlantTable += "<tr id='plant_employee_row" + count + "' style='text-align: center;'><td><input type='text' name='plant_employee_name[]' class='form-control  input_type employees' value='" + employee_name + "'></td><td><textarea name='plant_comment[]' class='form-control input_type' rows='2'>" + employee_comment + "</textarea></td><td class='col-md-1'>" + button_ext + "</td></tr>";
-
-                    document.getElementById('absentplantid').innerHTML = absentPlantTable;
-                    count++;
-
-                });
-            });
-
-            firebase.database().ref('attendance/'+plant+'/'+chosen_date+'/absent/motorpool').once('value', function(absentMotorpoolSnapshot){
-
-                var absentMotorpoolTable = "";
-                count = 1;
-
-                absentMotorpoolSnapshot.forEach(function(absentMotorpoolChildSnapshot){
-
-                    var employee_name = absentMotorpoolChildSnapshot.val().employee_name;
-                    var employee_comment = absentMotorpoolChildSnapshot.val().employee_comment;
-
-                    if(count == 1){
-                        var button_ext = "<button type='button' onclick=\"add_employee_row('absent_motorpool');\" class='btn btn-primary btn-md'><span class='fa fa-plus'></span></button>";
-                    }else{
-                        var button_ext = "<button type='button' onclick=remove_motorpool_employee('motorpool_employee_row" + count + "'); class='btn btn-danger btn-md'><span class='fa fa-minus'></span></button>";
-                    }
-
-                    absentMotorpoolTable += "<tr id='motorpool_employee_row" + count + "' style='text-align: center;'><td><input type='text' name='motorpool_employee_name[]' class='form-control  input_type employees' value='" + employee_name + "'></td><td><textarea name='motorpool_comment[]' class='form-control input_type' rows='2'>" + employee_comment + "</textarea></td><td class='col-md-1'>" + button_ext + "</td></tr>";
-
-                    document.getElementById('absentmotorpoolid').innerHTML = absentMotorpoolTable;
-                    count++;
-
-                });
-            });
-
-            firebase.database().ref('attendance/'+plant+'/'+chosen_date+'/absent/trucking').once('value', function(absentTruckingSnapshot){
-
-                var absentTruckingTable = "";
-                count = 1;
-
-                absentTruckingSnapshot.forEach(function(absentTruckingChildSnapshot){
-
-                    var employee_name = absentTruckingChildSnapshot.val().employee_name;
-                    var employee_comment = absentTruckingChildSnapshot.val().employee_comment;
-
-                    if(count == 1){
-                        var button_ext = "<button type='button' onclick=\"add_employee_row('absent_trucking');\" class='btn btn-primary btn-md'><span class='fa fa-plus'></span></button>";
-                    }else{
-                        var button_ext = "<button type='button' onclick=remove_trucking_employee('trucking_employee_row" + count + "'); class='btn btn-danger btn-md'><span class='fa fa-minus'></span></button>";
-                    }
-
-                    absentTruckingTable += "<tr id='trucking_employee_row" + count + "' style='text-align: center;'><td><input type='text' name='trucking_employee_name[]' class='form-control  input_type employees' value='" + employee_name + "'></td><td><textarea name='trucking_comment[]' class='form-control input_type' rows='2'>" + employee_comment + "</textarea></td><td class='col-md-1'>" + button_ext + "</td></tr>";
-
-                    document.getElementById('absenttruckingid').innerHTML = absentTruckingTable;
-                    count++;
-                });
-            });
-
-            firebase.database().ref('attendance/'+plant+'/'+chosen_date+'/machine1').once('value', function(machine1Snapshot){
-
-                var machine1Table = "";
-                count = 1;
-
-                machine1Snapshot.forEach(function(machine1ChildSnapshot){
-
-                    var employee_name = machine1ChildSnapshot.val().employee_name;
-                    var employee_position = machine1ChildSnapshot.val().employee_position;
-
-                    if(count == 1){
-                        var button_ext = "<button type='button' onclick=\"add_employee_row('machine1');\" class='btn btn-primary btn-md'><span class='fa fa-plus'></span></button>";
-                    }else{
-                        var button_ext = "<button type='button' class='btn btn-danger btn-md' onclick=remove_machine1('machine1_row" + count + "')><span class='fa fa-minus'></span></button>";
-                    }
-
-                    machine1Table += "<tr id='machine1_row" + count + "'><td><input type='text' name='machine1_name[]' class='form-control input_type employees' value='" + employee_name + "'></td><td><input type='text' name='machine1_position[]' class='form-control input_type' value='" + employee_position + "'></td><td>" + button_ext + "</td></tr>";
-
-                    document.getElementById('machine1id').innerHTML = machine1Table;
-                    count++;
-                });
-            });
-
-            firebase.database().ref('attendance/'+plant+'/'+chosen_date+'/machine3').once('value', function(machine3Snapshot){
-
-                var machine3Table = "";
-                count = 1;
-
-                machine3Snapshot.forEach(function(machine3ChildSnapshot){
-
-                    var employee_name = machine3ChildSnapshot.val().employee_name;
-                    var employee_position = machine3ChildSnapshot.val().employee_position;
-
-                    if(count == 1){
-                        var button_ext = "<button type='button' onclick=\"add_employee_row('machine3');\" class='btn btn-primary btn-md'><span class='fa fa-plus'></span></button>";
-                    }else{
-                        var button_ext = "<button type='button' class='btn btn-danger btn-md' onclick=remove_machine3('machine3_row" + count + "')><span class='fa fa-minus'></span></button>";
-                    }
-
-                    machine3Table += "<tr id='machine3_row" + count + "'><td><input type='text' name='machine3_name[]' class='form-control input_type employees' value='" + employee_name + "'></td><td><input type='text' name='machine3_position[]' class='form-control input_type' value='" + employee_position + "'></td><td>" + button_ext + "</td></tr>";
-
-                    document.getElementById('machine3id').innerHTML = machine3Table;
-                    count++;
-                });
-            });
-
-            firebase.database().ref('attendance/'+plant+'/'+chosen_date+'/tagapukpok').once('value', function(tagapukpokSnapshot){
-
-                var tagapukpokTable = "";
-                count = 1;
-
-                tagapukpokSnapshot.forEach(function(tagapukpokChildSnapshot){
-
-                    var employee_name = tagapukpokChildSnapshot.val().employee_name;
-                    var employee_position = tagapukpokChildSnapshot.val().employee_position;
-
-                    if(count == 1){
-                        var button_ext = "<button type='button' onclick=\"add_employee_row('tagapukpok');\" class='btn btn-primary btn-md'><span class='fa fa-plus'></span></button>";
-                    }else{
-                        var button_ext = "<button type='button' class='btn btn-danger btn-md' onclick=remove_tagapukpok('tagapukpok_row" + count + "')><span class='fa fa-minus'></span></button>";
-                    }
-
-                    tagapukpokTable += "<tr id='tagapukpok_row" + count + "' style='text-align: center;'><td><input type='text' name='tagapukpok_name[]' class='form-control input_type employees' value='" + employee_name + "'></td><td><input type='text' name='tagapukpok_position[]' class='form-control input_type' value='" + employee_position + "'></td><td>" + button_ext + "</td></tr>";
-
-                    document.getElementById('tagapukpokid').innerHTML = tagapukpokTable;
-                    count++;
-                });
-            });
-
-            firebase.database().ref('attendance/'+plant+'/'+chosen_date+'/checker').once('value', function(checkerSnapshot){
-
-                var checkerTable = "";
-                count = 1;
-
-                checkerSnapshot.forEach(function(checkerChildSnapshot){
-
-                    var employee_name = checkerChildSnapshot.val().employee_name;
-                    var employee_position = checkerChildSnapshot.val().employee_position;
-
-                    if(count == 1){
-                        var button_ext = "<button type='button' onclick=\"add_employee_row('checker');\" class='btn btn-primary btn-md'><span class='fa fa-plus'></span></button>";
-                    }else{
-                        var button_ext = "<button type='button' class='btn btn-danger btn-md' onclick=remove_checker('checker_row" + count + "')><span class='fa fa-minus'></span></button>";
-                    }
-
-                    checkerTable += "<tr id='checker_row" + count + "' style='text-align: center;'><td><input type='text' name='checker_name[]' class='form-control input_type employees' value='" + employee_name + "'></td><td><input type='text' name='checker_position[]' class='form-control input_type' value='" + employee_position + "'></td><td>" + button_ext + "</td></tr>";
-
-                    document.getElementById('checkerid').innerHTML = checkerTable;
-                    count++;
-                });
-            });
-
-            firebase.database().ref('attendance/'+plant+'/'+chosen_date+'/kamador').once('value', function(kamadorSnapshot){
-
-                var kamadorTable = "";
-                count = 1;
-
-                kamadorSnapshot.forEach(function(kamadorChildSnapshot){
-
-                    var employee_name = kamadorChildSnapshot.val().employee_name;
-
-                    if(count == 1){
-                        var button_ext = "<button type='button' onclick=\"add_employee_row('kamador');\" class='btn btn-primary btn-md'><span class='fa fa-plus'></span></button>";
-                    }else{
-                        var button_ext = "<button type='button' class='btn btn-danger btn-md' onclick=remove_kamador('kamador_row" + count + "')><span class='fa fa-minus'></span></button>";
-                    }
-
-                    kamadorTable += "<tr id='kamador_row" + count + "' style='text-align: center;'><td><input type='text' name='kamador_name[]' class='form-control input_type employees' value='" + employee_name + "'></td><td>" + button_ext + "</td></tr>";
-
-                    document.getElementById('kamadorid').innerHTML = kamadorTable;
-                    count++;
-                });
-            });
-
-            firebase.database().ref('attendance/'+plant+'/'+chosen_date+'/mechanic').once('value', function(mechanicSnapshot){
-
-                var mechanicTable = "";
-                count = 1;
-
-                mechanicSnapshot.forEach(function(mechanicChildSnapshot){
-
-                    var employee_name = mechanicChildSnapshot.val().employee_name;
-
-                    if(count == 1){
-                        var button_ext = "<button type='button' onclick=\"add_employee_row('mechanic');\" class='btn btn-primary btn-md'><span class='fa fa-plus'></span></button>";
-                    }else{
-                        var button_ext = "<button type='button' class='btn btn-danger btn-md' onclick=remove_mechanic('mechanic_row" + count + "')><span class='fa fa-minus'></span></button>";
-                    }          
-
-                    mechanicTable += "<tr id='mechanic_row" + count + "' style='text-align: center;'><td><input type='text' name='mechanic_name[]' class='form-control input_type employees' value='" + employee_name + "'> </td><td>" + button_ext + "</td></tr>";
-
-                    document.getElementById('mechanicid').innerHTML = mechanicTable;
-                    count++;
-                });
-            });
-
-            firebase.database().ref('attendance/'+plant+'/'+chosen_date+'/loader').once('value', function(loaderSnapshot){
-
-                var loaderTable = "";
-                count = 1;
-
-                loaderSnapshot.forEach(function(loaderChildSnapshot){
-
-                    var employee_name = loaderChildSnapshot.val().employee_name;
-
-                    if(count == 1){
-                        var button_ext = "<button type='button' onclick=\"add_employee_row('loader');\" class='btn btn-primary btn-md'><span class='fa fa-plus'></span></button>";
-                    }else{
-                        var button_ext = "<button type='button' class='btn btn-danger btn-md' onclick=remove_loader('loader_row" + count + "')><span class='fa fa-minus'></span></button>";
-                    }
-
-                    loaderTable += "<tr id='loader_row" + count + "' style='text-align: center;'><td><input type='text' name='loader_name[]' class='form-control input_type employees' value='" + employee_name + "'></td><td>" + button_ext + "</td></tr>";
-
-                    document.getElementById('loaderid').innerHTML = loaderTable;
-                    count++;
-                });
-            });
-
-            firebase.database().ref('attendance/'+plant+'/'+chosen_date+'/others').once('value', function(othersSnapshot){
-
-                var othersTable = "";
-                count = 1;
-
-                othersSnapshot.forEach(function(othersChildSnapshot){
-
-                    var employee_name = othersChildSnapshot.val().employee_name;
-                    var employee_position = othersChildSnapshot.val().employee_position;
-
-                    if(count == 1){
-                        var button_ext = "<button type='button' onclick=\"add_employee_row('others');\" class='btn btn-primary btn-md'><span class='fa fa-plus'></span></button>";
-                    }else{
-                        var button_ext = "<button type='button' class='btn btn-danger btn-md' onclick=remove_others('others_row" + count + "')><span class='fa fa-minus'></span></button>";
-                    }
-
-                    othersTable += "<tr id='other_row" + count + "' style='text-align: center;'><td><input type='text' name='others_name[]' class='form-control input_type employees' value='" + employee_name + "'></td><td><input type='text' name='others_position[]' class='form-control input_type' value='" + employee_position + "'></td><td>" + button_ext + "</td></tr>";
-
-                    document.getElementById('otherid').innerHTML = othersTable;
-                    count++;
-                });
-            });
-
-            firebase.database().ref('attendance/'+plant+'/'+chosen_date+'/trucking').once('value', function(truckingSnapshot){
-
-                var truckingTable = "";
-
-                truckingSnapshot.forEach(function(truckingChildSnapshot){
-
-                    var pahinante1 = truckingChildSnapshot.val().pahinante1;
-                    var pahinante2 = truckingChildSnapshot.val().pahinante2;
-                    var driver = truckingChildSnapshot.val().driver;
-                    var comment = truckingChildSnapshot.val().comment;
-                    var truck_no = truckingChildSnapshot.val().truck_no;
-
-                    truckingTable += "<tr style='text-align: center;'><td><strong>" + truck_no + "</strong></td><input type='hidden' name='hidden_trucking[]' value='" + truck_no + "'><td><textarea name='driver[]' rows='2' class='form-control input_type employees'>" + driver + "</textarea></td><td><textarea name='pahinante1[]'rows='2' class='form-control input_type employees'>" + pahinante1 + "</textarea></td><td><textarea name='pahinante2[]'rows='2' class='form-control input_type employees'>" + pahinante2 + "</textarea></td><td><textarea name='trucking_reason[]' rows='2' class='form-control input_type'>" + comment + "</textarea></td></tr>";
-
-                    document.getElementById('truckingList').innerHTML = truckingTable;
-
-                });
-            });
-
-            firebase.database().ref('attendance/'+plant+'/'+chosen_date+'/forklift_operator').once('value', function(forkliftSnapshot){
-
-                var forkliftTable = "";
-
-                forkliftSnapshot.forEach(function(forkliftChildSnapshot){
-
-                    var forklift_no = forkliftChildSnapshot.val().forklift_no;
-                    var operator = forkliftChildSnapshot.val().operator;
-                    var comment = forkliftChildSnapshot.val().comment;
-
-                    forkliftTable += "<tr><td class='col-md-3' style='text-align: center;'><strong>" + forklift_no + "</strong></td><input type='hidden' name='hidden_forklift[]' value='" + forklift_no + "'><td class='col-md-4'><input type='text' name='forklift_operator_name[]' class='form-control input_type employees' value='" + operator + "'></td><td class='col-md-5'><input type='text' name='forklift_comment[]' class='form-control input_type' value='" + comment + "'></td></tr>";
-
-                    document.getElementById('forkliftList').innerHTML = forkliftTable;
-                });
-            });
-
-            firebase.database().ref('attendance/'+plant+'/'+chosen_date+'/guard').once('value', function(guardSnapshot){
-                firebase.database().ref('attendance/'+plant+'/'+chosen_date+'/guard/dayshift').once('value', function(guardDaySnapshot){
-                    firebase.database().ref('attendance/'+plant+'/'+chosen_date+'/guard/nightshift').once('value', function(guardNightSnapshot){
-
-                        var dayTable = "";
-                        var nightTable = "";
-                        day_count = 1;
-                        night_count = 1;
-
-                        var agency = guardSnapshot.val().agency_name;
-
-                        document.getElementById('guard_agency_name').value = agency;
-
-                        guardDaySnapshot.forEach(function(guardDayChildSnapshot){
-
-                            var guard_name = guardDayChildSnapshot.val().guard_name;
-                            var guard_position = guardDayChildSnapshot.val().guard_position;
-
-                            dayTable += "<tr id='guard_day_row" + day_count + "'><td><input type='text' name='guard_day_name[]' class='form-control input_type employees' value='" + guard_name + "'></td><td><input type='text' name='guard_day_position[]' class='form-control input_type' value='" + guard_position + "'></td><td class='col-md-1'><button type='button' onclick='add_employee_row('dayshift_guard');' class='btn btn-primary btn-md'><span class='fa fa-plus'></span></button></td></tr>";
-
-                            document.getElementById('guarddayid').innerHTML = dayTable;
-                            day_count++;
-                        });
-
-                        guardNightSnapshot.forEach(function(guardNightChildSnapshot){
-
-                            var guard_name = guardNightChildSnapshot.val().guard_name;
-                            var guard_position = guardNightChildSnapshot.val().guard_position;
-
-                            nightTable += "<tr id='guard_night_row" + night_count + "'><td><input type='text' name='guard_night_name[]' class='form-control input_type employees' value='" + guard_name + "'></td><td><input type='text' name='guard_night_position[]' class='form-control input_type' value='" + guard_position + "'></td><td class='col-md-1'><button type='button' onclick='add_employee_row('nightshift_guard');' class='btn btn-primary btn-md'><span class='fa fa-plus'></span></button></td></tr>";
-
-                            document.getElementById('guardnightid').innerHTML = nightTable;
-                            night_count++;
-                        });
-                    });
-                });
-
-                var employee_array = [];
-
-                firebase.database().ref('employee_list/'+plant).once('value', function(listSnapshot){
-                    listSnapshot.forEach(function(listChildSnapshot){
-
-                        employee_array.push(listChildSnapshot.val().employee_name);
-
-                    });
-
-                    $('.employees').autocomplete({source: employee_array});
-                });
-            });
-        }
-    }
 
     function insertToEmployeeArray(){
 
@@ -561,6 +190,7 @@
         event.preventDefault();
 
         var date_of_attendance = document.getElementById('date_selected').value;
+        var option = {year: "numeric", month: "long", day: "numeric"};
         var passDate = new Date(date_of_attendance).toLocaleDateString('en');
         date_of_attendance = new Date(date_of_attendance).toLocaleDateString('en', option);
 
@@ -632,13 +262,12 @@
         var currentTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
         var timeStamp = new Date().getTime();
         timeStamp = timeStamp * -1;
+        message = "Line Up details for " + passDate + " is available.";
 
         if(date_newSet == ""){
             query_ext = "";
-            message = "Line Up details for " + passDate + " is available.";
         }else{
             query_ext = "/new";
-            message = "Updated Line Up details for " + passDate + " is available.";
         }
 
         var scheduleData = {
@@ -1020,16 +649,6 @@
 
         firebase.database().ref('notification').push(notifData);
 
-        historyData = {
-            date: currentSystemDate,
-            history: message,
-            reverseDate: timeStamp,
-            time: currentTime,
-            type_of_transaction: "New Line Up"
-        }
-
-        firebase.database().ref('history/'+plant).push(historyData);
-
         if(count == input_nightshift_name.length){
             alert("Line Up recorded");
             window.location='lineup2.html';
@@ -1238,22 +857,20 @@
                                                             </td>
                                                             <td class="col-md-1"></td>
                                                         </tr>
-                                                        <tbody id="officeid">
-                                                            <tr id="office_row1" style="text-align: center;">
-                                                                <td>
-                                                                    <input type="text" name="employee_name[]" class="form-control input_type employees">
-                                                                </td>
-                                                                <td>
-                                                                    <input type="time" name="employee_timein[]" class="form-control input_type">
-                                                                </td>
-                                                                <td>
-                                                                    <input type="time" name="employee_timeout[]" class="form-control input_type">
-                                                                </td>
-                                                                <td>
-                                                                    <button type="button" onclick="add_employee_row('office');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
+                                                        <tr id="office_row1" style="text-align: center;">
+                                                            <td>
+                                                                <input type="text" name="employee_name[]" class="form-control input_type employees">
+                                                            </td>
+                                                            <td>
+                                                                <input type="time" name="employee_timein[]" class="form-control input_type">
+                                                            </td>
+                                                            <td>
+                                                                <input type="time" name="employee_timeout[]" class="form-control input_type">
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" onclick="add_employee_row('office');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
+                                                            </td>
+                                                        </tr>
                                                     </table>
                                                 </div>
                                             </div>
@@ -1293,19 +910,17 @@
                                                                                         <label for="plant_comment">Comment</label>
                                                                                     </td>
                                                                                 </tr>
-                                                                                <tbody id="absentplantid">
-                                                                                    <tr id="plant_employee_row1" style="text-align: center;">
-                                                                                        <td>
-                                                                                            <input type="text" name="plant_employee_name[]" class="form-control  input_type employees">
-                                                                                        </td>
-                                                                                        <td>
-                                                                                            <textarea name="plant_comment[]" class="form-control input_type" rows="2"></textarea>
-                                                                                        </td>
-                                                                                        <td class="col-md-1">
-                                                                                            <button type="button" onclick="add_employee_row('absent_plant');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
+                                                                                <tr id="plant_employee_row1" style="text-align: center;">
+                                                                                    <td>
+                                                                                        <input type="text" name="plant_employee_name[]" class="form-control  input_type employees">
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <textarea name="plant_comment[]" class="form-control input_type" rows="2"></textarea>
+                                                                                    </td>
+                                                                                    <td class="col-md-1">
+                                                                                        <button type="button" onclick="add_employee_row('absent_plant');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
+                                                                                    </td>
+                                                                                </tr>
                                                                             </table>
                                                                         </div>
                                                                     </div>
@@ -1333,19 +948,17 @@
                                                                                         <label for="motorpool_comment">Comment</label>
                                                                                     </td>
                                                                                 </tr>
-                                                                                <tbody id="absentmotorpoolid">
-                                                                                    <tr id="motorpool_employee_row1" style="text-align: center;">
-                                                                                        <td>
-                                                                                            <input type="text" name="motorpool_employee_name[]" class="form-control input_type employees">
-                                                                                        </td>
-                                                                                        <td>
-                                                                                            <textarea name="motorpool_comment[]" class="form-control input_type" rows="2"></textarea>
-                                                                                        </td>
-                                                                                        <td class="col-md-1">
-                                                                                            <button type="button" onclick="add_employee_row('absent_motorpool');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
+                                                                                <tr id="motorpool_employee_row1" style="text-align: center;">
+                                                                                    <td>
+                                                                                        <input type="text" name="motorpool_employee_name[]" class="form-control input_type employees">
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <textarea name="motorpool_comment[]" class="form-control input_type" rows="2"></textarea>
+                                                                                    </td>
+                                                                                    <td class="col-md-1">
+                                                                                        <button type="button" onclick="add_employee_row('absent_motorpool');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
+                                                                                    </td>
+                                                                                </tr>
                                                                             </table>
                                                                         </div>
                                                                     </div>
@@ -1373,19 +986,17 @@
                                                                                         <label for="trucking_comment">Comment</label>
                                                                                     </td>
                                                                                 </tr>
-                                                                                <tbody id="absenttruckingid">
-                                                                                    <tr id="trucking_employee_row1" style="text-align: center;">
-                                                                                        <td>
-                                                                                            <input type="text" name="trucking_employee_name[]" class="form-control input_type employees">
-                                                                                        </td>
-                                                                                        <td>
-                                                                                            <textarea name="trucking_comment[]" class="form-control input_type" rows="2"></textarea>
-                                                                                        </td>
-                                                                                        <td class="col-md-1">
-                                                                                            <button type="button" onclick="add_employee_row('absent_trucking');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
+                                                                                <tr id="trucking_employee_row1" style="text-align: center;">
+                                                                                    <td>
+                                                                                        <input type="text" name="trucking_employee_name[]" class="form-control input_type employees">
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <textarea name="trucking_comment[]" class="form-control input_type" rows="2"></textarea>
+                                                                                    </td>
+                                                                                    <td class="col-md-1">
+                                                                                        <button type="button" onclick="add_employee_row('absent_trucking');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
+                                                                                    </td>
+                                                                                </tr>
                                                                             </table>
                                                                         </div>
                                                                     </div>
@@ -1421,13 +1032,13 @@
                                                         <div class="panel-body">
                                                             <div class="row">
                                                                 <div class="col-md-12"> 
-                                                                    <table id="_employee_table" align="center">
+                                                                    <table id="new_employee_table" align="center">
                                                                         <tr>
                                                                             <td class="col-md-10">
                                                                                 <label for="new_employee_name">Name</label>
                                                                             </td>
                                                                         </tr>
-                                                                        <tr id="_employee_row1" style="text-align: center;">
+                                                                        <tr id="new_employee_row1" style="text-align: center;">
                                                                             <td>
                                                                                 <input type="text" name="new_employee_name[]" class="form-control input_type">
                                                                             </td>
@@ -1459,19 +1070,17 @@
                                                                             <td class="col-md-4">Position</td>
                                                                             <td class="col-md-1"></td>
                                                                         </tr>
-                                                                        <tbody id="machine1id">
-                                                                            <tr id="machine1_row1">
-                                                                                <td>
-                                                                                    <input type="text" name="machine1_name[]" class="form-control input_type employees">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input type="text" name="machine1_position[]" class="form-control input_type">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <button type="button" onclick="add_employee_row('machine1');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
+                                                                        <tr id="machine1_row1">
+                                                                            <td>
+                                                                                <input type="text" name="machine1_name[]" class="form-control input_type employees">
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="text" name="machine1_position[]" class="form-control input_type">
+                                                                            </td>
+                                                                            <td>
+                                                                                <button type="button" onclick="add_employee_row('machine1');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
+                                                                            </td>
+                                                                        </tr>
                                                                     </table>
                                                                 </div>
                                                             </div>
@@ -1496,19 +1105,17 @@
                                                                             <td class="col-md-4">Position</td>
                                                                             <td class="col-md-1"></td>
                                                                         </tr>
-                                                                        <tbody id="machine3id">
-                                                                            <tr id="machine3_row1">
-                                                                                <td>
-                                                                                    <input type="text" name="machine3_name[]" class="form-control input_type employees">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input type="text" name="machine3_position[]" class="form-control input_type">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <button type="button" onclick="add_employee_row('machine3');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
+                                                                        <tr id="machine3_row1">
+                                                                            <td>
+                                                                                <input type="text" name="machine3_name[]" class="form-control input_type employees">
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="text" name="machine3_position[]" class="form-control input_type">
+                                                                            </td>
+                                                                            <td>
+                                                                                <button type="button" onclick="add_employee_row('machine3');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
+                                                                            </td>
+                                                                        </tr>
                                                                     </table>
                                                                 </div>
                                                             </div>
@@ -1694,19 +1301,17 @@
                                                                         </td>
                                                                         <td class="col-md-1"></td>
                                                                     </tr>
-                                                                    <tbody id="tagapukpokid">
-                                                                        <tr id="tagapukpok_row1" style="text-align: center;">
-                                                                            <td>
-                                                                                <input type="text" name="tagapukpok_name[]" class="form-control input_type employees">
-                                                                            </td>
-                                                                            <td>
-                                                                                <input type="text" name="tagapukpok_position[]" class="form-control input_type">
-                                                                            </td>
-                                                                            <td>
-                                                                                <button type="button" onclick="add_employee_row('tagapukpok');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
+                                                                    <tr id="tagapukpok_row1" style="text-align: center;">
+                                                                        <td>
+                                                                            <input type="text" name="tagapukpok_name[]" class="form-control input_type employees">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" name="tagapukpok_position[]" class="form-control input_type">
+                                                                        </td>
+                                                                        <td>
+                                                                            <button type="button" onclick="add_employee_row('tagapukpok');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
+                                                                        </td>
+                                                                    </tr>
                                                                 </table>
                                                             </div>
                                                         </div>
@@ -1733,19 +1338,17 @@
                                                                         </td>
                                                                         <td class="col-md-1"></td>
                                                                     </tr>
-                                                                    <tbody id="checkerid">
-                                                                        <tr id="checker_row1" style="text-align: center;">
-                                                                            <td>
-                                                                                <input type="text" name="checker_name[]" class="form-control input_type employees">
-                                                                            </td>
-                                                                            <td>
-                                                                                <input type="text" name="checker_position[]" class="form-control input_type">
-                                                                            </td>
-                                                                            <td>
-                                                                                <button type="button" onclick="add_employee_row('checker');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
+                                                                    <tr id="checker_row1" style="text-align: center;">
+                                                                        <td>
+                                                                            <input type="text" name="checker_name[]" class="form-control input_type employees">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" name="checker_position[]" class="form-control input_type">
+                                                                        </td>
+                                                                        <td>
+                                                                            <button type="button" onclick="add_employee_row('checker');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
+                                                                        </td>
+                                                                    </tr>
                                                                 </table>
                                                             </div>
                                                         </div>
@@ -1781,16 +1384,14 @@
                                                                         </td>
                                                                         <td class="col-md-1"></td>
                                                                     </tr>
-                                                                    <tbody id="kamadorid">
-                                                                        <tr id="kamador_row1" style="text-align: center;">
-                                                                            <td>
-                                                                                <input type="text" name="kamador_name[]" class="form-control input_type employees">
-                                                                            </td>
-                                                                            <td>
-                                                                                <button type="button" onclick="add_employee_row('kamador');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
+                                                                    <tr id="kamador_row1" style="text-align: center;">
+                                                                        <td>
+                                                                            <input type="text" name="kamador_name[]" class="form-control input_type employees">
+                                                                        </td>
+                                                                        <td>
+                                                                            <button type="button" onclick="add_employee_row('kamador');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
+                                                                        </td>
+                                                                    </tr>
                                                                 </table>
                                                             </div>
                                                         </div>
@@ -1814,16 +1415,14 @@
                                                                         </td>
                                                                         <td class="col-md-1"></td>
                                                                     </tr>
-                                                                    <tbody id="mechanicid">
-                                                                        <tr id="mechanic_row1" style="text-align: center;">
-                                                                            <td>
-                                                                                <input type="text" name="mechanic_name[]" class="form-control input_type employees">
-                                                                            </td>
-                                                                            <td>
-                                                                                <button type="button" onclick="add_employee_row('mechanic');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
-                                                                            </td>
-                                                                        </tr> 
-                                                                    </tbody>
+                                                                    <tr id="mechanic_row1" style="text-align: center;">
+                                                                        <td>
+                                                                            <input type="text" name="mechanic_name[]" class="form-control input_type employees">
+                                                                        </td>
+                                                                        <td>
+                                                                            <button type="button" onclick="add_employee_row('mechanic');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
+                                                                        </td>
+                                                                    </tr>
                                                                 </table>
                                                             </div>
                                                         </div>
@@ -1847,16 +1446,14 @@
                                                                         </td>
                                                                         <td class="col-md-1"></td>
                                                                     </tr>
-                                                                    <tbody id="loaderid">
-                                                                        <tr id="loader_row1" style="text-align: center;">
-                                                                            <td>
-                                                                                <input type="text" name="loader_name[]" class="form-control input_type employees">
-                                                                            </td>
-                                                                            <td>
-                                                                                <button type="button" onclick="add_employee_row('loader');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
+                                                                    <tr id="loader_row1" style="text-align: center;">
+                                                                        <td>
+                                                                            <input type="text" name="loader_name[]" class="form-control input_type employees">
+                                                                        </td>
+                                                                        <td>
+                                                                            <button type="button" onclick="add_employee_row('loader');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
+                                                                        </td>
+                                                                    </tr>
                                                                 </table>
                                                             </div>
                                                         </div>
@@ -1883,19 +1480,17 @@
                                                                         </td>
                                                                         <td class="col-md-1"></td>
                                                                     </tr>
-                                                                    <tbody id="otherid">
-                                                                        <tr id="other_row1" style="text-align: center;">
-                                                                            <td>
-                                                                                <input type="text" name="others_name[]" class="form-control input_type employees">
-                                                                            </td>
-                                                                            <td>
-                                                                                <input type="text" name="others_position[]" class="form-control input_type">
-                                                                            </td>
-                                                                            <td>
-                                                                                <button type="button" onclick="add_employee_row('others');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
+                                                                    <tr id="other_row1" style="text-align: center;">
+                                                                        <td>
+                                                                            <input type="text" name="others_name[]" class="form-control input_type employees">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" name="others_position[]" class="form-control input_type">
+                                                                        </td>
+                                                                        <td>
+                                                                            <button type="button" onclick="add_employee_row('others');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
+                                                                        </td>
+                                                                    </tr>
                                                                 </table>
                                                             </div>
                                                         </div>
@@ -1925,7 +1520,8 @@
                                                                 <th class="col-md-3" style="text-align: center;">COMMENT</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody id="truckingList"></tbody>
+                                                        <tbody id="truckingList">
+                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>
@@ -1987,19 +1583,17 @@
                                                                             <td class="col-md-4">Position</td>
                                                                             <td class="col-md-1"></td>
                                                                         </tr>
-                                                                        <tbody id="guarddayid">
-                                                                            <tr id="guard_day_row1">
-                                                                                <td>
-                                                                                    <input type="text" name="guard_day_name[]" class="form-control input_type employees">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input type="text" name="guard_day_position[]" class="form-control input_type">
-                                                                                </td>
-                                                                                <td class="col-md-1">
-                                                                                    <button type="button" onclick="add_employee_row('dayshift_guard');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
+                                                                        <tr id="guard_day_row1">
+                                                                            <td>
+                                                                                <input type="text" name="guard_day_name[]" class="form-control input_type employees">
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="text" name="guard_day_position[]" class="form-control input_type">
+                                                                            </td>
+                                                                            <td class="col-md-1">
+                                                                                <button type="button" onclick="add_employee_row('dayshift_guard');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
+                                                                            </td>
+                                                                        </tr>
                                                                     </table>
                                                                 </div>
                                                             </div>
@@ -2022,19 +1616,17 @@
                                                                             <td class="col-md-4">Position</td>
                                                                             <td class="col-md-1"></td>
                                                                         </tr>
-                                                                        <tbody id="guardnightid">
-                                                                            <tr id="guard_night_row1">
-                                                                                <td>
-                                                                                    <input type="text" name="guard_night_name[]" class="form-control input_type employees">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input type="text" name="guard_night_position[]" class="form-control input_type">
-                                                                                </td>
-                                                                                <td class="col-md-1">
-                                                                                    <button type="button" onclick="add_employee_row('nightshift_guard');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
+                                                                        <tr id="guard_night_row1">
+                                                                            <td>
+                                                                                <input type="text" name="guard_night_name[]" class="form-control input_type employees">
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="text" name="guard_night_position[]" class="form-control input_type">
+                                                                            </td>
+                                                                            <td class="col-md-1">
+                                                                                <button type="button" onclick="add_employee_row('nightshift_guard');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
+                                                                            </td>
+                                                                        </tr>
                                                                     </table>
                                                                 </div>
                                                             </div>
