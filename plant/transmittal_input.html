@@ -134,7 +134,7 @@
                     }
                     
                     // tableData(plant);
-
+                    Drop_Down_Plant();
                     document.getElementById('username').innerHTML = snapshot.val().firstname; 
                 },(error) => {
                     console.log(error);
@@ -146,6 +146,22 @@
 
         document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);     
     });
+
+function Drop_Down_Plant(){
+    var dd_category = "<option value=''>Select</option>"
+    if (plant == "Bravo") {
+        dd_category += "<option value ='" + 'Delta'  + "'>" + 'Delta' +"</option>";
+        dd_category += "<option value ='" + 'Head Office'  + "'>" + 'Head Office' +"</option>";
+    } else if (plant == "Delta") {
+        dd_category += "<option value ='" + 'Bravo'  + "'>" + 'Bravo' +"</option>";
+        dd_category += "<option value ='" + 'Head Office'  + "'>" + 'Head Office' +"</option>";
+    }else if (plant == "Head Office") {
+        dd_category += "<option value ='" + 'Bravo'  + "'>" + 'Bravo' +"</option>";
+        dd_category += "<option value ='" + 'Delta'  + "'>" + 'Delta' +"</option>";
+    }
+
+    document.getElementById("selectsys").innerHTML = dd_category;
+}
 
 function add_form(){
     event.preventDefault();
@@ -182,15 +198,13 @@ function submitForm(){
         delivered_by: delivered_by_holder,
         from: plant,
     }
+    var postData = firebase.database().ref('transmittal_input/' + '/'+ displayDate);
+    var newPostRef = postData.push();
+    newPostRef.set(main_holder);
 
-     var postData = firebase.database().ref('transmittal_input/' + '/'+ displayDate);
-     var newPostRef = postData.push();
-     newPostRef.set(main_holder);
-
-     var postId = newPostRef.key;
-
-     //items
-      for (var i = 0; i < item_Batch.length; i++){
+    var postId = newPostRef.key;
+    //items
+    for (var i = 0; i < item_Batch.length; i++){
         var items_holder = {
            item_Batch: item_Batch[i],
            quantity_Batch: quantity_Batch[i],
@@ -201,14 +215,10 @@ function submitForm(){
            receive_time:""
         }
         firebase.database().ref('transmittal_input/'+'/'+ displayDate +'/'+postId+"/Items").push(items_holder); 
-     }
+    }
 
    window.location.reload();
 }
-
-
-   
-
 
 </script>    
 </head>
@@ -377,10 +387,10 @@ function submitForm(){
                                         <label for="plant_input" class="col-md-4 control-label">Plant<span class="required" style="color: red;">*</span></label>
                                          <div class="col-md-7">
                                             <select id="selectsys" name="selectsys" class ="form-control">
-                                                <option>Select</option>
+                                               <!--  <option>Select</option>
                                                 <option value="Bravo">Bravo</option>
                                                 <option value="Delta">Delta</option>
-                                                <option value="Head Office">Head Office</option>
+                                                <option value="Head Office">Head Office</option> -->
                                             </select>
                                         </div>
                                        
