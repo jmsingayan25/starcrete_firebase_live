@@ -168,7 +168,6 @@ function Display_items(){
                                     var quantity_holder = ItemForEachSnap.val().quantity_Batch;
                                     var purpose_holder = ItemForEachSnap.val().purpose_batch;
 
-                                    
                                     tbody += "<tr><td><strong>" + date_holder + "</strong></td>";
                                     tbody += "<td><strong>" + from_holder + "</strong></td>";
                                     tbody += "<td><strong>" + delivered_by_holder + "</strong></td>";
@@ -177,15 +176,37 @@ function Display_items(){
                                     tbody += "<td><strong>" + quantity_holder + "</strong></td>";
                                     tbody += "<td><strong>" + purpose_holder + "</strong></td>";
                                     tbody += "<td><strong>" + " <input type='text' name='receive_comment' id='receive_comment"+count+"'class='form-control' autocomplete='off' style='text-transform: uppercase;' required>" + "</strong></td>";
-                                    tbody += "<strong>" + "<td><form onsubmit=\"if(confirm('Proceed?')){ReceiveRowData(\'" + ItemForEachSnap.key + "\',\'"+ date_holder +"\',\'"+ReceiveForEachSnap.key+"\',\'"+count+"\');}else{ event.preventDefault();}\"><button type='submit' class=' btn btn-success btn-md btn-block'><strong> Receive</strong></button></form></td></tr>" + "</strong></td>"
+                                    tbody += "<strong>" + "<td><form onsubmit=\"if(confirm('Proceed?')){ReceiveRowData(\'" + ItemForEachSnap.key + "\',\'"+ date_holder +"\',\'"+ReceiveForEachSnap.key+"\',\'"+count+"\');}else{ event.preventDefault();}\"><button type='submit' class=' btn btn-primary btn-md btn-block'><strong> Receive</strong></button></form></td></tr>" + "</strong></td>"
                                     count++;
+                                }
+                                 else if (ReceiveForEachSnap.val().to == plant && ItemForEachSnap.val().status == 1){
+                                    var date_holder = ForeachMain.key;
+                                    var transmittal_no_holder = ReceiveForEachSnap.val().transmittal_no;
+                                    var from_holder = ReceiveForEachSnap.val().from;
+                                    var delivered_by_holder = ReceiveForEachSnap.val().delivered_by;
+                                    var items_holder = ItemForEachSnap.val().item_Batch;
+                                    var quantity_holder = ItemForEachSnap.val().quantity_Batch;
+                                    var purpose_holder = ItemForEachSnap.val().purpose_batch;
+
+                                    var comment_holder = ItemForEachSnap.val().comment;
+
+                                    tbody += "<tr><td><strong>" + date_holder + "</strong></td>";
+                                    tbody += "<td><strong>" + from_holder + "</strong></td>";
+                                    tbody += "<td><strong>" + delivered_by_holder + "</strong></td>";
+                                    tbody += "<td><strong>" + transmittal_no_holder + "</strong></td>";
+                                    tbody += "<td><strong>" + items_holder + "</strong></td>";
+                                    tbody += "<td><strong>" + quantity_holder + "</strong></td>";
+                                    tbody += "<td><strong>" + purpose_holder + "</strong></td>";
+                                    tbody += "<td><strong>" + comment_holder+ "</strong></td>"
+                                    tbody +=  "<td style='background-color: #33cc33; text-align: center;'><span style='color: white'><strong>ACCEPT</span></td></strong></tr>"
+                                
                                 }
                             });
                             //endloop
                         });
                 });
                 if (tbody == ""){
-                    tbody ="<tr><td colspan='8' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+                    tbody ="<tr><td colspan='10' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
                     document.getElementById("tbody").innerHTML = tbody;
                 }else{
                     document.getElementById("tbody").innerHTML = tbody;
@@ -379,8 +400,9 @@ function realtimeUpdate(){
                         <!-- <h3 class="page-header"><i class="fa fa-home"></i> History</h3> -->
                         <ol class="breadcrumb">
                             <!-- <li><i class="fa fa-building"></i><?php echo $plant; ?></li> -->
-                            <li><i class="icon_document"></i><a href="diesel.html">Diesel</a></li>             
-                            <li><i class="icon_document"></i>Outgoing Diesel Form</li>             
+                            <li><i class="icon_document"></i><a href="transmittal_input.html">Transmittal Input</a></li>
+                            <li><i class="icon_document"></i><a href="transmittal_outgoing.html">Outgoing Items</a></li>             
+                            <li><i class="icon_document"></i>Incoming Items</li>             
                         </ol>
                     </div>
                 </div>
