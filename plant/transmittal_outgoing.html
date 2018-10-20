@@ -135,6 +135,7 @@
                     
                     // tableData(plant);
                     Display_items();
+                    realtimeUpdate();
 
                     document.getElementById('username').innerHTML = snapshot.val().firstname; 
                 },(error) => {
@@ -151,72 +152,97 @@
 
 function Display_items(){
     var tbody = "";
+    var array = [];
     firebase.database().ref('transmittal_input/').once('value',function(MainReceiveSnapShot){
         MainReceiveSnapShot.forEach(function(ForeachMain){
             firebase.database().ref('transmittal_input/'+'/'+ ForeachMain.key).once('value',function(SecondaryReceiveSnapShot){
                 SecondaryReceiveSnapShot.forEach(function(ReceiveForEachSnap){
                     firebase.database().ref('transmittal_input/'+'/'+ ForeachMain.key+'/'+ReceiveForEachSnap.key+'/Items').once('value',function(mainItem){
-                      
                         mainItem.forEach(function(ItemForEachSnap){
-                            if (ReceiveForEachSnap.val().from ==plant) {
-                                if (ItemForEachSnap.val().status == 1) {
-                                    var date_holder = ForeachMain.key;
+                             var date_holder = ForeachMain.key;
                                     var transmittal_no_holder = ReceiveForEachSnap.val().transmittal_no;
-                                    var from_holder = ReceiveForEachSnap.val().to;
+                                    var from_holder = ReceiveForEachSnap.val().from;
+                                    var to_holder = ReceiveForEachSnap.val().to;
                                     var delivered_by_holder = ReceiveForEachSnap.val().delivered_by;
                                     var items_holder = ItemForEachSnap.val().item_Batch;
                                     var quantity_holder = ItemForEachSnap.val().quantity_Batch;
                                     var purpose_holder = ItemForEachSnap.val().purpose_batch;
+                                    var receive_date_holder = ItemForEachSnap.val().receive_date;
+                                    var status_holder = ItemForEachSnap.val().status;
+
                                     var comment_holder = ItemForEachSnap.val().comment;
-                                    
-                                    tbody += "<tr><td><strong>" + date_holder + "</strong></td>";
-                                    tbody += "<td><strong>" + from_holder + "</strong></td>";
-                                    tbody += "<td><strong>" + delivered_by_holder + "</strong></td>";
-                                    tbody += "<td><strong>" + transmittal_no_holder + "</strong></td>";
-                                    tbody += "<td><strong>" + items_holder + "</strong></td>";
-                                    tbody += "<td><strong>" + quantity_holder + "</strong></td>";
-                                    tbody += "<td><strong>" + purpose_holder + "</strong></td>";
-                                    tbody += "<td><strong>" + comment_holder + "</strong></td>";
-                                    tbody +=  "<td style='background-color: #33cc33; text-align: center;'><span style='color: white'><strong>ACCEPTED</span></td></strong></tr>"
-                                   
+
+                                    var rowData = {
+                                    key: ReceiveForEachSnap.key,
+                                    item_key: ItemForEachSnap.key,
+                                    receive: receive_date_holder,
+                                    date_holder: date_holder,
+                                    from_plant: from_holder,
+                                    to_plant: to_holder,
+                                    delivered_by: delivered_by_holder,
+                                    transmittal_no: transmittal_no_holder,
+                                    item_no: items_holder,
+                                    quantity: quantity_holder,
+                                    purpose: purpose_holder,
+                                    comment: comment_holder,
+                                    status: status_holder
                                 }
-                                else if (ItemForEachSnap.val().status == 0) {
-                                    var date_holder = ForeachMain.key;
-                                    var transmittal_no_holder = ReceiveForEachSnap.val().transmittal_no;
-                                    var from_holder = ReceiveForEachSnap.val().to;
-                                    var delivered_by_holder = ReceiveForEachSnap.val().delivered_by;
-                                    var items_holder = ItemForEachSnap.val().item_Batch;
-                                    var quantity_holder = ItemForEachSnap.val().quantity_Batch;
-                                    var purpose_holder = ItemForEachSnap.val().purpose_batch;
-                                    var comment_holder = ItemForEachSnap.val().comment;
-                                    
-                                    tbody += "<tr><td><strong>" + date_holder + "</strong></td>";
-                                    tbody += "<td><strong>" + from_holder + "</strong></td>";
-                                    tbody += "<td><strong>" + delivered_by_holder + "</strong></td>";
-                                    tbody += "<td><strong>" + transmittal_no_holder + "</strong></td>";
-                                    tbody += "<td><strong>" + items_holder + "</strong></td>";
-                                    tbody += "<td><strong>" + quantity_holder + "</strong></td>";
-                                    tbody += "<td><strong>" + purpose_holder + "</strong></td>";
-                                    tbody += "<td><strong>" + comment_holder + "</strong></td>";
-                                    tbody +=  "<td style='background-color: #ff1a1a; text-align: center;'><span style='color: white'><strong>ONGOING</span></td></strong></tr>"
-                                    
-                                }
-                            }
-                        });
-                        //endloop
-                         if (tbody == ""){
-                            tbody ="<tr><td colspan='8' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
-                            document.getElementById("tbody").innerHTML = tbody;
-                        }else{
-                             document.getElementById("tbody").innerHTML = tbody;
-                        }
+
+                                array.push(rowData);
+                            });
                     });
                 });
-                     $(".se-pre-con").fadeOut("slow");
             });
+
         });
+        array.sort(function(a,b){
+            return Number(a.status) - Number(b.status);
+
+        });
+        for(var a = 0; a < array.length; a++){
+            var date_holder = array[a].date_holder;
+            var key = array[a].key;
+            var item_key = array[a].item_key;
+            var delivered_by = array[a].delivered_by;
+            var from_plant = array[a].from_plant;
+            var to_plant = array[a].to_plant;
+            var transmittal_no = array[a].transmittal_no;
+            var comment = array[a].comment;
+            var item_no = array[a].item_no;
+            var purpose = array[a].purpose;
+            var quantity = array[a].quantity;
+            var receive = array[a].receive;
+            var status = array[a].status;
+
+            if(from_plant == plant){
+
+                if(status == 0){
+                    tbody += "<tr><td><strong>" + date_holder + "</strong></td>";
+                    tbody += "<td><strong>" + to_plant + "</strong></td>";
+                    tbody += "<td><strong>" + delivered_by + "</strong></td>";
+                    tbody += "<td><strong>" + transmittal_no + "</strong></td>";
+                    tbody += "<td><strong>" + item_no + "</strong></td>";
+                    tbody += "<td><strong>" + quantity + "</strong></td>";
+                    tbody += "<td><strong>" + purpose + "</strong></td>";
+                    tbody += "<td><strong>" + comment + "</strong></td>";
+                    tbody += "<td class='text_center' style='background-color: #ff1a1a; color: white; text-align: center'><strong>ONGOING</strong></td></tr>";
+                }else if(status == 1){
+                    tbody += "<tr><td><strong>" + date_holder + "</strong></td>";
+                    tbody += "<td><strong>" + to_plant + "</strong></td>";
+                    tbody += "<td><strong>" + delivered_by + "</strong></td>";
+                    tbody += "<td><strong>" + transmittal_no + "</strong></td>";
+                    tbody += "<td><strong>" + item_no + "</strong></td>";
+                    tbody += "<td><strong>" + quantity + "</strong></td>";
+                    tbody += "<td><strong>" + purpose + "</strong></td>";
+                    tbody += "<td><strong>" + comment + "</strong></td>";
+                    tbody += "<td class='text_center' style='background-color: #33cc33; color: white; text-align:center'><strong>ACCEPTED</strong></td></tr>";
+                }
+            }
+            document.getElementById('tbody').innerHTML = tbody;
+       
+        }
+             $(".se-pre-con").fadeOut("slow");
     });
- 
 }
 
 function ReceiveRowData(key,date,receive,count){
@@ -226,13 +252,15 @@ function ReceiveRowData(key,date,receive,count){
     var receive_date_holder = new Date();
     var option = {year: "numeric", month: "long", day: "numeric"};
     receive_date_holder = new Date(receive_date_holder).toLocaleDateString('en',option);
+    var receive_time_holder = new Date().toLocaleTimeString('en');
 
     firebase.database().ref('transmittal_input/'+date+'/'+receive+'/Items/'+key).once('value',function(MainReceiveSnapShot){
 
         var update_item_holder = {
             comment: comment_holder,
             receive_date: receive_date_holder,
-            status:"1"
+            status:"1",
+            receive_time: receive_time_holder
         }
 
         firebase.database().ref('transmittal_input/'+date+'/'+receive+'/Items/'+key).update(update_item_holder); 
@@ -240,10 +268,19 @@ function ReceiveRowData(key,date,receive,count){
     });
 }
 
+function realtimeUpdate(){
+
+    firebase.database().ref('transmittal_input').on('child_changed',function(){
+        setTimeout(function(){
+           Display_items();
+        },1000);
+    });
+}
+
 </script>    
 </head>
 <body>
-     <div class="se-pre-con"></div>
+      <div class="se-pre-con"></div>
     <!-- container section start -->
     <section id="container" class="">
         <header class="header dark-bg">
@@ -401,7 +438,7 @@ function ReceiveRowData(key,date,receive,count){
                     <div class="col-md-12 col-md-offset-0">
                             <section class="panel">
                                 <header class="panel-heading" style="font-size: 20px; text-align: center;">
-                                  OUTGOING ITEMS
+                                    OUTGOING ITEMS
                                 </header>
                                 <div class="panel-body">
                                     <div class="row">
