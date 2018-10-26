@@ -137,7 +137,7 @@
         });
 
         document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
-        document.getElementById('id_breadcrumb').innerHTML = "<li><i class='icon_document'></i><a href='#'>Transmittal</a></li>";
+        document.getElementById('id_breadcrumb').innerHTML = "<li><i class='icon_document'></i><a href='#'>Transmittal Input</a></li><li><i class='icon_document'></i><a href='transmittal_receive.html'>Incoming Items</a></li><li><i class='icon_document'></i><a href='transmittal_outgoing.html'>Outgoing Items</a></li>";
 
     });
 
@@ -204,7 +204,9 @@
 
 </script>
 <style>
-    
+.text_center{
+    text-align: center;
+}
 </style>
 </head>
 <body>
@@ -327,8 +329,12 @@
                     <div class="row">
                         <div class="col-md-5">
                             <section class="panel">
-                                <header class="panel-heading">
-                                    Transfer Form
+                                <header class="panel-heading text_center">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h4><strong>TRANSFER FORM</strong></h4>
+                                        </div>
+                                    </div>
                                 </header>
                                 <div class="panel-body">
                                     <div class="form-group">
@@ -363,16 +369,20 @@
                         </div>
                         <div class="col-md-7">
                             <section class="panel">
-                                <header class="panel-heading">
-                                    Item
+                                <header class="panel-heading text_center">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h4><strong>ITEM</strong></h4>
+                                        </div>
+                                    </div>
                                 </header>
                                 <div class="panel-body">
                                     <table class="table table-bordered" id="itemTable">
                                         <thead>
                                             <tr>
-                                                <th class="col-md-4" style="text-align: center;">Item<span class="required" style="color: red;">*</span></th>
-                                                <th class="col-md-2" style="text-align: center;">Quantity<span class="required" style="color: red;">*</span></th>
-                                                <th class="col-md-5" style="text-align: center;">Purpose<span class="required" style="color: red;">*</span></th>
+                                                <th class="col-md-4 text_center">Item<span class="required" style="color: red;">*</span></th>
+                                                <th class="col-md-2 text_center">Quantity<span class="required" style="color: red;">*</span></th>
+                                                <th class="col-md-5 text_center">Purpose<span class="required" style="color: red;">*</span></th>
                                                 <th class="col-md-1"></th>
                                             </tr>
                                         </thead>

@@ -6,7 +6,7 @@
                 displayNotif();
             }, 1000);
         });
-    }
+    }    
     
 	function dateFormat(date){
 

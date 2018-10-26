@@ -109,15 +109,9 @@
         });
 
         document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
-        document.getElementById('id_breadcrumb').innerHTML = "<li><i class='icon_document'></i><a href='#'>Transmittal</a></li><li><i class='icon_document'></i><a href='#'>Incoming Items</a></li>";
+        document.getElementById('id_breadcrumb').innerHTML = "<li><i class='icon_document'></i><a href='transmittal_input.html'>Transmittal Input</a></li><li><i class='icon_document'></i><a href='#'>Incoming Items</a></li><li><i class='icon_document'></i><a href='transmittal_outgoing.html'>Outgoing Items</a></li>";
 
     });
-
-    function SortByName(a, b){
-        var aName = Number(a.status);
-        var bName = Number(b.status); 
-        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-    }
 
     function tableData(){
 
@@ -204,7 +198,7 @@
                         tBody += "<td><strong><input type='text' id='input_comment" + a + "' name='input_comment[]' class='form-control'></strong></td>";
                         tBody += "<td class='text_center'><strong><button type='button' class='btn btn-primary btn-md' onclick=\"if(confirm('Proceed?')){submitForm(\'" + a + "\', \'" + date_holder + "\', \'" + key + "\', \'" + item_key + "\')}else{event.preventDefault();}\"><strong>Receive</strong></button></strong></td></tr>";
 
-                    }else if(to_plant == "Head Office" && status == 1){
+                    }else if(status == 1){
 
                         tBody += "<tr><td><strong>" + date_holder + "</strong></td>";
                         tBody += "<td><strong>" + from_plant + "</strong></td>";
@@ -218,13 +212,11 @@
 
                     }
                 }
-
-                
                 document.getElementById('itemBody').innerHTML = tBody;
                 
             }
 
-
+            $('.se-pre-con').fadeOut('slow');
         });
     }
 
@@ -255,7 +247,7 @@
             status: "1"
         }
 
-        firebase.database().ref('transmittal_input/'+displayDate+'/'+key+'/Items/'+item_key).update(itemData);
+        firebase.database().ref('transmittal_input/'+date+'/'+key+'/Items/'+item_key).update(itemData);
 
         window.location.reload();
     }
@@ -271,7 +263,7 @@
 </style>
 </head>
 <body>
-    
+    <div class="se-pre-con"></div>
     <section id="container" class="">
         <header class="header dark-bg">
             <div class="toggle-nav">

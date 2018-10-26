@@ -109,13 +109,13 @@
         });
 
         document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
-        document.getElementById('id_breadcrumb').innerHTML = "<li><i class='icon_document'></i><a href='#'>Transmittal</a></li><li><i class='icon_document'></i><a href='transmittal_outgoing.html'>Outgoing Items</a></li>";
+        document.getElementById('id_breadcrumb').innerHTML = "<li><i class='icon_document'></i><a href='transmittal_input.html'>Transmittal Input</a></li><li><i class='icon_document'></i><a href='transmittal_receive.html'>Incoming Items</a></li><li><i class='icon_document'></i><a href='#'>Outgoing Items</a></li>";
     });
 
     function tableData(){
 
         var tBody = "";
-        count = 0;
+        var array = [];
 
         firebase.database().ref('transmittal_input').once('value', function(dateSnapshot){
             dateSnapshot.forEach(function(dateChildSnapshot){
@@ -137,49 +137,86 @@
                                 var purpose = itemChildSnapshot.val().purpose_batch;
                                 var quantity = itemChildSnapshot.val().quantity_Batch;
                                 var receive = itemChildSnapshot.val().receive_date;
-                                var comment = itemChildSnapshot.val().comment;
                                 var status = itemChildSnapshot.val().status;
 
-                                if(from_plant == "Head Office" && status == 0){
-
-                                    tBody += "<tr><td><strong>" + date_holder + "</strong></td>";
-                                    tBody += "<td><strong>" + to_plant + "</strong></td>";
-                                    tBody += "<td><strong>" + delivered_by + "</strong></td>";
-                                    tBody += "<td><strong>" + transmittal_no + "</strong></td>";
-                                    tBody += "<td><strong>" + item_no + "</strong></td>";
-                                    tBody += "<td><strong>" + quantity + "</strong></td>";
-                                    tBody += "<td><strong>" + purpose + "</strong></td>";
-                                    tBody += "<td><strong>" + comment + "</strong></td>";
-                                    tBody += "<td class='text_center' style='background-color: #ff1a1a; color: white; vertical-align: middle;'><strong>ONGOING</strong></td></tr>";
-
-                                }else if(from_plant == "Head Office" && status == 1){
-
-                                    tBody += "<tr><td><strong>" + date_holder + "</strong></td>";
-                                    tBody += "<td><strong>" + to_plant + "</strong></td>";
-                                    tBody += "<td><strong>" + delivered_by + "</strong></td>";
-                                    tBody += "<td><strong>" + transmittal_no + "</strong></td>";
-                                    tBody += "<td><strong>" + item_no + "</strong></td>";
-                                    tBody += "<td><strong>" + quantity + "</strong></td>";
-                                    tBody += "<td><strong>" + purpose + "</strong></td>";
-                                    tBody += "<td><strong>" + comment + "</strong></td>";
-                                    tBody += "<td class='text_center' style='background-color: #33cc33; color: white; vertical-align: middle;'><strong>ACCEPTED</strong></td></tr>";
-            
+                                var rowData = {
+                                    date_holder: date_holder,
+                                    key: key,
+                                    item_key: item_key,
+                                    delivered_by, delivered_by,
+                                    from_plant: from_plant,
+                                    to_plant: to_plant,
+                                    transmittal_no: transmittal_no,
+                                    comment: comment,
+                                    item_no: item_no,
+                                    purpose: purpose,
+                                    quantity: quantity,
+                                    receive: receive,
+                                    status: status
                                 }
-                                
-                                count++;
+
+                                array.push(rowData);
                             });
 
-                            if(count == 0){
-                                tBody = "<tr><td colspan='9' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
-
-                                document.getElementById('itemBody').innerHTML = tBody;
-                            }else{
-                                document.getElementById('itemBody').innerHTML = tBody;
-                            }
                         });
+                        console.log(array.length);
                     });              
                 });
             });
+
+            array.sort(function(a, b){
+
+                return Number(a.status) - Number(b.status);
+            });
+            // console.log(array.length);
+            for(var a = 0; a < array.length; a++){
+
+                var date_holder = array[a].date_holder;
+                var key = array[a].key;
+                var item_key = array[a].item_key;
+                var delivered_by = array[a].delivered_by;
+                var from_plant = array[a].from_plant;
+                var to_plant = array[a].to_plant;
+                var transmittal_no = array[a].transmittal_no;
+                var comment = array[a].comment;
+                var item_no = array[a].item_no;
+                var purpose = array[a].purpose;
+                var quantity = array[a].quantity;
+                var receive = array[a].receive;
+                var status = array[a].status;
+
+                if(from_plant == "Head Office"){
+
+                    if(status == 0){
+
+                        tBody += "<tr><td><strong>" + date_holder + "</strong></td>";
+                        tBody += "<td><strong>" + to_plant + "</strong></td>";
+                        tBody += "<td><strong>" + delivered_by + "</strong></td>";
+                        tBody += "<td><strong>" + transmittal_no + "</strong></td>";
+                        tBody += "<td><strong>" + item_no + "</strong></td>";
+                        tBody += "<td><strong>" + quantity + "</strong></td>";
+                        tBody += "<td><strong>" + purpose + "</strong></td>";
+                        tBody += "<td><strong>" + comment + "</strong></td>";
+                        tBody += "<td class='text_center' style='background-color: #ff1a1a; color: white; vertical-align: middle;'><strong>ONGOING</strong></td></tr>";
+
+                    }else if(status == 1){
+
+                        tBody += "<tr><td><strong>" + date_holder + "</strong></td>";
+                        tBody += "<td><strong>" + to_plant + "</strong></td>";
+                        tBody += "<td><strong>" + delivered_by + "</strong></td>";
+                        tBody += "<td><strong>" + transmittal_no + "</strong></td>";
+                        tBody += "<td><strong>" + item_no + "</strong></td>";
+                        tBody += "<td><strong>" + quantity + "</strong></td>";
+                        tBody += "<td><strong>" + purpose + "</strong></td>";
+                        tBody += "<td><strong>" + comment + "</strong></td>";
+                        tBody += "<td class='text_center' style='background-color: #33cc33; color: white; vertical-align: middle;'><strong>ACCEPTED</strong></td></tr>";
+                    }
+
+                    document.getElementById('itemBody').innerHTML = tBody;
+                }
+            }
+
+            $('.se-pre-con').fadeOut('slow');
         });
     }
 
@@ -203,6 +240,7 @@
 </style>
 </head>
 <body>
+    <div class="se-pre-con"></div>
     <section id="container" class="">
         <header class="header dark-bg">
             <div class="toggle-nav">
