@@ -345,7 +345,6 @@ function dateData(){
 
     firebase.database().ref('Daily_Production_Report/'+ plant).orderByChild('timestamp').once('value', function(dateSnapshot){
 
-        
         selectDp += "<option value=''>Select</option>";
 
         if(dateSnapshot.val() != null){
@@ -376,14 +375,18 @@ function prodType(date_val){
 
                 count = 1;
 
+                selectDp += "<option value=''>Select</option>";
+
                 dateSnapshot.forEach(function(dateChildSnapshot){
 
                     if(count < 6){
 
                         type = "dateChildSnapshot.val().machine"+count+"_cementType";
                         con_type = eval(type);
+                        status = "dateChildSnapshot.val().machine"+count+"_status";
+                        con_status = eval(status);
 
-                        if(con_type != ''){
+                        if(con_type != '' && con_status != '0'){
                             selectDp += "<option value='" + con_type + "'>" + con_type + "</option>";
                         }
 
@@ -414,6 +417,7 @@ function submitProduction(){
     var rejected = document.getElementById('rejected').value;
     var con_type = "";
     var con_batches = "";
+    var con_status = "";
     var output_per_batch = 0;
 
     var timestamp_date = new Date(date_selected).toLocaleDateString('en');
@@ -437,14 +441,14 @@ function submitProduction(){
                     batches = "dateChildSnapshot.val().machine"+count+"_total_batch";
                     con_batches = eval(batches);
 
-                    
+                    status = "machine"+count+"_status";
+
+                    machinename = "Machine"+count;
 
                     if(con_type == production_type){
 
                         output_per_batch = Number(actual) / Number(con_batches);
                         output_per_batch = Number(output_per_batch).toFixed(2);
-
-                        // console.log(con_type, con_batches, actual, production_type, Number(output_per_batch).toFixed(2));
 
                         var prodData = {
 
@@ -460,10 +464,14 @@ function submitProduction(){
 
                         if(firebase.database().ref('daily_actual_production/'+plant).push(prodData)){
 
+                            var updateStatus = {};
+                            updateStatus[status] = "0";
+
+                            firebase.database().ref('Daily_Production_Report/'+plant+'/'+date_selected+'/'+machinename).update(updateStatus);
+
                             alert("Success");
                             window.location.reload();
                         }
-                        
                     }
 
                     count++;
