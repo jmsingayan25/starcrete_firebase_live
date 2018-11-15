@@ -129,7 +129,8 @@
             date_of_batch = new Date().toLocaleDateString('en',option);
         }
 
-        document.getElementById('searched_Date').innerHTML = date_of_batch;
+        document.getElementById('searched_Date').innerHTML = date_of_batch + " <br> Plant: " + plant;
+        document.getElementById('view_btn').innerHTML = "<a href='view_production_report.html?plant=" + plant + "' class='btn btn-md btn-info'><strong>View Reports</strong></a>";
 
         firebase.database().ref('Daily_Production_Report/'+plant+'/'+date_of_batch).once('value', function(dailySnapshot){
 
@@ -452,14 +453,23 @@
                                         <input type="date" name="date_selected" id="date_selected" class="form-control" required>
                                     </div>
 
-                                     <div class="col-md-3 pull-right" style="margin-right: -50px">
-                                        Search Date:  <span id="searched_Date"></span>
+                                    <div class="col-md-2 pull-right" style="margin-right: -50px">
+                                        <span id="view_btn"></span> 
                                     </div>
                                 </div>  
                             </header>
                             <div class="panel-body">
                                 <table class="table table-bordered">
                                     <thead>
+                                        <tr>
+                                            <th colspan="11">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        Date:  <span id="searched_Date"></span>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                        </tr>
                                         <tr>
                                             <th rowspan="4" class="text_center" style="vertical-align: middle;">Time</th>
                                             <th colspan="2" class="text_center">Machine 1</th>

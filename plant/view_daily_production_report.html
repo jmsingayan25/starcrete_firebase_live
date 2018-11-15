@@ -134,6 +134,8 @@
                         window.location.href = '../headoffice/index.html';
                     }
 
+                    dateData();
+
                     if(plant == 'Bravo'){
                         plant_name = "<a href='index.html' class='logo'>Starcrete <span class='lite'>Manufacturing Corporation</span></a>";
                     }else{
@@ -337,6 +339,141 @@ function Go(){
 
 }
 
+function dateData(){
+
+    var selectDp = "";
+
+    firebase.database().ref('Daily_Production_Report/'+ plant).orderByChild('timestamp').once('value', function(dateSnapshot){
+
+        
+        selectDp += "<option value=''>Select</option>";
+
+        if(dateSnapshot.val() != null){
+
+            dateSnapshot.forEach(function(dateChildSnapshot){
+
+                date = new Date(dateChildSnapshot.key).toLocaleDateString('en');
+                selectDp += "<option value='" + dateChildSnapshot.key + "'>" + date + "</option>";
+
+            });
+
+            document.getElementById('dropdown_date').innerHTML = selectDp;
+
+        }
+    });
+
+}
+
+function prodType(date_val){
+
+    var selectDp = "";
+    
+    if(date_val != ""){
+
+        firebase.database().ref('Daily_Production_Report/'+plant+'/'+date_val).once('value', function(dateSnapshot){
+
+            if(dateSnapshot.val() != null){
+
+                count = 1;
+
+                dateSnapshot.forEach(function(dateChildSnapshot){
+
+                    if(count < 6){
+
+                        type = "dateChildSnapshot.val().machine"+count+"_cementType";
+                        con_type = eval(type);
+
+                        if(con_type != ''){
+                            selectDp += "<option value='" + con_type + "'>" + con_type + "</option>";
+                        }
+
+                        count++;
+                    }
+                });
+
+                document.getElementById('dropdown_type').innerHTML = selectDp;
+
+            }else{
+                document.getElementById('dropdown_type').innerHTML = "<option value=''>Select</option>";
+            }
+        });   
+
+    }else{
+        document.getElementById('dropdown_type').innerHTML = "<option value=''>Select</option>";
+    }
+    
+}
+
+function submitProduction(){
+
+    event.preventDefault();
+
+    var date_selected = document.getElementById('dropdown_date').value;
+    var production_type = document.getElementById('dropdown_type').value;
+    var actual = document.getElementById('actual_prod').value;
+    var rejected = document.getElementById('rejected').value;
+    var con_type = "";
+    var con_batches = "";
+    var output_per_batch = 0;
+
+    var timestamp_date = new Date(date_selected).toLocaleDateString('en');
+    var timestamp = new Date(timestamp_date).getTime();
+    timestamp = timestamp * -1;
+
+    console.log(timestamp, timestamp_date);
+
+    firebase.database().ref('Daily_Production_Report/'+plant+'/'+date_selected).once('value', function(dateSnapshot){
+
+        if(dateSnapshot.val() != null){
+
+            var count = 1;
+
+            dateSnapshot.forEach(function(dateChildSnapshot){
+
+                if(count < 6){
+
+                    type = "dateChildSnapshot.val().machine"+count+"_cementType";
+                    con_type = eval(type);
+                    batches = "dateChildSnapshot.val().machine"+count+"_total_batch";
+                    con_batches = eval(batches);
+
+                    
+
+                    if(con_type == production_type){
+
+                        output_per_batch = Number(actual) / Number(con_batches);
+                        output_per_batch = Number(output_per_batch).toFixed(2);
+
+                        // console.log(con_type, con_batches, actual, production_type, Number(output_per_batch).toFixed(2));
+
+                        var prodData = {
+
+                            actual: actual,
+                            date: date_selected,
+                            item_no: production_type,
+                            output: output_per_batch,
+                            reject: rejected,
+                            timestamp: timestamp,
+                            total: con_batches
+
+                        }
+
+                        if(firebase.database().ref('daily_actual_production/'+plant).push(prodData)){
+
+                            alert("Success");
+                            window.location.reload();
+                        }
+                        
+                    }
+
+                    count++;
+                }
+            });
+        }
+    });
+
+}
+
 function datePrint()
 {
     if(document.getElementById('date_selected').value != ""){
@@ -511,7 +648,7 @@ function datePrint()
                     <div class="col-md-12">
                         <ol class="breadcrumb">
                             <li><i class="icon_document"></i><a href="batch_report_input.html">Daily Production Input</a></li>                       
-                            <li><i class="icon_document"></i>Daily Production Report/li>                       
+                            <li><i class="icon_document"></i>Daily Production Report</li>                       
                         </ol>
                     </div>
                 </div>
@@ -531,6 +668,58 @@ function datePrint()
                                     Date:
                                 </div>
                                 <button type="submit" id = "submitGo" class="btn btn-md btn-info" style="" onclick="Go()"><strong>Go</strong></button>
+                                <button type="button" id="add_prod" class="btn btn-md btn-success" data-toggle="modal" data-target="#prod_modal"><strong>Add Production</strong></button>
+
+                                <div class="modal fade" id="prod_modal" tabindex="-1" role="dialog" aria-labelledby="prod_modalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="prod_modalLabel"><strong>Production Form</strong></h4>
+                                                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button> -->
+                                            </div>
+                                            <div class="modal-body">
+                                                <form class="form-horizontal">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="dropdown_date" class="col-md-3 control-label">Date</label>
+                                                                <div class="col-md-8">
+                                                                    <select id="dropdown_date" class="form-control" onchange="prodType(this.value);"></select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="dropdown_type" class="col-md-3 control-label">Production Type</label>
+                                                                <div class="col-md-8">
+                                                                    <select id="dropdown_type" class="form-control" >
+                                                                        <option value=''>Select</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="actual_prod" class="col-md-3 control-label">Actual Production</label>
+                                                                <div class="col-md-8">
+                                                                    <input type="text" id="actual_prod" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="rejected" class="col-md-3 control-label">Rejected</label>
+                                                                <div class="col-md-8">
+                                                                    <input type="text" id="rejected" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><strong>Close</strong></button>
+                                                <button type="button" class="btn btn-primary" onclick="if(confirm('Proceed?')){ submitProduction();}else{ event.preventDefault(); }"><strong>Done</strong></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-md-2">
                                     <input type="date" name="date_selected" id="date_selected" class="form-control" required>
                                 </div>
