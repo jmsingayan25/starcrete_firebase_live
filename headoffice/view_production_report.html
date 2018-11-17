@@ -366,10 +366,12 @@
 
                     var production = reportChildSnapshot.val().actual;
                     var date = reportChildSnapshot.val().date;
+                    date = new Date(date).toLocaleDateString('en');
                     var item = reportChildSnapshot.val().item_no;
                     var output = reportChildSnapshot.val().output;
                     var reject = reportChildSnapshot.val().reject;
                     var total = reportChildSnapshot.val().total;
+                    total = Number(total).toFixed(2);
                     
                     myTbody += "<tr><td class='text_center'><strong>" + date + "</strong></td>";
                     myTbody += "<td class='text_center'><strong>" + item + "</strong></td>";
@@ -409,6 +411,7 @@
                 reportSnapshot.forEach(function(reportChildSnapshot){
 
                     var date = reportChildSnapshot.key;
+                    date1 = new Date(date).toLocaleDateString('en');
                     var total_bags1 = 0;
                     var total_bags2 = 0;
                     var total_bags3 = 0;
@@ -416,7 +419,7 @@
                     var total_bags5 = 0;
                     
 
-                    myTbody += "<tr><td class='text_center'><strong>" + date + "</strong></td>";
+                    myTbody += "<tr><td class='text_center'><strong>" + date1 + "</strong></td>";
                     myTbody += "<td class='text_center'><strong><span id='machine1Total"+machine1_cd+"'></span></strong>";
 
                     firebase.database().ref('Daily_Production_Report/'+plant+'/'+date+'/Machine1').once('value', function(machine1Snapshot){
@@ -426,6 +429,7 @@
 
                         total_bags1 = (Number(cement_kg) * Number(total_batch)) / 40; 
                         // console.log(date, total_bags1); 
+                        total_bags1 = Number(total_bags1).toFixed(2);
 
                         document.getElementById("machine1Total"+machine1_ct).innerHTML = Number(total_bags1).toLocaleString('en') + " bag(s)";
 
@@ -444,6 +448,7 @@
 
                         total_bags2 = (Number(cement_kg) * Number(total_batch)) / 40; 
                         // console.log(total_bags2); 
+                        total_bags2 = Number(total_bags2).toFixed(2);
 
                         document.getElementById("machine2Total"+machine2_ct).innerHTML = Number(total_bags2).toLocaleString('en') + " bag(s)";
 
@@ -462,6 +467,7 @@
 
                         total_bags3 = (Number(cement_kg) * Number(total_batch)) / 40; 
                         // console.log(total_bags3); 
+                        total_bags3 = Number(total_bags3).toFixed(2);
 
                         document.getElementById("machine3Total"+machine3_ct).innerHTML = Number(total_bags3).toLocaleString('en') + " bag(s)";
 
@@ -480,6 +486,7 @@
 
                         total_bags4 = (Number(cement_kg) * Number(total_batch)) / 40; 
                         // console.log(total_bags4); 
+                        total_bags4 = Number(total_bags4).toFixed(2);
 
                         document.getElementById("machine4Total"+machine4_ct).innerHTML = Number(total_bags4).toLocaleString('en') + " bag(s)";
 
@@ -498,6 +505,7 @@
 
                         total_bags5 = (Number(cement_kg) * Number(total_batch)) / 40; 
                         // console.log(total_bags5); 
+                        total_bags5 = Number(total_bags5).toFixed(2);
 
                         document.getElementById("machine5Total"+machine5_ct).innerHTML = Number(total_bags5).toLocaleString('en') + " bag(s)";
 
@@ -519,7 +527,7 @@
         }
     }
 
-    
+
 
 </script>
 <style>
