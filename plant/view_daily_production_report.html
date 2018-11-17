@@ -119,7 +119,11 @@
                     $this.val( function() {
                         return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
                     } );
-        } ); 
+        }); 
+
+        $('#prod_modal').on('hidden.bs.modal', function () {
+            $(this).find('form').trigger('reset');
+        });
 
         firebase.auth().onAuthStateChanged(function(user) {
             if (user != null) {
@@ -342,8 +346,9 @@ function Go(){
 function dateData(){
 
     var selectDp = "";
+    var dateArray = [];
 
-    firebase.database().ref('Daily_Production_Report/'+ plant).orderByChild('timestamp').once('value', function(dateSnapshot){
+    firebase.database().ref('Daily_Production_Report/'+plant).orderByChild('timestamp').once('value', function(dateSnapshot){
 
         selectDp += "<option value=''>Select</option>";
 
@@ -351,13 +356,64 @@ function dateData(){
 
             dateSnapshot.forEach(function(dateChildSnapshot){
 
-                date = new Date(dateChildSnapshot.key).toLocaleDateString('en');
-                selectDp += "<option value='" + dateChildSnapshot.key + "'>" + date + "</option>";
+                var data = {
+                    date: dateChildSnapshot.key
+                }
+
+                dateArray.push(data);
 
             });
+            
+            count = 0;
+            for(a = 0; a < dateArray.length; a++){
 
-            document.getElementById('dropdown_date').innerHTML = selectDp;
+                // console.log('Daily_Production_Report/'+plant+'/'+dateArray[a].date);
 
+                firebase.database().ref('Daily_Production_Report/'+plant+'/'+dateArray[a].date).once('value', function(snapshot){
+
+                    // if(snapshot.key == date){
+                    //     console.log(snapshot.key, date);
+                    // }
+                    // var status = snapshot.val().machine1_status;
+                    // var type = snapshot.val().machine1_cementType;
+
+                    // console.log(snapshot.val());
+
+                    machineCount = 1;
+                    var array = [];
+                    snapshot.forEach(function(snapChildshot){
+
+                        if(machineCount < 6){
+
+                            var machinename = "Machine"+machineCount;
+                            var machinevarname = "machine"+machineCount;
+
+                            firebase.database().ref('Daily_Production_Report/'+plant+'/'+snapshot.key+'/'+machinename).once('value', function(machineSnapshot){
+
+                                type = "machineSnapshot.val()."+machinevarname+"_cementType";
+                                con_type = eval(type);
+                                status = "machineSnapshot.val()."+machinevarname+"_status";
+                                con_status = eval(status);
+
+                                if(con_status == '0' && con_type != ''){
+
+                                    if(array.indexOf(snapshot.key) == -1){
+
+                                        array.push(snapshot.key);
+                                        console.log(snapshot.key, type);
+
+                                        date = new Date(snapshot.key).toLocaleDateString('en');
+                                        selectDp += "<option value='" + snapshot.key + "'>" + date + "</option>";
+
+                                        document.getElementById('dropdown_date').innerHTML = selectDp;
+                                    }
+                                }
+                            });
+                            machineCount++;
+                        }
+                    });
+                });
+            }
         }
     });
 
@@ -385,8 +441,12 @@ function prodType(date_val){
                         con_type = eval(type);
                         status = "dateChildSnapshot.val().machine"+count+"_status";
                         con_status = eval(status);
+                        total = "dateChildSnapshot.val().machine"+count+"_total_batch";
+                        con_total = eval(total);
 
-                        if(con_type != '' && con_status != '0'){
+                        if(con_type != '' && con_status == '1' && con_total != '0'){
+                            selectDp += "<option value='#'>" + con_type + " (With Actual Production Output)</option>";
+                        }else if(con_type != '' && con_status == '0' && con_total != '0'){
                             selectDp += "<option value='" + con_type + "'>" + con_type + "</option>";
                         }
 
@@ -405,6 +465,17 @@ function prodType(date_val){
         document.getElementById('dropdown_type').innerHTML = "<option value=''>Select</option>";
     }
     
+}
+
+function btnDisable(val){
+
+    console.log(val);
+
+    if(val == "#"){
+        document.getElementById("btn_prod").disabled = true;
+    }else{
+        document.getElementById("btn_prod").disabled = false;
+    }
 }
 
 function submitProduction(){
@@ -465,7 +536,7 @@ function submitProduction(){
                         if(firebase.database().ref('daily_actual_production/'+plant).push(prodData)){
 
                             var updateStatus = {};
-                            updateStatus[status] = "0";
+                            updateStatus[status] = "1";
 
                             firebase.database().ref('Daily_Production_Report/'+plant+'/'+date_selected+'/'+machinename).update(updateStatus);
 
@@ -700,7 +771,7 @@ function datePrint()
                                                             <div class="form-group">
                                                                 <label for="dropdown_type" class="col-md-3 control-label">Production Type</label>
                                                                 <div class="col-md-8">
-                                                                    <select id="dropdown_type" class="form-control" >
+                                                                    <select id="dropdown_type" class="form-control" onchange="btnDisable(this.value);">
                                                                         <option value=''>Select</option>
                                                                     </select>
                                                                 </div>
@@ -723,7 +794,7 @@ function datePrint()
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><strong>Close</strong></button>
-                                                <button type="button" class="btn btn-primary" onclick="if(confirm('Proceed?')){ submitProduction();}else{ event.preventDefault(); }"><strong>Done</strong></button>
+                                                <button type="button" id="btn_prod" class="btn btn-primary" onclick="if(confirm('Proceed?')){ submitProduction();}else{ event.preventDefault(); }"><strong>Done</strong></button>
                                             </div>
                                         </div>
                                     </div>
