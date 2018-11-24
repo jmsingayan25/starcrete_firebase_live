@@ -311,13 +311,15 @@
             document.getElementById('not_comment_section').style.display = "block";
             document.getElementById('id_option').innerHTML = "<strong>" + headline + "</strong>";
 
+            $('.button_add').show();
+
             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(optionSnapshot){
 
-                optionTable += "<tr><td><table class='table'><thead><tr><th class='col-md-2 header_center'>Forklift No.</th><th class='col-md-5 header_center'>Operator</th><th class='col-md-5 header_center'>Comment</th></tr></thead><tbody>";
+                optionTable += "<tr><td><table class='table'><thead><tr><th class='col-md-2 header_center'>Forklift No.</th><th class='col-md-4 header_center'>Operator</th><th class='col-md-5 header_center'>Comment</th><th class='col-md-1'></th></tr></thead><tbody>";
 
                 optionSnapshot.forEach(function(optionChildSnapshot){
 
-                    optionTable += "<tr align='center'><input type='hidden' name='hidden_forklift_no[]' value='" + optionChildSnapshot.val().forklift_no + "'><td><strong>" + optionChildSnapshot.val().forklift_no + "</strong></td><td><input type='text' name='update_operator[]' value='" + optionChildSnapshot.val().operator + "' class='form-control input_type'></td><td><input type='text' name='update_operator_comment[]' value='" + optionChildSnapshot.val().comment + "' class='form-control input_type'></td></tr>";
+                    optionTable += "<tr align='center'><input type='hidden' name='hidden_forklift_no[]' value='" + optionChildSnapshot.val().forklift_no + "'><td><strong>" + optionChildSnapshot.val().forklift_no + "</strong></td><td><input type='text' name='update_operator[]' value='" + optionChildSnapshot.val().operator + "' class='form-control input_type'></td><td><input type='text' name='update_operator_comment[]' value='" + optionChildSnapshot.val().comment + "' class='form-control input_type'></td><td><button type='button' class='btn btn-danger btn-md' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + optionChildSnapshot.key + "\");}else{ event.preventDefault();}'><strong>Remove</strong></button></td></tr>";
 
                 });
 
@@ -488,6 +490,27 @@
         }else if(option == "nonskid1" || option == "nonskid2" || option == "nonskid3" || option == "nonskid4" || option == "new_nonskid1" || option == "new_nonskid2" || option == "new_nonskid3" || option == "new_nonskid4"){
 
             $("#employee_table tr:last").before("<tr id='employee_row" + $rowno + "'><td class='col-md-6'><input type='text' name='update_employee_name[]' class='form-control input_type' required></td><td class='col-md-5'><select name='update_pos[]' id='update_id" + $rowno + "' class='form-control'><option value='HELPER'>HELPER</option><option value='OPERATOR'>OPERATOR</option></select></td><td class='col-md-1'><button type='button' class='btn btn-danger btn-md' onclick=remove_employee_row('employee_row" + $rowno + "')><strong>Remove</strong></button></td></tr>");
+
+        }else if(option == "forklift_operator"){
+
+            $("#employee_table tr:last").before("<tr id='employee_row" + $rowno + "'><td class='col-md-2'><select id='forklistList"+$rowno+"' name='hidden_forklift_no[]' class='form-control'></select></td><td class='col-md-4'><input type='text' name='update_employee_name[]' class='form-control'></td><td class='col-md-5'><input type='text' name='update_operator_comment[]' class='form-control'></td><td class='col-md-1'><button type='button' class='btn btn-danger btn-md' onclick=remove_employee_row('employee_row" + $rowno + "')><strong>Remove</strong></button></td></tr>");
+
+            var optionList = "";
+            firebase.database().ref('forklift_list/'+plant).orderByChild('item').once('value', function(snapshot){
+
+                optionList += "<option value=''>Select</option>";
+                
+                snapshot.forEach(function(childSnapshot){
+
+                    var forklift_no = childSnapshot.val().item;
+
+                    optionList += "<option value='" + forklift_no + "'>" + forklift_no + "</option>";
+                    
+                });
+
+                document.getElementById('forklistList'+$rowno).innerHTML = optionList;
+            });
+
         }
     }
 
@@ -694,6 +717,45 @@
                     });
                 }
             });
+
+        }else if(option == "forklift_operator"){
+
+            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/forklift_operator/'+key).once('value', function(snapshot){
+
+                var employee_name = snapshot.val().operator;
+                var position = snapshot.val().forklift_no;
+
+                var data = {
+                    employee_name: employee_name.toUpperCase(),
+                    employee_position: position
+                }
+
+                if(firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/forklift_operator').push(data)){
+                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/forklift_operator/'+key).remove();
+
+                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/forklift_operator/').once('value', function(snapshot){
+
+                        if(snapshot.val() == null){
+
+                            var data = {
+                                comment: "N/A",
+                                forklift_no: "N/A",
+                                operator: "N/A"
+                            }
+
+                            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/forklift_operator/').push(data);
+
+                            alert("Data has been removed");
+                            window.location.href='lineup2.html';
+
+                        }else{
+                            alert("Data has been removed");
+                            location.reload();
+                        }
+                    });
+                }
+            });
+
         }
     }
 
@@ -956,25 +1018,69 @@
                 query_ext = "new/forklift_operator";
             }
 
-            if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).remove()){
+            firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(snapshot){
 
-                for(a = 0; a < input_forklift_no.length; a++){
+                if(snapshot.val() != null){
 
-                    var forkliftData = {
-                        comment: input_operator_comment[a].toUpperCase() || "N/A",
-                        forklift_no: input_forklift_no[a],
-                        operator: input_operator[a].toUpperCase() || "N/A"
+                    // console.log(snapshot.val());
+
+                    var currentArray = [];
+
+                    snapshot.forEach(function(childSnapshot){
+
+                        var employee_name = childSnapshot.val().operator;
+                        var forklift_no = childSnapshot.val().forklift_no;
+                        var comment = childSnapshot.val().comment;
+
+                        var data = {
+                            employee_name: employee_name.toUpperCase(),
+                            position: forklift_no
+                        }
+
+                        currentArray.push(data);
+
+                    });
+
+                    // console.log(currentArray, {input_forklift_no, input_operator, input_operator_comment});
+                    for(var a = 0; a < input_operator.length; a++){
+
+                        var employee_name = input_operator[a];
+                        var forklift_no = input_forklift_no[a];
+
+                        index = currentArray.findIndex(x => x.employee_name == employee_name);
+
+                        if(index == -1){
+                            var status = 0;
+                        }
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: forklift_no,
+                            status: 0
+                        }
                     }
-
-                    firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).push(forkliftData);
-                    count++;
                 }
+            });
 
-                if(count == input_forklift_no.length){
-                    alert("Data updated successfully");
-                    window.location.href='lineup2.html';
-                }
-            }
+            // if(firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).remove()){
+
+            //     for(a = 0; a < input_forklift_no.length; a++){
+
+            //         var forkliftData = {
+            //             comment: input_operator_comment[a].toUpperCase() || "N/A",
+            //             forklift_no: input_forklift_no[a],
+            //             operator: input_operator[a].toUpperCase() || "N/A"
+            //         }
+
+            //         firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).push(forkliftData);
+            //         count++;
+            //     }
+
+            //     if(count == input_forklift_no.length){
+            //         alert("Data updated successfully");
+            //         window.location.href='lineup2.html';
+            //     }
+            // }
 
         }else if(option == "nonskid1" || option == "nonskid2" || option == "nonskid3" || option == "nonskid4" || option == "new_nonskid1" || option == "new_nonskid2" || option == "new_nonskid3" || option == "new_nonskid4"){
 
