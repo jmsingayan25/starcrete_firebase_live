@@ -136,6 +136,7 @@
         var myTableRow5 = "";
         var myTableRow6 = "";
         var myTableRow7 = "";
+        
 
         input_date = document.getElementById('input_date').value;
 
@@ -152,6 +153,1088 @@
         document.getElementById('id_date').innerHTML = "<th colspan='4'>Date: " + currentDate + " <button class='btn btn-success btn-md btn-print' onclick=\"tablePrint('old');\" style='float: right;'><span class='fa fa-print'></span> <strong>Print Preview</strong></button> <br> Plant: " + plant + "<br> Result: <span id='id_record'></span> <br> <span id='id_time'></span> </th>";
 
         document.getElementById('link_comment_update').innerHTML = "<a href='lineup_update.html?plant=" + plant + "&option=comment&date=" + passcurrentDate + "'>Update</a>";
+
+/*        var fieldList = {
+            "field": [
+                {"fname": "machine1", "btn": "#btnm1", "list": "machine1_update_list"},
+                {"fname": "machine3", "btn": "#btnm3", "list": "machine3_update_list"},
+                {"fname": "forklift_operator", "btn": "#btnforklift", "list": "forklift_update_list"},
+                {"fname": "mechanic", "btn": "#btnmechanic", "list": "mechanic_update_list"},
+                {"fname": "nonskid1", "btn": "#btnns1", "list": "nonskid1_update_list"},
+                {"fname": "nonskid2", "btn": "#btnns2", "list": "nonskid2_update_list"},
+                {"fname": "nonskid3", "btn": "#btnns3", "list": "nonskid3_update_list"},
+                {"fname": "nonskid4", "btn": "#btnns4", "list": "nonskid4_update_list"},
+                {"fname": "tagapukpok", "btn": "#btntagapukpok", "list": "tagapukpok_update_list"},
+                {"fname": "checker", "btn": "#btnchecker", "list": "checker_update_list"},
+                {"fname": "kamador", "btn": "#btnkamador", "list": "kamador_update_list"},
+                {"fname": "loader", "btn": "#btnloader", "list": "loader_update_list"},
+                {"fname": "others", "btn": "#btnothers", "list": "others_update_list"},
+            ]
+        }
+
+        for(var i = 0; i < fieldList['field'].length; i++){
+
+            var myUpdateList = "";
+
+            var fieldName = fieldList['field'][i].fname;
+            var fieldBtn = fieldList['field'][i].btn;
+            var fieldBody = fieldList['field'][i].list;
+
+            firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/'+fieldName).orderByChild('status').once('value', function(snapshot){
+
+                if(snapshot.val() != null){
+
+                    $(fieldBtn).show();
+
+                    var inArray = [];
+                    var outArray = [];
+
+                    snapshot.forEach(function(childSnapshot){
+
+                        // console.log(childSnapshot.val());
+
+                        var employee_name = childSnapshot.val().employee_name;
+                        var employee_position = childSnapshot.val().employee_position;
+                        var status = childSnapshot.val().status;
+
+                        if(status == 0){
+
+                            var data = {
+                                employee_name: employee_name,
+                                employee_position: employee_position,
+                                status: status
+                            }
+
+                            inArray.push(data);
+
+                        }else if(status == 1){
+
+                            var data = {
+                                employee_name: employee_name,
+                                employee_position: employee_position,
+                                status: status
+                            }
+
+                            outArray.push(data);
+                        }
+                    });
+
+                    myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                    for(var a = 0; a < inArray.length; a++){
+
+                        var employee_name = inArray[a].employee_name;
+                        var employee_position = inArray[a].employee_position;
+
+                        myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                    }
+
+                    myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                    for(var a = 0; a < outArray.length; a++){
+
+                        var employee_name = outArray[a].employee_name;
+                        var employee_position = outArray[a].employee_position;
+
+                        myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                        
+                    }
+
+                    myUpdateList += "</tbody></table></div>";
+
+                    document.getElementById(fieldBody).innerHTML = myUpdateList;
+
+                }else{
+                    
+                    $(fieldBtn).hide();
+                } 
+            });
+        }*/
+
+        firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/machine1').orderByChild('status').once('value', function(snapshot){
+
+            var myUpdateList = "";
+
+            if(snapshot.val() != null){
+
+                $('#btnm1').show();
+
+                var inArray = [];
+                var outArray = [];
+
+                snapshot.forEach(function(childSnapshot){
+
+                    var employee_name = childSnapshot.val().employee_name;
+                    var employee_position = childSnapshot.val().employee_position;
+                    var status = childSnapshot.val().status;
+
+                    if(status == 0){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        inArray.push(data);
+
+                    }else if(status == 1){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        outArray.push(data);
+                    }
+                });
+
+                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < inArray.length; a++){
+
+                    var employee_name = inArray[a].employee_name;
+                    var employee_position = inArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                }
+
+                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < outArray.length; a++){
+
+                    var employee_name = outArray[a].employee_name;
+                    var employee_position = outArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                    
+                }
+
+                myUpdateList += "</tbody></table></div>";
+
+                document.getElementById('machine1_update_list').innerHTML = myUpdateList;
+            }else{
+                
+                $('#btnm1').hide();
+            }
+        });
+
+        firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/machine3').orderByChild('status').once('value', function(snapshot){
+
+            var myUpdateList = "";
+
+            if(snapshot.val() != null){
+
+                $('#btnm3').show();
+
+                var inArray = [];
+                var outArray = [];
+
+                snapshot.forEach(function(childSnapshot){
+
+                    var employee_name = childSnapshot.val().employee_name;
+                    var employee_position = childSnapshot.val().employee_position;
+                    var status = childSnapshot.val().status;
+
+                    if(status == 0){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        inArray.push(data);
+
+                    }else if(status == 1){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        outArray.push(data);
+                    }
+                });
+
+                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < inArray.length; a++){
+
+                    var employee_name = inArray[a].employee_name;
+                    var employee_position = inArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                }
+
+                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < outArray.length; a++){
+
+                    var employee_name = outArray[a].employee_name;
+                    var employee_position = outArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                    
+                }
+
+                myUpdateList += "</tbody></table></div>";
+
+                document.getElementById('machine3_update_list').innerHTML = myUpdateList;
+
+            }else{
+                
+                $('#btnm3').hide();
+            }
+        });
+
+        firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/forklift_operator').orderByChild('status').once('value', function(snapshot){
+
+            var myUpdateList = "";
+
+            if(snapshot.val() != null){
+
+                $('#btnforklift').show();
+
+                var inArray = [];
+                var outArray = [];
+
+                snapshot.forEach(function(childSnapshot){
+
+                    var employee_name = childSnapshot.val().employee_name;
+                    var employee_position = childSnapshot.val().employee_position;
+                    var status = childSnapshot.val().status;
+
+                    if(status == 0){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        inArray.push(data);
+
+                    }else if(status == 1){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        outArray.push(data);
+                    }
+                });
+
+                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < inArray.length; a++){
+
+                    var employee_name = inArray[a].employee_name;
+                    var employee_position = inArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                }
+
+                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < outArray.length; a++){
+
+                    var employee_name = outArray[a].employee_name;
+                    var employee_position = outArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                    
+                }
+
+                myUpdateList += "</tbody></table></div>";
+
+                document.getElementById('forklift_update_list').innerHTML = myUpdateList;
+
+            }else{
+                
+                $('#btnforklift').hide();
+            }
+        });
+
+        firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/mechanic').orderByChild('status').once('value', function(snapshot){
+
+            var myUpdateList = "";
+
+            if(snapshot.val() != null){
+
+                $('#btnmechanic').show();
+
+                var inArray = [];
+                var outArray = [];
+
+                snapshot.forEach(function(childSnapshot){
+
+                    var employee_name = childSnapshot.val().employee_name;
+                    var status = childSnapshot.val().status;
+
+                    if(status == 0){
+
+                        var data = {
+                            employee_name: employee_name,
+                            status: status
+                        }
+
+                        inArray.push(data);
+
+                    }else if(status == 1){
+
+                        var data = {
+                            employee_name: employee_name,
+                            status: status
+                        }
+
+                        outArray.push(data);
+                    }
+                });
+
+                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < inArray.length; a++){
+
+                    var employee_name = inArray[a].employee_name;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td></tr>";
+                }
+
+                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < outArray.length; a++){
+
+                    var employee_name = outArray[a].employee_name;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td></tr>";
+                    
+                }
+
+                myUpdateList += "</tbody></table></div>";
+
+                document.getElementById('mechanic_update_list').innerHTML = myUpdateList;
+
+            }else{
+                
+                $('#btnmechanic').hide();
+            }
+        });
+
+        firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/nonskid1').orderByChild('status').once('value', function(snapshot){
+
+            var myUpdateList = "";
+
+            if(snapshot.val() != null){
+
+                $('#btnns1').show();
+
+                var inArray = [];
+                var outArray = [];
+
+                snapshot.forEach(function(childSnapshot){
+
+                    var employee_name = childSnapshot.val().employee_name;
+                    var employee_position = childSnapshot.val().employee_position;
+                    var status = childSnapshot.val().status;
+
+                    if(status == 0){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        inArray.push(data);
+
+                    }else if(status == 1){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        outArray.push(data);
+                    }
+                });
+
+                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < inArray.length; a++){
+
+                    var employee_name = inArray[a].employee_name;
+                    var employee_position = inArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                }
+
+                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < outArray.length; a++){
+
+                    var employee_name = outArray[a].employee_name;
+                    var employee_position = outArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                    
+                }
+
+                myUpdateList += "</tbody></table></div>";
+
+                document.getElementById('ns1_update_list').innerHTML = myUpdateList;
+
+            }else{
+                
+                $('#btnns1').hide();
+            }
+        });
+
+        firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/nonskid2').orderByChild('status').once('value', function(snapshot){
+
+            var myUpdateList = "";
+
+            if(snapshot.val() != null){
+
+                $('#btnns2').show();
+
+                var inArray = [];
+                var outArray = [];
+
+                snapshot.forEach(function(childSnapshot){
+
+                    var employee_name = childSnapshot.val().employee_name;
+                    var employee_position = childSnapshot.val().employee_position;
+                    var status = childSnapshot.val().status;
+
+                    if(status == 0){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        inArray.push(data);
+
+                    }else if(status == 1){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        outArray.push(data);
+                    }
+                });
+
+                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < inArray.length; a++){
+
+                    var employee_name = inArray[a].employee_name;
+                    var employee_position = inArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                }
+
+                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < outArray.length; a++){
+
+                    var employee_name = outArray[a].employee_name;
+                    var employee_position = outArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                    
+                }
+
+                myUpdateList += "</tbody></table></div>";
+
+                document.getElementById('ns2_update_list').innerHTML = myUpdateList;
+
+            }else{
+                
+                $('#btnns2').hide();
+            }
+        });
+
+        firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/nonskid3').orderByChild('status').once('value', function(snapshot){
+
+            var myUpdateList = "";
+
+            if(snapshot.val() != null){
+
+                $('#btnns3').show();
+
+                var inArray = [];
+                var outArray = [];
+
+                snapshot.forEach(function(childSnapshot){
+
+                    var employee_name = childSnapshot.val().employee_name;
+                    var employee_position = childSnapshot.val().employee_position;
+                    var status = childSnapshot.val().status;
+
+                    if(status == 0){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        inArray.push(data);
+
+                    }else if(status == 1){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        outArray.push(data);
+                    }
+                });
+
+                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < inArray.length; a++){
+
+                    var employee_name = inArray[a].employee_name;
+                    var employee_position = inArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                }
+
+                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < outArray.length; a++){
+
+                    var employee_name = outArray[a].employee_name;
+                    var employee_position = outArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                    
+                }
+
+                myUpdateList += "</tbody></table></div>";
+
+                document.getElementById('ns3_update_list').innerHTML = myUpdateList;
+
+            }else{
+                
+                $('#btnns3').hide();
+            }
+        });
+
+        firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/nonskid4').orderByChild('status').once('value', function(snapshot){
+
+            var myUpdateList = "";
+
+            if(snapshot.val() != null){
+
+                $('#btnns4').show();
+
+                var inArray = [];
+                var outArray = [];
+
+                snapshot.forEach(function(childSnapshot){
+
+                    var employee_name = childSnapshot.val().employee_name;
+                    var employee_position = childSnapshot.val().employee_position;
+                    var status = childSnapshot.val().status;
+
+                    if(status == 0){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        inArray.push(data);
+
+                    }else if(status == 1){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        outArray.push(data);
+                    }
+                });
+
+                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < inArray.length; a++){
+
+                    var employee_name = inArray[a].employee_name;
+                    var employee_position = inArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                }
+
+                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < outArray.length; a++){
+
+                    var employee_name = outArray[a].employee_name;
+                    var employee_position = outArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                    
+                }
+
+                myUpdateList += "</tbody></table></div>";
+
+                document.getElementById('ns4_update_list').innerHTML = myUpdateList;
+
+            }else{
+                
+                $('#btnns4').hide();
+            }
+        });
+
+        firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/tagapukpok').orderByChild('status').once('value', function(snapshot){
+
+            var myUpdateList = "";
+
+            if(snapshot.val() != null){
+
+                $('#btntagapukpok').show();
+
+                var inArray = [];
+                var outArray = [];
+
+                snapshot.forEach(function(childSnapshot){
+
+                    var employee_name = childSnapshot.val().employee_name;
+                    var employee_position = childSnapshot.val().employee_position;
+                    var status = childSnapshot.val().status;
+
+                    if(status == 0){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        inArray.push(data);
+
+                    }else if(status == 1){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        outArray.push(data);
+                    }
+                });
+
+                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < inArray.length; a++){
+
+                    var employee_name = inArray[a].employee_name;
+                    var employee_position = inArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                }
+
+                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < outArray.length; a++){
+
+                    var employee_name = outArray[a].employee_name;
+                    var employee_position = outArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                    
+                }
+
+                myUpdateList += "</tbody></table></div>";
+
+                document.getElementById('tagapukpok_update_list').innerHTML = myUpdateList;
+
+            }else{
+                
+                $('#btntagapukpok').hide();
+            }
+        });
+
+        firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/checker').orderByChild('status').once('value', function(snapshot){
+
+            var myUpdateList = "";
+
+            if(snapshot.val() != null){
+
+                $('#btnchecker').show();
+
+                var inArray = [];
+                var outArray = [];
+
+                snapshot.forEach(function(childSnapshot){
+
+                    var employee_name = childSnapshot.val().employee_name;
+                    var employee_position = childSnapshot.val().employee_position;
+                    var status = childSnapshot.val().status;
+
+                    if(status == 0){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        inArray.push(data);
+
+                    }else if(status == 1){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        outArray.push(data);
+                    }
+                });
+
+                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < inArray.length; a++){
+
+                    var employee_name = inArray[a].employee_name;
+                    var employee_position = inArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                }
+
+                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < outArray.length; a++){
+
+                    var employee_name = outArray[a].employee_name;
+                    var employee_position = outArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                    
+                }
+
+                myUpdateList += "</tbody></table></div>";
+
+                document.getElementById('checker_update_list').innerHTML = myUpdateList;
+
+            }else{
+                
+                $('#btnchecker').hide();
+            }
+        });
+
+        firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/kamador').orderByChild('status').once('value', function(snapshot){
+
+            var myUpdateList = "";
+
+            if(snapshot.val() != null){
+
+                $('#btnkamador').show();
+
+                var inArray = [];
+                var outArray = [];
+
+                snapshot.forEach(function(childSnapshot){
+
+                    var employee_name = childSnapshot.val().employee_name;
+                    var status = childSnapshot.val().status;
+
+                    if(status == 0){
+
+                        var data = {
+                            employee_name: employee_name,
+                            status: status
+                        }
+
+                        inArray.push(data);
+
+                    }else if(status == 1){
+
+                        var data = {
+                            employee_name: employee_name,
+                            status: status
+                        }
+
+                        outArray.push(data);
+                    }
+                });
+
+                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < inArray.length; a++){
+
+                    var employee_name = inArray[a].employee_name;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td></tr>";
+                }
+
+                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < outArray.length; a++){
+
+                    var employee_name = outArray[a].employee_name;
+                    var employee_position = outArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td></tr>";
+                    
+                }
+
+                myUpdateList += "</tbody></table></div>";
+
+                document.getElementById('kamador_update_list').innerHTML = myUpdateList;
+
+            }else{
+                
+                $('#btnkamador').hide();
+            }
+        });
+
+        firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/loader').orderByChild('status').once('value', function(snapshot){
+
+            var myUpdateList = "";
+
+            if(snapshot.val() != null){
+
+                $('#btnloader').show();
+
+                var inArray = [];
+                var outArray = [];
+
+                snapshot.forEach(function(childSnapshot){
+
+                    var employee_name = childSnapshot.val().employee_name;
+                    var status = childSnapshot.val().status;
+
+                    if(status == 0){
+
+                        var data = {
+                            employee_name: employee_name,
+                            status: status
+                        }
+
+                        inArray.push(data);
+
+                    }else if(status == 1){
+
+                        var data = {
+                            employee_name: employee_name,
+                            status: status
+                        }
+
+                        outArray.push(data);
+                    }
+                });
+
+                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < inArray.length; a++){
+
+                    var employee_name = inArray[a].employee_name;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td></tr>";
+                }
+
+                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < outArray.length; a++){
+
+                    var employee_name = outArray[a].employee_name;
+                    var employee_position = outArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td></tr>";
+                    
+                }
+
+                myUpdateList += "</tbody></table></div>";
+
+                document.getElementById('loader_update_list').innerHTML = myUpdateList;
+
+            }else{
+                
+                $('#btnloader').hide();
+            }
+        });
+
+        firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/others').orderByChild('status').once('value', function(snapshot){
+
+            var myUpdateList = "";
+
+            if(snapshot.val() != null){
+
+                $('#btnothers').show();
+
+                var inArray = [];
+                var outArray = [];
+
+                snapshot.forEach(function(childSnapshot){
+
+                    var employee_name = childSnapshot.val().employee_name;
+                    var employee_position = childSnapshot.val().employee_position;
+                    var status = childSnapshot.val().status;
+
+                    if(status == 0){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        inArray.push(data);
+
+                    }else if(status == 1){
+
+                        var data = {
+                            employee_name: employee_name,
+                            employee_position: employee_position,
+                            status: status
+                        }
+
+                        outArray.push(data);
+                    }
+                });
+
+                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < inArray.length; a++){
+
+                    var employee_name = inArray[a].employee_name;
+                    var employee_position = inArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                }
+
+                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+
+                for(var a = 0; a < outArray.length; a++){
+
+                    var employee_name = outArray[a].employee_name;
+                    var employee_position = outArray[a].employee_position;
+
+                    myUpdateList += "<tr><td><strong>" + employee_name + "</strong></td><td><strong>" + employee_position + "</strong></td></tr>";
+                    
+                }
+
+                myUpdateList += "</tbody></table></div>";
+
+                document.getElementById('others_update_list').innerHTML = myUpdateList;
+
+            }else{
+                
+                $('#btnothers').hide();
+            }
+        });
+
+        // firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/kamador').orderByChild('status').once('value', function(snapshot){
+
+        //     var myUpdateList = "";
+
+        //     if(snapshot.val() != null){
+
+        //         $('#btnkamador').show();
+
+        //         snapshot.forEach(function(childSnapshot){
+
+        //             var employee_name = childSnapshot.val().employee_name;
+        //             var status = childSnapshot.val().status;
+
+        //             if(status == 0){
+
+        //                 myUpdateList += "<div class='row'><div class='col-md-12' style='color: blue;'><strong>" + employee_name + "</strong></div></div>";
+
+        //             }else if(status == 1){
+        //                 myUpdateList += "<div class='row'><div class='col-md-12' style='color: red;'><strong>" + employee_name + "</strong></div></div>";
+        //             }
+     
+        //             document.getElementById('kamador_update_list').innerHTML = myUpdateList;
+        //         });
+        //     }else{
+                
+        //         $('#btnkamador').hide();
+        //     }
+        // });
+
+        // firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/loader').orderByChild('status').once('value', function(snapshot){
+
+        //     var myUpdateList = "";
+
+        //     if(snapshot.val() != null){
+
+        //         $('#btnloader').show();
+
+        //         snapshot.forEach(function(childSnapshot){
+
+        //             var employee_name = childSnapshot.val().employee_name;
+        //             var employee_position = childSnapshot.val().employee_position;
+        //             var status = childSnapshot.val().status;
+
+        //             if(status == 0){
+
+        //                 myUpdateList += "<div class='row'><div class='col-md-12' style='color: blue;'><strong>" + employee_name + "</strong></div></div>";
+
+        //             }else if(status == 1){
+        //                 myUpdateList += "<div class='row'><div class='col-md-12' style='color: red;'><strong>" + employee_name + "</strong></div></div>";
+        //             }
+     
+        //             document.getElementById('loader_update_list').innerHTML = myUpdateList;
+        //         });
+        //     }else{
+                
+        //         $('#btnloader').hide();
+        //     }
+        // });
+
+        // firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/others').orderByChild('status').once('value', function(snapshot){
+
+        //     var myUpdateList = "";
+
+        //     if(snapshot.val() != null){
+
+        //         $('#btnothers').show();
+
+        //         snapshot.forEach(function(childSnapshot){
+
+        //             var employee_name = childSnapshot.val().employee_name;
+        //             var employee_position = childSnapshot.val().employee_position;
+        //             var status = childSnapshot.val().status;
+
+        //             if(status == 0){
+
+        //                 myUpdateList += "<div class='row'><div class='col-md-12' style='color: blue;'><strong>" + employee_name + "</strong></div></div>";
+
+        //             }else if(status == 1){
+        //                 myUpdateList += "<div class='row'><div class='col-md-12' style='color: red;'><strong>" + employee_name + "</strong></div></div>";
+        //             }
+     
+        //             document.getElementById('others_update_list').innerHTML = myUpdateList;
+        //         });
+        //     }else{
+                
+        //         $('#btnothers').hide();
+        //     }
+        // });
 
         firebase.database().ref('attendance/'+plant+'/'+currentDate).once('value', function(tableContentSnapshot){
 
@@ -889,6 +1972,12 @@
     
 </script>
 <style>
+.text_center{
+    text-align: center;
+}
+.table_modal{
+    color: black;
+}
 .header_line{
     background-color: #00a3cc;
 }
@@ -903,6 +1992,18 @@
 .badge{
     background-color: green;
     font-size: 14px;
+}
+
+.btn_transparent{
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
+.popup_margin{
+    margin: 2px;
 }
 </style>
 </head>
@@ -1061,16 +2162,85 @@
                                                         <thead>
                                                             <tr class="header_line">
                                                                 <th class="col-md-3">
-                                                                    MACHINE 1 <span class="badge pull-right badge_old" id="badge_machine1"></span>
+                                                                    MACHINE 1
+                                                                    <span type="button" id="btnm1" class="fa fa-exclamation-circle fa-lg" data-toggle="modal" data-target="#divmachine1"></span>
+                                                                    <div id="divmachine1" class="modal fade" role="dialog">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    MACHINE 1 UPDATE
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <div id="machine1_update_list"></div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal"><strong>Close</strong></button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="badge pull-right badge_old" id="badge_machine1"></span>
+                                                                    
                                                                 </th>
                                                                 <th class="col-md-3">
-                                                                    MACHINE 3 <span class="badge pull-right badge_old" id="badge_machine3"></span>
+                                                                    MACHINE 3
+                                                                    <span type="button" id="btnm3" class="fa fa-exclamation-circle fa-lg" data-toggle="modal" data-target="#divmachine3"></span>
+                                                                    <div id="divmachine3" class="modal fade" role="dialog">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    MACHINE 3 UPDATE
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <div id="machine3_update_list"></div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal"><strong>Close</strong></button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="badge pull-right badge_old" id="badge_machine3"></span>
                                                                 </th>
                                                                 <th class="col-md-3">
-                                                                    FORKLIFT OPERATOR <span class="badge pull-right badge_old" id="badge_forklift"></span>
+                                                                    FORKLIFT OPERATOR
+                                                                    <span type="button" id="btnforklift" class="fa fa-exclamation-circle fa-lg" data-toggle="modal" data-target="#divforklift"></span>
+                                                                    <div id="divforklift" class="modal fade" role="dialog">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    FORKLIFT OPERATOR UPDATE
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <div id="forklift_update_list"></div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal"><strong>Close</strong></button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="badge pull-right badge_old" id="badge_forklift"></span>
                                                                 </th>
                                                                 <th class="col-md-3">
-                                                                    MECHANIC <span class="badge pull-right badge_old" id="badge_mechanic"></span>
+                                                                    MECHANIC
+                                                                    <span type="button" id="btnmechanic" class="fa fa-exclamation-circle fa-lg" data-toggle="modal" data-target="#divmechanic"></span>
+                                                                    <div id="divmechanic" class="modal fade" role="dialog">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    MECHANIC UPDATE
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <div id="mechanic_update_list"></div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal"><strong>Close</strong></button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="badge pull-right badge_old" id="badge_mechanic"></span>
                                                                 </th>
                                                             </tr>
                                                         </thead>
@@ -1079,26 +2249,124 @@
                                                             <tr class="header_line">
                                                                 <th class="col-md-3">
                                                                     NON SKID 1
+                                                                    <span type="button" id="btnns1" class="fa fa-exclamation-circle fa-lg" data-toggle="modal" data-target="#divnonskid1"></span>
+                                                                    <div id="divnonskid1" class="modal fade" role="dialog">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    NON SKID 1 UPDATE
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <div id="ns1_update_list"></div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal"><strong>Close</strong></button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </th>
                                                                 <th class="col-md-3">
                                                                     NON SKID 2
+                                                                    <span type="button" id="btnns2" class="fa fa-exclamation-circle fa-lg" data-toggle="modal" data-target="#divnonskid2"></span>
+                                                                    <div id="divnonskid2" class="modal fade" role="dialog">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    NON SKID 2 UPDATE
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <div id="ns2_update_list"></div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal"><strong>Close</strong></button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </th>
                                                                 <th class="col-md-3">
                                                                     NON SKID 3
+                                                                    <span type="button" id="btnns3" class="fa fa-exclamation-circle fa-lg" data-toggle="modal" data-target="#divnonskid3"></span>
+                                                                    <div id="divnonskid3" class="modal fade" role="dialog">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    NON SKID 3 UPDATE
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <div id="ns3_update_list"></div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal"><strong>Close</strong></button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </th>
                                                                 <th class="col-md-3">
                                                                     NON SKID 4
+                                                                    <span type="button" id="btnns4" class="fa fa-exclamation-circle fa-lg" data-toggle="modal" data-target="#divnonskid4"></span>
+                                                                    <div id="divnonskid4" class="modal fade" role="dialog">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    NON SKID 4 UPDATE
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <div id="ns4_update_list"></div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal"><strong>Close</strong></button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </th>
                                                             </tr>
                                                         </thead>
                                                         <tbody id="row2_list" class="row_list_class"></tbody>
                                                         <thead>
                                                             <tr class="header_line">
-                                                                <th colspan="2">
-                                                                    TAGAPUKPOK / WELDER / BISTAYAN / TAGADILIG <span class="badge pull-right badge_old" id="badge_tagapukpok"></span>
+                                                                <th colspan="2" class="col-md-6">
+                                                                    TAGAPUKPOK / WELDER / BISTAYAN / TAGADILIG
+                                                                    <span type="button" id="btntagapukpok" class="fa fa-exclamation-circle fa-lg" data-toggle="modal" data-target="#divtagapukpok"></span>
+                                                                    <div id="divtagapukpok" class="modal fade" role="dialog">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    TAGAPUKPOK / WELDER / BISTAYAN / TAGADILIG UPDATE
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <div id="tagapukpok_update_list"></div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal"><strong>Close</strong></button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="badge pull-right badge_old" id="badge_tagapukpok"></span>
                                                                 </th>
-                                                                <th colspan="2">
-                                                                    CHECKER / FOREMAN / BATCHER / SUPERVISOR<span class="badge pull-right badge_old" id="badge_checker"></span>
+                                                                <th colspan="2" class="col-md-6">
+                                                                    CHECKER / FOREMAN / BATCHER / SUPERVISOR
+                                                                    <span type="button" id="btnchecker" class="fa fa-exclamation-circle fa-lg" data-toggle="modal" data-target="#divchecker"></span>
+                                                                    <div id="divchecker" class="modal fade" role="dialog">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    CHECKER / FOREMAN / BATCHER / SUPERVISOR UPDATE
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <div id="checker_update_list"></div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal"><strong>Close</strong></button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="badge pull-right badge_old" id="badge_checker"></span>
                                                                 </th>
                                                             </tr>
                                                         </thead>
@@ -1106,10 +2374,44 @@
                                                         <thead>
                                                             <tr class="header_line">
                                                                 <th colspan="2">
-                                                                    KAMADOR<span class="badge pull-right badge_old" id="badge_kamador"></span>
+                                                                    KAMADOR 
+                                                                    <span type="button" id="btnkamador" class="fa fa-exclamation-circle fa-lg" data-toggle="modal" data-target="#divkamador"></span>
+                                                                    <div id="divkamador" class="modal fade" role="dialog">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    KAMADOR UPDATE
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <div id="kamador_update_list"></div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal"><strong>Close</strong></button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="badge pull-right badge_old" id="badge_kamador"></span>
                                                                 </th>
                                                                 <th colspan="2">
-                                                                    LOADER<span class="badge pull-right badge_old" id="badge_loader"></span>
+                                                                    LOADER
+                                                                    <span type="button" id="btnloader" class="fa fa-exclamation-circle fa-lg" data-toggle="modal" data-target="#divloader"></span>
+                                                                    <div id="divloader" class="modal fade" role="dialog">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    LOADER UPDATE
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <div id="loader_update_list"></div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal"><strong>Close</strong></button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="badge pull-right badge_old" id="badge_loader"></span>
                                                                 </th>
                                                             </tr>
                                                         </thead>
@@ -1117,7 +2419,24 @@
                                                         <thead>
                                                             <tr class="header_line">
                                                                 <th colspan="2">
-                                                                    OTHERS<span class="badge pull-right badge_old" id="badge_others"></span>
+                                                                    OTHERS 
+                                                                    <span type="button" id="btnothers" class="fa fa-exclamation-circle fa-lg" data-toggle="modal" data-target="#divothers"></span>
+                                                                    <div id="divothers" class="modal fade" role="dialog">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    OTHERS UPDATE
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <div id="others_update_list"></div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal"><strong>Close</strong></button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="badge pull-right badge_old" id="badge_others"></span>
                                                                 </th>
                                                                 <th colspan="2">
                                                                     ABSENT<span class="badge pull-right badge_old" id="badge_absent"></span>
