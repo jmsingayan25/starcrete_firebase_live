@@ -452,7 +452,9 @@
                     var operator = forkliftChildSnapshot.val().operator;
                     var comment = forkliftChildSnapshot.val().comment;
 
-                    forkliftTable += "<tr><td class='col-md-3' style='text-align: center;'><strong>" + forklift_no + "</strong></td><input type='hidden' name='hidden_forklift[]' value='" + forklift_no + "'><td class='col-md-4'><input type='text' name='forklift_operator_name[]' class='form-control input_type employees' value='" + operator + "'></td><td class='col-md-5'><input type='text' name='forklift_comment[]' class='form-control input_type' value='" + comment + "'></td></tr>";
+                    // forkliftTable += "<tr><td class='col-md-3' style='text-align: center;'><strong>" + forklift_no + "</strong></td><input type='hidden' name='hidden_forklift[]' value='" + forklift_no + "'><td class='col-md-4'><input type='text' name='forklift_operator_name[]' class='form-control input_type employees' value='" + operator + "'></td><td class='col-md-5'><input type='text' name='forklift_comment[]' class='form-control input_type' value='" + comment + "'></td></tr>";
+
+
 
                     document.getElementById('forkliftList').innerHTML = forkliftTable;
                 });
@@ -530,14 +532,21 @@
         var forkliftTbody = "";
 
         firebase.database().ref('forklift_list/'+plant).once('value', function(forkliftSnapshot){
+
+            forkliftTbody += "<option value=''>Select</option>";
+
             forkliftSnapshot.forEach(function(forkliftChildSnapshot){
 
                 // console.log(forkliftChildSnapshot.val());
-                forkliftTbody += "<tr><td class='col-md-3' style='text-align: center;'><strong>" + forkliftChildSnapshot.val().item + "</strong></td><input type='hidden' name='hidden_forklift[]' value='" + forkliftChildSnapshot.val().item + "'><td class='col-md-4'><input type='text' name='forklift_operator_name[]' class='form-control input_type employees'></td><td class='col-md-5'><input type='text' name='forklift_comment[]' class='form-control input_type'></td></tr>";
+                // forkliftTbody += "<tr><td class='col-md-3' style='text-align: center;'><strong>" + forkliftChildSnapshot.val().item + "</strong></td><input type='hidden' name='hidden_forklift[]' value='" + forkliftChildSnapshot.val().item + "'><td class='col-md-4'><input type='text' name='forklift_operator_name[]' class='form-control input_type employees'></td><td class='col-md-5'><input type='text' name='forklift_comment[]' class='form-control input_type'></td></tr>";
+
+                var item = forkliftChildSnapshot.val().item;
+
+                forkliftTbody += "<option value='" + item + "'>" + item + "</option>";
 
             });
 
-            document.getElementById('forkliftList').innerHTML = forkliftTbody;
+            document.getElementById('forklift_no1').innerHTML = forkliftTbody;
         });
     }
 
@@ -615,7 +624,7 @@
         var input_trucking_pahinante2 = $("textarea[name='pahinante2[]']").map(function(){return $(this).val() || "";}).get();
         var input_trucking_reason = $("textarea[name='trucking_reason[]']").map(function(){return $(this).val() || "";}).get();
 
-        var input_forklift = $("input[name='hidden_forklift[]']").map(function(){return $(this).val() || "";}).get();
+        var input_forklift = $("select[name='forklift_no[]']").map(function(){return $(this).val() || "";}).get();
         var input_forklift_operator = $("input[name='forklift_operator_name[]']").map(function(){return $(this).val() || "";}).get();
         var input_forklift_comment = $("input[name='forklift_comment[]']").map(function(){return $(this).val() || "";}).get();
 
@@ -1763,6 +1772,7 @@
                                         <li><a data-toggle="tab" href="#tabmechanic"><strong>MECHANIC</strong></a></li>
                                         <li><a data-toggle="tab" href="#tabloader"><strong>LOADER</strong></a></li>
                                         <li><a data-toggle="tab" href="#tabothers"><strong>OTHERS</strong></a></li>
+                                        <li><a data-toggle="tab" href="#tabforklift"><strong>FORKLIFT</strong></a></li>
                                     </ul>
                                     <div class="tab-content">
                                         <div id="tabkamador" class="tab-pane fade in active">
@@ -1903,6 +1913,53 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div id="tabforklift" class="tab-pane fade in">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <section class="panel">
+                                                        <header class="panel-heading">
+                                                            <div align="center"><strong>FORKLIFT</strong></div>
+                                                        </header>
+                                                        <div class="panel-body">
+                                                            <div class="row">
+                                                                <table id="forklift_table" align="center">
+                                                                    <tr>
+                                                                        <td class="col-md-3">
+                                                                            <label for="forklift_no">Forklift No.</label>
+                                                                        </td>
+                                                                        <td class="col-md-4">
+                                                                            <label for="forklift_operator_name">Operator</label>
+                                                                        </td>
+                                                                        <td class="col-md-4">
+                                                                            <label for="forklift_comment">Comment</label>
+                                                                        </td>
+                                                                        <td class="col-md-1"></td>
+                                                                    </tr>
+                                                                    <tbody id="forkliftid">
+                                                                        <tr id="forklift_row1" style="text-align: center;">
+                                                                            <td>
+                                                                                <select name="forklift_no[]" id="forklift_no1" class="form-control">
+                                                                                    <option value="">Select</option>
+                                                                                </select>
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="text" name="forklift_operator_name[]" class="form-control input_type employees">
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="text" name="forklift_comment[]" class="form-control input_type">
+                                                                            </td>
+                                                                            <td>
+                                                                                <button type="button" onclick="add_employee_row('forklift');" class="btn btn-primary btn-md"><span class="fa fa-plus"></span></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </section>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1933,7 +1990,7 @@
                                     </section>
                                 </div>
                             </div>
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="col-md-offset-2 col-md-8">
                                     <section class="panel">
                                         <header class="panel-heading">
@@ -1957,7 +2014,7 @@
                                         </div>
                                     </section>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="row">
                                 <div class="col-md-12">
                                     <section class="panel">

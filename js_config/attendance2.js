@@ -98,7 +98,7 @@
             $rowno = $rowno + 1;
             $("#machine1_table tr:last").after("<tr id='machine1_row" + $rowno + "' style='text-align: center;'><td><input type='text' name='machine1_name[]' class='form-control input_type employees' required></td><td><input type='text' name='machine1_position[]' class='form-control input_type'></td><td><button type='button' class='btn btn-danger btn-md' onclick=remove_machine1('machine1_row" + $rowno + "')><span class='fa fa-minus'></span></button></td></tr>");
 
-    var employee_array = [];
+            var employee_array = [];
 
             firebase.database().ref('employee_list/'+plant).once('value', function(listSnapshot){
                 listSnapshot.forEach(function(listChildSnapshot){
@@ -116,7 +116,7 @@
             $rowno = $rowno + 1;
             $("#machine3_table tr:last").after("<tr id='machine3_row" + $rowno + "' style='text-align: center;'><td><input type='text' name='machine3_name[]' class='form-control input_type employees' required></td><td><input type='text' name='machine3_position[]' class='form-control input_type'></td><td><button type='button' class='btn btn-danger btn-md' onclick=remove_machine3('machine3_row" + $rowno + "')><span class='fa fa-minus'></span></button></td></tr>");
 
-    var employee_array = [];
+            var employee_array = [];
 
             firebase.database().ref('employee_list/'+plant).once('value', function(listSnapshot){
                 listSnapshot.forEach(function(listChildSnapshot){
@@ -134,7 +134,7 @@
             $rowno = $rowno + 1;
             $("#nonskid1_table tr:last").after("<tr id='nonskid1_row" + $rowno + "' style='text-align: center;'><td><input type='text' name='nonskid1_name[]' class='form-control input_type employees' required></td><td><button type='button' class='btn btn-danger btn-md' onclick=remove_nonskid1('nonskid1_row" + $rowno + "')><span class='fa fa-minus'></span></button></td></tr>");
     
-        var employee_array = [];
+            var employee_array = [];
 
             firebase.database().ref('employee_list/'+plant).once('value', function(listSnapshot){
                 listSnapshot.forEach(function(listChildSnapshot){
@@ -152,7 +152,7 @@
             $rowno = $rowno + 1;
             $("#nonskid2_table tr:last").after("<tr id='nonskid2_row" + $rowno + "' style='text-align: center;'><td><input type='text' name='nonskid2_name[]' class='form-control input_type employees' required></td><td><button type='button' class='btn btn-danger btn-md' onclick=remove_nonskid2('nonskid2_row" + $rowno + "')><span class='fa fa-minus'></span></button></td></tr>");
     
-        var employee_array = [];
+            var employee_array = [];
 
             firebase.database().ref('employee_list/'+plant).once('value', function(listSnapshot){
                 listSnapshot.forEach(function(listChildSnapshot){
@@ -170,7 +170,7 @@
             $rowno = $rowno + 1;
             $("#nonskid3_table tr:last").after("<tr id='nonskid3_row" + $rowno + "' style='text-align: center;'><td><input type='text' name='nonskid3_name[]' class='form-control input_type employees' required></td><td><button type='button' class='btn btn-danger btn-md' onclick=remove_nonskid3('nonskid3_row" + $rowno + "')><span class='fa fa-minus'></span></button></td></tr>");
     
-        var employee_array = [];
+            var employee_array = [];
 
             firebase.database().ref('employee_list/'+plant).once('value', function(listSnapshot){
                 listSnapshot.forEach(function(listChildSnapshot){
@@ -188,7 +188,7 @@
             $rowno = $rowno + 1;
             $("#nonskid4_table tr:last").after("<tr id='nonskid4_row" + $rowno + "' style='text-align: center;'><td><input type='text' name='nonskid4_name[]' class='form-control input_type employees' required></td><td><button type='button' class='btn btn-danger btn-md' onclick=remove_nonskid4('nonskid4_row" + $rowno + "')><span class='fa fa-minus'></span></button></td></tr>");
     
-        var employee_array = [];
+            var employee_array = [];
 
             firebase.database().ref('employee_list/'+plant).once('value', function(listSnapshot){
                 listSnapshot.forEach(function(listChildSnapshot){
@@ -343,6 +343,30 @@
 
                 $('.employees').autocomplete({source: employee_array});
             });
+
+        }else if(position == "forklift"){
+
+            $rowno = $("#forklift_table tr").length;
+            $rowno = $rowno + 1;
+            $("#forklift_table tr:last").after("<tr id='forklift_row" + $rowno + "' style='text-align: center;'><td><select name='forklift_no[]' id='forklift_no" + $rowno + "' class='form-control'><option value=''>Select</option></select></td><td><input type='text' name='forklift_operator_name[]' class='form-control input_type employees'></td><td><input type='text' name='forklift_comment[]' class='form-control input_type'></td><td><button type='button' class='btn btn-danger btn-md' onclick=remove_forklift_row('forklift_row" + $rowno + "')><span class='fa fa-minus'></span></button></td></tr>");
+
+            var forkliftTbody = "";
+
+            firebase.database().ref('forklift_list/'+plant).once('value', function(forkliftSnapshot){
+
+                forkliftTbody += "<option value=''>Select</option>";
+
+                forkliftSnapshot.forEach(function(forkliftChildSnapshot){
+
+                    var item = forkliftChildSnapshot.val().item;
+
+                    forkliftTbody += "<option value='" + item + "'>" + item + "</option>";
+
+                });
+
+                document.getElementById('forklift_no'+$rowno).innerHTML = forkliftTbody;
+                
+            });
         }
     }
 
@@ -419,5 +443,9 @@
     }
 
     function remove_others_row(rowno){
+        $('#'+rowno).remove();
+    }
+
+   function remove_forklift_row(rowno){
         $('#'+rowno).remove();
     }
