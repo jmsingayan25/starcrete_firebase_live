@@ -192,12 +192,17 @@
 
                 optionTable += "<thead><tr><th class='col-md-5 header_center'>Name</th><th class='col-md-1'></th></tr></thead><tbody>";
 
+                count = 0;
                 optionSnapshot.forEach(function(optionChildSnapshot){
 
                     var employee_name = optionChildSnapshot.val().employee_name;
                     var key = optionChildSnapshot.key;
 
-                    optionTable += "<tr><td><input type='text' name='update_employee_name[]' style='text-transform: uppercase;' value='" + employee_name + "' class='form-control'></td> <td><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + key + "\", \"\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
+                    // optionTable += "<tr><td><input type='text' name='update_employee_name[]' style='text-transform: uppercase;' value='" + employee_name + "' class='form-control'></td> <td><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + key + "\", \"\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
+
+                    optionTable += "<tr><td><input type='text' name='update_employee_name[]' style='text-transform: uppercase;' value='" + employee_name + "' class='form-control'></td> <td><button type='button' class='btn btn-danger' data-toggle='modal' data-target='#div"+count+"tagapukpok'><strong>Remove</strong></button><div class='modal fade' id='div"+count+"tagapukpok' tabindex='-1' role='dialog'><div class='modal-dialog' role='document'><div class='modal-content'><div class='modal-header'><h5 class='modal-title' id=''><strong>Comment</strong></h5></div><div class='modal-body'><div class='row'><div class='col-md-12'><textarea id='comment_remove"+count+"' rows='5' class='form-control input_type'></textarea></div></div></div><div class='modal-footer'><button type='button' class='btn btn-secondary' data-dismiss='modal'><strong>Close</strong></button><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + key + "\",\"" + count + "\");}else{ event.preventDefault();}' class='btn btn-primary'><strong>Submit</strong></button></div></div></div></div></td></tr>";
+
+                    count++;
                 });
 
                 optionTable += "</tbody>";
@@ -249,9 +254,9 @@
                 count = 0;
                 optionSnapshot.forEach(function(optionChildSnapshot){
 
-                    name_array.push(optionChildSnapshot.val().employee_name);
+                    // name_array.push(optionChildSnapshot.val().employee_name);
 
-                    optionTable += "<tr><td class='col-md-5'><input type='text' name='update_employee_name[]' style='text-transform: uppercase;' value='" + optionChildSnapshot.val().employee_name + "' class='form-control'></td><td class='col-md-5'><input type='text' name='update_employee_position[]' style='text-transform: uppercase;' value='" + optionChildSnapshot.val().employee_position + "' class='form-control'></td><td class='col-md-1'><button type='button' class='btn btn-danger' data-toggle='modal' data-target='#div"+count+"machine1'><strong>Remove</strong></button><div class='modal fade' id='div"+count+"machine1' tabindex='-1' role='dialog'><div class='modal-dialog' role='document'><div class='modal-content'><div class='modal-header'><h5 class='modal-title' id=''>Reason?</h5></div><div class='modal-body'><div class='row'><div class='col-md-12'><textarea id='comment_remove"+count+"' rows='5' class='form-control input_type'></textarea></div></div></div><div class='modal-footer'><button type='button' class='btn btn-secondary' data-dismiss='modal'><strong>Close</strong></button><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + optionChildSnapshot.key + "\",\"" + count + "\");}else{ event.preventDefault();}' class='btn btn-primary'><strong>Submit</strong></button></div></div></div></div></td></tr>";
+                    optionTable += "<tr><td class='col-md-5'><input type='text' name='update_employee_name[]' style='text-transform: uppercase;' value='" + optionChildSnapshot.val().employee_name + "' class='form-control'></td><td class='col-md-5'><input type='text' name='update_employee_position[]' style='text-transform: uppercase;' value='" + optionChildSnapshot.val().employee_position + "' class='form-control'></td><td class='col-md-1'><button type='button' class='btn btn-danger' data-toggle='modal' data-target='#div"+count+"machine'><strong>Remove</strong></button><div class='modal fade' id='div"+count+"machine' tabindex='-1' role='dialog'><div class='modal-dialog' role='document'><div class='modal-content'><div class='modal-header'><h5 class='modal-title' id=''><strong>Comment</strong></h5></div><div class='modal-body'><div class='row'><div class='col-md-12'><textarea id='comment_remove"+count+"' rows='5' class='form-control input_type'></textarea></div></div></div><div class='modal-footer'><button type='button' class='btn btn-secondary' data-dismiss='modal'><strong>Close</strong></button><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + optionChildSnapshot.key + "\",\"" + count + "\");}else{ event.preventDefault();}' class='btn btn-primary'><strong>Submit</strong></button></div></div></div></div></td></tr>";
 
                     // optionTable += "<tr><td class='col-md-5'><input type='text' name='update_employee_name[]' style='text-transform: uppercase;' value='" + optionChildSnapshot.val().employee_name + "' class='form-control'></td><td class='col-md-5'><input type='text' name='update_employee_position[]' style='text-transform: uppercase;' value='" + optionChildSnapshot.val().employee_position + "' class='form-control'></td><td class='col-md-1'><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + optionChildSnapshot.key + "\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
 
@@ -278,7 +283,7 @@
 
                 if(optionSnapshot.val() != null){
 
-                    optionTable += "<thead><tr align='center'><th class='col-md-1 header_center'>Truck No.</th><th class='col-md-2 header_center'>Driver</th><th class='col-md-2 header_center'>Pahinante 1</th><th class='col-md-2 header_center'>Pahinante 2</th><th class='col-md-2 header_center'>Commment</th></tr></thead><tbody>";
+                    optionTable += "<thead><tr align='center'><th class='col-md-1 header_center'>Truck No.</th><th class='col-md-2 header_center'>Driver</th><th class='col-md-2 header_center'>Pahinante 1</th><th class='col-md-2 header_center'>Pahinante 2</th><th class='col-md-2 header_center'>Comment</th></tr></thead><tbody>";
 
                     optionSnapshot.forEach(function(optionChildSnapshot){
 
@@ -320,18 +325,47 @@
 
             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext).once('value', function(optionSnapshot){
 
+                var array = [];
+
                 optionTable += "<tr><td><table class='table'><thead><tr><th class='col-md-2 header_center'>Forklift No.</th><th class='col-md-4 header_center'>Operator</th><th class='col-md-5 header_center'>Comment</th><th class='col-md-1'></th></tr></thead><tbody>";
 
                 optionSnapshot.forEach(function(optionChildSnapshot){
 
-                    optionTable += "<tr align='center'><input type='hidden' name='hidden_forklift_no[]' value='" + optionChildSnapshot.val().forklift_no + "'><td><strong>" + optionChildSnapshot.val().forklift_no + "</strong></td><td><input type='text' name='update_operator[]' value='" + optionChildSnapshot.val().operator + "' class='form-control input_type'></td><td><input type='text' name='update_operator_comment[]' value='" + optionChildSnapshot.val().comment + "' class='form-control input_type'></td><td><button type='button' class='btn btn-danger btn-md' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + optionChildSnapshot.key + "\", '');}else{ event.preventDefault();}'><strong>Remove</strong></button></td></tr>";
+                    // optionTable += "<tr align='center'><input type='hidden' name='hidden_forklift_no[]' value='" + optionChildSnapshot.val().forklift_no + "'><td><strong>" + optionChildSnapshot.val().forklift_no + "</strong></td><td><input type='text' name='update_operator[]' value='" + optionChildSnapshot.val().operator + "' class='form-control input_type'></td><td><input type='text' name='update_operator_comment[]' value='" + optionChildSnapshot.val().comment + "' class='form-control input_type'></td><td><button type='button' class='btn btn-danger btn-md' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + optionChildSnapshot.key + "\", '');}else{ event.preventDefault();}'><strong>Remove</strong></button></td></tr>";
 
+                    var forklift_no = optionChildSnapshot.val().forklift_no;
+                    var operator = optionChildSnapshot.val().operator;
+                    var comment = optionChildSnapshot.val().comment;
+                    var key = optionChildSnapshot.key;
+
+                    var data = {
+                        forklift_no: forklift_no.toUpperCase(),
+                        operator: operator.toUpperCase(),
+                        comment: comment.toUpperCase(),
+                        key: key
+                    }
+
+                    array.push(data);
+
+                    // console.log(array);
                 });
+
+                count = 0;
+                for(var a = 0; a < array.length; a++){
+
+                    var forklift_no = array[a].forklift_no;
+                    var operator = array[a].operator;
+                    var comment = array[a].comment;
+                    var key = array[a].key;
+
+                    optionTable += "<tr align='center'><td><select name='hidden_forklift_no[]' id='forkliftid"+count+"' class='form-control'><option value=''>Select</option></select></td><td><input type='text' name='update_operator[]' value='" + operator + "' class='form-control input_type'></td><td><input type='text' name='update_operator_comment[]' value='" + comment + "' class='form-control input_type'></td><td><button type='button' class='btn btn-danger btn-md' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + option + "\",\"" + key + "\", '');}else{ event.preventDefault();}'><strong>Remove</strong></button></td></tr>";
+
+                    count++;
+                }
 
                 optionTable += "</tbody></table></td></tr>";
 
                 document.getElementById('id_fields').innerHTML = optionTable;
-
             });
         
         }else if(option == "nonskid1" || option == "nonskid2" || option == "nonskid3" || option == "nonskid4" || option == "new_nonskid1" || option == "new_nonskid2" || option == "new_nonskid3" || option == "new_nonskid4"){
@@ -420,7 +454,10 @@
 
                         optionTable += "<tr><td><input type='text' name='update_employee_name[]' class='form-control input_type' value='" + employee_name + "'></td>";
                         optionTable += "<td><select name='update_pos[]' id='update_id" + a + "' class='form-control'><option value='HELPER'>HELPER</option><option value='OPERATOR'>OPERATOR</option></select></td>";
-                        optionTable += "<td><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + position + "\",\"" + key + "\", '');}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
+                        // optionTable += "<td><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + position + "\",\"" + key + "\", \"\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
+                        optionTable += "<td><button type='button' data-toggle='modal' data-target='#div"+count+"nonskid' class='btn btn-danger'><strong>Remove</strong></button><div class='modal fade' id='div"+count+"nonskid' tabindex='-1' role='dialog'><div class='modal-dialog' role='document'><div class='modal-content'><div class='modal-header'><h5 class='modal-title' id=''><strong>Comment</strong></h5></div><div class='modal-body'><div class='row'><div class='col-md-12'><textarea id='comment_remove"+count+"' rows='5' class='form-control input_type'></textarea></div></div></div><div class='modal-footer'><button type='button' class='btn btn-secondary' data-dismiss='modal'><strong>Close</strong></button><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + position + "\",\"" + key + "\",\"" + count + "\");}else{ event.preventDefault();}' class='btn btn-primary'><strong>Submit</strong></button></div></div></div></div></td></tr>";
+
+                        count++;
 
                     }
 
@@ -497,7 +534,7 @@
 
         }else if(option == "forklift_operator"){
 
-            $("#employee_table tr:last").before("<tr id='employee_row" + $rowno + "'><td class='col-md-2'><select id='forklistList"+$rowno+"' name='hidden_forklift_no[]' class='form-control'></select></td><td class='col-md-4'><input type='text' name='update_employee_name[]' class='form-control'></td><td class='col-md-5'><input type='text' name='update_operator_comment[]' class='form-control'></td><td class='col-md-1'><button type='button' class='btn btn-danger btn-md' onclick=remove_employee_row('employee_row" + $rowno + "')><strong>Remove</strong></button></td></tr>");
+            $("#employee_table tr:last").before("<tr id='employee_row" + $rowno + "'><td class='col-md-2'><select id='forklistList"+$rowno+"' name='hidden_forklift_no[]' class='form-control input_type'></select></td><td class='col-md-4'><input type='text' name='update_operator[]' class='form-control input_type'></td><td class='col-md-5'><input type='text' name='update_operator_comment[]' class='form-control input_type'></td><td class='col-md-1'><button type='button' class='btn btn-danger btn-md' onclick=remove_employee_row('employee_row" + $rowno + "')><strong>Remove</strong></button></td></tr>");
 
             var optionList = "";
             firebase.database().ref('forklift_list/'+plant).orderByChild('item').once('value', function(snapshot){
@@ -591,6 +628,8 @@
                 query_ext = "new/"+new_option;
             }
 
+            var comment = document.getElementById('comment_remove'+count).value;
+
             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/'+key).once('value', function(snapshot){
 
                 // console.log(snapshot.val());
@@ -599,8 +638,11 @@
 
                 var data = {
                     employee_name: employee_name,
-                    status: 1
+                    status: 1,
+                    comment: comment.toUpperCase()
                 }
+
+                // console.log(data);
 
                 firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/'+query_ext).push(data);
 
@@ -673,6 +715,8 @@
                 position = "employee";
             }
 
+            var comment = document.getElementById('comment_remove'+count).value;
+
             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/'+position+'/'+key).once('value', function(snapshot){
 
                 if(position == "helper"){
@@ -690,10 +734,9 @@
                 var data = {
                     employee_name: employee_name.toUpperCase(),
                     employee_position: employee_position,
-                    status: 1
+                    status: 1,
+                    comment: comment.toUpperCase()
                 }
-
-                // console.log(data);
 
                 if(firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/'+query_ext).push(data)){
 
@@ -764,7 +807,6 @@
                     });
                 }
             });
-
         }
     }
 
@@ -1050,24 +1092,25 @@
 
                     });
 
-                    // console.log(currentArray, {input_forklift_no, input_operator, input_operator_comment});
-                    for(var a = 0; a < input_operator.length; a++){
+                    console.log(currentArray, {input_forklift_no, input_operator, input_operator_comment});
+                    // for(var a = 0; a < input_operator.length; a++){
 
-                        var employee_name = input_operator[a];
-                        var forklift_no = input_forklift_no[a];
+                    //     var employee_name = input_operator[a].toUpperCase();
+                    //     var forklift_no = input_forklift_no[a].toUpperCase();
 
-                        index = currentArray.findIndex(x => x.employee_name == employee_name);
+                    //     index = currentArray.findIndex(x => x.employee_name == employee_name);
 
-                        if(index == -1){
-                            var status = 0;
-                        }
+                    //     if(index == -1){
 
-                        var data = {
-                            employee_name: employee_name,
-                            employee_position: forklift_no,
-                            status: 0
-                        }
-                    }
+                    //         var data = {
+                    //             employee_name: employee_name,
+                    //             employee_position: forklift_no,
+                    //             status: 0
+                    //         }
+
+                    //         console.log(data);
+                    //     }
+                    // }
                 }
             });
 
