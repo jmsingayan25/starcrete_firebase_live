@@ -860,6 +860,7 @@
 
                     var employee_name = childSnapshot.val().employee_name;
                     var employee_position = childSnapshot.val().employee_position;
+                    var comment = childSnapshot.val().comment;
                     var status = childSnapshot.val().status;
 
                     if(status == 0){
@@ -867,6 +868,7 @@
                         var data = {
                             employee_name: employee_name,
                             employee_position: employee_position,
+                            comment: comment,
                             status: status
                         }
 
@@ -877,6 +879,7 @@
                         var data = {
                             employee_name: employee_name,
                             employee_position: employee_position,
+                            comment: comment,
                             status: status
                         }
 
@@ -884,24 +887,26 @@
                     }
                 });
 
-                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='3' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-4 header_line text_center'>Name</th><th class='col-md-4 header_line text_center'>Position</th><th class='col-md-4 header_line text_center'>Comment</th></tr><thead></thead><tbody>";
 
                 for(var a = 0; a < inArray.length; a++){
 
                     var employee_name = inArray[a].employee_name;
                     var employee_position = inArray[a].employee_position;
+                    var comment = inArray[a].comment;
 
-                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td><td class='text_center'><strong>" + employee_position + "</strong></td></tr>";
+                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td><td class='text_center'><strong>" + employee_position + "</strong></td><td class='text_center'><strong>" + comment + "</strong></td></tr>";
                 }
 
-                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+                myUpdateList += "</tbody><thead><tr><th colspan='3' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-4 header_line text_center'>Name</th><th class='col-md-4 header_line text_center'>Position</th><th class='col-md-4 header_line text_center'>Comment</th></tr><thead></thead><tbody>";
 
                 for(var a = 0; a < outArray.length; a++){
 
                     var employee_name = outArray[a].employee_name;
                     var employee_position = outArray[a].employee_position;
+                    var comment = outArray[a].comment;
 
-                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td><td class='text_center'><strong>" + employee_position + "</strong></td></tr>";
+                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td><td class='text_center'><strong>" + employee_position + "</strong></td><td class='text_center'><strong>" + comment + "</strong></td></tr>";
                     
                 }
 
@@ -930,6 +935,7 @@
 
                     var employee_name = childSnapshot.val().employee_name;
                     var employee_position = childSnapshot.val().employee_position;
+                    var comment = childSnapshot.val().comment;
                     var status = childSnapshot.val().status;
 
                     if(status == 0){
@@ -937,6 +943,7 @@
                         var data = {
                             employee_name: employee_name,
                             employee_position: employee_position,
+                            comment: comment,
                             status: status
                         }
 
@@ -947,6 +954,7 @@
                         var data = {
                             employee_name: employee_name,
                             employee_position: employee_position,
+                            comment: comment,
                             status: status
                         }
 
@@ -954,24 +962,26 @@
                     }
                 });
 
-                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='3' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-4 header_line text_center'>Name</th><th class='col-md-4 header_line text_center'>Position</th><th class='col-md-4 header_line text_center'>Comment</th></tr><thead></thead><tbody>";
 
                 for(var a = 0; a < inArray.length; a++){
 
                     var employee_name = inArray[a].employee_name;
                     var employee_position = inArray[a].employee_position;
+                    var comment = inArray[a].comment;
 
-                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td><td class='text_center'><strong>" + employee_position + "</strong></td></tr>";
+                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td><td class='text_center'><strong>" + employee_position + "</strong></td><td class='text_center'><strong>" + comment + "</strong></td></tr>";
                 }
 
-                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+                myUpdateList += "</tbody><thead><tr><th colspan='3' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-4 header_line text_center'>Name</th><th class='col-md-4 header_line text_center'>Position</th><th class='col-md-4 header_line text_center'>Comment</th></tr><thead></thead><tbody>";
 
                 for(var a = 0; a < outArray.length; a++){
 
                     var employee_name = outArray[a].employee_name;
                     var employee_position = outArray[a].employee_position;
+                    var comment = outArray[a].comment;
 
-                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td><td class='text_center'><strong>" + employee_position + "</strong></td></tr>";
+                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td><td class='text_center'><strong>" + employee_position + "</strong></td><td class='text_center'><strong>" + comment + "</strong></td></tr>";
                     
                 }
 
@@ -999,12 +1009,14 @@
                 snapshot.forEach(function(childSnapshot){
 
                     var employee_name = childSnapshot.val().employee_name;
+                    var comment = childSnapshot.val().comment;
                     var status = childSnapshot.val().status;
 
                     if(status == 0){
 
                         var data = {
                             employee_name: employee_name,
+                            comment: comment,
                             status: status
                         }
 
@@ -1014,6 +1026,7 @@
 
                         var data = {
                             employee_name: employee_name,
+                            comment: comment,
                             status: status
                         }
 
@@ -1021,23 +1034,24 @@
                     }
                 });
 
-                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th></tr><thead></thead><tbody>";
+                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Comment</th></tr><thead></thead><tbody>";
 
                 for(var a = 0; a < inArray.length; a++){
 
                     var employee_name = inArray[a].employee_name;
+                    var comment = inArray[a].comment;
 
-                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td></tr>";
+                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td><td class='text_center'><strong>" + comment + "</strong></td></tr>";
                 }
 
-                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th></tr><thead></thead><tbody>";
+                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Comment</th></tr><thead></thead><tbody>";
 
                 for(var a = 0; a < outArray.length; a++){
 
                     var employee_name = outArray[a].employee_name;
-                    var employee_position = outArray[a].employee_position;
+                    var comment = outArray[a].comment;
 
-                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td></tr>";
+                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td><td class='text_center'><strong>" + comment + "</strong></td></tr>";
                     
                 }
 
@@ -1065,12 +1079,14 @@
                 snapshot.forEach(function(childSnapshot){
 
                     var employee_name = childSnapshot.val().employee_name;
+                    var comment = childSnapshot.val().comment;
                     var status = childSnapshot.val().status;
 
                     if(status == 0){
 
                         var data = {
                             employee_name: employee_name,
+                            comment: comment,
                             status: status
                         }
 
@@ -1080,6 +1096,7 @@
 
                         var data = {
                             employee_name: employee_name,
+                            comment: comment,
                             status: status
                         }
 
@@ -1087,23 +1104,24 @@
                     }
                 });
 
-                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th></tr><thead></thead><tbody>";
+                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Comment</th></tr><thead></thead><tbody>";
 
                 for(var a = 0; a < inArray.length; a++){
 
                     var employee_name = inArray[a].employee_name;
+                    var comment = inArray[a].comment;
 
-                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td></tr>";
+                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td><td class='text_center'><strong>" + comment + "</strong></td></tr>";
                 }
 
-                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th></tr><thead></thead><tbody>";
+                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Comment</th></tr><thead></thead><tbody>";
 
                 for(var a = 0; a < outArray.length; a++){
 
                     var employee_name = outArray[a].employee_name;
-                    var employee_position = outArray[a].employee_position;
+                    var comment = outArray[a].comment;
 
-                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td></tr>";
+                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td><td class='text_center'><strong>" + comment + "</strong></td></tr>";
                     
                 }
 
@@ -1132,6 +1150,7 @@
 
                     var employee_name = childSnapshot.val().employee_name;
                     var employee_position = childSnapshot.val().employee_position;
+                    var comment = childSnapshot.val().comment;
                     var status = childSnapshot.val().status;
 
                     if(status == 0){
@@ -1139,6 +1158,7 @@
                         var data = {
                             employee_name: employee_name,
                             employee_position: employee_position,
+                            comment: comment,
                             status: status
                         }
 
@@ -1149,6 +1169,7 @@
                         var data = {
                             employee_name: employee_name,
                             employee_position: employee_position,
+                            comment: comment,
                             status: status
                         }
 
@@ -1156,24 +1177,26 @@
                     }
                 });
 
-                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='2' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+                myUpdateList += "<div class='table-responsive'><table class='table table-bordered table-stripped table_modal'><thead><tr><th colspan='3' class='header_line text_center'>ADDED TO LIST</th></tr><tr><th class='col-md-4 header_line text_center'>Name</th><th class='col-md-4 header_line text_center'>Position</th><th class='col-md-4 header_line text_center'>Position</th></tr><thead></thead><tbody>";
 
                 for(var a = 0; a < inArray.length; a++){
 
                     var employee_name = inArray[a].employee_name;
                     var employee_position = inArray[a].employee_position;
+                    var comment = inArray[a].comment;
 
-                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td><td class='text_center'><strong>" + employee_position + "</strong></td></tr>";
+                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td><td class='text_center'><strong>" + employee_position + "</strong></td><td class='text_center'><strong>" + comment + "</strong></td></tr>";
                 }
 
-                myUpdateList += "</tbody><thead><tr><th colspan='2' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-6 header_line text_center'>Name</th><th class='col-md-6 header_line text_center'>Position</th></tr><thead></thead><tbody>";
+                myUpdateList += "</tbody><thead><tr><th colspan='3' class='header_line text_center'>REMOVE FROM LIST</th></tr><tr><th class='col-md-4 header_line text_center'>Name</th><th class='col-md-4 header_line text_center'>Position</th><th class='col-md-4 header_line text_center'>Position</th></tr><thead></thead><tbody>";
 
                 for(var a = 0; a < outArray.length; a++){
 
                     var employee_name = outArray[a].employee_name;
                     var employee_position = outArray[a].employee_position;
+                    var comment = outArray[a].comment;
 
-                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td><td class='text_center'><strong>" + employee_position + "</strong></td></tr>";
+                    myUpdateList += "<tr><td class='text_center'><strong>" + employee_name + "</strong></td><td class='text_center'><strong>" + employee_position + "</strong></td><td class='text_center'><strong>" + comment + "</strong></td></tr>";
                     
                 }
 
