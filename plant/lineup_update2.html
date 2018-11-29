@@ -489,7 +489,7 @@
                         var position = array[a].position;
                         var key = array[a].employee_key;
 
-                        optionTable += "<tr><td><input type='text' name='update_employee_name[]' class='form-control input_type' value='" + employee_name + "'></td>";
+                        optionTable += "<tr><td><input type='hidden' name='update_employee_comment_hidden[]' value=''><input type='text' name='update_employee_name[]' class='form-control input_type' value='" + employee_name + "'></td>";
                         optionTable += "<td><select name='update_pos[]' id='update_id" + a + "' class='form-control'><option value='HELPER'>HELPER</option><option value='OPERATOR'>OPERATOR</option></select></td>";
                         // optionTable += "<td><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + position + "\",\"" + key + "\", \"\");}else{ event.preventDefault();}' class='btn btn-danger'><strong>Remove</strong></button></td></tr>";
                         optionTable += "<td><button type='button' data-toggle='modal' data-target='#div"+count+"nonskid' class='btn btn-danger'><strong>Remove</strong></button><div class='modal fade' id='div"+count+"nonskid' tabindex='-1' role='dialog'><div class='modal-dialog' role='document'><div class='modal-content'><div class='modal-header'><h5 class='modal-title' id=''><strong>Comment</strong></h5></div><div class='modal-body'><div class='row'><div class='col-md-12'><textarea id='comment_remove"+count+"' rows='5' class='form-control input_type'></textarea></div></div></div><div class='modal-footer'><button type='button' class='btn btn-secondary' data-dismiss='modal'><strong>Close</strong></button><button type='button' onclick='if(confirm(\"Proceed?\")){removeEmployee(\"" + position + "\",\"" + key + "\",\"" + count + "\");}else{ event.preventDefault();}' class='btn btn-primary'><strong>Submit</strong></button></div></div></div></div></td></tr>";
@@ -567,7 +567,7 @@
         
         }else if(option == "nonskid1" || option == "nonskid2" || option == "nonskid3" || option == "nonskid4" || option == "new_nonskid1" || option == "new_nonskid2" || option == "new_nonskid3" || option == "new_nonskid4"){
 
-            $("#employee_table tr:last").before("<tr id='employee_row" + $rowno + "'><td class='col-md-6'><input type='text' name='update_employee_name[]' class='form-control input_type' required></td><td class='col-md-5'><select name='update_pos[]' id='update_id" + $rowno + "' class='form-control'><option value='HELPER'>HELPER</option><option value='OPERATOR'>OPERATOR</option></select></td><td class='col-md-1'><button type='button' class='btn btn-danger btn-md' onclick=remove_employee_row('employee_row" + $rowno + "')><strong>Remove</strong></button></td></tr>");
+            $("#employee_table tr:last").before("<tr id='employee_row" + $rowno + "'><td class='col-md-4'><input type='text' name='update_employee_name[]' class='form-control input_type' placeholder='NAME' required></td><td class='col-md-3'><select name='update_pos[]' id='update_id" + $rowno + "' class='form-control'><option value='HELPER'>HELPER</option><option value='OPERATOR'>OPERATOR</option></select></td><td class='col-md-4'><input type='text' name='update_employee_comment[]' class='form-control input_type' placeholder='COMMENT'></td><td class='col-md-1'><button type='button' class='btn btn-danger btn-md' onclick=remove_employee_row('employee_row" + $rowno + "')><strong>Remove</strong></button></td></tr>");
 
         }else if(option == "forklift_operator"){
 
@@ -1221,8 +1221,12 @@
             //     }
             // }
 
+            var input_employee_comment_hidden = $("input[type='hidden'][name='update_employee_comment_hidden[]']").map(function(){return $(this).val();}).get();
             var input_employee_name = $("input[name='update_employee_name[]']").map(function(){return $(this).val();}).get();
             var input_employee_position = $("select[name='update_pos[]']").map(function(){return $(this).val();}).get();
+            var input_employee_comment = $("input[name='update_employee_comment[]']").map(function(){return $(this).val();}).get();
+
+            var all_employee_comment = input_employee_comment_hidden.concat(input_employee_comment);
 
             firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/employee').once('value', function(snapshot){
                 firebase.database().ref('attendance/'+plant+'/'+currentDate+'/'+query_ext+'/helper').once('value', function(snapshot1){
@@ -1259,6 +1263,7 @@
 
                         var employee_name = input_employee_name[a].toUpperCase();
                         var employee_position = input_employee_position[a].toUpperCase();
+                        var comment = all_employee_comment[a] || "";
 
                         index = nonskidArray.findIndex(x => x.employee_name == employee_name);
 
@@ -1267,8 +1272,11 @@
                             var data = {
                                 employee_name: employee_name,
                                 employee_position: employee_position,
+                                comment: comment.toUpperCase() || "",
                                 status: 0
                             }
+
+                            console.log(data);
 
                             firebase.database().ref('attendance_update_list/'+plant+'/'+currentDate+'/'+query_ext).push(data);
                         }
@@ -1278,7 +1286,7 @@
 
                         for(var a = 0; a < input_employee_name.length; a++){
 
-                            var employee_name = input_employee_name[a];
+                            var employee_name = input_employee_name[a].toUpperCase();
                             var position = input_employee_position[a];
 
                             if(position == "OPERATOR"){
