@@ -206,6 +206,7 @@ function SubmitBatch(){
     var machine1_cementkg = document.getElementById("cementKG1").value;
     var machine1_comment = document.getElementById("commentKG1").value;
     var machine1_cementType = document.getElementById("selectsys1").value;
+    var actual1_production = document.getElementById("actual1_production").value;
 
     var machine1_time_batch =  $("input[name='batch1[]']").map(function(){return $(this).val() || "";}).get();
     var machine1_time_comment =  $("input[name='comment1[]']").map(function(){return $(this).val() || "";}).get();
@@ -215,7 +216,8 @@ function SubmitBatch(){
         machine1_cementkg: machine1_cementkg,
         machine1_comment: machine1_comment,
         machine1_cementType: machine1_cementType,
-        machine1_status: "0"
+        machine1_status: "0",
+        actual1_production: actual1_production
     }
 
     firebase.database().ref('Daily_Production_Report/'+plant+'/'+date_of_batch+'/Machine1').set(machine1_holder);
@@ -251,6 +253,7 @@ function SubmitBatch(){
     var machine2_cementkg = document.getElementById("cementKG2").value;
     var machine2_comment = document.getElementById("commentKG2").value;
     var machine2_cementType = document.getElementById("selectsys2").value;
+    var actual2_production = document.getElementById("actual2_production").value;
 
     var machine2_time_batch =  $("input[name='batch2[]']").map(function(){return $(this).val() || "";}).get();
     var machine2_time_comment =  $("input[name='comment2[]']").map(function(){return $(this).val() || "";}).get();
@@ -260,7 +263,8 @@ function SubmitBatch(){
         machine2_cementkg: machine2_cementkg,
         machine2_comment: machine2_comment,
         machine2_cementType: machine2_cementType,
-        machine2_status: "0"
+        machine2_status: "0",
+        actual2_production: actual2_production
     }
 
     firebase.database().ref('Daily_Production_Report/'+plant+'/'+date_of_batch+'/Machine2').set(machine2_holder);
@@ -293,6 +297,7 @@ function SubmitBatch(){
     var machine3_cementkg = document.getElementById("cementKG3").value;
     var machine3_comment = document.getElementById("commentKG3").value;
     var machine3_cementType = document.getElementById("selectsys3").value;
+    var actual3_production = document.getElementById("actual3_production").value;
 
     var machine3_time_batch =  $("input[name='batch3[]']").map(function(){return $(this).val() || "";}).get();
     var machine3_time_comment =  $("input[name='comment3[]']").map(function(){return $(this).val() || "";}).get();
@@ -302,7 +307,8 @@ function SubmitBatch(){
         machine3_cementkg: machine3_cementkg,
         machine3_comment: machine3_comment,
         machine3_cementType: machine3_cementType,
-        machine3_status: "0"
+        machine3_status: "0",
+        actual3_production: actual3_production
     }
 
     firebase.database().ref('Daily_Production_Report/'+plant+'/'+date_of_batch+'/Machine3').set(machine3_holder);
@@ -335,6 +341,7 @@ function SubmitBatch(){
     var machine4_cementkg = document.getElementById("cementKG4").value;
     var machine4_comment = document.getElementById("commentKG4").value;
     var machine4_cementType = document.getElementById("selectsys4").value;
+    var actual4_production = document.getElementById("actual4_production").value;
 
     var machine4_time_batch =  $("input[name='batch4[]']").map(function(){return $(this).val() || "";}).get();
     var machine4_time_comment =  $("input[name='comment4[]']").map(function(){return $(this).val() || "";}).get();
@@ -344,7 +351,8 @@ function SubmitBatch(){
         machine4_cementkg: machine4_cementkg,
         machine4_comment: machine4_comment,
         machine4_cementType: machine4_cementType,
-        machine4_status: "0"
+        machine4_status: "0",
+        actual4_production: actual4_production
     }
 
     firebase.database().ref('Daily_Production_Report/'+plant+'/'+date_of_batch+'/Machine4').set(machine4_holder);
@@ -377,6 +385,7 @@ function SubmitBatch(){
     var machine5_cementkg = document.getElementById("cementKG5").value;
     var machine5_comment = document.getElementById("commentKG5").value;
     var machine5_cementType = document.getElementById("selectsys5").value;
+    var actual5_production = document.getElementById("actual5_production").value;
 
     var machine5_time_batch =  $("input[name='batch5[]']").map(function(){return $(this).val() || "";}).get();
     var machine5_time_comment =  $("input[name='comment5[]']").map(function(){return $(this).val() || "";}).get();
@@ -386,7 +395,8 @@ function SubmitBatch(){
         machine5_cementkg: machine5_cementkg,
         machine5_comment: machine5_comment,
         machine5_cementType: machine5_cementType,
-        machine5_status: "0"
+        machine5_status: "0",
+        actual5_production: actual5_production
     }
 
     firebase.database().ref('Daily_Production_Report/'+plant+'/'+date_of_batch+'/Machine5').set(machine5_holder);
@@ -1424,6 +1434,33 @@ function SubmitBatch(){
                                         <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
+
+                                   <tr>
+                                    <th rowspan="4" style="vertical-align: middle; text-align: center;"></th>
+                                    <th colspan="2" style="text-align: center;">ACTUAL PRODUCTION-1</th>
+                                    <th colspan="2" style="text-align: center;">ACTUAL PRODUCTION-2</th>
+                                    <th colspan="2" style="text-align: center;">ACTUAL PRODUCTION-3</th>
+                                    <th colspan="2" style="text-align: center;">ACTUAL PRODUCTION-4</th>
+                                    <th colspan="2" style="text-align: center;">ACTUAL PRODUCTION-5</th>
+                                </tr>
+
+                                 <tr>
+                                <th colspan="2">
+                                    <input type="text" name="actual1_production" id="actual1_production" class="form-control" autocomplete="off" style="text-transform: uppercase; width: 100px text-align: center;"></th>
+                             
+                                <th colspan="2">
+                                    <input type="text" name="actual2_production" id="actual2_production" class="form-control"  autocomplete="off" style="text-transform: uppercase; width: 100px text-align: center;"></th>
+            
+                                <th colspan="2">
+                                    <input type="text" name="actual3_production" id="actual3_production" class="form-control"  autocomplete="off" style="text-transform: uppercase; width: 100px text-align: center;"></th>
+                       
+                                <th colspan="2">
+                                    <input type="text" name="actual4_production" id="actual4_production" class="form-control"  autocomplete="off" style="text-transform: uppercase; width: 100px text-align: center;"></th>
+                  
+                                <th colspan="2">
+                                    <input type="text" name="actual5_production" id="actual5_production" class="form-control"  autocomplete="off" style="text-transform: uppercase; width: 100px text-align: center;"></th>
+                        
+                               </tr>
 
                                 </tbody>
                                 
