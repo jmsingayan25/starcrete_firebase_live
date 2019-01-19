@@ -138,7 +138,7 @@
                         window.location.href = '../headoffice/index.html';
                     }
 
-                    dateData();
+                    // dateData();
 
                     if(plant == 'Bravo'){
                         plant_name = "<a href='index.html' class='logo'>Starcrete <span class='lite'>Manufacturing Corporation</span></a>";
@@ -226,7 +226,10 @@ function Go(){
             }else{
               document.getElementById("pcs1_batch").innerHTML = "0 pcs/batch";
             }
-           
+           if (isNaN(pcs_batch_total_1)) {
+
+              pcs_batch_total_1 = 0;
+           }
             var pcs1_data = {
             actual_production: pcs_batch_total_1
             }; 
@@ -298,6 +301,10 @@ function Go(){
             }else{
               document.getElementById("pcs2_batch").innerHTML = "0 pcs/batch";
             }
+             if (isNaN(pcs_batch_total_2)) {
+
+              pcs_batch_total_2 = 0;
+           }
 
                  var pcs2_data = {
                 actual_production: pcs_batch_total_2
@@ -368,7 +375,10 @@ function Go(){
             }else{
               document.getElementById("pcs3_batch").innerHTML = "0 pcs/batch";
             }
+                 if (isNaN(pcs_batch_total_3)) {
 
+              pcs_batch_total_3 = 0;
+           }
                  var pcs3_data = {
                   actual_production: pcs_batch_total_3
                 }; 
@@ -439,6 +449,10 @@ function Go(){
             }else{
               document.getElementById("pcs4_batch").innerHTML = "0 pcs/batch";
             }
+             if (isNaN(pcs_batch_total_4)) {
+
+              pcs_batch_total_4 = 0;
+           }
 
                 var pcs4_data = {
                 actual_production: pcs_batch_total_4
@@ -509,7 +523,10 @@ function Go(){
             }else{
               document.getElementById("pcs5_batch").innerHTML = "0 pcs/batch";
             }
+                 if (isNaN(pcs_batch_total_5)) {
 
+              pcs_batch_total_5 = 0;
+           }
                 var pcs5_data = {
                 actual_production: pcs_batch_total_5
                 }; 
@@ -538,12 +555,11 @@ function Go(){
        
           }
          document.getElementById("grand_total1_pcs").innerHTML = grand1_total + " pcs";  
-
+       
          var grand1_pcs = 0;
         for (var i = 0; i < array_pcs_batch.length; i++) {
         
          grand1_pcs += Number(array_pcs_batch[i].actual_production);
-       
       }
       if (!isNaN(grand1_pcs)) 
             {
@@ -665,53 +681,53 @@ function dateData(){
 
 }
 
-function prodType(date_val){
+// function prodType(date_val){
 
-    var selectDp = "";
+//     var selectDp = "";
     
-    if(date_val != ""){
+//     if(date_val != ""){
 
-        firebase.database().ref('Daily_Production_Report/'+plant+'/'+date_val).once('value', function(dateSnapshot){
+//         firebase.database().ref('Daily_Production_Report/'+plant+'/'+date_val).once('value', function(dateSnapshot){
 
-            if(dateSnapshot.val() != null){
+//             if(dateSnapshot.val() != null){
 
-                count = 1;
+//                 count = 1;
 
-                selectDp += "<option value=''>Select</option>";
+//                 selectDp += "<option value=''>Select</option>";
 
-                dateSnapshot.forEach(function(dateChildSnapshot){
+//                 dateSnapshot.forEach(function(dateChildSnapshot){
 
-                    if(count < 6){
+//                     if(count < 6){
 
-                        type = "dateChildSnapshot.val().machine"+count+"_cementType";
-                        con_type = eval(type);
-                        status = "dateChildSnapshot.val().machine"+count+"_status";
-                        con_status = eval(status);
-                        total = "dateChildSnapshot.val().machine"+count+"_total_batch";
-                        con_total = eval(total);
+//                         type = "dateChildSnapshot.val().machine"+count+"_cementType";
+//                         con_type = eval(type);
+//                         status = "dateChildSnapshot.val().machine"+count+"_status";
+//                         con_status = eval(status);
+//                         total = "dateChildSnapshot.val().machine"+count+"_total_batch";
+//                         con_total = eval(total);
 
-                        if(con_type != '' && con_status == '1' && con_total != '0'){
-                            selectDp += "<option value='#'>" + con_type + " (With Actual Production Output)</option>";
-                        }else if(con_type != '' && con_status == '0' && con_total != '0'){
-                            selectDp += "<option value='" + con_type + "'>" + con_type + "</option>";
-                        }
+//                         if(con_type != '' && con_status == '1' && con_total != '0'){
+//                             selectDp += "<option value='#'>" + con_type + " (With Actual Production Output)</option>";
+//                         }else if(con_type != '' && con_status == '0' && con_total != '0'){
+//                             selectDp += "<option value='" + con_type + "'>" + con_type + "</option>";
+//                         }
 
-                        count++;
-                    }
-                });
+//                         count++;
+//                     }
+//                 });
 
-                document.getElementById('dropdown_type').innerHTML = selectDp;
+//                 document.getElementById('dropdown_type').innerHTML = selectDp;
 
-            }else{
-                document.getElementById('dropdown_type').innerHTML = "<option value=''>Select</option>";
-            }
-        });   
+//             }else{
+//                 document.getElementById('dropdown_type').innerHTML = "<option value=''>Select</option>";
+//             }
+//         });   
 
-    }else{
-        document.getElementById('dropdown_type').innerHTML = "<option value=''>Select</option>";
-    }
+//     }else{
+//         document.getElementById('dropdown_type').innerHTML = "<option value=''>Select</option>";
+//     }
     
-}
+// }
 
 function btnDisable(val){
 
