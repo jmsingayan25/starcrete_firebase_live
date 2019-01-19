@@ -190,56 +190,57 @@ function Go(){
           var actual1_production = DailyProductionSnapShot1.val().actual1_production;
           var actual1_data = {
             actual_production: actual1_production
-          }; 
+          };
           array.push(actual1_data);
 
           document.getElementById("machine1_cementkg1").innerHTML = cementKG_holder1;
           document.getElementById("machine1_maincomment1").innerHTML = maincomment1_holder1;
           document.getElementById("machine1_cementype1").innerHTML = cementtype_holder1;
           
-          if(actual1_production != ""){
+          if(actual1_production != "")
+          {
             document.getElementById("total1_pcs").innerHTML = actual1_production + " pcs";
           }else{
-             document.getElementById("total1_pcs").innerHTML = "0 pcs";
+            document.getElementById("total1_pcs").innerHTML = "0 pcs";
           }
 
           firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine1'+'/Time').once('value',function(DailyProductionSnapShottime1){
-                count =1;
-                value =0;
+            count =1;
+            value =0;
+
             DailyProductionSnapShottime1.forEach(function(foreachtime){
+              var batch_holder1 = Number(foreachtime.val().machine1_time_batch).toLocaleString("en");
+              document.getElementById('machine1_batch'+count).innerHTML = batch_holder1;
 
-               var batch_holder1 = Number(foreachtime.val().machine1_time_batch).toLocaleString("en");
-               document.getElementById('machine1_batch'+count).innerHTML = batch_holder1;
+              var comment_holder1 = foreachtime.val().machine1_time_comment;
+              document.getElementById('machine1_comment'+count).innerHTML = comment_holder1;
+              count++;
 
-               var comment_holder1 = foreachtime.val().machine1_time_comment;
-               document.getElementById('machine1_comment'+count).innerHTML = comment_holder1;
-               count++;
+              var batchtotal1 = foreachtime.val().machine1_time_batch;
+              value += Number(batchtotal1);
+              document.getElementById('machine1_total').innerHTML = value.toLocaleString("en");
+            });
 
-               var batchtotal1 = foreachtime.val().machine1_time_batch;
-               value += Number(batchtotal1);
-               document.getElementById('machine1_total').innerHTML = value.toLocaleString("en");
-             });
             var pcs_batch_total_1 = Number(actual1_production)/Number(value);
-            if (!isNaN(pcs_batch_total_1)) 
+            if (!isNaN(pcs_batch_total_1))
             {
-               document.getElementById("pcs1_batch").innerHTML = Number(pcs_batch_total_1).toFixed() + " pcs/batch";
+              document.getElementById("pcs1_batch").innerHTML = Number(pcs_batch_total_1).toFixed() + " pcs/batch";
             }else{
               document.getElementById("pcs1_batch").innerHTML = "0 pcs/batch";
             }
-           if (isNaN(pcs_batch_total_1)) {
-
+            if (isNaN(pcs_batch_total_1)){
               pcs_batch_total_1 = 0;
-           }
+            }
             var pcs1_data = {
-            actual_production: pcs_batch_total_1
-            }; 
+              actual_production: pcs_batch_total_1
+            };
             array_pcs_batch.push(pcs1_data);
 
             var used1_totalcement = Number(cementKG_holder1)*Number(value);
             document.getElementById("used1_cement").innerHTML = Number(used1_totalcement).toFixed() + " kg";
 
             var cement1_data = {
-            actual_production: used1_totalcement
+              actual_production: used1_totalcement
             }; 
             array_used_cement.push(cement1_data);
 
@@ -247,18 +248,15 @@ function Go(){
             document.getElementById("number1_bags").innerHTML = Number(number1_bags_total).toFixed() + " bags";
 
             var bag1_data = {
-            actual_production: number1_bags_total
+              actual_production: number1_bags_total
             }; 
             array_number_bags.push(bag1_data);
-
           });
+        });//machine1_end
 
-       
-    });
-    //machine1_end
+        // machine2_start
+        firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine2').once('value',function(DailyProductionSnapShot2){
 
-      // machine2_start
-    firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine2').once('value',function(DailyProductionSnapShot2){
           var cementKG_holder2 = DailyProductionSnapShot2.val().machine2_cementkg;
           var maincomment2_holder2 = DailyProductionSnapShot2.val().machine2_comment;
           var cementtype_holder2 = DailyProductionSnapShot2.val().machine2_cementType;
@@ -271,72 +269,73 @@ function Go(){
           document.getElementById("machine2_cementkg2").innerHTML = cementKG_holder2;
           document.getElementById("machine2_maincomment2").innerHTML = maincomment2_holder2;
           document.getElementById("machine2_cementype2").innerHTML = cementtype_holder2;
-          if (actual2_production != "") 
-          {
-               document.getElementById("total2_pcs").innerHTML = actual2_production + " pcs";
+
+          if (actual2_production != ""){
+            document.getElementById("total2_pcs").innerHTML = actual2_production + " pcs";
           }else{
-             document.getElementById("total2_pcs").innerHTML = "0 pcs";
+            document.getElementById("total2_pcs").innerHTML = "0 pcs";
           }
-      
+
           firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine2'+'/Time').once('value',function(DailyProductionSnapShottime2){
-                count =1;
-                 value =0;
+            count =1;
+            value =0;
+
             DailyProductionSnapShottime2.forEach(function(foreachtime){
+              var batch_holder2 = Number(foreachtime.val().machine2_time_batch).toLocaleString("en");
+              document.getElementById('machine2_batch'+count).innerHTML = batch_holder2;
 
-               var batch_holder2 = Number(foreachtime.val().machine2_time_batch).toLocaleString("en");
-               document.getElementById('machine2_batch'+count).innerHTML = batch_holder2;
+              var comment_holder2 = foreachtime.val().machine2_time_comment;
+              document.getElementById('machine2_comment'+count).innerHTML = comment_holder2;
+              count++;
 
-               var comment_holder2 = foreachtime.val().machine2_time_comment;
-               document.getElementById('machine2_comment'+count).innerHTML = comment_holder2;
-               count++;
-
-               var batchtotal2 = foreachtime.val().machine2_time_batch;
-               value += Number(batchtotal2);
-               document.getElementById('machine2_total').innerHTML = value.toLocaleString("en");  
+              var batchtotal2 = foreachtime.val().machine2_time_batch;
+              value += Number(batchtotal2);
+              document.getElementById('machine2_total').innerHTML = value.toLocaleString("en");
             });
-                var pcs_batch_total_2 = Number(actual2_production)/Number(value);
-                if (!isNaN(pcs_batch_total_2)) 
-            {
-               document.getElementById("pcs2_batch").innerHTML = Number(pcs_batch_total_2).toFixed() + " pcs/batch";
+
+            var pcs_batch_total_2 = Number(actual2_production)/Number(value);
+
+            if (!isNaN(pcs_batch_total_2)){
+              document.getElementById("pcs2_batch").innerHTML = Number(pcs_batch_total_2).toFixed() + " pcs/batch";
             }else{
               document.getElementById("pcs2_batch").innerHTML = "0 pcs/batch";
             }
-             if (isNaN(pcs_batch_total_2)) {
-
+            if (isNaN(pcs_batch_total_2)) {
               pcs_batch_total_2 = 0;
-           }
+            }
 
-                 var pcs2_data = {
-                actual_production: pcs_batch_total_2
-                }; 
-                array_pcs_batch.push(pcs2_data);
+            var pcs2_data = {
+              actual_production: pcs_batch_total_2
+            };
+            array_pcs_batch.push(pcs2_data);
 
-              var used2_totalcement = Number(cementKG_holder2)*Number(value);
-              document.getElementById("used2_cement").innerHTML = Number(used2_totalcement).toFixed() + " kg";
+            var used2_totalcement = Number(cementKG_holder2)*Number(value);
+            document.getElementById("used2_cement").innerHTML = Number(used2_totalcement).toFixed() + " kg";
 
-               var cement2_data = {
-            actual_production: used2_totalcement
-            }; 
+            var cement2_data = {
+              actual_production: used2_totalcement
+            };
             array_used_cement.push(cement2_data);
 
-              var number2_bags_total = Number(used2_totalcement)/40;
-              document.getElementById("number2_bags").innerHTML = Number(number2_bags_total).toFixed() + " bags";
+            var number2_bags_total = Number(used2_totalcement)/40;
+            document.getElementById("number2_bags").innerHTML = Number(number2_bags_total).toFixed() + " bags";
 
-              var bag2_data = {
-            actual_production: number2_bags_total
-            }; 
+            var bag2_data = {
+              actual_production: number2_bags_total
+            };
             array_number_bags.push(bag2_data);
           });
+        });
+        //machine2_end
 
-    });
-    //machine2_end
+        // machine3_start
+        firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine3').once('value',function(DailyProductionSnapShot3){
 
-     // machine3_start
-    firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine3').once('value',function(DailyProductionSnapShot3){
           var cementKG_holder3 = DailyProductionSnapShot3.val().machine3_cementkg;
           var maincomment3_holder3 = DailyProductionSnapShot3.val().machine3_comment;
           var cementtype_holder3 = DailyProductionSnapShot3.val().machine3_cementType;
           var actual3_production = DailyProductionSnapShot3.val().actual3_production;
+          
           var actual3_data = {
             actual_production: actual3_production
           }; 
@@ -349,64 +348,63 @@ function Go(){
           if(actual3_production != ""){
             document.getElementById("total3_pcs").innerHTML = actual3_production + " pcs";
           }else{
-             document.getElementById("total3_pcs").innerHTML = "0 pcs";
+            document.getElementById("total3_pcs").innerHTML = "0 pcs";
           }
 
           firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine3'+'/Time').once('value',function(DailyProductionSnapShottime3){
                 count =1;
                 value =0;
-            DailyProductionSnapShottime3.forEach(function(foreachtime){
 
-               var batch_holder3 = Number(foreachtime.val().machine3_time_batch).toLocaleString("en");
-               document.getElementById('machine3_batch'+count).innerHTML = batch_holder3;
+                DailyProductionSnapShottime3.forEach(function(foreachtime){
 
-               var comment_holder3 = foreachtime.val().machine3_time_comment;
-               document.getElementById('machine3_comment'+count).innerHTML = comment_holder3;
-               count++;
+                  var batch_holder3 = Number(foreachtime.val().machine3_time_batch).toLocaleString("en");
+                  document.getElementById('machine3_batch'+count).innerHTML = batch_holder3;
 
-               var batchtotal3 = foreachtime.val().machine3_time_batch;
-               value += Number(batchtotal3);
-               document.getElementById('machine3_total').innerHTML = value.toLocaleString("en");
-            });
+                  var comment_holder3 = foreachtime.val().machine3_time_comment;
+                  document.getElementById('machine3_comment'+count).innerHTML = comment_holder3;
+                  count++;
+
+                  var batchtotal3 = foreachtime.val().machine3_time_batch;
+                  value += Number(batchtotal3);
+                  document.getElementById('machine3_total').innerHTML = value.toLocaleString("en");
+                });
+
                 var pcs_batch_total_3 = Number(actual3_production)/Number(value);
-                if (!isNaN(pcs_batch_total_3)) 
-            {
-               document.getElementById("pcs3_batch").innerHTML = Number(pcs_batch_total_3).toFixed() + " pcs/batch";
-            }else{
-              document.getElementById("pcs3_batch").innerHTML = "0 pcs/batch";
-            }
-                 if (isNaN(pcs_batch_total_3)) {
-
-              pcs_batch_total_3 = 0;
-           }
-                 var pcs3_data = {
+                
+                if (!isNaN(pcs_batch_total_3)){
+                  document.getElementById("pcs3_batch").innerHTML = Number(pcs_batch_total_3).toFixed() + " pcs/batch";
+                }else{
+                  document.getElementById("pcs3_batch").innerHTML = "0 pcs/batch";
+                }if (isNaN(pcs_batch_total_3)){
+                  pcs_batch_total_3 = 0;
+                }
+                var pcs3_data = {
                   actual_production: pcs_batch_total_3
                 }; 
                 array_pcs_batch.push(pcs3_data);
-
                 var used3_totalcement = Number(cementKG_holder3)*Number(value);
+
                 document.getElementById("used3_cement").innerHTML = Number(used3_totalcement).toFixed() + " kg";
 
-                 var cement3_data = {
-            actual_production: used3_totalcement
-            }; 
-            array_used_cement.push(cement3_data);
+                var cement3_data = {
+                  actual_production: used3_totalcement
+                };
+                array_used_cement.push(cement3_data);
 
                 var number3_bags_total = Number(used3_totalcement)/40;
                 document.getElementById("number3_bags").innerHTML = Number(number3_bags_total).toFixed() + " bags";
 
                 var bag3_data = {
-            actual_production: number3_bags_total
-            }; 
-            array_number_bags.push(bag3_data);
+                  actual_production: number3_bags_total
+                };
+                array_number_bags.push(bag3_data);
+              });
+        });
+        //machine3_end
 
-          });
+        // machine4_start
+        firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine4').once('value',function(DailyProductionSnapShot4){
 
-    });
-    //machine3_end
-
-     // machine4_start
-    firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine4').once('value',function(DailyProductionSnapShot4){
           var cementKG_holder4 = DailyProductionSnapShot4.val().machine4_cementkg;
           var maincomment4_holder4 = DailyProductionSnapShot4.val().machine4_comment;
           var cementtype_holder4 = DailyProductionSnapShot4.val().machine4_cementType;
@@ -419,69 +417,69 @@ function Go(){
           document.getElementById("machine4_cementkg4").innerHTML = cementKG_holder4;
           document.getElementById("machine4_maincomment4").innerHTML = maincomment4_holder4;
           document.getElementById("machine4_cementype4").innerHTML = cementtype_holder4;
-          
+
           if(actual4_production != ""){
             document.getElementById("total4_pcs").innerHTML = actual4_production + " pcs";
           }else{
-             document.getElementById("total4_pcs").innerHTML = "0 pcs";
+            document.getElementById("total4_pcs").innerHTML = "0 pcs";
           }
 
           firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine4'+'/Time').once('value',function(DailyProductionSnapShottime4){
-                count =1;
-                value =0;
+            count =1;
+            value =0;
+
             DailyProductionSnapShottime4.forEach(function(foreachtime){
 
-               var batch_holder4 = Number(foreachtime.val().machine4_time_batch).toLocaleString("en");
-               document.getElementById('machine4_batch'+count).innerHTML = batch_holder4;
+              var batch_holder4 = Number(foreachtime.val().machine4_time_batch).toLocaleString("en");
+              document.getElementById('machine4_batch'+count).innerHTML = batch_holder4;
 
-               var comment_holder4 = foreachtime.val().machine4_time_comment;
-               document.getElementById('machine4_comment'+count).innerHTML = comment_holder4;
-               count++;
+              var comment_holder4 = foreachtime.val().machine4_time_comment;
+              document.getElementById('machine4_comment'+count).innerHTML = comment_holder4;
+              count++;
 
-               var batchtotal4 = foreachtime.val().machine4_time_batch;
-               value += Number(batchtotal4);
-               document.getElementById('machine4_total').innerHTML = value.toLocaleString("en");
+              var batchtotal4 = foreachtime.val().machine4_time_batch;
+              value += Number(batchtotal4);
+              document.getElementById('machine4_total').innerHTML = value.toLocaleString("en");
+
             });
-                var pcs_batch_total_4 = Number(actual4_production)/Number(value);
-                if (!isNaN(pcs_batch_total_4)) 
-            {
-               document.getElementById("pcs4_batch").innerHTML = Number(pcs_batch_total_4).toFixed() + " pcs/batch";
+
+            var pcs_batch_total_4 = Number(actual4_production)/Number(value);
+            if (!isNaN(pcs_batch_total_4)){
+              document.getElementById("pcs4_batch").innerHTML = Number(pcs_batch_total_4).toFixed() + " pcs/batch";
             }else{
               document.getElementById("pcs4_batch").innerHTML = "0 pcs/batch";
             }
-             if (isNaN(pcs_batch_total_4)) {
-
+            if (isNaN(pcs_batch_total_4)){
               pcs_batch_total_4 = 0;
-           }
-
-                var pcs4_data = {
-                actual_production: pcs_batch_total_4
-                }; 
-                array_pcs_batch.push(pcs4_data);
-
-                var used4_totalcement = Number(cementKG_holder4)*Number(value);
-                document.getElementById("used4_cement").innerHTML = Number(used4_totalcement).toFixed() + " kg";
-
-                 var cement4_data = {
+            }
+            var pcs4_data = {
+            actual_production: pcs_batch_total_4
+          };
+          array_pcs_batch.push(pcs4_data);
+          
+          var used4_totalcement = Number(cementKG_holder4)*Number(value);
+          document.getElementById("used4_cement").innerHTML = Number(used4_totalcement).toFixed() + " kg";
+          
+          var cement4_data = {
             actual_production: used4_totalcement
-            }; 
-            array_used_cement.push(cement4_data);
+          };
+          array_used_cement.push(cement4_data);
+          
+          var number4_bags_total = Number(used4_totalcement)/40;
+          document.getElementById("number4_bags").innerHTML = Number(number4_bags_total).toFixed() + " bags";
 
-                var number4_bags_total = Number(used4_totalcement)/40;
-               document.getElementById("number4_bags").innerHTML = Number(number4_bags_total).toFixed() + " bags";
-
-               var bag4_data = {
+          var bag4_data = {
             actual_production: number4_bags_total
-            }; 
-            array_number_bags.push(bag4_data);
+          };
+          array_number_bags.push(bag4_data);
+        });
+        });
+        //machine4_end
 
-          });
+        // machine5_start
 
-    });
-    //machine4_end
+        firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine5').once('value',function(DailyProductionSnapShot5){
 
-      // machine5_start
-    firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine5').once('value',function(DailyProductionSnapShot5){
           var cementKG_holder5 = DailyProductionSnapShot5.val().machine5_cementkg;
           var maincomment5_holder5 = DailyProductionSnapShot5.val().machine5_comment;
           var cementtype_holder5 = DailyProductionSnapShot5.val().machine5_cementType;
@@ -494,115 +492,96 @@ function Go(){
           document.getElementById("machine5_cementkg5").innerHTML = cementKG_holder5;
           document.getElementById("machine5_maincomment5").innerHTML = maincomment5_holder5;
           document.getElementById("machine5_cementype5").innerHTML = cementtype_holder5;
+
           if(actual5_production != ""){
             document.getElementById("total5_pcs").innerHTML = actual5_production + " pcs";
           }else{
              document.getElementById("total5_pcs").innerHTML = "0 pcs";
           }
-
           firebase.database().ref('Daily_Production_Report/'+ plant +'/'+date_of_batch+'/Machine5'+'/Time').once('value',function(DailyProductionSnapShottime5){
                 count =1;
                 value =0;
-            DailyProductionSnapShottime5.forEach(function(foreachtime){
 
-               var batch_holder5 = Number(foreachtime.val().machine5_time_batch).toLocaleString("en");
-               document.getElementById('machine5_batch'+count).innerHTML = batch_holder5;
+                DailyProductionSnapShottime5.forEach(function(foreachtime){
+                  var batch_holder5 = Number(foreachtime.val().machine5_time_batch).toLocaleString("en");
+                  document.getElementById('machine5_batch'+count).innerHTML = batch_holder5;
 
-               var comment_holder5 = foreachtime.val().machine5_time_comment;
-               document.getElementById('machine5_comment'+count).innerHTML = comment_holder5;
-               count++;
+                  var comment_holder5 = foreachtime.val().machine5_time_comment;
+                  document.getElementById('machine5_comment'+count).innerHTML = comment_holder5;
+                  count++;
 
-                var batchtotal5 = foreachtime.val().machine5_time_batch;
-               value += Number(batchtotal5);
-               document.getElementById('machine5_total').innerHTML = value.toLocaleString("en");
-            });
+                  var batchtotal5 = foreachtime.val().machine5_time_batch;
+                  value += Number(batchtotal5);
+                  document.getElementById('machine5_total').innerHTML = value.toLocaleString("en");
+                });
+
                 var pcs_batch_total_5 = Number(actual5_production)/Number(value);
-                if (!isNaN(pcs_batch_total_5)) 
-            {
-               document.getElementById("pcs5_batch").innerHTML = Number(pcs_batch_total_5).toFixed() + " pcs/batch";
-            }else{
-              document.getElementById("pcs5_batch").innerHTML = "0 pcs/batch";
-            }
-                 if (isNaN(pcs_batch_total_5)) {
+                if (!isNaN(pcs_batch_total_5)){
+                  document.getElementById("pcs5_batch").innerHTML = Number(pcs_batch_total_5).toFixed() + " pcs/batch";
+                }else{
+                  document.getElementById("pcs5_batch").innerHTML = "0 pcs/batch";
+                }if (isNaN(pcs_batch_total_5)){
+                  pcs_batch_total_5 = 0;
+                }
 
-              pcs_batch_total_5 = 0;
-           }
                 var pcs5_data = {
-                actual_production: pcs_batch_total_5
+                  actual_production: pcs_batch_total_5
                 }; 
                 array_pcs_batch.push(pcs5_data);
 
                 var used5_totalcement = Number(cementKG_holder5)*Number(value);
                 document.getElementById("used5_cement").innerHTML = Number(used5_totalcement).toFixed() + " kg";
 
-                 var cement5_data = {
-            actual_production: used5_totalcement
-            }; 
-            array_used_cement.push(cement5_data);
+                var cement5_data = {
+                  actual_production: used5_totalcement
+                };
+                array_used_cement.push(cement5_data);
 
-                 var number5_bags_total = Number(used5_totalcement)/40;
+                var number5_bags_total = Number(used5_totalcement)/40;
                 document.getElementById("number5_bags").innerHTML = Number(number5_bags_total).toFixed() + " bags";
 
-                  var bag5_data = {
-            actual_production: number5_bags_total
-            }; 
-            array_number_bags.push(bag5_data);
-       
-        var grand1_total =0;
-          for (var i = 0; i < array.length; i++) {
-        
-         grand1_total += Number(array[i].actual_production);
-       
-          }
-         document.getElementById("grand_total1_pcs").innerHTML = grand1_total + " pcs";  
-       
-         var grand1_pcs = 0;
-        for (var i = 0; i < array_pcs_batch.length; i++) {
-        
-         grand1_pcs += Number(array_pcs_batch[i].actual_production);
-      }
-      if (!isNaN(grand1_pcs)) 
-            {
-              document.getElementById("grand_pcs2_batch").innerHTML = Number(grand1_pcs).toFixed() + " pcs/batch";
-            }else{
-              document.getElementById("grand_pcs2_batch").innerHTML =  "0 pcs/batch";
-            }
- 
+                var bag5_data = {
+                  actual_production: number5_bags_total
+                };
+                array_number_bags.push(bag5_data);
+                var grand1_total =0;
 
-       var grand1_cement = 0;
-        for (var i = 0; i < array_used_cement.length; i++) {
-        
-         grand1_cement += Number(array_used_cement[i].actual_production);
-       
-      }
-      document.getElementById("grand_used3_cement").innerHTML = Number(grand1_cement).toFixed() + " kg";
+                for (var i = 0; i < array.length; i++) {
+                  grand1_total += Number(array[i].actual_production);
+                }
+                document.getElementById("grand_total1_pcs").innerHTML = grand1_total + " pcs";
+                var grand1_pcs = 0;
 
-       var grand1_bags = 0;
-        for (var i = 0; i < array_number_bags.length; i++) {
-        
-         grand1_bags += Number(array_number_bags[i].actual_production.toFixed());
-       
-      }
-      document.getElementById("grand_number4_Bags").innerHTML = Number(grand1_bags).toFixed() + " bags";
+                for (var i = 0; i < array_pcs_batch.length; i++) {
+                  grand1_pcs += Number(array_pcs_batch[i].actual_production);
+                }
+                if (!isNaN(grand1_pcs)){
+                  document.getElementById("grand_pcs2_batch").innerHTML = Number(grand1_pcs).toFixed() + " pcs/batch";
+                }else{
+                  document.getElementById("grand_pcs2_batch").innerHTML =  "0 pcs/batch";
+                }
 
+                var grand1_cement = 0;
+                for (var i = 0; i < array_used_cement.length; i++) {
+                  grand1_cement += Number(array_used_cement[i].actual_production);
+                }
+                document.getElementById("grand_used3_cement").innerHTML = Number(grand1_cement).toFixed() + " kg";
+                var grand1_bags = 0;
 
-
-          });
-
-    });
-
-  
-     $(".se-pre-con").fadeOut("slow");
-    //machine5_end
-    }else{
-        alert("No Record Found!");
-        window.location.reload();
-        $(".se-pre-con").fadeOut("slow");
-    }
-
-
+                for (var i = 0; i < array_number_bags.length; i++) {
+                  grand1_bags += Number(array_number_bags[i].actual_production.toFixed());
+                }
+                document.getElementById("grand_number4_Bags").innerHTML = Number(grand1_bags).toFixed() + " bags";
+              });
+        });
+$(".se-pre-con").fadeOut("slow");
+//machine5_end
+}else{
+  alert("No Record Found!");
+  window.location.reload();
+  $(".se-pre-con").fadeOut("slow");
+}
 }); 
-
 }
 
 function dateData(){
