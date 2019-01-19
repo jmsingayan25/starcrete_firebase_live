@@ -100,6 +100,11 @@
 
             if(dailySnapshot.val() != null){
                 
+                var actual_prod_array = [];
+                var pcs_batch_array = [];
+                var used_cement_array = [];
+                var bags_array = [];
+
                 firebase.database().ref('Daily_Production_Report/'+plant+'/'+date_of_batch+'/Machine1').once('value', function(machine1Snapshot){
 
                     var type = machine1Snapshot.val().machine1_cementType;
@@ -127,6 +132,25 @@
                             count++;
 
                         });
+
+                        var actual = machine1Snapshot.val().actual1_production || "0";
+                        var pcs_batch = Number(actual) / Number(total);
+                        var used_cement = Number(kilos) * Number(total);
+                        var bags = Number(used_cement) / 40;
+
+                        if(isNaN(pcs_batch)){
+                            pcs_batch = 0;
+                        }
+
+                        actual_prod_array.push({actual: actual});
+                        pcs_batch_array.push({pcs_batch: pcs_batch});
+                        used_cement_array.push({used_cement: used_cement});
+                        bags_array.push({bags: bags});
+                        
+                        document.getElementById('machine1_total_pc').innerHTML = Number(actual).toLocaleString('en') + " pcs";
+                        document.getElementById('machine1_pcs_batch').innerHTML = Number(pcs_batch).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) + " pcs/batch";
+                        document.getElementById('machine1_used_cement').innerHTML = Number(used_cement).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) + " kg";
+                        document.getElementById('machine1_no_bags').innerHTML = Number(bags).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) + " bags"; 
                         
                         document.getElementById('machine1_total').innerHTML = Number(total).toLocaleString('en');
                     });
@@ -158,6 +182,25 @@
 
                         });
 
+                        var actual = machine2Snapshot.val().actual2_production || "0";
+                        var pcs_batch = Number(actual) / Number(total);
+                        var used_cement = Number(kilos) * Number(total);
+                        var bags = Number(used_cement) / 40;
+
+                        if(isNaN(pcs_batch)){
+                            pcs_batch = 0;
+                        }
+
+                        actual_prod_array.push({actual: actual});
+                        pcs_batch_array.push({pcs_batch: pcs_batch});
+                        used_cement_array.push({used_cement: used_cement});
+                        bags_array.push({bags: bags});
+                        
+                        document.getElementById('machine2_total_pc').innerHTML = Number(actual).toLocaleString('en') + " pcs";
+                        document.getElementById('machine2_pcs_batch').innerHTML = Number(pcs_batch).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) + " pcs/batch";
+                        document.getElementById('machine2_used_cement').innerHTML = Number(used_cement).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) + " kg";
+                        document.getElementById('machine2_no_bags').innerHTML = Number(bags).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) + " bags"; 
+
                         document.getElementById('machine2_total').innerHTML = Number(total).toLocaleString('en');
                     });
                 });
@@ -187,6 +230,25 @@
                             count++;
 
                         });
+
+                        var actual = machine3Snapshot.val().actual3_production || "0";
+                        var pcs_batch = Number(actual) / Number(total);
+                        var used_cement = Number(kilos) * Number(total);
+                        var bags = Number(used_cement) / 40;
+
+                        if(isNaN(pcs_batch)){
+                            pcs_batch = 0;
+                        }
+
+                        actual_prod_array.push({actual: actual});
+                        pcs_batch_array.push({pcs_batch: pcs_batch});
+                        used_cement_array.push({used_cement: used_cement});
+                        bags_array.push({bags: bags});
+                        
+                        document.getElementById('machine3_total_pc').innerHTML = Number(actual).toLocaleString('en') + " pcs";
+                        document.getElementById('machine3_pcs_batch').innerHTML = Number(pcs_batch).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) + " pcs/batch";
+                        document.getElementById('machine3_used_cement').innerHTML = Number(used_cement).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) + " kg";
+                        document.getElementById('machine3_no_bags').innerHTML = Number(bags).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) + " bags"; 
 
                         document.getElementById('machine3_total').innerHTML = Number(total).toLocaleString('en');
                     });
@@ -218,6 +280,25 @@
 
                         });
 
+                        var actual = machine4Snapshot.val().actual4_production || "0";
+                        var pcs_batch = Number(actual) / Number(total);
+                        var used_cement = Number(kilos) * Number(total);
+                        var bags = Number(used_cement) / 40;
+
+                        if(isNaN(pcs_batch)){
+                            pcs_batch = 0;
+                        }
+
+                        actual_prod_array.push({actual: actual});
+                        pcs_batch_array.push({pcs_batch: pcs_batch});
+                        used_cement_array.push({used_cement: used_cement});
+                        bags_array.push({bags: bags});
+                        
+                        document.getElementById('machine4_total_pc').innerHTML = Number(actual).toLocaleString('en') + " pcs";
+                        document.getElementById('machine4_pcs_batch').innerHTML = Number(pcs_batch).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) + " pcs/batch";
+                        document.getElementById('machine4_used_cement').innerHTML = Number(used_cement).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) + " kg";
+                        document.getElementById('machine4_no_bags').innerHTML = Number(bags).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) + " bags"; 
+
                         document.getElementById('machine4_total').innerHTML = Number(total).toLocaleString('en');
                     });
                 });
@@ -248,7 +329,52 @@
 
                         });
 
+                        var actual = machine5Snapshot.val().actual5_production;
+                        var pcs_batch = Number(actual) / Number(total);
+                        var used_cement = Number(kilos) * Number(total);
+                        var bags = Number(used_cement) / 40;
+
+                        if(isNaN(pcs_batch)){
+                            pcs_batch = 0;
+                        }
+                        
+                        actual_prod_array.push({actual: actual});
+                        pcs_batch_array.push({pcs_batch: pcs_batch});
+                        used_cement_array.push({used_cement: used_cement});
+                        bags_array.push({bags: bags});
+                        
+                        document.getElementById('machine5_total_pc').innerHTML = Number(actual).toLocaleString('en') + " pcs";
+                        document.getElementById('machine5_pcs_batch').innerHTML = Number(pcs_batch).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) + " pcs/batch";
+                        document.getElementById('machine5_used_cement').innerHTML = Number(used_cement).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) + " kg";
+                        document.getElementById('machine5_no_bags').innerHTML = Number(bags).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) + " bags"; 
+
                         document.getElementById('machine5_total').innerHTML = Number(total).toLocaleString('en');
+
+                        var actual_prod_total = 0;
+                        var pcs_batch_total = 0;
+                        var used_cement_total = 0;
+                        var bags_total = 0;
+
+                        for(var i = 0; i < actual_prod_array.length; i++){
+                            actual_prod_total += Number(Number(actual_prod_array[i].actual).toFixed());
+                        }
+
+                        for(var i = 0; i < pcs_batch_array.length; i++){
+                            pcs_batch_total += Number(Number(pcs_batch_array[i].pcs_batch).toFixed());
+                        }
+
+                        for(var i = 0; i < used_cement_array.length; i++){
+                            used_cement_total += Number(Number(used_cement_array[i].used_cement).toFixed());
+                        }
+
+                        for(var i = 0; i < bags_array.length; i++){
+                            bags_total += Number(Number(bags_array[i].bags).toFixed());
+                        }
+
+                        document.getElementById('total_pc_sum').innerHTML = Number(actual_prod_total).toLocaleString('en') + " pcs";
+                        document.getElementById('pcs_batch_sum').innerHTML = Number(pcs_batch_total).toLocaleString('en') + " pcs/batch";
+                        document.getElementById('used_cement_sum').innerHTML = Number(used_cement_total).toLocaleString('en') + " kg";
+                        document.getElementById('no_bags_sum').innerHTML = Number(bags_total).toLocaleString('en') + " bags";
                     });
                 });
             }
@@ -263,7 +389,7 @@
 }
 @media print {
   table{
-    font-size: 11px;
+    font-size: 9px;
   }
   #printPageButton{
     display: none;
@@ -590,6 +716,59 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <br>
+                            <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-md-1 text_center"></th>
+                                            <th class="col-md-2 text_center">MACHINE 1</th>
+                                            <th class="col-md-2 text_center">MACHINE 2</th>
+                                            <th class="col-md-2 text_center">MACHINE 3</th>
+                                            <th class="col-md-2 text_center">MACHINE 4</th>
+                                            <th class="col-md-2 text_center">MACHINE 5</th>
+                                            <th class="col-md-1 text_center">TOTAL</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="col-md-1 text_center time_color"><strong>TOTAL NO. OF PCS</strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine1_total_pc"></span></strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine2_total_pc"></span></strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine3_total_pc"></span></strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine4_total_pc"></span></strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine5_total_pc"></span></strong></td>
+                                            <td class="col-md-1 text_center"><strong><span id="total_pc_sum"></span></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-md-1 text_center time_color"><strong>PCS / BATCH</strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine1_pcs_batch"></span></strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine2_pcs_batch"></span></strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine3_pcs_batch"></span></strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine4_pcs_batch"></span></strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine5_pcs_batch"></span></strong></td>
+                                            <td class="col-md-1 text_center"><strong><span id="pcs_batch_sum"></span></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-md-1 text_center time_color"><strong>USED CEMENT</strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine1_used_cement"></span></strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine2_used_cement"></span></strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine3_used_cement"></span></strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine4_used_cement"></span></strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine5_used_cement"></span></strong></td>
+                                            <td class="col-md-1 text_center"><strong><span id="used_cement_sum"></span></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-md-1 text_center time_color"><strong>NO. OF BAGS</strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine1_no_bags"></span></strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine2_no_bags"></span></strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine3_no_bags"></span></strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine4_no_bags"></span></strong></td>
+                                            <td class="col-md-2 text_center"><strong><span id="machine5_no_bags"></span></strong></td>
+                                            <td class="col-md-1 text_center"><strong><span id="no_bags_sum"></span></strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                         <!-- </div> -->
                     </section>
                 </div>
