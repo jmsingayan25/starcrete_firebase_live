@@ -91,9 +91,9 @@
 
         // startTime();
          var $form = $( "#form" );
-        var $input = $form.find( "#batch1,#batch2,#batch3,#batch4,#batch5", );
+        var $input = $form.find( "#batch1,#batch2,#batch3,#batch4,#batch5,#actual1_production,#actual2_production,#actual3_production,#actual4_production,#actual5_production", );
 
-        $form.on( "keyup", "#batch1,#batch2,#batch3,#batch4,#batch5", function( event ) {
+        $form.on( "keyup", "#batch1,#batch2,#batch3,#batch4,#batch5,#actual1_production,#actual2_production,#actual3_production,#actual4_production,#actual5_production", function( event ) {
             
             
             // When user select text in the document, also abort.
@@ -207,6 +207,7 @@ function SubmitBatch(){
     var machine1_comment = document.getElementById("commentKG1").value;
     var machine1_cementType = document.getElementById("selectsys1").value;
     var actual1_production = document.getElementById("actual1_production").value;
+    actual1_production = actual1_production.replace(",","");
 
     var machine1_time_batch =  $("input[name='batch1[]']").map(function(){return $(this).val() || "";}).get();
     var machine1_time_comment =  $("input[name='comment1[]']").map(function(){return $(this).val() || "";}).get();
@@ -254,6 +255,7 @@ function SubmitBatch(){
     var machine2_comment = document.getElementById("commentKG2").value;
     var machine2_cementType = document.getElementById("selectsys2").value;
     var actual2_production = document.getElementById("actual2_production").value;
+    actual2_production = actual2_production.replace(",","");
 
     var machine2_time_batch =  $("input[name='batch2[]']").map(function(){return $(this).val() || "";}).get();
     var machine2_time_comment =  $("input[name='comment2[]']").map(function(){return $(this).val() || "";}).get();
@@ -298,6 +300,7 @@ function SubmitBatch(){
     var machine3_comment = document.getElementById("commentKG3").value;
     var machine3_cementType = document.getElementById("selectsys3").value;
     var actual3_production = document.getElementById("actual3_production").value;
+    actual3_production = actual3_production.replace(",","");
 
     var machine3_time_batch =  $("input[name='batch3[]']").map(function(){return $(this).val() || "";}).get();
     var machine3_time_comment =  $("input[name='comment3[]']").map(function(){return $(this).val() || "";}).get();
@@ -342,6 +345,7 @@ function SubmitBatch(){
     var machine4_comment = document.getElementById("commentKG4").value;
     var machine4_cementType = document.getElementById("selectsys4").value;
     var actual4_production = document.getElementById("actual4_production").value;
+    actual4_production = actual4_production.replace(",","");
 
     var machine4_time_batch =  $("input[name='batch4[]']").map(function(){return $(this).val() || "";}).get();
     var machine4_time_comment =  $("input[name='comment4[]']").map(function(){return $(this).val() || "";}).get();
@@ -386,6 +390,7 @@ function SubmitBatch(){
     var machine5_comment = document.getElementById("commentKG5").value;
     var machine5_cementType = document.getElementById("selectsys5").value;
     var actual5_production = document.getElementById("actual5_production").value;
+    actual5_production = actual5_production.replace(",","");
 
     var machine5_time_batch =  $("input[name='batch5[]']").map(function(){return $(this).val() || "";}).get();
     var machine5_time_comment =  $("input[name='comment5[]']").map(function(){return $(this).val() || "";}).get();
