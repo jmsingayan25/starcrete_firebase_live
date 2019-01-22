@@ -187,7 +187,93 @@
         $(".se-pre-con").fadeOut("slow");
         document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
     });
-   
+
+function Go(){
+
+    event.preventDefault();
+    var myTbody = "";
+
+    if (fromDate == '' && endDate =='') {
+        firebase.database().ref('receive_aggregates/' + plant).once('value').then(function(receiveSnapshot) {
+          receiveSnapshot.forEach(function(ForeachReceive){
+
+            var ra_date = ForeachReceive.val().ra_date;
+            var ra_supplier = ForeachReceive.val().ra_supplier;
+            var ra_po = ForeachReceive.val().ra_po;
+            var ra_selectsys = ForeachReceive.val().ra_selectsys;
+            var ra_quantity = ForeachReceive.val().ra_quantity;
+            var ra_time = ForeachReceive.val().ra_time;
+            var ra_dr = ForeachReceive.val().ra_dr;
+            var ra_plate = ForeachReceive.val().ra_plate;
+            var ra_volume =ForeachReceive.val().ra_volume;
+
+            myTbody += "<tr><td><strong>" + ra_date + "</strong></td>";
+            myTbody += "<td><strong>" + ra_supplier + "</strong></td>";
+            myTbody += "<td><strong>" + ra_po + "</strong></td>";
+            myTbody += "<td><strong>" + ra_selectsys + "</strong></td>";
+            myTbody += "<td><strong>" + ra_quantity + "</strong></td>";
+            myTbody += "<td><strong>" + ra_time + "</strong></td>";
+            myTbody += "<td><strong>" + ra_dr + "</strong></td>";
+            myTbody += "<td><strong>" + ra_plate + "</strong></td>";
+            myTbody += "<td><strong>" + ra_volume + "</strong></td>";
+
+          });
+
+          if (myTbody == ""){
+            myTbody ="<tr><td colspan='9' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+            document.getElementById("receive_list").innerHTML = myTbody;
+        }else{document.getElementById("receive_list").innerHTML = myTbody; }
+    });
+    }else{
+        firebase.database().ref('receive_aggregates/' + plant).once('value').then(function(receiveSnapshot) {
+            receiveSnapshot.forEach(function(ForeachReceive){
+
+                newFromDate = new Date(fromDate).toLocaleDateString('en');
+                fromDate = new Date(newFromDate);
+
+                newEndDate = new Date(endDate).toLocaleDateString('en');
+                endDate = new Date(newEndDate);
+
+                fromDateDisplay = new Date(newFromDate).toLocaleDateString('en');
+                endDateDisplay = new Date(newEndDate).toLocaleDateString('en');
+
+                getDate = new Date(ForeachReceive.val().ra_date);
+
+                if (getDate.getTime() >= fromDate.getTime() && getDate.getTime() <= endDate.getTime()){
+
+                    var ra_date = ForeachReceive.val().ra_date;
+                    var ra_supplier = ForeachReceive.val().ra_supplier;
+                    var ra_po = ForeachReceive.val().ra_po;
+                    var ra_selectsys = ForeachReceive.val().ra_selectsys;
+                    var ra_quantity = ForeachReceive.val().ra_quantity;
+                    var ra_time = ForeachReceive.val().ra_time;
+                    var ra_dr = ForeachReceive.val().ra_dr;
+                    var ra_plate = ForeachReceive.val().ra_plate;
+                    var ra_volume =ForeachReceive.val().ra_volume;
+
+                    myTbody += "<tr><td><strong>" + ra_date + "</strong></td>";
+                    myTbody += "<td><strong>" + ra_supplier + "</strong></td>";
+                    myTbody += "<td><strong>" + ra_po + "</strong></td>";
+                    myTbody += "<td><strong>" + ra_selectsys + "</strong></td>";
+                    myTbody += "<td><strong>" + ra_quantity + "</strong></td>";
+                    myTbody += "<td><strong>" + ra_time + "</strong></td>";
+                    myTbody += "<td><strong>" + ra_dr + "</strong></td>";
+                    myTbody += "<td><strong>" + ra_plate + "</strong></td>";
+                    myTbody += "<td><strong>" + ra_volume + "</strong></td>";
+
+                }
+
+            });
+
+          if (myTbody == ""){
+            myTbody ="<tr><td colspan='9' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+            document.getElementById("receive_list").innerHTML = myTbody;
+        }else{document.getElementById("receive_list").innerHTML = myTbody; }
+        });
+
+    }
+}
+
 
 </script>
 <style>
@@ -389,16 +475,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6" style="margin: 5px 0px 0px 0px;">
-                                            <div class="row">
-                                                <div class="col-md-8 col-md-offset-4">
-                                                    <div class="form-group">
-                                                        <button type="button" class="btn btn-info btn-md" onclick="location.href='diesel_incoming_form.html'"><span class="fa fa-plus"></span> <strong>Add Incoming Diesel</strong></button>
-                                                        <button type="button" class="btn btn-info btn-md" onclick="location.href='diesel_outgoing_form.html'"><span class="fa fa-plus"></span> <strong>Add Outgoing Diesel</strong></button>
-                                                    </div>
-                                                </div>    
-                                            </div>
-                                        </div>
                                     </div>
                                 </header>
                             </form>
@@ -414,20 +490,20 @@
                         					</th>
                         				</tr>
                         				<tr class="filters" style="background-color: #00111a;">
-											<th class="col-md-1"><input type="text" class="form-control" placeholder="Truck No." disabled></th>
-											<th class="col-md-2"><input type="text" class="form-control" placeholder="Driver / Operator / Supplier" disabled></th>
-											<th class="col-md-1" style="text-align:center; color:white">Quantity(IN)</th>
-                                            <th class="col-md-1" style="text-align:center; color:white">Pondo</th>
-											<th class="col-md-1" style="text-align:center; color:white">Quantity(OUT)</th>
-											<th class="col-md-1" style="text-align:center; color:white">Current Stock</th>
-											<th class="col-md-1"><input type="text" class="form-control" placeholder="Address" disabled ></th>
+											<th class="col-md-1"><input type="text" class="form-control" placeholder="Date" disabled></th>
+											<th class="col-md-2"><input type="text" class="form-control" placeholder="Supplier" disabled></th>
+											<th class="col-md-1" style="text-align:center; color:white">Po #</th>
+                                            <th class="col-md-1" style="text-align:center; color:white">Item</th>
+											<th class="col-md-1" style="text-align:center; color:white">Quantity</th>
 											<th class="col-md-1" style="text-align:center; color:white">Time</th>
-                                            <th class="col-md-1" style="text-align:center; color:white">DR No.</th>
+											<th class="col-md-1"><input type="text" class="form-control" placeholder="Dr #" disabled ></th>
+											<th class="col-md-1" style="text-align:center; color:white">Plate #</th>
+                                            <th class="col-md-1" style="text-align:center; color:white">Volume</th>
                                             <!-- <th class="col-md-1" style="text-align:center; color:white">Date</th>
                                             <th class="col-md-1" style="text-align:center; color:white">Action</th> -->
 										</tr>
                         			</thead>
-                        			<tbody id = "DieselList">
+                        			<tbody id = "receive_list">
                                   <!--   <span id = "nodata"><tr>
                                     <td colspan="7" style='height: 100%; background: white; text-align:center; 
                                     vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>

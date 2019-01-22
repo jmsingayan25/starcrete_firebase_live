@@ -150,7 +150,7 @@
 function submitForm(){
     event.preventDefault();
 
-    var ra_date = document.getElementById('ra_date').value;
+    var ra_date = dateFormat(document.getElementById('ra_date').value);
     var ra_supplier = document.getElementById('ra_supplier').value;
     var ra_po = document.getElementById('ra_po').value;
     var ra_selectsys = document.getElementById('selectsys').value;
@@ -159,6 +159,12 @@ function submitForm(){
     var ra_dr = document.getElementById('ra_dr').value;
     var ra_plate = document.getElementById('ra_plate').value;
     var ra_volume = document.getElementById('ra_volume').value;
+
+    if(document.getElementById('ra_time').value != ""){
+        var ra_time = startTime(document.getElementById('ra_time').value);
+    }else{
+        var ra_time = "";
+    }
 
     var ra_data = {
 
@@ -373,7 +379,7 @@ function submitForm(){
                                          <div class="col-md-7">
                                             <select id="selectsys" name="selectsys" class ="form-control">
                                                 <option>Select</option>
-                                                <option value="White">White</option>
+                                                <option value="White Sand">White Sand</option>
                                                 <option value="Cement">Cement</option>
                                                 <option value="S1">S1</option>
                                                 <option value="3/8">3/8</option>
