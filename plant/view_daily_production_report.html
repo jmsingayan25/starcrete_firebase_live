@@ -580,7 +580,7 @@ function Go(){
                 var grand1_pcs = 0;
 
                 for (var i = 0; i < array_pcs_batch.length; i++) {
-                  grand1_pcs += Number(array_pcs_batch[i].actual_production);
+                  grand1_pcs += Number(Number(array_pcs_batch[i].actual_production).toFixed());
                 }
                 if (!isNaN(grand1_pcs)){
                   document.getElementById("grand_pcs2_batch").innerHTML = Number(grand1_pcs).toLocaleString(undefined, {
