@@ -87,6 +87,7 @@
 
     $(document).ready(function(){
 
+        DropdownCategory();
         submitForm();
 
         firebase.auth().onAuthStateChanged(function(user) {
@@ -113,6 +114,31 @@
         document.getElementById('id_breadcrumb').innerHTML = "<li><i class='icon_document'></i><a href='#'>Batch</a></li><li><i class='icon_document'></i><a href='#'>Daily Production</a></li>";
 
     });
+
+    function DropdownCategory(){
+        var dd_category = "<option value=''>Select</option>"
+
+        firebase.database().ref().child("Daily_Production_Report/" + plant).on('child_added',function(Snapshot){
+            // Snapshot.forEach(function(ChildSnapshot){
+
+                var date_list = Snapshot.key;
+                dd_category += "<option value ='" + date_list  + "'>" + date_list +"</option>";
+                document.getElementById("dropdown_date").innerHTML = dd_category;
+            // });
+        });
+    }
+
+    function submitDate(){
+
+        var get_dropdown_date = document.getElementById("dropdown_date").value;
+
+        var option = {year: "numeric", month: "numeric", day: "numeric"};
+        displayDate = new Date(get_dropdown_date).toLocaleDateString('fr-CA',option);
+
+        document.getElementById("date_selected").value = displayDate;
+
+        $('#prod_modal').modal('hide');
+    }
 
     function submitForm(){
 
@@ -579,6 +605,36 @@
                                         Date:
                                     </div>
                                     <button type="submit" class="btn btn-md btn-info" style="" onclick="submitForm()"><strong>Go</strong></button>
+                                    <button type="button" id="add_prod" class="btn btn-md btn-success" data-toggle="modal" data-target="#prod_modal"><strong>Available Date</strong></button>
+
+                                    <div class="modal fade" id="prod_modal" tabindex="-1" role="dialog" aria-labelledby="prod_modalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="prod_modalLabel"><strong>Available Date</strong></h4>
+                                              
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form class="form-horizontal">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label for="dropdown_date" class="col-md-3 control-label">Date</label>
+                                                                    <div class="col-md-8">
+                                                                        <select id="dropdown_date" class="form-control""></select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><strong>Close</strong></button>
+                                                    <button type="button" id="btn_prod" class="btn btn-primary" onclick="if(confirm('Proceed?')){ submitDate();}else{ event.preventDefault(); }"><strong>Done</strong></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="col-md-2">
                                         <input type="date" name="date_selected" id="date_selected" class="form-control" required>
                                     </div>
