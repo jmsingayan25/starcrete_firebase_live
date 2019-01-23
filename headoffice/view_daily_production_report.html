@@ -118,13 +118,13 @@
     function DropdownCategory(){
         var dd_category = "<option value=''>Select</option>"
 
-        firebase.database().ref().child("Daily_Production_Report/" + plant).once('value',function(Snapshot){
-            Snapshot.forEach(function(ChildSnapshot){
+        firebase.database().ref().child("Daily_Production_Report/" + plant).on('child_added',function(Snapshot){
+            // Snapshot.forEach(function(ChildSnapshot){
 
-                var date_list = ChildSnapshot.key;
+                var date_list = Snapshot.key;
                 dd_category += "<option value ='" + date_list  + "'>" + date_list +"</option>";
                 document.getElementById("dropdown_date").innerHTML = dd_category;
-            });
+            // });
         });
     }
 
