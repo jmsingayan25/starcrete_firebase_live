@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+    <link rel="shortcut icon" href="../img/favicon.png">
+
+	<title>Diesel - Starcrete Manufacturing Corporation</title>
+
+	<!-- Firebase App is always required and must be first -->
+	<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script>
+
+	<!-- Add additional services you want to use -->
+	<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>
+	<script src="../js_config/firebase_config.js"></script>
+
+	<!-- Bootstrap CSS -->    
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="../css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="../css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="../css/font-awesome.min.css" rel="stylesheet" />    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- owl carousel -->
+    <link rel="stylesheet" href="../css/owl.carousel.css" type="text/css">
+    <link href="../css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="../css/fullcalendar.css">
+    <link href="../css/widgets.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/style-responsive.css" rel="stylesheet" />
+    <link href="../css/xcharts.min.css" rel=" stylesheet">	
+    <link href="../css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+
+    <!-- javascripts -->
+    <script src="../js/jquery.js"></script>
+    <script src="../js/jquery-ui-1.10.4.min.js"></script>
+    <script src="../js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-ui-1.9.2.custom.min.js"></script>
+    <!-- bootstrap -->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- nice scroll -->
+    <script src="../js/jquery.scrollTo.min.js"></script>
+    <script src="../js/jquery.nicescroll.js" type="text/javascript"></script>
+    <!-- charts scripts -->
+    <script src="../assets/jquery-knob/js/jquery.knob.js"></script>
+    <script src="../js/jquery.sparkline.js" type="text/javascript"></script>
+    <script src="../assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
+    <script src="../js/owl.carousel.js" ></script>
+    <!-- jQuery full calendar -->
+    <script src="../js/fullcalendar.min.js"></script> <!-- Full Google Calendar - Calendar -->
+    <script src="../assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
+    <!--script for this page only-->
+    <script src="../js/calendar-custom.js"></script>
+    <script src="../js/jquery.rateit.min.js"></script>
+    <!-- custom select -->
+    <script src="../js/jquery.customSelect.min.js" ></script>
+    <script src="../assets/chart-master/Chart.js"></script>
+
+    <!--custome script for all page-->
+    <script src="../js/scripts.js"></script>
+    <!-- custom script for this page-->
+    <script src="../js/sparkline-chart.js"></script>
+    <script src="../js/easy-pie-chart.js"></script>
+    <script src="../js/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="../js/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="../js/xcharts.min.js"></script>
+    <script src="../js/jquery.autosize.min.js"></script>
+    <script src="../js/jquery.placeholder.min.js"></script>
+    <script src="../js/gdp-data.js"></script>  
+    <script src="../js/morris.min.js"></script>
+    <script src="../js/sparklines.js"></script>    
+    <script src="../js/charts.js"></script>
+    <script src="../js/jquery.slimscroll.min.js"></script>
+    <script src="../js_config/function.js"></script>
+
+    <!-- Custom Javascript Datepicker -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<script>
+	
+	var timer = null;
+    var plant = "";
+    var fromDate = "";
+    var endDate = "";
+
+    function goAway() {
+        clearTimeout(timer);
+        timer = setTimeout(function() {
+            // window.location.reload(true);
+            DisplayCurrentData();
+            totalCountBadge();
+        }, 60000);
+    }
+
+    window.addEventListener('mousemove', goAway, true);
+    window.addEventListener('keypress', goAway, true);
+
+    // goAway();
+
+	$(document).ready(function(){
+
+        $('.filterable .btn-filter').click(function(){
+            var $panel = $(this).parents('.filterable'),
+            $filters = $panel.find('.filters input'),
+            $tbody = $panel.find('.table tbody');
+            if ($filters.prop('disabled') == true) {
+                $filters.prop('disabled', false);
+                $filters.first().focus();
+            } else {
+                $filters.val('').prop('disabled', true);
+                $tbody.find('.no-result').remove();
+                $tbody.find('tr').show();
+            }
+        });
+
+        $('.filterable .filters input').keyup(function(e){
+            /* Ignore tab key */
+            var code = e.keyCode || e.which;
+            if (code == '9') return;
+            /* Useful DOM data and selectors */
+            var $input = $(this),
+            inputContent = $input.val().toLowerCase(),
+            $panel = $input.parents('.filterable'),
+            column = $panel.find('.filters th').index($input.parents('th')),
+            $table = $panel.find('.table'),
+            $rows = $table.find('tbody tr');
+            /* Dirtiest filter function ever ;) */
+            var $filteredRows = $rows.filter(function(){
+                var value = $(this).find('td').eq(column).text().toLowerCase();
+                return value.indexOf(inputContent) === -1;
+            });
+            /* Clean previous no-result if exist */
+            $table.find('tbody .no-result').remove();
+            /* Show all rows, hide filtered ones (never do that outside of a demo ! xD) */
+            $rows.show();
+            $filteredRows.hide();
+            /* Prepend no-result row if all rows are filtered */
+            if ($filteredRows.length === $rows.length) {
+                 $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="10" style="min-height: 100%;background: white; text-align:center; vertical-align:middle;"><h4><p class="text-muted">No data found</p></h4></td></tr>'));
+            }
+        });
+
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user != null) {
+
+                var uid = user.uid;
+        
+                firebase.database().ref('users/'+uid).once('value').then(function(snapshot) {
+
+                    plant = snapshot.val().office;
+
+                    if(plant == 'Head Office'){
+                        window.location.href = '../headoffice/index.html';
+                    }
+                    
+                    // tableData(plant);
+                    // DisplayCurrentData();
+                    // totalCountBadge();
+
+                    document.getElementById('username').innerHTML = snapshot.val().firstname; 
+
+                    
+                },(error) => {
+                    console.log(error);
+                });
+            } else {
+                window.location.href = '../login.html';
+            }
+        });
+
+
+        $('input[name="date_view"]').daterangepicker({
+            opens: 'right'
+        }, function(start, end, label) {
+            fromDate = start.format('YYYY-MM-DD');
+            endDate = end.format('YYYY-MM-DD');
+        });
+        $(".se-pre-con").fadeOut("slow");
+        document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
+    });
+
+function Go(){
+
+    event.preventDefault();
+    var myTbody = "";
+
+    if (fromDate == '' && endDate =='') {
+        firebase.database().ref('receive_aggregates/' + plant).once('value').then(function(receiveSnapshot) {
+          receiveSnapshot.forEach(function(ForeachReceive){
+
+            var ra_date = ForeachReceive.val().ra_date;
+            var ra_supplier = ForeachReceive.val().ra_supplier;
+            var ra_po = ForeachReceive.val().ra_po;
+            var ra_selectsys = ForeachReceive.val().ra_selectsys;
+            var ra_quantity = ForeachReceive.val().ra_quantity;
+            var ra_time = ForeachReceive.val().ra_time;
+            var ra_dr = ForeachReceive.val().ra_dr;
+            var ra_plate = ForeachReceive.val().ra_plate;
+            var ra_volume =ForeachReceive.val().ra_volume;
+
+            myTbody += "<tr><td><strong>" + ra_date + "</strong></td>";
+            myTbody += "<td><strong>" + ra_supplier + "</strong></td>";
+            myTbody += "<td><strong>" + ra_po + "</strong></td>";
+            myTbody += "<td><strong>" + ra_selectsys + "</strong></td>";
+            myTbody += "<td><strong>" + ra_quantity + "</strong></td>";
+            myTbody += "<td><strong>" + ra_time + "</strong></td>";
+            myTbody += "<td><strong>" + ra_dr + "</strong></td>";
+            myTbody += "<td><strong>" + ra_plate + "</strong></td>";
+            myTbody += "<td><strong>" + ra_volume + "</strong></td>";
+
+          });
+
+          if (myTbody == ""){
+            myTbody ="<tr><td colspan='9' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+            document.getElementById("receive_list").innerHTML = myTbody;
+        }else{document.getElementById("receive_list").innerHTML = myTbody; }
+    });
+    }else{
+        firebase.database().ref('receive_aggregates/' + plant).once('value').then(function(receiveSnapshot) {
+            receiveSnapshot.forEach(function(ForeachReceive){
+
+                newFromDate = new Date(fromDate).toLocaleDateString('en');
+                fromDate = new Date(newFromDate);
+
+                newEndDate = new Date(endDate).toLocaleDateString('en');
+                endDate = new Date(newEndDate);
+
+                fromDateDisplay = new Date(newFromDate).toLocaleDateString('en');
+                endDateDisplay = new Date(newEndDate).toLocaleDateString('en');
+
+                getDate = new Date(ForeachReceive.val().ra_date);
+
+                if (getDate.getTime() >= fromDate.getTime() && getDate.getTime() <= endDate.getTime()){
+
+                    var ra_date = ForeachReceive.val().ra_date;
+                    var ra_supplier = ForeachReceive.val().ra_supplier;
+                    var ra_po = ForeachReceive.val().ra_po;
+                    var ra_selectsys = ForeachReceive.val().ra_selectsys;
+                    var ra_quantity = ForeachReceive.val().ra_quantity;
+                    var ra_time = ForeachReceive.val().ra_time;
+                    var ra_dr = ForeachReceive.val().ra_dr;
+                    var ra_plate = ForeachReceive.val().ra_plate;
+                    var ra_volume =ForeachReceive.val().ra_volume;
+
+                    myTbody += "<tr><td><strong>" + ra_date + "</strong></td>";
+                    myTbody += "<td><strong>" + ra_supplier + "</strong></td>";
+                    myTbody += "<td><strong>" + ra_po + "</strong></td>";
+                    myTbody += "<td><strong>" + ra_selectsys + "</strong></td>";
+                    myTbody += "<td><strong>" + ra_quantity + "</strong></td>";
+                    myTbody += "<td><strong>" + ra_time + "</strong></td>";
+                    myTbody += "<td><strong>" + ra_dr + "</strong></td>";
+                    myTbody += "<td><strong>" + ra_plate + "</strong></td>";
+                    myTbody += "<td><strong>" + ra_volume + "</strong></td>";
+
+                }
+
+            });
+
+          if (myTbody == ""){
+            myTbody ="<tr><td colspan='9' style='height: 100%; background: white; text-align:center; vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>";
+            document.getElementById("receive_list").innerHTML = myTbody;
+        }else{document.getElementById("receive_list").innerHTML = myTbody; }
+        });
+
+    }
+}
+
+
+</script>
+<style>
+
+#example1 {
+    border: 0px solid;
+    padding: 10px;
+    box-shadow: 3px 5px 4px #888888;
+}
+
+.filterable .panel-heading .pull-right {
+    margin-top: -20px;
+}
+.filterable .filters input[disabled] {
+    background-color: transparent;
+    text-align: center;
+    border: none;
+    cursor: auto;
+    box-shadow: none;
+    padding: 0;
+    height: auto;
+}
+.filterable .filters input[disabled]::-webkit-input-placeholder {
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
+.filterable .filters input[disabled]::-moz-placeholder {
+     color: white;
+     text-align: center;
+     font-weight: bold;
+}
+.filterable .filters input[disabled]:-ms-input-placeholder {
+     color: white;
+     text-align: center;
+     font-weight: bold;
+}
+
+.no-js #loader { display: none;  }
+.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+.se-pre-con {
+    position: fixed; 
+    top: 60px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url(../images/loader-64x/Preloader_2.gif) center no-repeat #fff;
+}
+
+</style>
+</head>
+<body>
+     <div class="se-pre-con"></div>
+	<!-- container section start -->
+    <section id="container" class="">
+        <header class="header dark-bg">
+            <div class="toggle-nav">
+            <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="icon_menu"></i></div>
+            </div>
+
+            <!--logo start-->
+
+            <!--logo end-->
+            <a href='index.html' class='logo'>Starcrete <span class='lite'>Manufacturing Corporation</span></a>
+            <div class="top-nav notification-row">                
+                <!-- notificatoin dropdown start-->
+                <ul class="nav pull-right top-menu">
+                    <!-- user login dropdown start-->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <!--  <span class="profile-ava">
+                        <img alt="" src="img/avatar1_small.jpg">
+                        </span> -->
+                            <span class="username" id="username"></span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu extended logout">
+                            <div class="log-arrow-up"></div>
+                            <li>
+                                <a href="" id="logoutBtn"><i class="icon_key_alt"></i> Log Out</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- user login dropdown end -->
+                </ul>
+                <!-- notificatoin dropdown end-->
+            </div>
+        </header>  
+
+        <!--sidebar start-->
+	    <aside>
+	        <div id="sidebar"  class="nav-collapse ">
+	            <!-- sidebar menu start-->
+	            <ul class="sidebar-menu">                
+	                <li class="">
+                        <a class="" href="index.html">
+                            <i class="icon_house"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="" href="transaction_log.html">
+                            <i class="fa fa-list"></i>
+                            <span>Transaction Log</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="" href="attendance.html">
+                            <i class="fa fa-list"></i>
+                            <span>Attendance</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="" href="lineup.html">
+                            <i class="fa fa-list"></i>
+                            <span>Line Up</span>
+                        </a>
+                    </li>
+	                <li class="active">
+                        <a class="" href="diesel.html">
+                            <i class="fa fa-building"></i>
+                            <span>Diesel</span>
+                        </a>
+                    </li>
+                     <li class="">
+                        <a class="" href="diesel_category.html">
+                            <i class="fa fa-building"></i>
+                            <span>Oil</span>
+                        </a>
+                    </li>
+	                <li class="sub-menu">
+                        <a href="javascript:;" class="">
+                            <i class="fa fa-building"></i>
+                            <span>Purchase Order</span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
+                        </a>
+                        <ul class="sub">
+                            <li><a class="" href="purchase_order.html">Pending P.O.</a></li>
+                            <li><a class="" href="purchase_order_closed.html">Closed P.O.</a></li>
+                        </ul>
+                    </li>  
+                    <li class="sub-menu">
+                        <a href="javascript:;" class="">
+                            <i class="fa fa-building"></i>
+                            <span>Delivery Order</span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
+                        </a>
+                        <ul class="sub">
+                            <li><a class="" href="delivery_pending_order.html">Existing P.O. <span id="id_count_existing_po"></span></a></li>    
+                            <li><a class="" href="delivery_ongoing_order.html">Ongoing Delivery <span id="id_count_ongoing_order"></span></a></li>                          
+                            <li><a class="" href="delivery_delivered_order.html">Delivered Order</a></li>
+                            <li><a class="" href="delivery_backloaded_order.html">Backloaded Order</a></li>
+                        </ul>
+                    </li>
+                     <li class="sub-menu">
+                        <a href="javascript:;" class="">
+                            <i class="fa fa-building"></i>
+                            <span>Summary Report</span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
+                        </a>
+                        <ul class="sub">
+                            <li><a class="" href="summaryreport_deliveredorder.html">Delivered Order</a></li>
+                        </ul>
+                    </li>  
+	            </ul>
+	            <!-- sidebar menu end-->
+	        </div>
+	    </aside>
+	    <!--sidebar end-->
+	    <section id="main-content">
+            <section class="wrapper">            
+                <!--overview start-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- <h3 class="page-header"><i class="fa fa-home"></i> History</h3> -->
+                        <ol class="breadcrumb">
+                            <!-- <li><i class="fa fa-building"></i><?php echo $plant; ?></li> -->
+                            <li><i class="icon_document"></i>Diesel</li>             
+                        </ol>
+                    </div>
+                </div>
+                                              	
+                <div class="row">
+                    <div class="col-md-12">
+                        <section class="panel">
+                        	<form class="form-inline" onsubmit="return Go()">
+                                <header class="panel-heading">
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <div class="col-md-6" style="margin: 5px 0px 0px 0px;">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-12" style=" white-space: nowrap;">
+                                                        <label for="date_view" class="col-md-3 control-label" style="white-space: nowrap;"><strong>Select Date:</strong></label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" id = "date_view" name="date_view" class="form-control" >   
+                                                            <button type="submit" id = "submitGo" class="btn btn-md btn-info" style=""><strong>Go</strong></button>                      
+                                                        </div> 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </header>
+                            </form>
+                            <div class="table-responsive filterable">
+                        		<table class="table table-bordered " id = "mainTable">
+                        			<thead>
+                        				<tr class="filterable">
+                        					<th colspan="11">
+                                                <!-- <span>Available stock as of today:</span> -->
+                                                <!-- <br><span>Last Delivery: <span id ="last_day"></span></span><br> -->
+                                                <!-- <span>Search Date: </span><br> -->
+                                                	<button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button></span>
+                        					</th>
+                        				</tr>
+                        				<tr class="filters" style="background-color: #00111a;">
+											<th class="col-md-1"><input type="text" class="form-control" placeholder="Date" disabled></th>
+											<th class="col-md-2"><input type="text" class="form-control" placeholder="Supplier" disabled></th>
+											<th class="col-md-1" style="text-align:center; color:white">Po #</th>
+                                            <th class="col-md-1" style="text-align:center; color:white">Item</th>
+											<th class="col-md-1" style="text-align:center; color:white">Quantity</th>
+											<th class="col-md-1" style="text-align:center; color:white">Time</th>
+											<th class="col-md-1"><input type="text" class="form-control" placeholder="Dr #" disabled ></th>
+											<th class="col-md-1" style="text-align:center; color:white">Plate #</th>
+                                            <th class="col-md-1" style="text-align:center; color:white">Volume</th>
+                                            <!-- <th class="col-md-1" style="text-align:center; color:white">Date</th>
+                                            <th class="col-md-1" style="text-align:center; color:white">Action</th> -->
+										</tr>
+                        			</thead>
+                        			<tbody id = "receive_list">
+                                  <!--   <span id = "nodata"><tr>
+                                    <td colspan="7" style='height: 100%; background: white; text-align:center; 
+                                    vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td></tr>
+                                    </span> -->
+                        			</tbody>
+                        		</table>                      
+                        	</div>
+                        </section>
+                    </div>
+                </div>
+            </section>
+        </section>
+	</section>
+</body>
+</html>
