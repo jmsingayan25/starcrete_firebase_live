@@ -179,16 +179,16 @@
 function DateTableOutput(){
       var myTbody = "";
 
-  firebase.database().ref().child("Daily_Production_Report/" + plant).once('value',function(Snapshot){
-    Snapshot.forEach(function(ChildSnapshot){
+  firebase.database().ref().child("Daily_Production_Report/" + plant).on('child_added',function(Snapshot){
 
-      var date_list = ChildSnapshot.key;
+
+      var date_list = Snapshot.key;
       
       myTbody += "<td><strong>" + date_list + "</strong></td></tr>";
 
       document.getElementById("DateTable").innerHTML = myTbody;
 
-    })
+
   });
 
 }
