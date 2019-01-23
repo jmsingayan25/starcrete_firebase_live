@@ -139,6 +139,7 @@
                     }
 
                     // dateData();
+                    DropdownCategory();
 
                     if(plant == 'Bravo'){
                         plant_name = "<a href='index.html' class='logo'>Starcrete <span class='lite'>Manufacturing Corporation</span></a>";
@@ -164,6 +165,33 @@
         $(".se-pre-con").fadeOut("slow");
 
     });
+
+
+function DropdownCategory(){
+  var dd_category = "<option value=''>Select</option>"
+
+  firebase.database().ref().child("Daily_Production_Report/" + plant).once('value',function(Snapshot){
+    Snapshot.forEach(function(ChildSnapshot){
+
+      var date_list = ChildSnapshot.key;
+      dd_category += "<option value ='" + date_list  + "'>" + date_list +"</option>";
+      document.getElementById("dropdown_date").innerHTML = dd_category;
+    })
+  });
+}
+
+function submitDate(){
+
+  var get_dropdown_date = document.getElementById("dropdown_date").value;
+
+  var option = {year: "numeric", month: "numeric", day: "numeric"};
+  displayDate = new Date(get_dropdown_date).toLocaleDateString('fr-CA',option);
+  console.log(displayDate);
+  document.getElementById("date_selected").value = displayDate;
+
+  $('#prod_modal').modal('hide');
+
+}
 
 function Go(){
     $(".se-pre-con").fadeIn("slow");
@@ -1011,13 +1039,14 @@ function datePrint()
                                     Date:
                                 </div>
                                 <button type="submit" id = "submitGo" class="btn btn-md btn-info" style="" onclick="Go()"><strong>Go</strong></button>
-                                <!-- <button type="button" id="add_prod" class="btn btn-md btn-success" data-toggle="modal" data-target="#prod_modal"><strong>Add Production</strong></button>
+                                  <!-- Enter to modal -->
+                                <button type="button" id="add_prod" class="btn btn-md btn-success" data-toggle="modal" data-target="#prod_modal"><strong>Available Date</strong></button>
 
                                 <div class="modal fade" id="prod_modal" tabindex="-1" role="dialog" aria-labelledby="prod_modalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h4 class="modal-title" id="prod_modalLabel"><strong>Production Form</strong></h4>
+                                                <h4 class="modal-title" id="prod_modalLabel"><strong>Available Date</strong></h4>
                                           
                                             </div>
                                             <div class="modal-body">
@@ -1027,27 +1056,7 @@ function datePrint()
                                                             <div class="form-group">
                                                                 <label for="dropdown_date" class="col-md-3 control-label">Date</label>
                                                                 <div class="col-md-8">
-                                                                    <select id="dropdown_date" class="form-control" onchange="prodType(this.value);"></select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="dropdown_type" class="col-md-3 control-label">Production Type</label>
-                                                                <div class="col-md-8">
-                                                                    <select id="dropdown_type" class="form-control" onchange="btnDisable(this.value);">
-                                                                        <option value=''>Select</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="actual_prod" class="col-md-3 control-label">Actual Production</label>
-                                                                <div class="col-md-8">
-                                                                    <input type="text" id="actual_prod" class="form-control">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="rejected" class="col-md-3 control-label">Rejected</label>
-                                                                <div class="col-md-8">
-                                                                    <input type="text" id="rejected" class="form-control">
+                                                                    <select id="dropdown_date" class="form-control""></select>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1056,11 +1065,12 @@ function datePrint()
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><strong>Close</strong></button>
-                                                <button type="button" id="btn_prod" class="btn btn-primary" onclick="if(confirm('Proceed?')){ submitProduction();}else{ event.preventDefault(); }"><strong>Done</strong></button>
+                                                <button type="button" id="btn_prod" class="btn btn-primary" onclick="if(confirm('Proceed?')){ submitDate();}else{ event.preventDefault(); }"><strong>Done</strong></button>
                                             </div>
                                         </div>
                                     </div>
-                                </div> -->
+                                </div>
+                                <!-- exit to modal -->
                                 <div class="col-md-2">
                                     <input type="date" name="date_selected" id="date_selected" class="form-control" required>
                                 </div>
