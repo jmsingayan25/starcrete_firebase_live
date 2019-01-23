@@ -135,6 +135,8 @@
                     }
 
                     DropdownCategory();
+                    DateTableOutput();
+                    // DropdownCategory2();
 
                     if(plant == 'Bravo'){
                         plant_name = "<a href='index.html' class='logo'>Starcrete <span class='lite'>Manufacturing Corporation</span></a>";
@@ -160,6 +162,36 @@
         $(".se-pre-con").fadeOut("slow");
 
     });
+
+//     function DropdownCategory2(){
+//   var dd_category = "<option value=''>Select</option>"
+
+//   firebase.database().ref().child("Daily_Production_Report/" + plant).once('value',function(Snapshot){
+//     Snapshot.forEach(function(ChildSnapshot){
+
+//       var date_list = ChildSnapshot.key;
+//       dd_category += "<option value ='" + date_list  + "'>" + date_list +"</option>";
+//       document.getElementById("dropdown_date").innerHTML = dd_category;
+//     })
+//   });
+// }
+
+function DateTableOutput(){
+      var myTbody = "";
+
+  firebase.database().ref().child("Daily_Production_Report/" + plant).once('value',function(Snapshot){
+    Snapshot.forEach(function(ChildSnapshot){
+
+      var date_list = ChildSnapshot.key;
+      
+      myTbody += "<td><strong>" + date_list + "</strong></td></tr>";
+
+      document.getElementById("DateTable").innerHTML = myTbody;
+
+    })
+  });
+
+}
 
 function submitcategory()
 {
@@ -459,6 +491,12 @@ function SubmitBatch(){
 .align_center{
     text-align: center;
 }
+.table-wrapper-scroll-y {
+display: block;
+max-height: 200px;
+overflow-y: auto;
+-ms-overflow-style: -ms-autohiding-scrollbar;
+}
 </style>
 </head>
 <body>
@@ -630,6 +668,54 @@ function SubmitBatch(){
                                 <div class="col-md-2">
                                     <input type="date" name="date_selected" id="date_selected" class="form-control" required>
                                 </div>
+                                 <!-- Enter to modal -->
+                                <button type="button" id="add_prod" class="btn btn-md btn-success" data-toggle="modal" data-target="#prod_modal"><strong>Available Date</strong></button>
+
+                                <div class="modal fade" id="prod_modal" tabindex="-1" role="dialog" aria-labelledby="prod_modalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="prod_modalLabel"><strong></strong></h4>
+                                          
+                                            </div>
+                                            <!-- Table -->
+                                            <div class="table-wrapper-scroll-y">
+                                                    <div class="table-responsive filterable">
+                                                <table class="table table-bordered ">
+                                                    <thead>
+                                                        <tr class="filters" style="background-color: #00111a;">
+                                                            <th class="col-md-1" style="text-align:center; color:white">Date</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="DateTable">
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            </div>
+                                         
+                                         <!--    <div class="modal-body">
+                                                <form class="form-horizontal">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="dropdown_date" class="col-md-3 control-label">Date</label>
+                                                                <div class="col-md-8">
+                                                                    <select id="dropdown_date" class="form-control""></select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div> -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><strong>Close</strong></button>
+                                           
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- exit to modal -->
                                 <!-- startmodal -->
                                 <div class="col-md-3 pull-right" style="margin-right: -70px">
                                      <button type="addcateg" id = "addcateg" class="btn btn-md btn-info" style=""  data-toggle="modal" data-target="#myModal"><span class="fa fa-plus"></span><strong> Add New Cement Type</strong></button>
