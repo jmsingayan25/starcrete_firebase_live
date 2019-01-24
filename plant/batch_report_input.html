@@ -135,8 +135,8 @@
                     }
 
                     DropdownCategory();
-                    DateTableOutput();
-                    // DropdownCategory2();
+              
+                    DropdownCategory2();
 
                     if(plant == 'Bravo'){
                         plant_name = "<a href='index.html' class='logo'>Starcrete <span class='lite'>Manufacturing Corporation</span></a>";
@@ -163,35 +163,221 @@
 
     });
 
-//     function DropdownCategory2(){
-//   var dd_category = "<option value=''>Select</option>"
+    function DropdownCategory2(){
+  var dd_category = "<option value=''>Select</option>"
 
-//   firebase.database().ref().child("Daily_Production_Report/" + plant).once('value',function(Snapshot){
-//     Snapshot.forEach(function(ChildSnapshot){
+  firebase.database().ref().child("Daily_Production_Report/" + plant).once('value',function(Snapshot){
+    Snapshot.forEach(function(ChildSnapshot){
 
-//       var date_list = ChildSnapshot.key;
-//       dd_category += "<option value ='" + date_list  + "'>" + date_list +"</option>";
-//       document.getElementById("dropdown_date").innerHTML = dd_category;
-//     })
-//   });
-// }
+      var date_list = ChildSnapshot.key;
+      dd_category += "<option value ='" + date_list  + "'>" + date_list +"</option>";
+      document.getElementById("dropdown_date").innerHTML = dd_category;
+    })
+  });
+}
 
-function DateTableOutput(){
-      var myTbody = "";
+function selectDate(){
 
-  firebase.database().ref().child("Daily_Production_Report/" + plant).on('child_added',function(Snapshot){
+  var get_dropdown_date = document.getElementById("dropdown_date").value;
+  var option = {year: "numeric", month: "numeric", day: "numeric"};
+  displayDate = new Date(get_dropdown_date).toLocaleDateString('fr-CA',option);
+
+  document.getElementById("date_selected").value = displayDate;
+
+  $('#prod_modal').modal('hide');
+
+  firebase.database().ref().child("Daily_Production_Report/" + plant + "/" + get_dropdown_date).once('value',function(Snapshot){
+
+    // machine1_start
+        firebase.database().ref('Daily_Production_Report/'+ plant +'/'+ get_dropdown_date +'/Machine1').once('value',function(DailyProductionSnapShot1){
+
+            var get_cementkg1 = DailyProductionSnapShot1.val().machine1_cementkg;
+            var get_comment1 = DailyProductionSnapShot1.val().machine1_comment;
+            var get_productiontype1 = DailyProductionSnapShot1.val().machine1_cementType;
+            var get_actualproduction1 = DailyProductionSnapShot1.val().actual1_production;
+            
+            document.getElementById("cementKG1").value = get_cementkg1;
+            document.getElementById("commentKG1").value = get_comment1;
+            document.getElementById("selectsys1").value = get_productiontype1;
+            document.getElementById("actual1_production").value = get_actualproduction1;
+
+            firebase.database().ref('Daily_Production_Report/'+ plant +'/'+ get_dropdown_date +'/Machine1/Time').once('value',function(DailyProductionbatch){
+                    
+                    count = 1;
+                  
+                DailyProductionbatch.forEach(function(foreachtime){
+                    var batch_holder1 = Number(foreachtime.val().machine1_time_batch).toLocaleString("en");
+                    document.getElementById('machine1_batch'+ count).value = batch_holder1;
+
+                    var comment_holder1 = foreachtime.val().machine1_time_comment;
+                    document.getElementById('machine1_comment'+ count).value = comment_holder1;
+                    
+                    count++;
+                });
+            });
+        });
+    // machine1_end
+
+    // machine2_start
+        firebase.database().ref('Daily_Production_Report/'+ plant +'/'+ get_dropdown_date +'/Machine2').once('value',function(DailyProductionSnapShot2){
+
+            var get_cementkg2 = DailyProductionSnapShot2.val().machine2_cementkg;
+            var get_comment2 = DailyProductionSnapShot2.val().machine2_comment;
+            var get_productiontype2 = DailyProductionSnapShot2.val().machine2_cementType;
+            var get_actualproduction2 = DailyProductionSnapShot2.val().actual2_production;
+            
+            document.getElementById("cementKG2").value = get_cementkg2;
+            document.getElementById("commentKG2").value = get_comment2;
+            document.getElementById("selectsys2").value = get_productiontype2;
+            document.getElementById("actual2_production").value = get_actualproduction2;
+
+            firebase.database().ref('Daily_Production_Report/'+ plant +'/'+ get_dropdown_date +'/Machine2/Time').once('value',function(DailyProductionbatch2){
+                    
+                    count = 1;
+                  
+                DailyProductionbatch2.forEach(function(foreachtime){
+                    var batch_holder2 = Number(foreachtime.val().machine2_time_batch).toLocaleString("en");
+                    document.getElementById('machine2_batch'+ count).value = batch_holder2;
 
 
-      var date_list = Snapshot.key;
-      
-      myTbody += "<td><strong>" + date_list + "</strong></td></tr>";
+                    var comment_holder2 = foreachtime.val().machine2_time_comment;
+                    document.getElementById('machine2_comment'+ count).value = comment_holder2;
+                    
+                    count++;
+                });
+            });
+        });
+    // machine2_end
 
-      document.getElementById("DateTable").innerHTML = myTbody;
+    // machine3_start
+        firebase.database().ref('Daily_Production_Report/'+ plant +'/'+ get_dropdown_date +'/Machine3').once('value',function(DailyProductionSnapShot3){
 
+            var get_cementkg3 = DailyProductionSnapShot3.val().machine3_cementkg;
+            var get_comment3 = DailyProductionSnapShot3.val().machine3_comment;
+            var get_productiontype3 = DailyProductionSnapShot3.val().machine3_cementType;
+            var get_actualproduction3 = DailyProductionSnapShot3.val().actual3_production;
+            
+            document.getElementById("cementKG3").value = get_cementkg3;
+            document.getElementById("commentKG3").value = get_comment3;
+            document.getElementById("selectsys3").value = get_productiontype3;
+            document.getElementById("actual3_production").value = get_actualproduction3;
+
+            firebase.database().ref('Daily_Production_Report/'+ plant +'/'+ get_dropdown_date +'/Machine3/Time').once('value',function(DailyProductionbatch3){
+                    
+                    count = 1;
+                  
+                DailyProductionbatch3.forEach(function(foreachtime){
+                    var batch_holder3 = Number(foreachtime.val().machine3_time_batch).toLocaleString("en");
+                    document.getElementById('machine3_batch'+ count).value = batch_holder3;
+
+
+                    var comment_holder3 = foreachtime.val().machine3_time_comment;
+                    document.getElementById('machine3_comment'+ count).value = comment_holder3;
+                    
+                    count++;
+                });
+            });
+        });
+    // machine3_end
+
+    // machine3_start
+        firebase.database().ref('Daily_Production_Report/'+ plant +'/'+ get_dropdown_date +'/Machine3').once('value',function(DailyProductionSnapShot3){
+
+            var get_cementkg3 = DailyProductionSnapShot3.val().machine3_cementkg;
+            var get_comment3 = DailyProductionSnapShot3.val().machine3_comment;
+            var get_productiontype3 = DailyProductionSnapShot3.val().machine3_cementType;
+            var get_actualproduction3 = DailyProductionSnapShot3.val().actual3_production;
+            
+            document.getElementById("cementKG3").value = get_cementkg3;
+            document.getElementById("commentKG3").value = get_comment3;
+            document.getElementById("selectsys3").value = get_productiontype3;
+            document.getElementById("actual3_production").value = get_actualproduction3;
+
+            firebase.database().ref('Daily_Production_Report/'+ plant +'/'+ get_dropdown_date +'/Machine3/Time').once('value',function(DailyProductionbatch3){
+                    
+                    count = 1;
+                  
+                DailyProductionbatch3.forEach(function(foreachtime){
+                    var batch_holder3 = Number(foreachtime.val().machine3_time_batch).toLocaleString("en");
+                    document.getElementById('machine3_batch'+ count).value = batch_holder3;
+
+
+                    var comment_holder3 = foreachtime.val().machine3_time_comment;
+                    document.getElementById('machine3_comment'+ count).value = comment_holder3;
+                    
+                    count++;
+                });
+            });
+        });
+    // machine3_end
+
+    // machine4_start
+        firebase.database().ref('Daily_Production_Report/'+ plant +'/'+ get_dropdown_date +'/Machine4').once('value',function(DailyProductionSnapShot4){
+
+            var get_cementkg4 = DailyProductionSnapShot4.val().machine4_cementkg;
+            var get_comment4 = DailyProductionSnapShot4.val().machine4_comment;
+            var get_productiontype4 = DailyProductionSnapShot4.val().machine4_cementType;
+            var get_actualproduction4 = DailyProductionSnapShot4.val().actual4_production;
+            
+            document.getElementById("cementKG4").value = get_cementkg4;
+            document.getElementById("commentKG4").value = get_comment4;
+            document.getElementById("selectsys4").value = get_productiontype4;
+            document.getElementById("actual4_production").value = get_actualproduction4;
+
+            firebase.database().ref('Daily_Production_Report/'+ plant +'/'+ get_dropdown_date +'/Machine4/Time').once('value',function(DailyProductionbatch4){
+                    
+                    count = 1;
+                  
+                DailyProductionbatch4.forEach(function(foreachtime){
+                    var batch_holder4 = Number(foreachtime.val().machine4_time_batch).toLocaleString("en");
+                    document.getElementById('machine4_batch'+ count).value = batch_holder4;
+
+
+                    var comment_holder4 = foreachtime.val().machine4_time_comment;
+                    document.getElementById('machine4_comment'+ count).value = comment_holder4;
+                    
+                    count++;
+                });
+            });
+        });
+    // machine4_end
+
+    // machine5_start
+        firebase.database().ref('Daily_Production_Report/'+ plant +'/'+ get_dropdown_date +'/Machine5').once('value',function(DailyProductionSnapShot5){
+
+            var get_cementkg5 = DailyProductionSnapShot5.val().machine5_cementkg;
+            var get_comment5 = DailyProductionSnapShot5.val().machine5_comment;
+            var get_productiontype5 = DailyProductionSnapShot5.val().machine5_cementType;
+            var get_actualproduction5 = DailyProductionSnapShot5.val().actual5_production;
+            
+            document.getElementById("cementKG5").value = get_cementkg5;
+            document.getElementById("commentKG5").value = get_comment5;
+            document.getElementById("selectsys5").value = get_productiontype5;
+            document.getElementById("actual5_production").value = get_actualproduction5;
+
+            firebase.database().ref('Daily_Production_Report/'+ plant +'/'+ get_dropdown_date +'/Machine5/Time').once('value',function(DailyProductionbatch5){
+                    
+                    count = 1;
+                  
+                DailyProductionbatch5.forEach(function(foreachtime){
+                    var batch_holder5 = Number(foreachtime.val().machine5_time_batch).toLocaleString("en");
+                    document.getElementById('machine5_batch'+ count).value = batch_holder5;
+
+
+                    var comment_holder5 = foreachtime.val().machine5_time_comment;
+                    document.getElementById('machine5_comment'+ count).value = comment_holder5;
+                    
+                    count++;
+                });
+            });
+        });
+    // machine5_end
 
   });
 
 }
+
+
 
 function submitcategory()
 {
@@ -663,7 +849,7 @@ overflow-y: auto;
                             </div>
                         </div>
                     </header>
-                    <form id="form" name="form" onsubmit="if(confirm('Proceed?')){SubmitBatch();}else{ event.preventDefault();}">
+                    <!-- <form id="form" name="form" onsubmit="if(confirm('Proceed?')){SubmitBatch();}else{ event.preventDefault();}"> -->
                         <header class="panel-heading">
                             <div class="row" style="padding-bottom: 10px; padding-top: 10px;">
                                 <div class="col-md-1" style="margin-right: -50px">
@@ -682,26 +868,10 @@ overflow-y: auto;
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title" id="prod_modalLabel"><strong></strong></h4>
+                                                    <h4 class="modal-title" id="prod_modalLabel"><strong>Available Date</strong></h4>
                                               
                                                 </div>
-                                                <!-- Table -->
-                                                <div class="table-wrapper-scroll-y">
-                                                        <div class="table-responsive filterable">
-                                                    <table class="table table-bordered ">
-                                                        <thead>
-                                                            <tr class="filters" style="background-color: #00111a;">
-                                                                <th class="col-md-1" style="text-align:center; color:white">Date</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="DateTable">
-                                                            
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                </div>
-                                             
-                                             <!--    <div class="modal-body">
+                                                    <div class="modal-body">
                                                     <form class="form-horizontal">
                                                         <div class="row">
                                                             <div class="col-md-12">
@@ -714,9 +884,10 @@ overflow-y: auto;
                                                             </div>
                                                         </div>
                                                     </form>
-                                                </div> -->
+                                                </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal"><strong>Close</strong></button>
+                                                     <button type="button" id="btn_prod" class="btn btn-primary" onclick="if(confirm('Proceed?')){ selectDate();}else{ event.preventDefault(); }"><strong>Select</strong></button>
                                                
                                                 </div>
                                             </div>
@@ -822,38 +993,38 @@ overflow-y: auto;
                                     <th style="background-color: #0099ff; color:white; text-align: center;">6:00 - 7:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch1[]" id="machine1_batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment1[]" id="machine1_comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m2 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch2[]" id="machine2_batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment2[]" id="machine2_comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m3 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch3[]" id="machine3_batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment3[]" id="machine3_comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m4 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch4[]" id="machine4_batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment4[]" id="machine4_comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m5 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch5[]" id="machine5_batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="machine5_comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -861,38 +1032,38 @@ overflow-y: auto;
                                     <th style="background-color: #0099ff; color:white; text-align: center;">7:00 - 8:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch1[]" id="machine1_batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment1[]" id="machine1_comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m2 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch2[]" id="machine2_batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment2[]" id="machine2_comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m3 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch3[]" id="machine3_batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment3[]" id="machine3_comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m4 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch4[]" id="machine4_batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment4[]" id="machine4_comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m5 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch5[]" id="machine5_batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="machine5_comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -900,38 +1071,38 @@ overflow-y: auto;
                                     <th style="background-color: #0099ff; color:white; text-align: center;">8:00 - 9:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch1[]" id="machine1_batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment1[]" id="machine1_comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m2 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch2[]" id="machine2_batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment2[]" id="machine2_comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m3 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch3[]" id="machine3_batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment3[]" id="machine3_comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m4 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch4[]" id="machine4_batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment4[]" id="machine4_comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m5 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch5[]" id="machine5_batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="machine5_comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -939,38 +1110,38 @@ overflow-y: auto;
                                     <th style="background-color: #0099ff; color:white; text-align: center;">9:00 - 10:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch1[]" id="machine1_batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment1[]" id="machine1_comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m2 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch2[]" id="machine2_batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment2[]" id="machine2_comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m3 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch3[]" id="machine3_batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment3[]" id="machine3_comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m4 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch4[]" id="machine4_batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment4[]" id="machine4_comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m5 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch5[]" id="machine5_batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="machine5_comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -978,38 +1149,38 @@ overflow-y: auto;
                                     <th style="background-color: #0099ff; color:white; text-align: center;">10:00 - 11:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch1[]" id="machine1_batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment1[]" id="machine1_comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m2 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch2[]" id="machine2_batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment2[]" id="machine2_comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m3 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch3[]" id="machine3_batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment3[]" id="machine3_comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m4 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch4[]" id="machine4_batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment4[]" id="machine4_comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m5 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch5[]" id="machine5_batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="machine5_comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1017,38 +1188,38 @@ overflow-y: auto;
                                     <th style="background-color: #0099ff; color:white; text-align: center;">11:00 - 12:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch1[]" id="machine1_batch6"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment1[]" id="machine1_comment6"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m2 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch2[]" id="machine2_batch6"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment2[]" id="machine2_comment6"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m3 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch3[]" id="machine3_batch6"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment3[]" id="machine3_comment6"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m4 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch4[]" id="machine4_batch6"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment4[]" id="machine4_comment6"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m5 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch5[]" id="machine5_batch6"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="machine5_comment6"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1070,38 +1241,38 @@ overflow-y: auto;
                                     <th style="background-color: #0099ff; color:white; text-align: center;">12:00 - 1:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch1[]" id="machine1_batch7"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment1[]" id="machine1_comment7"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m2 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch2[]" id="machine2_batch7"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment2[]" id="machine2_comment7"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m3 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch3[]" id="machine3_batch7"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment3[]" id="machine3_comment7"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m4 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch4[]" id="machine4_batch7"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment4[]" id="machine4_comment7"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m5 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch5[]" id="machine5_batch7"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="machine5_comment7"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1109,38 +1280,38 @@ overflow-y: auto;
                                     <th style="background-color: #0099ff; color:white; text-align: center;">1:00 - 2:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch1[]" id="machine1_batch8"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment1[]" id="machine1_comment8"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m2 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch2[]" id="machine2_batch8"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment2[]" id="machine2_comment8"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m3 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch3[]" id="machine3_batch8"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment3[]" id="machine3_comment8"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m4 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch4[]" id="machine4_batch8"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment4[]" id="machine4_comment8"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m5 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch5[]" id="machine5_batch8"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="machine5_comment8"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1148,38 +1319,38 @@ overflow-y: auto;
                                     <th style="background-color: #0099ff; color:white; text-align: center;">2:00 - 3:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch1[]" id="machine1_batch9"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment1[]" id="machine1_comment9"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m2 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch2[]" id="machine2_batch9"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment2[]" id="machine2_comment9"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m3 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch3[]" id="machine3_batch9"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment3[]" id="machine3_comment9"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m4 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch4[]" id="machine4_batch9"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment4[]" id="machine4_comment9"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m5 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch5[]" id="machine5_batch9"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="machine5_comment9"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1187,38 +1358,38 @@ overflow-y: auto;
                                     <th style="background-color: #0099ff; color:white; text-align: center;">3:00 - 4:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch1[]" id="machine1_batch10"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment1[]" id="machine1_comment10"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m2 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch2[]" id="machine2_batch10"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment2[]" id="machine2_comment10"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m3 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch3[]" id="machine3_batch10"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment3[]" id="machine3_comment10"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m4 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch4[]" id="machine4_batch10"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment4[]" id="machine4_comment10"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m5 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch5[]" id="machine5_batch10"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="machine5_comment10"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1226,38 +1397,38 @@ overflow-y: auto;
                                     <th style="background-color: #0099ff; color:white; text-align: center;">4:00 - 5:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch1[]" id="machine1_batch11"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment1[]" id="machine1_comment11"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m2 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch2[]" id="machine2_batch11"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment2[]" id="machine2_comment11"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m3 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch3[]" id="machine3_batch11"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment3[]" id="machine3_comment11"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m4 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch4[]" id="machine4_batch11"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment4[]" id="machine4_comment11"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m5 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch5[]" id="machine5_batch11"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="machine5_comment11"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1265,38 +1436,38 @@ overflow-y: auto;
                                     <th style="background-color: #0099ff; color:white; text-align: center;">5:00 - 6:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch1[]" id="machine1_batch12"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment1[]" id="machine1_comment12"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m2 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch2[]" id="machine2_batch12"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment2[]" id="machine2_comment12"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m3 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch3[]" id="machine3_batch12"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment3[]" id="machine3_comment12"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m4 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch4[]" id="machine4_batch12"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment4[]" id="machine4_comment12"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m5 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch5[]" id="machine5_batch12"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="machine5_comment12"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1304,38 +1475,38 @@ overflow-y: auto;
                                     <th style="background-color: #0099ff; color:white; text-align: center;">6:00 - 7:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch1[]" id="machine1_batch13"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment1[]" id="machine1_comment13"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m2 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch2[]" id="machine2_batch13"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment2[]" id="machine2_comment13"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m3 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch3[]" id="machine3_batch13"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment3[]" id="machine3_comment13"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m4 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch4[]" id="machine4_batch13"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment4[]" id="machine4_comment13"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m5 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch5[]" id="machine5_batch13"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="machine5_comment13"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1343,38 +1514,38 @@ overflow-y: auto;
                                     <th style="background-color: #0099ff; color:white; text-align: center;">7:00 - 8:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch1[]" id="machine1_batch14"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment1[]" id="machine1_comment14"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m2 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch2[]" id="machine2_batch14"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment2[]" id="machine2_comment14"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m3 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch3[]" id="machine3_batch14"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment3[]" id="machine3_comment14"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m4 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch4[]" id="machine4_batch14"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment4[]" id="machine4_comment14"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m5 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch5[]" id="machine5_batch14"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="machine5_comment14"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1382,38 +1553,38 @@ overflow-y: auto;
                                     <th style="background-color: #0099ff; color:white; text-align: center;">8:00 - 9:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch1[]" id="machine1_batch15"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment1[]" id="machine1_comment15"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m2 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch2[]" id="machine2_batch15"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment2[]" id="machine2_comment15"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m3 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch3[]" id="machine3_batch15"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment3[]" id="machine3_comment15"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m4 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch4[]" id="machine4_batch15"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment4[]" id="machine4_comment15"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m5 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch5[]" id="machine5_batch15"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="machine5_comment15"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1421,38 +1592,38 @@ overflow-y: auto;
                                     <th style="background-color: #0099ff; color:white; text-align: center;">9:00 - 10:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch1[]" id="machine1_batch16"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment1[]" id="machine1_comment16"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m2 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch2[]" id="machine2_batch16"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment2[]" id="machine2_comment16"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m3 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch3[]" id="machine3_batch16"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment3[]" id="machine3_comment16"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m4 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch4[]" id="machine4_batch16"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment4[]" id="machine4_comment16"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m5 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch5[]" id="machine5_batch16"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="machine5_comment16"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1460,38 +1631,38 @@ overflow-y: auto;
                                     <th style="background-color: #0099ff; color:white; text-align: center;">10:00 - 11:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch1[]" id="machine1_batch17"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment1[]" id="machine1_comment17"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m2 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch2[]" id="machine2_batch17"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment2[]" id="machine2_comment17"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m3 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch3[]" id="machine3_batch17"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment3[]" id="machine3_comment17"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m4 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch4[]" id="machine4_batch17"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment4[]" id="machine4_comment17"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m5 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch5[]" id="machine5_batch17"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="machine5_comment17"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
 
@@ -1499,38 +1670,38 @@ overflow-y: auto;
                                     <th style="background-color: #0099ff; color:white; text-align: center;">11:00 - 12:00</th>
                                     <!-- m1 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch1[]" id="batch1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch1[]" id="machine1_batch18"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment1[]" id="comment1"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment1[]" id="machine1_comment18"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m2 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch2[]" id="batch2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch2[]" id="machine2_batch18"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment2[]" id="comment2"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment2[]" id="machine2_comment18"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m3 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch3[]" id="batch3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch3[]" id="machine3_batch18"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment3[]" id="comment3"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment3[]" id="machine3_comment18"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m4 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch4[]" id="batch4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch4[]" id="machine4_batch18"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment4[]" id="comment4"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment4[]" id="machine4_comment18"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                      <!-- m5 -->
                                     <th colspan="1">
-                                        <input type="text" name="batch5[]" id="batch5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="batch5[]" id="machine5_batch18"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                     <th colspan="1">
-                                        <input type="text" name="comment5[]" id="comment5"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
+                                        <input type="text" name="comment5[]" id="machine5_comment18"class="form-control" autocomplete="off" style="text-transform: uppercase;" >
                                     </th>
                                 </tr>
                                 <tr>
@@ -1570,11 +1741,11 @@ overflow-y: auto;
                         <footer class="panel-footer">
                             <div class="row">
                                 <div class="col-md-offset-4 col-md-4">
-                                    <button type="submit" class="btn btn-primary btn-block"><strong>Submit</strong></button>
+                                    <button type="button" onclick="if(confirm('Proceed?')){SubmitBatch();}else{ event.preventDefault();}" class="btn btn-primary btn-block"><strong>Submit</strong></button>
                                 </div>
                             </div>
                         </footer>
-                    </form>
+                <!-- </form > -->
                 </section>
             </section>
         </section>
