@@ -164,17 +164,16 @@
     });
 
     function DropdownCategory2(){
-  var dd_category = "<option value=''>Select</option>"
+        var dd_category = "<option value=''>Select</option>"
+        firebase.database().ref().child("Daily_Production_Report/" + plant).once('value',function(Snapshot){
+            Snapshot.forEach(function(ChildSnapshot){
 
-  firebase.database().ref().child("Daily_Production_Report/" + plant).once('value',function(Snapshot){
-    Snapshot.forEach(function(ChildSnapshot){
-
-      var date_list = ChildSnapshot.key;
-      dd_category += "<option value ='" + date_list  + "'>" + date_list +"</option>";
-      document.getElementById("dropdown_date").innerHTML = dd_category;
-    })
-  });
-}
+                var date_list = ChildSnapshot.key;
+                dd_category += "<option value ='" + date_list  + "'>" + date_list +"</option>";
+                document.getElementById("dropdown_date").innerHTML = dd_category;
+            })
+        });
+    }
 
 function selectDate(){
 
