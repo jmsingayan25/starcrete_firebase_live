@@ -170,7 +170,7 @@
 function DropdownCategory(){
   var dd_category = "<option value=''>Select</option>"
 
-  firebase.database().ref().child("Daily_Production_Report/" + plant).on('child_added',function(Snapshot){
+  firebase.database().ref().child("Daily_Production_Report/" + plant).orderByChild('timestamp').on('child_added',function(Snapshot){
 
       var date_list = Snapshot.key;
       dd_category += "<option value ='" + date_list  + "'>" + date_list +"</option>";
@@ -179,6 +179,34 @@ function DropdownCategory(){
   });
 }
 
+// function DropdownCategory(){
+//   var dd_category = "<option value=''>Select</option>"
+//   var array = [];
+//   firebase.database().ref().child("Daily_Production_Report/" + plant).once('value',function(Snapshot){
+//     Snapshot.forEach(function(foreachsnap){
+
+//       var timestamp_holder = foreachsnap.timestamp;
+//       var date_list = foreachsnap.key;
+
+//       var date_data = {
+
+//         key: date_list
+
+//       }
+//       array.push(date_data);
+//     });
+
+//     array.sort(function(a,b){
+//       return Number(a.key) - Number(b.key);
+//     });
+
+//     for (var a = 0; a < array.length; a++) {
+//       var date_holder = array[a].key;
+//       dd_category += "<option value ='" + date_holder  + "'>" + date_holder +"</option>";
+//       document.getElementById("dropdown_date").innerHTML = dd_category;
+//     }
+//   });
+// }
 function submitDate(){
 
   var get_dropdown_date = document.getElementById("dropdown_date").value;

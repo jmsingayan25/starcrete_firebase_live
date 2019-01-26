@@ -165,7 +165,7 @@
 
     function DropdownCategory2(){
         var dd_category = "<option value=''>Select</option>"
-        firebase.database().ref().child("Daily_Production_Report/" + plant).once('value',function(Snapshot){
+        firebase.database().ref().child("Daily_Production_Report/" + plant).orderByChild('timestamp').once('value',function(Snapshot){
             Snapshot.forEach(function(ChildSnapshot){
 
                 var date_list = ChildSnapshot.key;
