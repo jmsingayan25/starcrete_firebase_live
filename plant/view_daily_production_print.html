@@ -531,18 +531,18 @@ function print_date(){
           }
          document.getElementById("grand_total1_pcs").innerHTML = grand1_total + " pcs";  
 
-         var grand1_pcs = 0;
-        for (var i = 0; i < array_pcs_batch.length; i++) {
+      //    var grand1_pcs = 0;
+      //   for (var i = 0; i < array_pcs_batch.length; i++) {
         
-         grand1_pcs += Number(array_pcs_batch[i].actual_production);
+      //    grand1_pcs += Number(array_pcs_batch[i].actual_production);
        
-      }
-      if (!isNaN(grand1_pcs)) 
-            {
-              document.getElementById("grand_pcs2_batch").innerHTML = Number(grand1_pcs).toFixed() + " pcs/batch";
-            }else{
-              document.getElementById("grand_pcs2_batch").innerHTML =  "0 pcs/batch";
-            }
+      // }
+      // if (!isNaN(grand1_pcs)) 
+      //       {
+      //         document.getElementById("grand_pcs2_batch").innerHTML = Number(grand1_pcs).toFixed() + " pcs/batch";
+      //       }else{
+      //         document.getElementById("grand_pcs2_batch").innerHTML =  "0 pcs/batch";
+      //       }
 
        var grand1_cement = 0;
         for (var i = 0; i < array_used_cement.length; i++) {
