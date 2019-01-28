@@ -632,18 +632,18 @@ function Go(){
                   grand1_total += Number(array[i].actual_production);
                 }
                 document.getElementById("grand_total1_pcs").innerHTML = Number(grand1_total).toLocaleString("en") + " pcs";
-                var grand1_pcs = 0;
+                // var grand1_pcs = 0;
 
-                for (var i = 0; i < array_pcs_batch.length; i++) {
-                  grand1_pcs += Number(Number(array_pcs_batch[i].actual_production).toFixed());
-                }
-                if (!isNaN(grand1_pcs)){
-                  document.getElementById("grand_pcs2_batch").innerHTML = Number(grand1_pcs).toLocaleString(undefined, {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0 }) + " pcs/batch";
-                }else{
-                  document.getElementById("grand_pcs2_batch").innerHTML =  "0 pcs/batch";
-                }
+                // for (var i = 0; i < array_pcs_batch.length; i++) {
+                //   grand1_pcs += Number(Number(array_pcs_batch[i].actual_production).toFixed());
+                // }
+                // if (!isNaN(grand1_pcs)){
+                //   document.getElementById("grand_pcs2_batch").innerHTML = Number(grand1_pcs).toLocaleString(undefined, {
+                //     minimumFractionDigits: 0,
+                //     maximumFractionDigits: 0 }) + " pcs/batch";
+                // }else{
+                //   document.getElementById("grand_pcs2_batch").innerHTML =  "0 pcs/batch";
+                // }
 
                 var grand1_cement = 0;
                 for (var i = 0; i < array_used_cement.length; i++) {
