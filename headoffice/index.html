@@ -445,6 +445,7 @@
 
         var myList = "";
         count = 0;
+        var datettime = "";
 
         firebase.database().ref('notification').orderByChild('reverseDate').once('value', function(notifSnapshot){
 
@@ -454,17 +455,38 @@
 
                     if(notifChildSnapshot.val().toOffice == "Head Office"){
 
-                        date = notifChildSnapshot.val().date;
-                        fromOffice = notifChildSnapshot.val().fromOffice;
-                        message = notifChildSnapshot.val().message;
-                        page = notifChildSnapshot.val().page;
+                        var date = notifChildSnapshot.val().date;
+                        var fromOffice = notifChildSnapshot.val().fromOffice;
+                        var message = notifChildSnapshot.val().message;
+                        var page = notifChildSnapshot.val().page;
                         // page = "#";
-                        time = notifChildSnapshot.val().time;
-                        key = notifChildSnapshot.key;
-
+                        var time = notifChildSnapshot.val().time;
+                        var key = notifChildSnapshot.key;
+        
                         if(notifChildSnapshot.val().isRead == 1){
 
                             myList += "<li><a href=\"" + page + "\" onclick=\"return visitSite('" + key + "');\"><span class='subject'><span class='from'>" + fromOffice + "</span><span class='time'>" + time + "</span></span><span class='message'>" + message + "</span><span class='subject'><span class='from'></span><span class='time'>" + date + "</span></span></a></li>";
+
+                            var currentTime = new Date().toLocaleDateString('en');
+                            var newcurrenttime = new Date(currentTime);
+                            newcurrenttime.setDate(newcurrenttime.getDate() - 2);
+                            newcurrenttime = new Date(newcurrenttime);
+                            newnewcurrenttime = newcurrenttime.getTime();
+
+                            var newdatettime = new Date(date);
+                            var newgettime = newdatettime.getTime();
+
+                            if(newgettime < newnewcurrenttime){
+
+                                notifData = {
+                                    isRead: 0
+                                }
+
+                                firebase.database().ref('notification/'+key).update(notifData);
+
+                            }
+
+                            // console.log(date);
 
                             count++;
 
@@ -600,6 +622,7 @@
                             <li><a class="" href="parts.html?plant=Bravo">Parts</a></li>
                             <li><a class="" href="lineup.html?plant=Bravo">Line Up</a></li>
                             <li><a class="" href="attendance.html?plant=Bravo">Attendance</a></li>
+                            <li><a class="" href="batch_report_summary.html?plant=Bravo">Monthly Batch Report</a></li>
                         </ul>
                     </li>  
                     <li class="sub-menu">
@@ -616,6 +639,7 @@
                             <li><a class="" href="parts.html?plant=Delta">Parts</a></li>
                             <li><a class="" href="lineup.html?plant=Delta">Line Up</a></li>
                             <li><a class="" href="attendance.html?plant=Delta">Attendance</a></li>
+                            <li><a class="" href="batch_report_summary.html?plant=Delta">Monthly Batch Report</a></li>
                         </ul>
                     </li>  
                     <li class="sub-menu">
