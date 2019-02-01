@@ -116,41 +116,378 @@
 
 		event.preventDefault();
 
+		$(".se-pre-con").fadeIn("fast");
 		var myTbody = "";
 
 		var option = {month: "long", year: "numeric"};
 		var currentMonthYear = new Date().toLocaleDateString('en', option);
+		var selectedMonth = new Date(document.getElementById('month').value).toLocaleDateString('en', option);
 
-		document.getElementById('id_monthyear').innerHTML = "For the Month of " + currentMonthYear;
+		if(document.getElementById('month').value == ''){
+			monthYear = currentMonthYear;
+		}else{
+			monthYear = selectedMonth;
+		}
 
-		firebase.database().ref('Daily_Production_Report/'+plant).once('value', function(monthSnapshot){
+		var array_totalbatch = [];
+		var array_totalprod = [];
+		var array_totalusedcement = [];
+		var array_totalnobags = [];
+
+		var array_total1 = [];
+		var array_total2 = [];
+		var array_total3 = [];
+		var array_total4 = [];
+
+		document.getElementById('id_monthyear').innerHTML = "For the Month of " + monthYear;
+
+		firebase.database().ref('Daily_Production_Report/'+plant).orderByChild('timestamp').once('value', function(monthSnapshot){
 
 			if(monthSnapshot.val() != null){
+
+				myTbody += "<tr><td class='color_blue'><strong>DATE</strong></td>";
+		        myTbody += "<td class='color_blue'><strong>TOTAL BATCH</strong></td>";
+		        myTbody += "<td class='color_blue'><strong>TOTAL NO. OF PCS</strong></td>";
+		        myTbody += "<td class='color_blue'><strong>TOTAL USED CEMENT</strong></td>";
+		        myTbody += "<td class='color_blue'><strong>TOTAL NO. OF BAGS</strong></td></tr>";
 
 				monthSnapshot.forEach(function(monthChildSnapshot){
 
 					var date = monthChildSnapshot.key;
 					var convertMonthYear = new Date(monthChildSnapshot.key).toLocaleDateString('en', option);
 
-					firebase.database().ref('Daily_Production_Report/'+plant+'/'+date+'/Machine1').once('value', function(machine1Snapshot){
+					if(convertMonthYear == monthYear){
 
-						var actual_prod = Number(machine1Snapshot.val().actual1_production);
-						
-						
+						firebase.database().ref('Daily_Production_Report/'+plant+'/'+date+'/Machine1').once('value', function(machine1Snapshot){
 
+							var actual_prod = machine1Snapshot.val().actual1_production;
+							var batches = machine1Snapshot.val().machine1_total_batch;
+							var cement = machine1Snapshot.val().machine1_cementkg;
 
+							var cement_production = Number(actual_prod) * Number(cement);
+							var total_cement = Number(cement_production) / 40;
 
-					});
+							//batches array
+							var batch_data = {
+								total_batch: batches
+							}
+
+							array_totalbatch.push(batch_data);
+
+							var prod_data = {
+								total_prod: actual_prod
+							}
+
+							array_totalprod.push(prod_data);
+
+							var cement_data = {
+								total_cementkg: cement_production
+							}
+
+							array_totalusedcement.push(cement_data);
+
+							var bags_data = {
+								total_bags: total_cement
+							}
+
+							array_totalnobags.push(bags_data);
+						});
+
+						firebase.database().ref('Daily_Production_Report/'+plant+'/'+date+'/Machine2').once('value', function(machine2Snapshot){
+
+							var actual_prod = Number(machine2Snapshot.val().actual2_production);
+							var batches = Number(machine2Snapshot.val().machine2_total_batch);
+							var cement = Number(machine2Snapshot.val().machine2_cementkg);
+
+							var cement_production = Number(actual_prod) * Number(cement);
+							var total_cement = Number(cement_production) / 40;
+
+							//batches array
+							var batch_data = {
+								total_batch: batches
+							}
+
+							array_totalbatch.push(batch_data);
+
+							var prod_data = {
+								total_prod: actual_prod
+							}
+
+							array_totalprod.push(prod_data);
+
+							var cement_data = {
+								total_cementkg: cement_production
+							}
+
+							array_totalusedcement.push(cement_data);
+
+							var bags_data = {
+								total_bags: total_cement
+							}
+
+							array_totalnobags.push(bags_data);
+						});
+
+						firebase.database().ref('Daily_Production_Report/'+plant+'/'+date+'/Machine3').once('value', function(machine3Snapshot){
+
+							var actual_prod = Number(machine3Snapshot.val().actual3_production);
+							var batches = Number(machine3Snapshot.val().machine3_total_batch);
+							var cement = Number(machine3Snapshot.val().machine3_cementkg);
+
+							var cement_production = Number(actual_prod) * Number(cement);
+							var total_cement = Number(cement_production) / 40;
+
+							//batches array
+							var batch_data = {
+								total_batch: batches
+							}
+
+							array_totalbatch.push(batch_data);
+
+							var prod_data = {
+								total_prod: actual_prod
+							}
+
+							array_totalprod.push(prod_data);
+
+							var cement_data = {
+								total_cementkg: cement_production
+							}
+
+							array_totalusedcement.push(cement_data);
+
+							var bags_data = {
+								total_bags: total_cement
+							}
+
+							array_totalnobags.push(bags_data);
+						});
+
+						firebase.database().ref('Daily_Production_Report/'+plant+'/'+date+'/Machine4').once('value', function(machine4Snapshot){
+
+							var actual_prod = Number(machine4Snapshot.val().actual4_production);
+							var batches = Number(machine4Snapshot.val().machine4_total_batch);
+							var cement = Number(machine4Snapshot.val().machine4_cementkg);
+
+							var cement_production = Number(actual_prod) * Number(cement);
+							var total_cement = Number(cement_production) / 40;
+
+							//batches array
+							var batch_data = {
+								total_batch: batches
+							}
+
+							array_totalbatch.push(batch_data);
+
+							var prod_data = {
+								total_prod: actual_prod
+							}
+
+							array_totalprod.push(prod_data);
+
+							var cement_data = {
+								total_cementkg: cement_production
+							}
+
+							array_totalusedcement.push(cement_data);
+
+							var bags_data = {
+								total_bags: total_cement
+							}
+
+							array_totalnobags.push(bags_data);
+						});
+
+						firebase.database().ref('Daily_Production_Report/'+plant+'/'+date+'/Machine5').once('value', function(machine5Snapshot){
+
+							var actual_prod = machine5Snapshot.val().actual5_production;
+							var batches = machine5Snapshot.val().machine5_total_batch;
+							var cement = machine5Snapshot.val().machine5_cementkg;
+
+							var cement_production = Number(actual_prod) * Number(cement);
+							var total_cement = Number(cement_production) / 40;
+
+							//batches array
+							var batch_data = {
+								total_batch: batches
+							}
+
+							array_totalbatch.push(batch_data);
+
+							var prod_data = {
+								total_prod: actual_prod
+							}
+
+							array_totalprod.push(prod_data);
+
+							var cement_data = {
+								total_cementkg: cement_production
+							}
+
+							array_totalusedcement.push(cement_data);
+
+							var bags_data = {
+								total_bags: total_cement
+							}
+
+							array_totalnobags.push(bags_data);
+						});
+
+						firebase.database().ref('Daily_Production_Report/'+plant+'/'+date).once('value', function(machine1Snapshot){
+
+							//startbatchtotal
+		                    var grand1_total = 0;
+		                    var counter1 = 5;
+		                    
+		                    for (var i = 0; i < array_totalbatch.length; i++) {
+
+		                        if (i < counter1) {
+		                            grand1_total += array_totalbatch[i].total_batch;
+		                        }if (i == counter1) {
+		                            grand1_total = 0;
+		                            counter1 = counter1 + 5;
+		                            i= i-1;
+		                        }
+		                    }
+		                    //startbatchtotalend
+		                    //startactualprod
+		                    var grand2_total = 0;
+		                    var counter2 = 5;
+		                    
+		                    
+		                    for (var i = 0; i < array_totalprod.length; i++) {
+
+		                        if (i < counter2) {
+		                            grand2_total += Number(array_totalprod[i].total_prod);
+		                        }if (i == counter2) {
+		                            grand2_total = 0;
+		                            counter2 = counter2 + 5;
+		                            i= i-1;
+		                        }
+		                    }
+		                    //endactualprod
+		                    //startusedcement
+		                    var grand3_total = 0;
+		                    var counter3 = 5;
+		                    console.log(array_totalusedcement);
+		                    for (var i = 0; i < array_totalusedcement.length; i++) {
+
+		                        if (i < counter3) {
+		                            grand3_total += Number(array_totalusedcement[i].total_cementkg);
+		                        }if (i == counter3) {
+		                            grand3_total = 0;
+		                            counter3 = counter3 + 5;
+		                            i= i-1;
+		                        }
+		                    }
+		                    //endusedcement
+		                    //startbags
+		                    var grand4_total = 0;
+		                    var counter4 = 5;
+		                    
+		                    for (var i = 0; i < array_totalnobags.length; i++) {
+
+		                        if (i < counter4) {
+		                            grand4_total += Number(array_totalnobags[i].total_bags);
+		                        }if (i == counter4) {
+		                            grand4_total = 0;
+		                            counter4 = counter4 + 5;
+		                            i= i-1;
+		                        }
+		                    }
+		                    //endbags
+
+		                    var total1_data = {
+		                        total1: grand1_total
+		                    };
+
+		                    array_total1.push(total1_data);
+
+		                    var total2_data = {
+		                        total2: grand2_total
+		                    };
+
+		                    array_total2.push(total2_data);
+
+		                    var total3_data = {
+		                        total3: grand3_total
+		                    };
+
+		                    array_total3.push(total3_data);
+
+		                      var total4_data = {
+		                        total4: grand4_total
+		                    };
+
+		                    array_total4.push(total4_data);
+
+		                    myTbody += "<tr><td class='color_blue'><strong>" + new Date(date).getDate() + "</strong></td>";
+		                    myTbody += "<td style='text-align: center'><strong>" + Number(grand1_total).toLocaleString('en') + "</strong></td>";
+		                    myTbody += "<td style='text-align: center'><strong>" + Number(grand2_total).toLocaleString('en') + "</strong></td>";
+		                    myTbody += "<td style='text-align: center'><strong>" + Number(grand3_total).toLocaleString('en') + " kg(s)</strong></td>";
+		                    myTbody += "<td style='text-align: center'><strong>" + Number(grand4_total.toFixed(0)).toLocaleString('en') + "</strong></td></tr>";
+
+						});
+					}
 				});
+
+				firebase.database().ref('Daily_Production_Report/'+ plant).once('value',function(grandtotalsnap){
+      
+		            var total1 = 0;
+		            for (var i = 0; i < array_total1.length; i++) {
+
+                        total1 += Number(array_total1[i].total1);
+                    }
+
+		            var total2 = 0;
+		            for (var i = 0; i < array_total2.length; i++) {
+
+                        total2 += Number(array_total2[i].total2);
+                    } 
+
+		            var total3 = 0;
+		            for (var i = 0; i < array_total3.length; i++) {
+
+                        total3 += Number(array_total3[i].total3);
+                    } 
+
+		            var total4 = 0;
+		            for (var i = 0; i < array_total4.length; i++) {
+
+                        total4 += Number(array_total4[i].total4);
+                    }           
+		          
+
+                    myTbody += "<tr><td class='total_color' style=' text-align:center'><strong>TOTAL</strong></td>";
+                    myTbody += "<td class='total_color' style=' text-align:center'><strong>" + Number(total1).toLocaleString('en') + "</strong></td>";
+                    myTbody += "<td class='total_color' style=' text-align:center'><strong>" + Number(total2).toLocaleString('en') + "</strong></td>";
+                    myTbody += "<td class='total_color' style=' text-align:center'><strong>" + Number(total3).toLocaleString('en') + " kg(s)</strong></td>";
+                    myTbody += "<td class='total_color' style=' text-align:center'><strong>" + Number(total4.toFixed(0)).toLocaleString('en') + "</strong></td></tr>";
+
+                    document.getElementById("table_data").innerHTML = myTbody;
+
+                    $(".se-pre-con").fadeOut("slow");
+
+		        });
 			}
 		});
 	}
 
 </script>
-
+<style>
+.color_blue{
+	background-color: #00a3cc;
+	color: white;
+	text-align: center;
+}
+.total_color{
+    background-color: #00111a; 
+    color: white;
+}
+</style>
 </head>
 <body>
-	<!-- <div class="se-pre-con"></div> -->
+	<div class="se-pre-con"></div>
     <section id="container" class="">
         <header class="header dark-bg">
             <div class="toggle-nav">
@@ -309,7 +646,7 @@
                     <div class="col-md-12">
                         <section class="panel">
                         	<header class="panel-heading">
-                        		<form class="form" onsubmit="submitForm();">
+                        		<!-- <form class="form" onsubmit="submitForm();"> -->
                         			<div class="row">
 	                                    <div class="form-group" style="margin-top: 5px; margin-bottom: 5px;">
 	                                        <label for="month" class="col-md-1 control-label" style="margin-right: -10px;">Date:</label>
@@ -317,20 +654,20 @@
 	                                            <input type="month" id="month" name="month" class="form-control">
 	                                        </div>
 	                                        <div class="col-md-1" style="margin-right: 25px;">
-	                                        	<button class="btn btn-info" type="submit" name="search_table">
+	                                        	<button type="button" class="btn btn-info" onclick="submitForm();" name="search_table">
 	                                                <i class="fa fa-search"></i>
 	                                            </button>
 	                                        </div>
 	                                    </div>	                                
 	                                </div>
-                        		</form>
+                        		<!-- </form> -->
                         	</header>
                             <div class="panel-body">
                             	<div class="table-responsive">
                             		<table class="table table-bordered">
                             			<thead>
                             				<tr>
-                            					<td class="col-md-12"><strong><span id="id_monthyear"></span></strong></td>
+                            					<td colspan="5" style="background-color: #00a3cc; color: white;"><strong><span id="id_monthyear"></span></strong></td>
                             				</tr>
                             			</thead>
                             			<tbody id="table_data"></tbody>
