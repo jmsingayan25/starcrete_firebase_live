@@ -473,6 +473,19 @@
 		});
 	}
 
+	function printSummary(){
+
+		var option = {month: "long", year: "numeric"};
+
+        if(document.getElementById('month').value != ""){
+            var date = new Date(document.getElementById('month').value).toLocaleDateString('en', option);
+        }else{
+            var date = new Date().toLocaleDateString('en', option);
+        }
+
+        window.open("view_batch_report_summary_print.html?plant="+plant+"&date="+date, "_blank");
+    }
+
 </script>
 <style>
 .color_blue{
@@ -653,11 +666,13 @@
 	                                        <div class="col-md-3" style="margin-right: -25px;">
 	                                            <input type="month" id="month" name="month" class="form-control">
 	                                        </div>
-	                                        <div class="col-md-1" style="margin-right: 25px;">
+	                                        <div class="col-md-2" style="margin-right: 25px;">
 	                                        	<button type="button" class="btn btn-info" onclick="submitForm();" name="search_table">
 	                                                <i class="fa fa-search"></i>
 	                                            </button>
+	                                            <button class="btn btn-info btn-md" onclick="printSummary();"><strong><span class="fa fa-print"></span> Print</strong></button>    
 	                                        </div>
+
 	                                    </div>	                                
 	                                </div>
                         		<!-- </form> -->

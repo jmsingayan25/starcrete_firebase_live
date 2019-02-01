@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+    <link rel="shortcut icon" href="../img/favicon.png">
+
+    <title>Batch Production Report</title>
+
+    <!-- Firebase App is always required and must be first -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/5.0.3/firebase-app.js"></script>
+
+    <!-- Add additional services you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>
+    <script src="../js_config/firebase_config.js"></script>
+
+    <!-- Bootstrap CSS -->    
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="../css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="../css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="../css/font-awesome.min.css" rel="stylesheet" />    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- owl carousel -->
+    <link rel="stylesheet" href="../css/owl.carousel.css" type="text/css">
+    <link href="../css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="../css/fullcalendar.css">
+    <link href="../css/widgets.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/style-responsive.css" rel="stylesheet" />
+    <link href="../css/xcharts.min.css" rel=" stylesheet">  
+    <link href="../css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+
+    <!-- javascripts -->
+    <script src="../js/jquery.js"></script>
+    <script src="../js/jquery-ui-1.10.4.min.js"></script>
+    <script src="../js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-ui-1.9.2.custom.min.js"></script>
+    <!-- bootstrap -->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- nice scroll -->
+    <script src="../js/jquery.scrollTo.min.js"></script>
+    <script src="../js/jquery.nicescroll.js" type="text/javascript"></script>
+    <!-- charts scripts -->
+    <script src="../assets/jquery-knob/js/jquery.knob.js"></script>
+    <script src="../js/jquery.sparkline.js" type="text/javascript"></script>
+    <script src="../assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
+    <script src="../js/owl.carousel.js" ></script>
+    <!-- jQuery full calendar -->
+    <script src="../js/fullcalendar.min.js"></script> <!-- Full Google Calendar - Calendar -->
+    <script src="../assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
+    <!--script for this page only-->
+    <script src="../js/calendar-custom.js"></script>
+    <script src="../js/jquery.rateit.min.js"></script>
+    <!-- custom select -->
+    <script src="../js/jquery.customSelect.min.js" ></script>
+    <script src="../assets/chart-master/Chart.js"></script>
+
+    <!--custome script for all page-->
+    <script src="../js/scripts.js"></script>
+    <!-- custom script for this page-->
+    <script src="../js/sparkline-chart.js"></script>
+    <script src="../js/easy-pie-chart.js"></script>
+    <script src="../js/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="../js/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="../js/xcharts.min.js"></script>
+    <script src="../js/jquery.autosize.min.js"></script>
+    <script src="../js/jquery.placeholder.min.js"></script>
+    <script src="../js/gdp-data.js"></script>  
+    <script src="../js/morris.min.js"></script>
+    <script src="../js/sparklines.js"></script>    
+    <script src="../js/charts.js"></script>
+    <script src="../js/jquery.slimscroll.min.js"></script>
+    <script src="../js_config/function.js"></script>
+
+<script>
+
+    var plant = getUrlParameter('plant');
+    var passdate = getUrlParameter('date');
+    var newDate = passdate.replace("%20"," ");
+
+    $(document).ready(function(){
+
+        document.getElementById('page_header').innerHTML = "<h4><strong>BATCH PRODUCTION REPORT SUMMARY</strong></h4>";
+
+        document.getElementById('id_monthyear').innerHTML = "<th colspan='11'>For the Month of " + newDate + " <button class='btn btn-info btn-md' id='printPageButton' onclick='return window.print();' style='float: right;'><span class='fa fa-print'></span> <strong>Print</strong></button></th>";
+
+        $(".se-pre-con").fadeIn("fast");
+
+        var myTbody = "";
+
+        var option = {month: "long", year: "numeric"};
+        // var currentMonthYear = new Date().toLocaleDateString('en', option);
+        // var selectedMonth = new Date(document.getElementById('month').value).toLocaleDateString('en', option);
+
+        // if(document.getElementById('month').value == ''){
+        //     monthYear = currentMonthYear;
+        // }else{
+        //     monthYear = selectedMonth;
+        // }
+
+        var array_totalbatch = [];
+        var array_totalprod = [];
+        var array_totalusedcement = [];
+        var array_totalnobags = [];
+
+        var array_total1 = [];
+        var array_total2 = [];
+        var array_total3 = [];
+        var array_total4 = [];
+
+        // document.getElementById('id_monthyear').innerHTML = "For the Month of " + newDate;
+
+        firebase.database().ref('Daily_Production_Report/'+plant).orderByChild('timestamp').once('value', function(monthSnapshot){
+
+            if(monthSnapshot.val() != null){
+
+                myTbody += "<tr><td class='color_blue text_center'><strong>DATE</strong></td>";
+                myTbody += "<td class='color_blue text_center'><strong>TOTAL BATCH</strong></td>";
+                myTbody += "<td class='color_blue text_center'><strong>TOTAL NO. OF PCS</strong></td>";
+                myTbody += "<td class='color_blue text_center'><strong>TOTAL USED CEMENT</strong></td>";
+                myTbody += "<td class='color_blue text_center'><strong>TOTAL NO. OF BAGS</strong></td></tr>";
+
+                monthSnapshot.forEach(function(monthChildSnapshot){
+
+                    var date = monthChildSnapshot.key;
+                    var convertMonthYear = new Date(monthChildSnapshot.key).toLocaleDateString('en', option);
+
+                    if(convertMonthYear == newDate){
+
+                        firebase.database().ref('Daily_Production_Report/'+plant+'/'+date+'/Machine1').once('value', function(machine1Snapshot){
+
+                            var actual_prod = machine1Snapshot.val().actual1_production;
+                            var batches = machine1Snapshot.val().machine1_total_batch;
+                            var cement = machine1Snapshot.val().machine1_cementkg;
+
+                            var cement_production = Number(batches) * Number(cement);
+                            var total_cement = Number(cement_production) / 40;
+
+                            //batches array
+                            var batch_data = {
+                                total_batch: batches
+                            }
+
+                            array_totalbatch.push(batch_data);
+
+                            var prod_data = {
+                                total_prod: actual_prod
+                            }
+
+                            array_totalprod.push(prod_data);
+
+                            var cement_data = {
+                                total_cementkg: cement_production
+                            }
+
+                            array_totalusedcement.push(cement_data);
+
+                            var bags_data = {
+                                total_bags: total_cement
+                            }
+
+                            array_totalnobags.push(bags_data);
+                        });
+
+                        firebase.database().ref('Daily_Production_Report/'+plant+'/'+date+'/Machine2').once('value', function(machine2Snapshot){
+
+                            var actual_prod = Number(machine2Snapshot.val().actual2_production);
+                            var batches = Number(machine2Snapshot.val().machine2_total_batch);
+                            var cement = Number(machine2Snapshot.val().machine2_cementkg);
+
+                            var cement_production = Number(batches) * Number(cement);
+                            var total_cement = Number(cement_production) / 40;
+
+                            //batches array
+                            var batch_data = {
+                                total_batch: batches
+                            }
+
+                            array_totalbatch.push(batch_data);
+
+                            var prod_data = {
+                                total_prod: actual_prod
+                            }
+
+                            array_totalprod.push(prod_data);
+
+                            var cement_data = {
+                                total_cementkg: cement_production
+                            }
+
+                            array_totalusedcement.push(cement_data);
+
+                            var bags_data = {
+                                total_bags: total_cement
+                            }
+
+                            array_totalnobags.push(bags_data);
+                        });
+
+                        firebase.database().ref('Daily_Production_Report/'+plant+'/'+date+'/Machine3').once('value', function(machine3Snapshot){
+
+                            var actual_prod = Number(machine3Snapshot.val().actual3_production);
+                            var batches = Number(machine3Snapshot.val().machine3_total_batch);
+                            var cement = Number(machine3Snapshot.val().machine3_cementkg);
+
+                            var cement_production = Number(batches) * Number(cement);
+                            var total_cement = Number(cement_production) / 40;
+
+                            //batches array
+                            var batch_data = {
+                                total_batch: batches
+                            }
+
+                            array_totalbatch.push(batch_data);
+
+                            var prod_data = {
+                                total_prod: actual_prod
+                            }
+
+                            array_totalprod.push(prod_data);
+
+                            var cement_data = {
+                                total_cementkg: cement_production
+                            }
+
+                            array_totalusedcement.push(cement_data);
+
+                            var bags_data = {
+                                total_bags: total_cement
+                            }
+
+                            array_totalnobags.push(bags_data);
+                        });
+
+                        firebase.database().ref('Daily_Production_Report/'+plant+'/'+date+'/Machine4').once('value', function(machine4Snapshot){
+
+                            var actual_prod = Number(machine4Snapshot.val().actual4_production);
+                            var batches = Number(machine4Snapshot.val().machine4_total_batch);
+                            var cement = Number(machine4Snapshot.val().machine4_cementkg);
+
+                            var cement_production = Number(batches) * Number(cement);
+                            var total_cement = Number(cement_production) / 40;
+
+                            //batches array
+                            var batch_data = {
+                                total_batch: batches
+                            }
+
+                            array_totalbatch.push(batch_data);
+
+                            var prod_data = {
+                                total_prod: actual_prod
+                            }
+
+                            array_totalprod.push(prod_data);
+
+                            var cement_data = {
+                                total_cementkg: cement_production
+                            }
+
+                            array_totalusedcement.push(cement_data);
+
+                            var bags_data = {
+                                total_bags: total_cement
+                            }
+
+                            array_totalnobags.push(bags_data);
+                        });
+
+                        firebase.database().ref('Daily_Production_Report/'+plant+'/'+date+'/Machine5').once('value', function(machine5Snapshot){
+
+                            var actual_prod = machine5Snapshot.val().actual5_production;
+                            var batches = machine5Snapshot.val().machine5_total_batch;
+                            var cement = machine5Snapshot.val().machine5_cementkg;
+
+                            var cement_production = Number(batches) * Number(cement);
+                            var total_cement = Number(cement_production) / 40;
+
+                            //batches array
+                            var batch_data = {
+                                total_batch: batches
+                            }
+
+                            array_totalbatch.push(batch_data);
+
+                            var prod_data = {
+                                total_prod: actual_prod
+                            }
+
+                            array_totalprod.push(prod_data);
+
+                            var cement_data = {
+                                total_cementkg: cement_production
+                            }
+
+                            array_totalusedcement.push(cement_data);
+
+                            var bags_data = {
+                                total_bags: total_cement
+                            }
+
+                            array_totalnobags.push(bags_data);
+                        });
+
+                        firebase.database().ref('Daily_Production_Report/'+plant+'/'+date).once('value', function(machine1Snapshot){
+
+                            //startbatchtotal
+                            var grand1_total = 0;
+                            var counter1 = 5;
+                            
+                            for (var i = 0; i < array_totalbatch.length; i++) {
+
+                                if (i < counter1) {
+                                    grand1_total += array_totalbatch[i].total_batch;
+                                }if (i == counter1) {
+                                    grand1_total = 0;
+                                    counter1 = counter1 + 5;
+                                    i= i-1;
+                                }
+                            }
+                            //startbatchtotalend
+                            //startactualprod
+                            var grand2_total = 0;
+                            var counter2 = 5;
+                            
+                            
+                            for (var i = 0; i < array_totalprod.length; i++) {
+
+                                if (i < counter2) {
+                                    grand2_total += Number(Number(array_totalprod[i].total_prod).toFixed());
+                                }if (i == counter2) {
+                                    grand2_total = 0;
+                                    counter2 = counter2 + 5;
+                                    i= i-1;
+                                }
+                            }
+                            //endactualprod
+                            //startusedcement
+                            var grand3_total = 0;
+                            var counter3 = 5;
+            
+                            for (var i = 0; i < array_totalusedcement.length; i++) {
+
+                                if (i < counter3) {
+                                    grand3_total += Number(Number(array_totalusedcement[i].total_cementkg).toFixed());
+                                }if (i == counter3) {
+                                    grand3_total = 0;
+                                    counter3 = counter3 + 5;
+                                    i= i-1;
+                                }
+                            }
+                            //endusedcement
+                            //startbags
+                            var grand4_total = 0;
+                            var counter4 = 5;
+                            
+                            for (var i = 0; i < array_totalnobags.length; i++) {
+
+                                if (i < counter4) {
+                                    grand4_total += Number(Number(array_totalnobags[i].total_bags).toFixed());
+                                }if (i == counter4) {
+                                    grand4_total = 0;
+                                    counter4 = counter4 + 5;
+                                    i= i-1;
+                                }
+                            }
+                            //endbags
+
+                            var total1_data = {
+                                total1: grand1_total
+                            };
+
+                            array_total1.push(total1_data);
+
+                            var total2_data = {
+                                total2: grand2_total
+                            };
+
+                            array_total2.push(total2_data);
+
+                            var total3_data = {
+                                total3: grand3_total
+                            };
+
+                            array_total3.push(total3_data);
+
+                              var total4_data = {
+                                total4: grand4_total
+                            };
+
+                            array_total4.push(total4_data);
+
+                            myTbody += "<tr><td class='color_blue text_center'><strong>" + new Date(date).getDate() + "</strong></td>";
+                            myTbody += "<td style='text-align: center'><strong>" + Number(grand1_total).toLocaleString('en') + "</strong></td>";
+                            myTbody += "<td style='text-align: center'><strong>" + Number(grand2_total).toLocaleString('en') + "</strong></td>";
+                            myTbody += "<td style='text-align: center'><strong>" + Number(grand3_total).toLocaleString('en') + " kg(s)</strong></td>";
+                            myTbody += "<td style='text-align: center'><strong>" + Number(grand4_total.toFixed(0)).toLocaleString('en') + "</strong></td></tr>";
+
+                        });
+                    }
+                });
+
+                firebase.database().ref('Daily_Production_Report/'+ plant).once('value',function(grandtotalsnap){
+      
+                    var total1 = 0;
+                    for (var i = 0; i < array_total1.length; i++) {
+
+                        total1 += Number(array_total1[i].total1);
+                    }
+
+                    var total2 = 0;
+                    for (var i = 0; i < array_total2.length; i++) {
+
+                        total2 += Number(array_total2[i].total2);
+                    } 
+
+                    var total3 = 0;
+                    for (var i = 0; i < array_total3.length; i++) {
+
+                        total3 += Number(array_total3[i].total3);
+                    } 
+
+                    var total4 = 0;
+                    for (var i = 0; i < array_total4.length; i++) {
+
+                        total4 += Number(array_total4[i].total4);
+                    }           
+                  
+
+                    myTbody += "<tr><td class='total_color' style=' text-align:center'><strong>TOTAL</strong></td>";
+                    myTbody += "<td class='total_color' style=' text-align:center'><strong>" + Number(total1).toLocaleString('en') + "</strong></td>";
+                    myTbody += "<td class='total_color' style=' text-align:center'><strong>" + Number(total2).toLocaleString('en') + "</strong></td>";
+                    myTbody += "<td class='total_color' style=' text-align:center'><strong>" + Number(total3).toLocaleString('en') + " kg(s)</strong></td>";
+                    myTbody += "<td class='total_color' style=' text-align:center'><strong>" + Number(total4.toFixed(0)).toLocaleString('en') + "</strong></td></tr>";
+
+                    document.getElementById("table_data").innerHTML = myTbody;
+
+                    $(".se-pre-con").fadeOut("slow");
+
+                });
+            }
+        });
+    });
+
+</script>
+<style>
+.text_center{
+    text-align: center;
+}
+@media print {
+  table{
+    font-size: 10px;
+  }
+  #printPageButton{
+    display: none;
+  }
+}
+</style>
+</head>
+<body>
+    <div class="se-pre-con"></div>
+    <div class="container">
+        <section id="wrapper">
+            <div class="row">
+                <div class="col-md-12">
+                    <span id="page_header" style="text-align: center;"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <table class="table table-bordered table-condensed">
+                                <thead>
+                                    <tr>
+                                        <td colspan="5" style="background-color: #00a3cc; color: white;"><strong><span id="id_monthyear"></span></strong></td>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_data"></tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
