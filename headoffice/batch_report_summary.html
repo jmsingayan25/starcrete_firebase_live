@@ -139,6 +139,8 @@
 		var array_total3 = [];
 		var array_total4 = [];
 
+		var array_sort = [];
+
 		document.getElementById('id_monthyear').innerHTML = "For the Month of " + monthYear;
 
 		firebase.database().ref('Daily_Production_Report/'+plant).orderByChild('timestamp').once('value', function(monthSnapshot){
@@ -164,7 +166,7 @@
 							var batches = machine1Snapshot.val().machine1_total_batch;
 							var cement = machine1Snapshot.val().machine1_cementkg;
 
-							var cement_production = Number(actual_prod) * Number(cement);
+							var cement_production = Number(batches) * Number(cement);
 							var total_cement = Number(cement_production) / 40;
 
 							//batches array
@@ -199,7 +201,7 @@
 							var batches = Number(machine2Snapshot.val().machine2_total_batch);
 							var cement = Number(machine2Snapshot.val().machine2_cementkg);
 
-							var cement_production = Number(actual_prod) * Number(cement);
+							var cement_production = Number(batches) * Number(cement);
 							var total_cement = Number(cement_production) / 40;
 
 							//batches array
@@ -234,7 +236,7 @@
 							var batches = Number(machine3Snapshot.val().machine3_total_batch);
 							var cement = Number(machine3Snapshot.val().machine3_cementkg);
 
-							var cement_production = Number(actual_prod) * Number(cement);
+							var cement_production = Number(batches) * Number(cement);
 							var total_cement = Number(cement_production) / 40;
 
 							//batches array
@@ -269,7 +271,7 @@
 							var batches = Number(machine4Snapshot.val().machine4_total_batch);
 							var cement = Number(machine4Snapshot.val().machine4_cementkg);
 
-							var cement_production = Number(actual_prod) * Number(cement);
+							var cement_production = Number(batches) * Number(cement);
 							var total_cement = Number(cement_production) / 40;
 
 							//batches array
@@ -304,7 +306,7 @@
 							var batches = machine5Snapshot.val().machine5_total_batch;
 							var cement = machine5Snapshot.val().machine5_cementkg;
 
-							var cement_production = Number(actual_prod) * Number(cement);
+							var cement_production = Number(batches) * Number(cement);
 							var total_cement = Number(cement_production) / 40;
 
 							//batches array
@@ -358,7 +360,7 @@
 		                    for (var i = 0; i < array_totalprod.length; i++) {
 
 		                        if (i < counter2) {
-		                            grand2_total += Number(array_totalprod[i].total_prod);
+		                            grand2_total += Number(Number(array_totalprod[i].total_prod).toFixed());
 		                        }if (i == counter2) {
 		                            grand2_total = 0;
 		                            counter2 = counter2 + 5;
@@ -369,11 +371,11 @@
 		                    //startusedcement
 		                    var grand3_total = 0;
 		                    var counter3 = 5;
-		                    console.log(array_totalusedcement);
+		  
 		                    for (var i = 0; i < array_totalusedcement.length; i++) {
 
 		                        if (i < counter3) {
-		                            grand3_total += Number(array_totalusedcement[i].total_cementkg);
+		                            grand3_total += Number(Number(array_totalusedcement[i].total_cementkg).toFixed());
 		                        }if (i == counter3) {
 		                            grand3_total = 0;
 		                            counter3 = counter3 + 5;
@@ -388,7 +390,7 @@
 		                    for (var i = 0; i < array_totalnobags.length; i++) {
 
 		                        if (i < counter4) {
-		                            grand4_total += Number(array_totalnobags[i].total_bags);
+		                            grand4_total += Number(Number(array_totalnobags[i].total_bags).toFixed());
 		                        }if (i == counter4) {
 		                            grand4_total = 0;
 		                            counter4 = counter4 + 5;
@@ -421,11 +423,17 @@
 
 		                    array_total4.push(total4_data);
 
-		                    myTbody += "<tr><td class='color_blue'><strong>" + new Date(date).getDate() + "</strong></td>";
-		                    myTbody += "<td style='text-align: center'><strong>" + Number(grand1_total).toLocaleString('en') + "</strong></td>";
-		                    myTbody += "<td style='text-align: center'><strong>" + Number(grand2_total).toLocaleString('en') + "</strong></td>";
-		                    myTbody += "<td style='text-align: center'><strong>" + Number(grand3_total).toLocaleString('en') + " kg(s)</strong></td>";
-		                    myTbody += "<td style='text-align: center'><strong>" + Number(grand4_total.toFixed(0)).toLocaleString('en') + "</strong></td></tr>";
+		                    var dayDate = new Date(date).getDate();
+
+		                    var sort = {
+		                    	date: dayDate,
+		                    	total1: grand1_total,
+		                    	total2: grand2_total,
+		                    	total3: grand3_total,
+		                    	total4: grand4_total
+		                    }
+
+		                    array_sort.push(sort);
 
 						});
 					}
@@ -433,6 +441,29 @@
 
 				firebase.database().ref('Daily_Production_Report/'+ plant).once('value',function(grandtotalsnap){
       
+      				
+
+      				array_sort.sort(function(a,b){
+		                return Number(a.date) - Number(b.date);
+		            });
+
+		            console.log(array_sort);
+
+		            for(var i = 0; i < array_sort.length; i++){
+
+		            	var date = array_sort[i].date;
+		            	var grand1_total1 = Number(array_sort[i].total1).toLocaleString('en');
+		            	var grand2_total2 = Number(array_sort[i].total2).toLocaleString('en');
+		            	var grand3_total3 = Number(array_sort[i].total3).toLocaleString('en');
+		            	var grand4_total4 = Number(array_sort[i].total4).toLocaleString('en');
+
+		            	myTbody += "<tr><td class='color_blue'><strong>" + date + "</strong></td>";
+	                    myTbody += "<td style='text-align: center'><strong>" + grand1_total1 + "</strong></td>";
+	                    myTbody += "<td style='text-align: center'><strong>" + grand2_total2 + "</strong></td>";
+	                    myTbody += "<td style='text-align: center'><strong>" + grand3_total3 + " kg(s)</strong></td>";
+	                    myTbody += "<td style='text-align: center'><strong>" + grand4_total4 + "</strong></td></tr>";
+		            }
+
 		            var total1 = 0;
 		            for (var i = 0; i < array_total1.length; i++) {
 
@@ -472,6 +503,19 @@
 			}
 		});
 	}
+
+	function printSummary(){
+
+		var option = {month: "long", year: "numeric"};
+
+        if(document.getElementById('month').value != ""){
+            var date = new Date(document.getElementById('month').value).toLocaleDateString('en', option);
+        }else{
+            var date = new Date().toLocaleDateString('en', option);
+        }
+
+        window.open("view_batch_report_summary_print.html?plant="+plant+"&date="+date, "_blank");
+    }
 
 </script>
 <style>
@@ -653,11 +697,13 @@
 	                                        <div class="col-md-3" style="margin-right: -25px;">
 	                                            <input type="month" id="month" name="month" class="form-control">
 	                                        </div>
-	                                        <div class="col-md-1" style="margin-right: 25px;">
+	                                        <div class="col-md-2" style="margin-right: 25px;">
 	                                        	<button type="button" class="btn btn-info" onclick="submitForm();" name="search_table">
 	                                                <i class="fa fa-search"></i>
 	                                            </button>
+	                                            <button class="btn btn-info btn-md" onclick="printSummary();"><strong><span class="fa fa-print"></span> Print</strong></button>    
 	                                        </div>
+
 	                                    </div>	                                
 	                                </div>
                         		<!-- </form> -->
