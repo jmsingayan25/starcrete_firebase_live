@@ -482,8 +482,8 @@ function Go(){
                     myTbody += "<td style=' text-align:center'><strong>" + grand2_total.toLocaleString("en") + "</strong></td>";
                     myTbody += "<td style=' text-align:center'><strong>" + grand3_total.toLocaleString("en") + " kg(s)</strong></td>";
                     myTbody += "<td style=' text-align:center'><strong>" + Number(grand4_total).toLocaleString(undefined, {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0 }) + "</strong></td>";
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0 }) + "</strong></td>";
 
                     myTbody += "</tr>";
 
@@ -507,52 +507,45 @@ function Go(){
                     };
                     array_total4.push(total4_data);
 
-                //output
-                document.getElementById("orderList").innerHTML = myTbody;
+             
                 });
             }
         });
         //total
         firebase.database().ref('Daily_Production_Report/'+ plant +'/'+ getDate ).once('value',function(grandtotalsnap){
-      
+
             var total1 = 0;
             for (var i = 0; i < array_total1.length; i++) {
-
-                        total1 += Number(array_total1[i].total1);
-                    }
+                total1 += Number(array_total1[i].total1);
+            }
 
             var total2 = 0;
             for (var i = 0; i < array_total2.length; i++) {
-
-                        total2 += Number(array_total2[i].total2);
-                    } 
+                total2 += Number(array_total2[i].total2);
+            } 
 
             var total3 = 0;
             for (var i = 0; i < array_total3.length; i++) {
-
-                        total3 += Number(array_total3[i].total3);
-                    } 
+                total3 += Number(array_total3[i].total3);
+            } 
 
             var total4 = 0;
             for (var i = 0; i < array_total4.length; i++) {
+                total4 += Number(array_total4[i].total4);
+            }
 
-                        total4 += Number(array_total4[i].total4);
-                    }           
-          
-
-                    myTotalhead += "<tr><td style='text-align:center; background-color: #00111a; color:white'><strong>TOTAL</strong></td>";
-                    myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total1.toLocaleString("en") + "</strong></td>";
-                    myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total2.toLocaleString("en") + " </strong></td>";
-                    myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total3.toLocaleString("en") + " kg(s)</strong></td>";
-                    myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total4.toLocaleString(undefined, {
+            myTotalhead += "<tr><td style='text-align:center; background-color: #00111a; color:white'><strong>TOTAL</strong></td>";
+            myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total1.toLocaleString("en") + "</strong></td>";
+            myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total2.toLocaleString("en") + " </strong></td>";
+            myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total3.toLocaleString("en") + " kg(s)</strong></td>";
+            myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total4.toLocaleString(undefined, {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0 }) + "</strong></td></tr>";
 
-                    document.getElementById("orderListclone").innerHTML = myTotalhead; 
-
+            document.getElementById("orderListclone").innerHTML = myTotalhead; 
+            //output
+            document.getElementById("orderList").innerHTML = myTbody;
         });
-
-    
     });
 }
 
