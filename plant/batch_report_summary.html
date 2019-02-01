@@ -480,7 +480,7 @@ function Go(){
                     myTbody += "<tr><td style='background-color: #00a3cc; color: white; text-align:center'><strong>" + new Date(GetMonth).getDate() + "</strong></td>";
                     myTbody += "<td style=' text-align:center'><strong>" + grand1_total + "</strong></td>";
                     myTbody += "<td style=' text-align:center'><strong>" + grand2_total + "</strong></td>";
-                    myTbody += "<td style=' text-align:center'><strong>" + grand3_total + "</strong></td>";
+                    myTbody += "<td style=' text-align:center'><strong>" + grand3_total + " kg(s)</strong></td>";
                     myTbody += "<td style=' text-align:center'><strong>" + grand4_total.toFixed(0) + "</strong></td>";
 
                     myTbody += "</tr>";
@@ -538,11 +538,11 @@ function Go(){
                     }           
           
 
-                    myTotalhead += "<tr><td style=' text-align:center'><strong>TOTAL</strong></td>";
-                    myTotalhead += "<td style=' text-align:center'><strong>" + total1 + "</strong></td>";
-                    myTotalhead += "<td style=' text-align:center'><strong>" + total2 + "</strong></td>";
-                    myTotalhead += "<td style=' text-align:center'><strong>" + total3 + "</strong></td>";
-                    myTotalhead += "<td style=' text-align:center'><strong>" + total4.toFixed(0) + "</strong></td></tr>";
+                    myTotalhead += "<tr><td style='text-align:center; background-color: #00111a; color:white'><strong>TOTAL</strong></td>";
+                    myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total1 + "</strong></td>";
+                    myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total2 + " </strong></td>";
+                    myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total3 + " kg(s)</strong></td>";
+                    myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total4.toFixed(0) + "</strong></td></tr>";
 
                     document.getElementById("orderListclone").innerHTML = myTotalhead; 
 
@@ -730,14 +730,13 @@ function Go(){
 	            <!--overview start-->
 	            <div class="row">
 	                <div class="col-md-12">
-	                    <h3 class="page-header"><a href="delivery_delivered_order.html" style="color: inherit;">Delivered Order</a></h3>
+	                    <h3 class="page-header"><a href="delivery_delivered_order.html" style="color: inherit;">Batch Report Summary</a></h3>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
 	                    <ol class="breadcrumb">
-	                        <li><i class="fa fa-building"></i>Delivery Order</li>
-	                        <li><i class="fa fa-truck"></i>Delivered Order</li>						  	
+	                        <li><i class="fa fa-building"></i>Batch Report Summary</li>					  	
 	                    </ol>
 	                </div>
                    <!--  <div class="col-md-4">
