@@ -139,6 +139,8 @@
 		var array_total3 = [];
 		var array_total4 = [];
 
+		var array_sort = [];
+
 		document.getElementById('id_monthyear').innerHTML = "For the Month of " + monthYear;
 
 		firebase.database().ref('Daily_Production_Report/'+plant).orderByChild('timestamp').once('value', function(monthSnapshot){
@@ -369,7 +371,7 @@
 		                    //startusedcement
 		                    var grand3_total = 0;
 		                    var counter3 = 5;
-		                    console.log(array_totalusedcement);
+		  
 		                    for (var i = 0; i < array_totalusedcement.length; i++) {
 
 		                        if (i < counter3) {
@@ -421,11 +423,17 @@
 
 		                    array_total4.push(total4_data);
 
-		                    myTbody += "<tr><td class='color_blue'><strong>" + new Date(date).getDate() + "</strong></td>";
-		                    myTbody += "<td style='text-align: center'><strong>" + Number(grand1_total).toLocaleString('en') + "</strong></td>";
-		                    myTbody += "<td style='text-align: center'><strong>" + Number(grand2_total).toLocaleString('en') + "</strong></td>";
-		                    myTbody += "<td style='text-align: center'><strong>" + Number(grand3_total).toLocaleString('en') + " kg(s)</strong></td>";
-		                    myTbody += "<td style='text-align: center'><strong>" + Number(grand4_total.toFixed(0)).toLocaleString('en') + "</strong></td></tr>";
+		                    var dayDate = new Date(date).getDate();
+
+		                    var sort = {
+		                    	date: dayDate,
+		                    	total1: grand1_total,
+		                    	total2: grand2_total,
+		                    	total3: grand3_total,
+		                    	total4: grand4_total
+		                    }
+
+		                    array_sort.push(sort);
 
 						});
 					}
@@ -433,6 +441,29 @@
 
 				firebase.database().ref('Daily_Production_Report/'+ plant).once('value',function(grandtotalsnap){
       
+      				
+
+      				array_sort.sort(function(a,b){
+		                return Number(a.date) - Number(b.date);
+		            });
+
+		            console.log(array_sort);
+
+		            for(var i = 0; i < array_sort.length; i++){
+
+		            	var date = array_sort[i].date;
+		            	var grand1_total1 = Number(array_sort[i].total1).toLocaleString('en');
+		            	var grand2_total2 = Number(array_sort[i].total2).toLocaleString('en');
+		            	var grand3_total3 = Number(array_sort[i].total3).toLocaleString('en');
+		            	var grand4_total4 = Number(array_sort[i].total4).toLocaleString('en');
+
+		            	myTbody += "<tr><td class='color_blue'><strong>" + date + "</strong></td>";
+	                    myTbody += "<td style='text-align: center'><strong>" + grand1_total1 + "</strong></td>";
+	                    myTbody += "<td style='text-align: center'><strong>" + grand2_total2 + "</strong></td>";
+	                    myTbody += "<td style='text-align: center'><strong>" + grand3_total3 + " kg(s)</strong></td>";
+	                    myTbody += "<td style='text-align: center'><strong>" + grand4_total4 + "</strong></td></tr>";
+		            }
+
 		            var total1 = 0;
 		            for (var i = 0; i < array_total1.length; i++) {
 

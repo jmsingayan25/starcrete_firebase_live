@@ -239,6 +239,8 @@ function Go(){
         var array_total3 = []
         var array_total4 = []
 
+        var array_sort = [];
+
         document.getElementById("filters").innerHTML = myThead;
 
         Dailydate.forEach(function(DailydateMonth){
@@ -476,16 +478,17 @@ function Go(){
                     }
                     //endbags
 
-                    //date
-                    myTbody += "<tr><td style='background-color: #00a3cc; color: white; text-align:center'><strong>" + new Date(GetMonth).getDate() + "</strong></td>";
-                    myTbody += "<td style=' text-align:center'><strong>" + grand1_total.toLocaleString("en") + "</strong></td>";
-                    myTbody += "<td style=' text-align:center'><strong>" + grand2_total.toLocaleString("en") + "</strong></td>";
-                    myTbody += "<td style=' text-align:center'><strong>" + grand3_total.toLocaleString("en") + " kg(s)</strong></td>";
-                    myTbody += "<td style=' text-align:center'><strong>" + Number(grand4_total).toLocaleString(undefined, {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0 }) + "</strong></td>";
+                    var dayDate = new Date(GetMonth).getDate();
 
-                    myTbody += "</tr>";
+                    var sort = {
+                        date: dayDate,
+                        total1: grand1_total,
+                        total2: grand2_total,
+                        total3: grand3_total,
+                        total4: grand4_total
+                    }
+
+                    array_sort.push(sort);
 
                     var total1_data = {
                         total1: grand1_total
@@ -507,14 +510,35 @@ function Go(){
                     };
                     array_total4.push(total4_data);
 
-                //output
-                document.getElementById("orderList").innerHTML = myTbody;
+                
                 });
             }
         });
         //total
         firebase.database().ref('Daily_Production_Report/'+ plant +'/'+ getDate ).once('value',function(grandtotalsnap){
       
+            array_sort.sort(function(a,b){
+                return Number(a.date) - Number(b.date);
+            });
+
+            for(var i = 0; i < array_sort.length; i++){
+
+                var date = array_sort[i].date;
+                var grand1_total = Number(array_sort[i].total1).toLocaleString('en');
+                var grand2_total = Number(array_sort[i].total2).toLocaleString('en');
+                var grand3_total = Number(array_sort[i].total3).toLocaleString('en');
+                var grand4_total = Number(array_sort[i].total4).toLocaleString(undefined, {minimumFractionDigits: 0,maximumFractionDigits: 0 })
+
+                //date
+                myTbody += "<tr><td style='background-color: #00a3cc; color: white; text-align:center'><strong>" + date + "</strong></td>";
+                myTbody += "<td style=' text-align:center'><strong>" + grand1_total + "</strong></td>";
+                myTbody += "<td style=' text-align:center'><strong>" + grand2_total + "</strong></td>";
+                myTbody += "<td style=' text-align:center'><strong>" + grand3_total + " kg(s)</strong></td>";
+                myTbody += "<td style=' text-align:center'><strong>" + grand4_total + "</strong></td>";
+
+                myTbody += "</tr>";
+            }
+
             var total1 = 0;
             for (var i = 0; i < array_total1.length; i++) {
 
@@ -548,6 +572,8 @@ function Go(){
             minimumFractionDigits: 0,
             maximumFractionDigits: 0 }) + "</strong></td></tr>";
 
+                    //output
+                    document.getElementById("orderList").innerHTML = myTbody;
                     document.getElementById("orderListclone").innerHTML = myTotalhead; 
 
         });
