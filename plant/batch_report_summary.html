@@ -257,7 +257,7 @@ function Go(){
                     var getactual_production1 = DailyProductionSnapShot1.val().actual1_production;
 
                     var getCementKg1 = DailyProductionSnapShot1.val().machine1_cementkg;
-                    var getused_cement1 = Number(getactual_production1) * Number(getCementKg1);
+                    var getused_cement1 = Number(getbatch1) * Number(getCementKg1);
 
                     var getnobags1 = Number(getused_cement1)/40;
                     
@@ -287,7 +287,7 @@ function Go(){
                     var getactual_production2 = DailyProductionSnapShot2.val().actual2_production;
 
                     var getCementKg2 = DailyProductionSnapShot2.val().machine2_cementkg;
-                    var getused_cement2 = Number(getactual_production2) * Number(getCementKg2);
+                    var getused_cement2 = Number(getbatch2) * Number(getCementKg2);
 
                     var getnobags2 = Number(getused_cement2)/40;
 
@@ -319,7 +319,7 @@ function Go(){
                     var getactual_production3 = DailyProductionSnapShot3.val().actual3_production;
 
                     var getCementKg3 = DailyProductionSnapShot3.val().machine3_cementkg;
-                    var getused_cement3 = Number(getactual_production3) * Number(getCementKg3);
+                    var getused_cement3 = Number(getbatch3) * Number(getCementKg3);
 
                     var getnobags3 = Number(getused_cement3)/40;
 
@@ -351,7 +351,7 @@ function Go(){
                     var getactual_production4 = DailyProductionSnapShot4.val().actual4_production;
 
                     var getCementKg4 = DailyProductionSnapShot4.val().machine4_cementkg;
-                    var getused_cement4 = Number(getactual_production4) * Number(getCementKg4);
+                    var getused_cement4 = Number(getbatch4) * Number(getCementKg4);
 
                     var getnobags4 = Number(getused_cement4)/40;
                     
@@ -382,7 +382,7 @@ function Go(){
                     var getactual_production5 = DailyProductionSnapShot5.val().actual5_production;
 
                     var getCementKg5 = DailyProductionSnapShot5.val().machine5_cementkg;
-                    var getused_cement5 = Number(getactual_production5) * Number(getCementKg5);
+                    var getused_cement5 = Number(getbatch5) * Number(getCementKg5);
 
                     var getnobags5 = Number(getused_cement5)/40;
                     
@@ -449,7 +449,7 @@ function Go(){
                     for (var i = 0; i < array_totalusedcement.length; i++) {
 
                         if (i < varcounter3) {
-                            grand3_total += Number(array_totalusedcement[i].total_cement1);
+                            grand3_total += Number(Number(array_totalusedcement[i].total_cement1).toFixed());
                         }if (i == varcounter3) {
                             array_totalpcsdate1.push({total3:grand3_total});
                             grand3_total = 0;
@@ -466,7 +466,7 @@ function Go(){
                     for (var i = 0; i < array_totalnobags.length; i++) {
 
                         if (i < varcounter4) {
-                            grand4_total += Number(array_totalnobags[i].total_bags1);
+                            grand4_total += Number(Number(array_totalnobags[i].total_bags1).toFixed());
                         }if (i == varcounter4) {
                             array_totalbagsdate.push({total4:grand4_total});
                             grand4_total = 0;
@@ -478,10 +478,12 @@ function Go(){
 
                     //date
                     myTbody += "<tr><td style='background-color: #00a3cc; color: white; text-align:center'><strong>" + new Date(GetMonth).getDate() + "</strong></td>";
-                    myTbody += "<td style=' text-align:center'><strong>" + grand1_total + "</strong></td>";
-                    myTbody += "<td style=' text-align:center'><strong>" + grand2_total + "</strong></td>";
-                    myTbody += "<td style=' text-align:center'><strong>" + grand3_total + " kg(s)</strong></td>";
-                    myTbody += "<td style=' text-align:center'><strong>" + grand4_total.toFixed(0) + "</strong></td>";
+                    myTbody += "<td style=' text-align:center'><strong>" + grand1_total.toLocaleString("en") + "</strong></td>";
+                    myTbody += "<td style=' text-align:center'><strong>" + grand2_total.toLocaleString("en") + "</strong></td>";
+                    myTbody += "<td style=' text-align:center'><strong>" + grand3_total.toLocaleString("en") + " kg(s)</strong></td>";
+                    myTbody += "<td style=' text-align:center'><strong>" + Number(grand4_total).toLocaleString(undefined, {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0 }) + "</strong></td>";
 
                     myTbody += "</tr>";
 
@@ -539,10 +541,12 @@ function Go(){
           
 
                     myTotalhead += "<tr><td style='text-align:center; background-color: #00111a; color:white'><strong>TOTAL</strong></td>";
-                    myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total1 + "</strong></td>";
-                    myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total2 + " </strong></td>";
-                    myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total3 + " kg(s)</strong></td>";
-                    myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total4.toFixed(0) + "</strong></td></tr>";
+                    myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total1.toLocaleString("en") + "</strong></td>";
+                    myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total2.toLocaleString("en") + " </strong></td>";
+                    myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total3.toLocaleString("en") + " kg(s)</strong></td>";
+                    myTotalhead += "<td style=' text-align:center; background-color: #00111a; color:white'><strong>" + total4.toLocaleString(undefined, {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0 }) + "</strong></td></tr>";
 
                     document.getElementById("orderListclone").innerHTML = myTotalhead; 
 
