@@ -116,6 +116,8 @@
 
 		event.preventDefault();
 
+		document.getElementById('view_btn').innerHTML = "<a href='batch_report_item_summary.html?plant=" + plant + "' class='btn btn-md btn-info'><strong>View Report By Item</strong></a>";
+
 		$(".se-pre-con").fadeIn("fast");
 		var myTbody = "";
 
@@ -697,10 +699,11 @@
 	                                        <div class="col-md-3" style="margin-right: -25px;">
 	                                            <input type="month" id="month" name="month" class="form-control">
 	                                        </div>
-	                                        <div class="col-md-2" style="margin-right: 25px;">
+	                                        <div class="col-md-4" style="margin-right: 25px;">
 	                                        	<button type="button" class="btn btn-info" onclick="submitForm();" name="search_table">
 	                                                <i class="fa fa-search"></i>
 	                                            </button>
+	                                            <span id="view_btn"></span>
 	                                            <button class="btn btn-info btn-md" onclick="printSummary();"><strong><span class="fa fa-print"></span> Print</strong></button>    
 	                                        </div>
 

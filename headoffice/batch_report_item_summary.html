@@ -112,7 +112,6 @@
 
         document.getElementById('logoutBtn').addEventListener('click', userSignOut, false);
 
-        $(".se-pre-con").fadeOut("slow");
     });
 
     function sortAlphaNum(a, b) {
@@ -193,7 +192,7 @@
 
                     array_type.sort(sortAlphaNum);
 
-                    myOption += "<option value=''>Select...</option>";
+                    myOption += "<option value=''>Select</option>";
 
                     for(var i = 0; i < array_type.length; i++){
 
@@ -581,7 +580,7 @@
                                                     <div class="form-check">    
                                                         <strong>View by Item:</strong>
                                                         <select id="itemList">
-                                                            <option value="">Select...</option>
+                                                            <option value="">Select</option>
                                                         </select>
                                                     </div>
                                                 </td>
