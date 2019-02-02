@@ -114,21 +114,6 @@
 
     });
 
-    function sortAlphaNum(a, b) {
-
-        var reA = /[^a-zA-Z]/g;
-        var reN = /[^0-9]/g;
-        var aA = a.replace(reA, "");
-        var bA = b.replace(reA, "");
-        if (aA === bA) {
-            var aN = parseInt(a.replace(reN, ""), 10);
-            var bN = parseInt(b.replace(reN, ""), 10);
-            return aN === bN ? 0 : aN > bN ? 1 : -1;
-        } else {
-            return aA > bA ? 1 : -1;
-        }
-    }
-
     function viewList(){
 
         var myOption = "";
@@ -190,7 +175,8 @@
 
                 firebase.database().ref('Daily_Production_Report/'+plant).once('value', function(monthSnapshot){
 
-                    array_type.sort(sortAlphaNum);
+                    var collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
+                    array_type.sort(collator.compare);
 
                     myOption += "<option value=''>Select</option>";
 
