@@ -88,6 +88,7 @@
     $(document).ready(function(){
 
         submitForm();
+        viewList();
 
         firebase.auth().onAuthStateChanged(function(user) {
             if (user != null) {
@@ -113,6 +114,99 @@
 
         $(".se-pre-con").fadeOut("slow");
     });
+
+    function sortAlphaNum(a, b) {
+
+        var reA = /[^a-zA-Z]/g;
+        var reN = /[^0-9]/g;
+        var aA = a.replace(reA, "");
+        var bA = b.replace(reA, "");
+        if (aA === bA) {
+            var aN = parseInt(a.replace(reN, ""), 10);
+            var bN = parseInt(b.replace(reN, ""), 10);
+            return aN === bN ? 0 : aN > bN ? 1 : -1;
+        } else {
+            return aA > bA ? 1 : -1;
+        }
+    }
+
+    function viewList(){
+
+        var myOption = "";
+        var array_type = [];
+
+        firebase.database().ref('Daily_Production_Report/'+plant).orderByChild('timestamp').once('value', function(monthSnapshot){
+
+            if(monthSnapshot.val() != null){
+
+                monthSnapshot.forEach(function(monthChildSnapshot){
+
+                    var date = monthChildSnapshot.key;
+
+                    firebase.database().ref('Daily_Production_Report/'+plant+'/'+date+'/Machine1').once('value', function(machine1Snapshot){
+
+                        var cement_type = machine1Snapshot.val().machine1_cementType;
+
+                        if(array_type.indexOf(cement_type) == -1 && cement_type != ''){
+                            array_type.push(cement_type);
+                        }
+                    });
+
+                    firebase.database().ref('Daily_Production_Report/'+plant+'/'+date+'/Machine2').once('value', function(machine2Snapshot){
+
+                        var cement_type = machine2Snapshot.val().machine2_cementType;
+
+                        if(array_type.indexOf(cement_type) == -1 && cement_type != ''){
+                            array_type.push(cement_type);
+                        }
+                    });
+
+                    firebase.database().ref('Daily_Production_Report/'+plant+'/'+date+'/Machine3').once('value', function(machine3Snapshot){
+
+                        var cement_type = machine3Snapshot.val().machine3_cementType;
+
+                        if(array_type.indexOf(cement_type) == -1 && cement_type != ''){
+                            array_type.push(cement_type);
+                        }
+                    });
+
+                    firebase.database().ref('Daily_Production_Report/'+plant+'/'+date+'/Machine4').once('value', function(machine4Snapshot){
+
+                        var cement_type = machine4Snapshot.val().machine4_cementType;
+
+                        if(array_type.indexOf(cement_type) == -1 && cement_type != ''){
+                            array_type.push(cement_type);
+                        }
+                    });
+
+                    firebase.database().ref('Daily_Production_Report/'+plant+'/'+date+'/Machine5').once('value', function(machine5Snapshot){
+
+                        var cement_type = machine5Snapshot.val().machine5_cementType;
+
+                        if(array_type.indexOf(cement_type) == -1 && cement_type != ''){
+                            array_type.push(cement_type);
+                        }
+                    });
+                });
+
+                firebase.database().ref('Daily_Production_Report/'+plant).once('value', function(monthSnapshot){
+
+                    array_type.sort(sortAlphaNum);
+
+                    myOption += "<option value=''>Select...</option>";
+
+                    for(var i = 0; i < array_type.length; i++){
+
+                        var type = array_type[i];
+
+                        myOption += "<option value='" + type + "'>" + type + "</option>";
+                    }
+
+                    document.getElementById('itemList').innerHTML = myOption;
+                });
+            }
+        });
+    }
 
     function submitForm(){
 
@@ -488,14 +582,6 @@
                                                         <strong>View by Item:</strong>
                                                         <select id="itemList">
                                                             <option value="">Select...</option>
-                                                            <option value="1A">1A</option>
-                                                            <option value="1B">1B</option>
-                                                            <option value="1C">1C</option>
-                                                            <option value="2A">2A</option>
-                                                            <option value="2B">2B</option>
-                                                            <option value="2C">2C</option>
-                                                            <option value="3A">3A</option>
-                                                            <option value="3B">3B</option>
                                                         </select>
                                                     </div>
                                                 </td>
