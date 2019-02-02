@@ -478,18 +478,8 @@ function Go(){
                     }
                     //endbags
 
-<<<<<<< HEAD
-                    //date
-                    myTbody += "<tr><td style='background-color: #00a3cc; color: white; text-align:center'><strong>" + new Date(GetMonth).getDate() + "</strong></td>";
-                    myTbody += "<td style=' text-align:center'><strong>" + grand1_total.toLocaleString("en") + "</strong></td>";
-                    myTbody += "<td style=' text-align:center'><strong>" + grand2_total.toLocaleString("en") + "</strong></td>";
-                    myTbody += "<td style=' text-align:center'><strong>" + grand3_total.toLocaleString("en") + " kg(s)</strong></td>";
-                    myTbody += "<td style=' text-align:center'><strong>" + Number(grand4_total).toLocaleString(undefined, {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0 }) + "</strong></td>";
-=======
                     var dayDate = new Date(GetMonth).getDate();
->>>>>>> acc51e4d68da82305a6e209d7839da14aac60f23
+
 
                     var sort = {
                         date: dayDate,
@@ -521,18 +511,13 @@ function Go(){
                     };
                     array_total4.push(total4_data);
 
-<<<<<<< HEAD
-             
-=======
-                
->>>>>>> acc51e4d68da82305a6e209d7839da14aac60f23
+
                 });
             }
         });
         //total
         firebase.database().ref('Daily_Production_Report/'+ plant +'/'+ getDate ).once('value',function(grandtotalsnap){
-<<<<<<< HEAD
-=======
+
       
             array_sort.sort(function(a,b){
                 return Number(a.date) - Number(b.date);
@@ -555,7 +540,7 @@ function Go(){
 
                 myTbody += "</tr>";
             }
->>>>>>> acc51e4d68da82305a6e209d7839da14aac60f23
+
 
             var total1 = 0;
             for (var i = 0; i < array_total1.length; i++) {
@@ -585,16 +570,14 @@ function Go(){
             minimumFractionDigits: 0,
             maximumFractionDigits: 0 }) + "</strong></td></tr>";
 
-<<<<<<< HEAD
-            document.getElementById("orderListclone").innerHTML = myTotalhead; 
             //output
             document.getElementById("orderList").innerHTML = myTbody;
-=======
+
                     //output
-                    document.getElementById("orderList").innerHTML = myTbody;
+             
                     document.getElementById("orderListclone").innerHTML = myTotalhead; 
 
->>>>>>> acc51e4d68da82305a6e209d7839da14aac60f23
+
         });
     });
 }
