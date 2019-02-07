@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+    <link rel="shortcut icon" href="img/favicon.png">
+
+	<title>Signup Page | Starcrete Manufactoring Corporation</title>
+
+	<!-- Firebase App is always required and must be first -->
+	<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script>
+
+	<!-- Add additional services you want to use -->
+	<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>
+
+	<!-- Firebase App Config -->
+	<script src="js_config/firebase_config.js"></script>
+
+	<!-- Bootstrap CSS -->    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- bootstrap theme -->
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom styles -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet" />
+
+	
+
+	<!-- Load the jQuery library, which we'll use to manipulate HTML elements with Javascript. -->
+    <!-- <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script> -->
+    
+    <!-- Load Bootstrap stylesheet, which will is CSS that makes everything prettier and also responsive (aka will work on all devices of all sizes). -->
+
+<script>
+
+    function createUser(){
+
+        event.preventDefault();
+
+        var email = document.getElementById('signupEmail').value;
+        var password = document.getElementById('signupPassword').value;
+        var firstname = document.getElementById('signupFirstName').value;
+        var lastname = document.getElementById('signupLastName').value;
+        var office = document.querySelector('input[name="optradio"]:checked').value;
+        var $this = $('#signup-submit');
+        $this.button('loading');
+
+        firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
+
+            // firebase.auth().onAuthStateChanged(function(user){
+
+            var user = firebase.auth().currentUser;
+            var userid = user.uid;
+            var uemail = user.email;
+
+            var userInfo = {
+                firstname: firstname,
+                lastname: lastname,
+                email: uemail,
+                position: " ",
+                office: office
+            }
+
+            // console.log(userInfo);
+            firebase.database().ref("users/"+userid).set(userInfo);
+            // if(firebase.database().ref("users/"+userid).set(userInfo)){
+            alert("User successfully added..");
+            // location.href='login.html';
+            $this.button('reset');
+            $('#signupEmail, #signupPassword, #signupFirstName, #signupLastName').val('');
+            $('.optradio').attr('value','Head Office');
+
+            firebase.auth().signOut();
+            // }
+            // location.reload();       
+
+                
+            // });
+        }).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // [START_EXCLUDE]
+            if (errorCode === 'auth/wrong-password') {
+                alert('Wrong password.');
+            } else {
+                alert(errorMessage);
+            }
+            console.log(error);
+            $this.button('reset');
+        });
+
+
+    }
+
+</script>
+<style>
+    
+</style>
+</head>
+<body class="login-img3-body">
+    <div class="container">
+        <form class="login-form">       
+            <!-- <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#tab_signin"><strong>Sign In</strong></a></li>
+                <li><a data-toggle="tab" href="#tab_signup"><strong>Signup</strong></a></li>
+            </ul> -->
+            <div class="tab-content">
+                <div class="login-wrap">
+                    <p class="login-img"><i class="icon_document_alt"></i></p>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="icon_profile"></i></span>
+                        <input type="text" name="signupFirstName" id="signupFirstName" class="form-control" placeholder="First Name" autocomplete="off" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="icon_profile"></i></span>
+                        <input type="text" name="signupLastName" id="signupLastName" class="form-control" placeholder="Last Name" autocomplete="off" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="icon_profile"></i></span>
+                        <input type="email" name="signupEmail" id="signupEmail" class="form-control" placeholder="Email" autocomplete="off" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                        <input type="password" name="signupPassword" id="signupPassword" class="form-control" placeholder="Password" autocomplete="off" required>
+                    </div>
+                    <div class="input-group">
+                        Office: 
+                        <label class="radio-inline">
+                          <input type="radio" name="optradio" class="optradio" value="Head Office" checked>Head Office
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="optradio" class="optradio" value="Bravo">Bravo
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="optradio" class="optradio" value="Delta">Delta
+                        </label>
+                    </div>
+                    <button class="btn btn-primary btn-lg btn-block" name="signup-submit"  id="signup-submit" type="button"  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Signing Up" onclick='createUser();'>Sign Up</button>
+                </div>
+            </div> 
+            <div class="form-group" style="text-align: center;">
+                <a href="login.html">User already exist? Click Here</a>
+            </div>
+        </form>
+    </div>    
+</body>
+</html>
