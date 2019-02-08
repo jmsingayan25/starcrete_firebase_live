@@ -337,84 +337,102 @@ function DropdownCategory(){
 //     });
 // }
 
-function submitForm(){
-    event.preventDefault();
-    firebase.database().ref().child("available_stock/" + plant).once('value',function(CheckSnapshot){
-        if (CheckSnapshot.val() == null){
-            var quantity_out = document.getElementById('quantity_out').value;
-            quantity_out = quantity_out.replace(",","");
-            var destination = document.getElementById('destination').value;
-            var truck_no = document.getElementById('selectsys').value;
-            var operator = document.getElementById('operator').value;
-            var date = new Date().toLocaleDateString('en');
-            var time = new Date().toLocaleTimeString('en');
-            var date_input = dateFormat(document.getElementById('date_input').value);
-            var pondo_input = document.getElementById('pondo').value;
-            pondo_input = pondo_input.replace(",","");
+function submitForm()
+    {
+        event.preventDefault();
 
+        firebase.database().ref().child("available_stock/" + plant).once('value', function(CheckSnapshot){
 
-            if(document.getElementById('time_input').value != ""){
-                var time_input = startTime(document.getElementById('time_input').value);
-            }else{
-                var time_input = "";
-            }
+            if (CheckSnapshot.val() == null) {
+          
+                var quantity_out = document.getElementById('quantity_out').value;
+                quantity_out = quantity_out.replace(",","");
+                var destination = document.getElementById('destination').value;
+                var truck_no = document.getElementById('selectsys').value;
+                var operator = document.getElementById('operator').value;
+                var date = new Date().toLocaleDateString('en');
+                var time = new Date().toLocaleTimeString('en');
+                var date_input = dateFormat(document.getElementById('date_input').value);
+                var pondo_input = document.getElementById('pondo').value;
+                pondo_input = pondo_input.replace(",","");
 
-            var decrease_int_liters = 0 - Number(quantity_out);
-            var decrease_string_liters = decrease_int_liters.toString();
-            var new_liters = decrease_string_liters;
-            var stock_available  = {Liters: new_liters};
-            firebase.database().ref().child("available_stock/" + plant).set(stock_available);
-            var currentStockCopy = new_liters;
-            transactionType = "Out";
-            var OutcomingData = {
-                quantity_out: quantity_out, 
-                destination: destination.toUpperCase(),
-                truck_no: truck_no.toUpperCase(), 
-                operator: operator.toUpperCase(),
-                reverseDate: firebase.database.ServerValue.TIMESTAMP,
-                date: date, 
-                time: time,
-                currentstockCopy: currentStockCopy,
-                TransactionType: transactionType,
-                Date_Input: date_input,
-                time_input: time_input,
-                pondo_Input: pondo_input};
+                if(document.getElementById('time_input').value != ""){
+                    var time_input = startTime(document.getElementById('time_input').value);
+                }else{
+                    var time_input = "";
+                }
+
+                 //var get_liters = CheckSnapshot.val().Liters;
+                var decrease_int_liters = 0 - Number(quantity_out);
+                var decrease_string_liters = decrease_int_liters.toString();
+                var new_liters = decrease_string_liters;
+                var stock_available  = {Liters: new_liters};
+                
+                firebase.database().ref().child("available_stock/" + plant).set(stock_available); 
+
+                var currentStockCopy = new_liters;
+                transactionType = "Out";
+                var OutcomingData = { 
+                    quantity_out: quantity_out, 
+                    destination: destination.toUpperCase(),
+                    truck_no: truck_no.toUpperCase(), 
+                    operator: operator.toUpperCase(),
+                    everseDate: firebase.database.ServerValue.TIMESTAMP,
+                    date: date, 
+                    time: time,
+                    currentstockCopy: currentStockCopy,
+                    TransactionType: transactionType,
+                    Date_Input: date_input,
+                    time_input: time_input,
+                    pondo_Input: pondo_input
+                };
 
                 var postData = firebase.database().ref('incoming_diesel/' + plant);
                 var newPostRef = postData.push();
                 newPostRef.set(OutcomingData);
 
                 var postId = newPostRef.key;
+                
                 firebase.database().ref().child("incoming_diesel/" + plant + "/" + postId ).once('value',function(UpdateReverseDateSnapshot){
 
                     var StartReverseDate = UpdateReverseDateSnapshot.val().reverseDate * -1;
                     var UpdateReverseDate = {reverseDate: StartReverseDate};
+                    
+                    // firebase.database().ref().child("incoming_diesel/" + plant +"/" + postId).update(UpdateReverseDate);
+                    // console.log(StartReverseDate);
 
-                    if(firebase.database().ref().child("incoming_diesel/" + plant +"/" + postId).update(UpdateReverseDate)){
-                        window.location.reload();
-                    }
+                    firebase.database().ref().child("incoming_diesel/" + plant +"/" + postId).update(UpdateReverseDate);
+                        //alert("Outgoing diesel complete.");     
                 });
-                firebase.database().ref().child("available_stock/" + plant).once('value',function(negativestockSnapshot){
+
+                firebase.database().ref().child("available_stock/" + plant).once('value', function(negativestockSnapshot){
+
                     var getLiters = Number(negativestockSnapshot.val().Liters);
                     if (getLiters <= 0){
+
                         getLiters = Math.max(0,getLiters);
+
                         var stock_available  = {Liters: getLiters};
                         firebase.database().ref().child("available_stock/" + plant).set(stock_available );
                     }
+                   
+                    window.location.reload();
                 });
+
             }else{
+
                 var quantity_out = document.getElementById('quantity_out').value;
                 quantity_out = quantity_out.replace(",","");
-                 var destination = document.getElementById('destination').value;
-                 var truck_no = document.getElementById('selectsys').value;
-                 var operator = document.getElementById('operator').value;
-                 var date = new Date().toLocaleDateString('en');
-                 var time = new Date().toLocaleTimeString('en');
-                 var date_input = dateFormat(document.getElementById('date_input').value);
-                 var pondo_input = document.getElementById('pondo').value;
-                 pondo_input = pondo_input.replace(",","");
+                var destination = document.getElementById('destination').value;
+                var truck_no = document.getElementById('selectsys').value;
+                var operator = document.getElementById('operator').value;
+                var date = new Date().toLocaleDateString('en');
+                var time = new Date().toLocaleTimeString('en');
+                var date_input = dateFormat(document.getElementById('date_input').value);
+                var pondo_input = document.getElementById('pondo').value;
+                pondo_input = pondo_input.replace(",","");
 
-                 if(document.getElementById('time_input').value != ""){
+                if(document.getElementById('time_input').value != ""){
                     var time_input = startTime(document.getElementById('time_input').value);
                 }else{
                     var time_input = "";
@@ -425,51 +443,64 @@ function submitForm(){
                 var decrease_string_liters = decrease_int_liters.toString();
                 var new_liters = decrease_string_liters;
                 var stock_available  = {Liters: new_liters};
+                
                 firebase.database().ref().child("available_stock/" + plant).set(stock_available); 
 
                 var currentStockCopy = new_liters;
                 transactionType = "Out";
+
                 var OutcomingData = { 
-                quantity_out: quantity_out, 
-                destination: destination.toUpperCase(),
-                truck_no: truck_no.toUpperCase(), 
-                operator: operator.toUpperCase(),
-                reverseDate: firebase.database.ServerValue.TIMESTAMP,
-                date: date, 
-                time: time,
-                currentstockCopy: currentStockCopy,
-                TransactionType: transactionType,
-                Date_Input: date_input,
-                time_input: time_input,
-                pondo_Input: pondo_input};
+                    quantity_out: quantity_out, 
+                    destination: destination.toUpperCase(),
+                    truck_no: truck_no.toUpperCase(), 
+                    operator: operator.toUpperCase(),
+                    reverseDate: firebase.database.ServerValue.TIMESTAMP,
+                    date: date, 
+                    time: time,
+                    currentstockCopy: currentStockCopy,
+                    TransactionType: transactionType,
+                    Date_Input: date_input,
+                    time_input: time_input,
+                    pondo_Input: pondo_input
+                };
 
                 var postData = firebase.database().ref('incoming_diesel/' + plant);
                 var newPostRef = postData.push();
                 newPostRef.set(OutcomingData);
 
                 var postId = newPostRef.key;
-                firebase.database().ref().child("incoming_diesel/" + plant + "/" + postId ).once('value',function(UpdateReverseDateSnapshot){
+                
+                firebase.database().ref().child("incoming_diesel/" + plant + "/" + postId).once('value', function(UpdateReverseDateSnapshot){
+
                     var StartReverseDate = UpdateReverseDateSnapshot.val().reverseDate * -1;
                     var UpdateReverseDate = {reverseDate: StartReverseDate};
+                    
+                    // firebase.database().ref().child("incoming_diesel/" + plant +"/" + postId).update(UpdateReverseDate);
+                    // console.log(StartReverseDate);
 
-                    if(firebase.database().ref().child("incoming_diesel/" + plant +"/" + postId).update(UpdateReverseDate)){
-                        window.location.reload();
-                    }
+                    firebase.database().ref().child("incoming_diesel/" + plant +"/" + postId).update(UpdateReverseDate);
+                        //alert("Outgoing diesel complete.");
                 });
+
                 firebase.database().ref().child("available_stock/" + plant).once('value',function(negativestockSnapshot){
+                    
                     var getLiters = Number(negativestockSnapshot.val().Liters);
+
                     if (getLiters <= 0){
+                        
                         getLiters = Math.max(0,getLiters);
 
                         var stock_available  = {Liters: getLiters};
                         firebase.database().ref().child("available_stock/" + plant).set(stock_available );
                     }
+                   
+                    window.location.reload();
                 });
-            //lastdelivered
-            //end of else
-        }
-    });
-}
+                //lastdelivered
+                //end of else
+            }
+        });
+    }
 function AvailableStock(){
     firebase.database().ref().child("available_stock/" + plant).once('value',function(totalstockSnapshot){
         if (totalstockSnapshot.val() == null){
@@ -646,7 +677,7 @@ if(do_count == 0){
                 </div>
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3">
-                        <form id="form" name="form" class="form-horizontal" onsubmit="if(confirm('Proceed?')){submitForm();}else{ event.preventDefault();}">
+                        <form id="form" name="form" class="form-horizontal">
                             <section class="panel">
                                 <header class="panel-heading">
                                     Details
@@ -734,7 +765,8 @@ if(do_count == 0){
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-offset-8 col-md-4">
-                                            <input type="submit" name="submit" id="submit" value="Done" class="btn btn-primary" style="font-weight: bold;">
+                                            <!-- <input type="submit" name="submit" id="submit" value="Done" class="btn btn-primary" style="font-weight: bold;"> -->
+                                            <button type="button" name="submit" id="submit" class="btn btn-primary" onclick="if(confirm('Proceed?')){submitForm();}else{ event.preventDefault();}"><strong>Done</strong></button>
                                             <a href="diesel.html" class="btn btn-default"><strong>Cancel</strong></a>
                                         </div>
                                     </div>
