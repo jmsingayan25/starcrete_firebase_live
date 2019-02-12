@@ -149,7 +149,7 @@
                      
         $rowno=$("#item_table tr").length;
         $rowno=$rowno+1;
-        $("#item_table tr:last").after("<tr id='row"+$rowno+"' style='text-align: center;'><td class='col-md-1'><div class='form-group'><select name='item_no[]' class='form-control' required><option value=''>Select</option></select></div></td><td class='col-md-1'><div class='form-group'><input type='text' name='psi[]' class='form-control' autocomplete='off' placeholder='PSI'></div></td><td class='col-md-1'><div class='form-group'><input type='text'  name='quantity[]' class='form-control' placeholder='Quantity' required></div></td><td class='col-md-1'><div class='form-group'><button type='button' class='btn btn-danger btn-md' onclick=delete_row('row"+$rowno+"') style='font-weight: bold;'><span class='fa fa-minus'></span></button></div></td></tr>");
+        $("#item_table tr:last").after("<tr id='row"+$rowno+"' style='text-align: center;'><td class='col-md-1'><div class='form-group'><select name='item_no[]' id='item_no"+$rowno+"' class='form-control' required><option value=''>Select</option></select></div></td><td class='col-md-1'><div class='form-group'><input type='text' name='psi[]' class='form-control' autocomplete='off' placeholder='PSI'></div></td><td class='col-md-1'><div class='form-group'><input type='text'  name='quantity[]' class='form-control' placeholder='Quantity' required></div></td><td class='col-md-1'><div class='form-group'><button type='button' class='btn btn-danger btn-md' onclick=delete_row('row"+$rowno+"') style='font-weight: bold;'><span class='fa fa-minus'></span></button></div></td></tr>");
 
         // firebase.database().ref('item').once('value').then(function(snapshot){
         //     snapshot.forEach(function(childSnapshot){
@@ -169,7 +169,7 @@
                 myItem += "<option value='" + item_array[a] + "'>" + item_array[a] + "</option>";
             }
 
-            $('[name="item_no[]"]').html(myItem);
+            $('#item_no'+$rowno).html(myItem);
         });
     }
 
@@ -410,7 +410,7 @@
                 time: time,
                 // reverseDate: firebase.database.ServerValue.TIMESTAMP,
                 reverseDate: time_timestamp,
-                status: "PENDING",
+                status: 1,
                 issued_po_plant: plant
             }
             console.log(poData);
@@ -461,8 +461,8 @@
             // });
 
             var projectData = {
-                project_name: snapshot.val().project_name,
-                project_address: snapshot.val().project_address,
+                project_name: snapshot.val().project_name || "",
+                project_address: snapshot.val().project_address || "",
             }
 
             firebase.database().ref('purchase_order/'+postId+'/project_detail/'+project_id).set(projectData);
@@ -524,12 +524,42 @@
 
         event.preventDefault();
 
-        var item = document.getElementById('new_item').value;
+        var item_input = document.getElementById('new_item').value;
+        count = 0;
 
-        var data = {
-            item: item.toUpperCase(),
-            quantity: 0
-        }
+        firebase.database().ref('item').once('value', function(itemSnapshot){
+            itemSnapshot.forEach(function(itemChildSnapshot){
+
+                getItem = itemChildSnapshot.val().item;
+
+                if(item_input.toUpperCase() == getItem){
+                    count++;
+                }
+
+                // console.log(item_input.toUpperCase() == getItem);
+            });
+
+            firebase.database().ref('item').once('value', function(itemSnapshot){
+                
+            });
+
+            if(count == 0){
+
+                var data = {
+                    item: item_input.toUpperCase(),
+                    quantity: 0
+                }
+
+                firebase.database().ref('item').push(data);
+
+                // console.log(data);
+
+                window.location.reload();
+            }else{
+
+                alert("Item already exist");
+            }
+        });
     }
 
 </script>
@@ -754,7 +784,7 @@
                                                         <div class="modal-body">
                                                             <div class="row">
                                                                 <div class="col-md-12">
-                                                                    <label for="item">Item Name</label>
+                                                                    <label for="item">Item Code</label>
                                                                     <input type="text" name="new_item" id="new_item" class="form-control" style="text-transform: uppercase;">
                                                                 </div>
                                                             </div>
@@ -789,7 +819,7 @@
                                             <tr id="row1" style="text-align: center;">
                                                 <td class="col-md-1">
                                                     <div class="form-group">
-                                                        <select name="item_no[]" id="item_no_id" class="form-control" required>
+                                                        <select name="item_no[]" id="item_no1" class="form-control" required>
                                                             <option value="">Select</option>
                                                         </select>
                                                     </div>
