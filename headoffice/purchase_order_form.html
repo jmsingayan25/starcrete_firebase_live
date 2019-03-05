@@ -388,6 +388,9 @@
 
         event.preventDefault();
 
+        var $this = $('#saving');
+        $this.button('loading');
+
         var po_no = document.getElementById('po_no').value;
         var plant = document.querySelector('input[name="plant"]:checked').value;
         var client_id = document.getElementById('client').value;
@@ -514,6 +517,8 @@
             });
 
             if(count == item_no.length){
+
+                $this.button('reset');
                 document.getElementById('msg').innerHTML = "Transaction complete. You can view the order on <a href='purchase_order.html?plant=" + plant + "'>" + plant + " Purchase Order Page </a>.";
                     $('#success_msg').show();
             }
@@ -757,8 +762,9 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div class="col-md-offset-8 col-md-4">
-                                            <button type="button" class="btn btn-primary" onclick="if(confirm('Proceed?')){submitForm();}else{ event.preventDefault();}"><strong>Done</strong></button>
+                                        <div class="col-md-offset-6 col-md-6">
+                                            <button class="btn btn-info btn-md" name="saving"  id="saving" type="button"  onclick="if(confirm('Proceed?')){submitForm();}else{ event.preventDefault();}"  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Submitting. Please Wait."><strong>Submit</strong></button>
+                                            <!-- <button type="button" class="btn btn-primary" onclick="if(confirm('Proceed?')){submitForm();}else{ event.preventDefault();}"><strong>Done</strong></button> -->
                                             <!-- <input type="submit" name="submit" id="submit" value="Done" class="btn btn-primary" style="font-weight: bold;"> -->
                                             <!-- <a href="delivery_transaction.php" class="btn btn-warning">Cancel</a> -->
                                             <input type="reset" name="reset" id="reset" value="Clear" onclick="window.location.reload(true);" class="btn btn-default" style="font-weight: bold;">

@@ -547,7 +547,7 @@
                         firebase.database().ref('purchase_order/'+orderChildSnapshot.key+'/item').once('value', function(itemSnapshot){
                             itemSnapshot.forEach(function(itemChildSnapshot){
 
-                                if(itemChildSnapshot.val().balance != 0){
+                                if(itemChildSnapshot.val().balance > 0){
 
                                     firebase.database().ref('purchase_order/'+orderChildSnapshot.key+'/project_detail').once('value', function(projectSnapshot){
                                         projectSnapshot.forEach(function(projectChildSnapshot){

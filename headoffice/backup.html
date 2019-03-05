@@ -133,6 +133,9 @@
 
     function WriteToFile(){
 
+        var $this = $('#export');
+        $this.button('loading');
+
         firebase.database().ref().once('value', function(snapshot){
 
             var date = new Date();
@@ -142,8 +145,12 @@
             var blob = new Blob([JSON.stringify(snapshot.val(), null, "\t")], {type: "text/plain;charset=utf-8"});
             
             saveAs(blob, filename+".json");
+            $this.button('reset');
 
-            console.log(filename);
+            // console.log(filename);
+            // alert(filename+".json")
+            
+
         });     
     }
 
@@ -345,7 +352,9 @@
                                 <p>This file will contain all data that has been save to Firebase Realtime Database under Starcrete Project</p>
                                 <p>Once you save the downloaded file, you can use the file to import on the site.</p>
 
-                                <button type="button" onclick="WriteToFile();" class="btn btn-info btn-md"><strong>Download Export File</strong></button>
+                                <!-- <button type="button" onclick="WriteToFile();" class="btn btn-info btn-md"><strong>Download Export File</strong></button> -->
+
+                                <button class="btn btn-info btn-md" name="export"  id="export" type="button" onclick="WriteToFile();"  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Downloading. Please Wait."><strong>Download Export File</strong></button>
                             </div>
                         </section>
                     </div>
