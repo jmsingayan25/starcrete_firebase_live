@@ -539,16 +539,20 @@ function DeleteRowData(key,plant)
 
                         if (neweachTimeStamp > newTimestamp){
 
-                            var RollbackResult = Number(getQuantityOut) + Number(foreachSnapshot.val().currentstockCopy);
-                            RollbackResult = RollbackResult.toString();
-                            var stock_available  = {currentstockCopy: RollbackResult};
+                            // var RollbackResult = Number(getQuantityOut) + Number(foreachSnapshot.val().currentstockCopy);
+                            // RollbackResult = RollbackResult.toString();
+                            // var stock_available  = {currentstockCopy: RollbackResult};
 
-                            // console.log(stock_available);
-                            firebase.database().ref().child("incoming_diesel/" + plant + "/" + foreachSnapshot.key).update(stock_available);
+                            // // console.log(stock_available);
+                            // firebase.database().ref().child("incoming_diesel/" + plant + "/" + foreachSnapshot.key).update(stock_available);
+
+                            firebase.database().ref().child("incoming_diesel/" + plant + "/" + foreachSnapshot.key).remove();
+
                         }
                     });
 
-                    var RollbackResultLiters = Number(getQuantityOut) + Number(getAvailableStock);
+                    // var RollbackResultLiters = Number(getQuantityOut) + Number(getAvailableStock);
+                    var RollbackResultLiters = Number(getCurrentStock) + Number(getQuantityOut);
                     var stock_availableLiters  = {Liters: RollbackResultLiters};
                     firebase.database().ref().child("available_stock/" + plant).set(stock_availableLiters);
                     firebase.database().ref().child("incoming_diesel/" + plant + "/" + key).remove();
